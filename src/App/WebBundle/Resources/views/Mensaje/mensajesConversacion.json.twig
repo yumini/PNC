@@ -1,0 +1,14 @@
+{% set contador =0 %}
+{ "items":[
+{% for elemento in entities %}
+    {% set contador = contador+1 %}
+    {
+        "id":"{{ elemento.id }}",
+        "mensaje": "{{ elemento.mensaje }}",
+        "fechaRegistro": {% if elemento.fechaRegistro %}"{{ elemento.fechaRegistro|date('d-m-Y') }}"{% endif %}
+    }
+   {% if contador<entities|length %}
+    ,
+    {% endif %}
+{% endfor %}]}
+                 

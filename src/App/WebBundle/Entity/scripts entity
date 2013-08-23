@@ -1,0 +1,15 @@
+#doctrine:generate:entity 
+--entity="AppWebBundle:Menu" --fields="idpadre:integer titulo:string(50) descripcion:string(300) url:string(300) orden:integer icono:string(20)
+
+--entity="AppWebBundle:Perfil" --fields="nombre:string(50) descripcion:string(300) estado:string(1)"
+
+--entity="AppWebBundle:Conversacion" --fields="nombre:string(50) descripcion:string(300) fechaCreacion:datetime fechaActualizacion:datetime"
+
+--entity="AppWebBundle:Evaluador" --fields="nombres:string(250) apellidos:string(250) direccion:string(250) numdoc:string(20) sexo:string(1)  curriculum:string(20) empresa:string(250) cargo:string(250) direccionempresa:string(250) distritoemp:string(250) telefonoemp:string(250) faxemp:string(250) emailemp:string(250) distrito:string(250) telefono:string(250) celular:string(250) foto:string(50) profesion:string(250) especializacion:string(250) email1:string(250) email2:string(250) disponibleviaje:string(1) disponiblereunion:string(21) estadotermino:string(1) fechaCreacion:datetime fechaActualizacion:datetime user:integer"
+
+--entity="AppWebBundle:GrupoEvaluacion" --fields="nombre:string(50) descripcion:string(300) estado:string(1) fechaCreacion:datetime fechaActualizacion:datetime"
+
+--entity="AppWebBundle:MensajeConversacion" --fields="mensaje:string(300) fechaRegistro:datetime"
+
+--entity="AppWebBundle:ParticipanteConversacion" --fields="fechaRegistro:datetime"
+--entity="AppWebBundle:Nota" --fields="descripcion:string(300) completada:string(1) archivada:string(1), fechaRegistro:datetime fechaActualizacion:datetime"

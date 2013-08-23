@@ -1,0 +1,186 @@
+/* 
+    Document   : home.css
+    Created on : 16/07/2013, 11:03:59 PM
+    Author     : Edinson
+    Description:
+        Purpose of the stylesheet follows.
+*/
+html, body { height: 100%; }
+#header{
+    width: 100%;
+    height: 120px;
+    position: relative; 
+    background:url("../img/ww_head_bg.png") #3B4449 no-repeat;
+    padding-top: 80px;
+    
+}
+#headerHome{
+    width: 100%;
+    height: 150px;
+    position: relative; 
+    background:url("../img/ww_head_bg.png") #3B4449 no-repeat;
+    background-position: left bottom;
+    background-color: #000000;
+    padding-bottom: 15px;
+}
+#footer{
+        margin: 0px;
+	padding: 0px;
+	height: 30px;
+	width: 100%;
+	position: absolute;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+	background-image: url("../img/barra-05.png");
+}
+#home_menu_footer {
+	padding: 0px;
+	float: left;
+	list-style-type: none;
+	margin-top: 5px;
+	margin-right: 10px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+        font-size: 10px;
+}
+#home_menu_footer li{
+	float: left;
+	padding: 2px;
+	margin-top: 2px;
+	margin-right: 7px;
+	margin-bottom: 2px;
+	margin-left: 7px;
+	color: #FFF;
+}
+#home_menu_footer li a{
+	text-decoration: none;
+	color: #CCC;
+	font-weight: bold;
+}
+#home_menu_footer li a:hover{
+	text-decoration: none;
+	color: #FFF;
+}
+
+.container-list{
+    width:100%;
+
+    padding: 10px 10px;
+    font-size: 10px;
+}
+.container-list2{
+    width:100%;
+
+    padding: 1px 1px;
+    font-size: 10px;
+}
+#cuerpo{
+    width:100%;
+    border: 0px 0px;
+    padding: 0px;
+    margin: 0px;
+    overflow: hidden;
+}
+
+.list-options{
+    list-style-type: none;
+    margin: 0px 0px;
+    padding: 5px 0px;
+}
+.list-options li{
+    list-style-type: none;
+}
+
+.grid-header{
+	color: #333;
+	font-size: 12px;
+	text-align: center;
+	height: 20px;
+	font-weight: bold;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #CCC;
+}
+.form-header{
+	background-color: #d7d8dc;
+	color: #2a2a2a;
+}
+.noborder{
+    margin: 0px 0px;
+    padding:  0px 0px;
+}
+.nomargin{
+    margin: 0px 0px; 
+}
+.right{
+    text-align: right;
+    
+}
+.center{
+    text-align: center;
+}
+
+
+a{
+	color: #000;
+	text-decoration: none;    
+}
+a:hover{
+	
+	color: #F90;
+	text-decoration: none;
+}
+.panel-green {
+  border-color: #d6e9c6;
+}
+
+.panel-green .panel-heading {
+  color: #FFFFFF;
+  background-color: #5ab75c;
+  border-color: #d6e9c6;
+}
+.panel-gray {
+  border-color: #d7d8dc;
+}
+.panel-gray .panel-heading {
+  color: #2a2a2a;
+  background-color: #d7d8dc;
+  border-color: #d6e9c6;
+}
+
+.panel-gray-header {
+  border-color: #d7d8dc;
+  background-color: #d7d8dc;
+}
+
+/* Start by setting display:none to make this hidden.
+   Then we position it in relation to the viewport window
+   with position:fixed. Width, height, top and left speak
+   speak for themselves. Background we set to 80% white with
+   our animation centered, and no-repeating */
+.modalLoading {
+    display:    none;
+    position:   fixed;
+    z-index:    1000000;
+    top:        0;
+    left:       0;
+    height:     100%;
+    width:      100%;
+    background: rgba( 255, 255, 255, .8 ) 
+                url('http://i.stack.imgur.com/FhHRx.gif') 
+                50% 50% 
+                no-repeat;
+}
+
+/* When the body has the loading class, we turn
+   the scrollbar off with overflow:hidden */
+body.loading {
+    overflow: hidden;   
+}
+
+/* Anytime the body has the loading class, our
+   modal element will be visible */
+body.loading .modalLoading {
+    display: block;
+}

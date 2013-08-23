@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+{% block headTitle %}
+    <title>Premio nacional a la Calidad</title>
+{% endblock %}
+ 
+{% block css %}
+    
+    <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/bootstrap-glyphicons.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/home.css') }}" rel="stylesheet">
+  
+{% endblock %}
+ 
+{% block ScriptHeadLayout %}  
+    <script src="{{ asset('js/jquery-1.9.1.js') }}"></script> 
+   
+    <script src="{{ asset('js/jquery.ajax.js') }}"></script> 
+    <script src="{{ asset('js/bootstrap.js') }}"></script>
+    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+    <script src="{{ asset('js/underscore.js') }}"></script> 
+    <script src="{{ asset('js/backbone.js') }}"></script> 
+    <script src="{{ asset('js/bootstrap-modal-design.js') }}"></script> 
+    <script src="{{ asset('js/serialize.js') }}"></script> 
+{% endblock %}
+{% block ScriptHead %}
+{% endblock %}
+  
+</head>
+
+<body>
+     
+     <div class="container-fluid" style="height: 100%;border-color: #ffffff; padding: 0px 0px; border-style:none" >   
+    <div class="navbar navbar-fixed-top navbar-inverse"><div class="navbar-inner"><div class="container-fluid"><button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-inverse-collapse"> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span></button><a href="#"  class="navbar-brand"><small><h6 style='margin:0px 0px;padding:0px 0px'>Premio Nacional de la Calidad</h6></small></a><div class="nav-collapse collapse navbar-inverse-collapse">
+         <ul class="nav navbar-nav pull-right">
+                      
+                      <li class="divider-vertical"></li>
+                      <li >
+                      <a href="{{ path('fos_user_security_login') }}">
+                        <i class="glyphicon glyphicon-lock icon-white"> </i> Iniciar Sesion 
+                       </a> 
+                      </li>
+                    </ul></div></div></div></div>
+     <div id="headerHome"></div>
+{% block body %}
+
+{% endblock %}
+    </div>
+   
+   
+   
+{% block footer %}
+     
+{% endblock %}
+   
+</body
+{% block windows %}
+
+{% endblock %}
+{% block message %}
+
+{% endblock %}
+</html>
+{% block ScriptFooter %}
+{% endblock %}

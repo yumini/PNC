@@ -1,0 +1,212 @@
+<?php
+
+namespace App\WebBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo; 
+/**
+ * Nota
+ *
+ * @ORM\Table()
+ * @ORM\Entity(repositoryClass="App\WebBundle\Entity\NotaRepository")
+ */
+class Nota
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="descripcion", type="string", length=300)
+     */
+    private $descripcion;
+
+    /**
+     * @var string
+     *    
+     * @ORM\Column(name="completada", type="string", length=1)
+     */
+    private $completada;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="archivada", type="string", length=1)
+     */
+    private $archivada;
+
+    /**
+     * @var \DateTime
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(name="fechaRegistro", type="datetime")
+     */
+    private $fechaRegistro;
+
+    /**
+     * @var \DateTime
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(name="fechaActualizacion", type="datetime")
+     */
+    private $fechaActualizacion;
+
+    /**
+    * @ORM\ManyToOne(targetEntity="Usuario", inversedBy="notas")
+    * @ORM\JoinColumn(name="usuario_id", referencedColumnName="id")
+    */
+    private $usuario;
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set descripcion
+     *
+     * @param string $descripcion
+     * @return Nota
+     */
+    public function setDescripcion($descripcion)
+    {
+        $this->descripcion = $descripcion;
+    
+        return $this;
+    }
+
+    /**
+     * Get descripcion
+     *
+     * @return string 
+     */
+    public function getDescripcion()
+    {
+        return $this->descripcion;
+    }
+
+    /**
+     * Set completada
+     *
+     * @param string $completada
+     * @return Nota
+     */
+    public function setCompletada($completada)
+    {
+        $this->completada = $completada;
+    
+        return $this;
+    }
+
+    /**
+     * Get completada
+     *
+     * @return string 
+     */
+    public function getCompletada()
+    {
+        return $this->completada;
+    }
+
+    /**
+     * Set archivada
+     *
+     * @param string $archivada
+     * @return Nota
+     */
+    public function setArchivada($archivada)
+    {
+        $this->archivada = $archivada;
+    
+        return $this;
+    }
+
+    /**
+     * Get archivada
+     *
+     * @return string 
+     */
+    public function getArchivada()
+    {
+        return $this->archivada;
+    }
+
+    /**
+     * Set fechaRegistro
+     *
+     * @param \DateTime $fechaRegistro
+     * @return Nota
+     */
+    public function setFechaRegistro($fechaRegistro)
+    {
+        $this->fechaRegistro = $fechaRegistro;
+    
+        return $this;
+    }
+
+    /**
+     * Get fechaRegistro
+     *
+     * @return \DateTime 
+     */
+    public function getFechaRegistro()
+    {
+        return $this->fechaRegistro;
+    }
+
+    /**
+     * Set fechaActualizacion
+     *
+     * @param \DateTime $fechaActualizacion
+     * @return Nota
+     */
+    public function setFechaActualizacion($fechaActualizacion)
+    {
+        $this->fechaActualizacion = $fechaActualizacion;
+    
+        return $this;
+    }
+
+    /**
+     * Get fechaActualizacion
+     *
+     * @return \DateTime 
+     */
+    public function getFechaActualizacion()
+    {
+        return $this->fechaActualizacion;
+    }
+
+    /**
+     * Set usuario
+     *
+     * @param \App\WebBundle\Entity\Usuario $usuario
+     * @return Nota
+     */
+    public function setUsuario(\App\WebBundle\Entity\Usuario $usuario = null)
+    {
+        $this->usuario = $usuario;
+    
+        return $this;
+    }
+
+    /**
+     * Get usuario
+     *
+     * @return \App\WebBundle\Entity\Usuario 
+     */
+    public function getUsuario()
+    {
+        return $this->usuario;
+    }
+}

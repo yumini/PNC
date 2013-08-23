@@ -1,0 +1,287 @@
+<?php
+
+namespace App\WebBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use FOS\UserBundle\Model\User as BaseUser;
+/**
+ * Usuario
+ *
+ * @ORM\Table(name="usuario")
+ * @ORM\Entity(repositoryClass="App\WebBundle\Entity\UsuarioRepository")
+ */
+class Usuario extends BaseUser
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nombres", type="string", length=250)
+     */
+    protected $nombres;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="apellidos", type="string", length=250)
+     */
+    protected $apellidos;
+
+    /**
+    * @ORM\ManyToOne(targetEntity="Perfil", inversedBy="usuarios")
+    * @ORM\JoinColumn(name="perfil_id", referencedColumnName="id")
+    */
+    protected $perfil;
+
+     /**
+    * @ORM\ManyToOne(targetEntity="TipoDocumento", inversedBy="usuarios")
+    * @ORM\JoinColumn(name="tipodocumento_id", referencedColumnName="id")
+    */
+    protected $tipoDocumento;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nrodocumento", type="string", length=20)
+     */
+    protected $nroDocumento;
+
+    /**
+    * @ORM\OneToMany(targetEntity="Nota", mappedBy="usuario")
+    */
+    protected $notas;
+
+     /**
+    * @ORM\OneToMany(targetEntity="Evaluador", mappedBy="usuario")
+    */
+    protected $evaluadores;
+
+     /**
+     * @ORM\ManyToMany(targetEntity="Conversacion", inversedBy="Usuario")
+     * @ORM\JoinTable(name="participante")
+     */
+    private $conversaciones;
+
+    public function __construct()
+    {
+        $this->conversaciones = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->notas = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->evaluadores = new \Doctrine\Common\Collections\ArrayCollection();
+        parent::__construct();
+    }
+    
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+
+   
+
+   
+
+    /**
+     * Add notas
+     *
+     * @param \App\WebBundle\Entity\Nota $notas
+     * @return Usuario
+     */
+    public function addNota(\App\WebBundle\Entity\Nota $notas)
+    {
+        $this->notas[] = $notas;
+    
+        return $this;
+    }
+
+    /**
+     * Remove notas
+     *
+     * @param \App\WebBundle\Entity\Nota $notas
+     */
+    public function removeNota(\App\WebBundle\Entity\Nota $notas)
+    {
+        $this->notas->removeElement($notas);
+    }
+
+    /**
+     * Get notas
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getNotas()
+    {
+        return $this->notas;
+    }
+
+    /**
+     * Add conversaciones
+     *
+     * @param \App\WebBundle\Entity\Conversacion $conversaciones
+     * @return Usuario
+     */
+    public function addConversacione(\App\WebBundle\Entity\Conversacion $conversaciones)
+    {
+        $this->conversaciones[] = $conversaciones;
+    
+        return $this;
+    }
+
+    /**
+     * Remove conversaciones
+     *
+     * @param \App\WebBundle\Entity\Conversacion $conversaciones
+     */
+    public function removeConversacione(\App\WebBundle\Entity\Conversacion $conversaciones)
+    {
+        $this->conversaciones->removeElement($conversaciones);
+    }
+
+    /**
+     * Get conversaciones
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getConversaciones()
+    {
+        return $this->conversaciones;
+    }
+
+    /**
+     * Add evaluadores
+     *
+     * @param \App\WebBundle\Entity\Evaluador $evaluadores
+     * @return Usuario
+     */
+    public function addEvaluadore(\App\WebBundle\Entity\Evaluador $evaluadores)
+    {
+        $this->evaluadores[] = $evaluadores;
+    
+        return $this;
+    }
+
+    /**
+     * Remove evaluadores
+     *
+     * @param \App\WebBundle\Entity\Evaluador $evaluadores
+     */
+    public function removeEvaluadore(\App\WebBundle\Entity\Evaluador $evaluadores)
+    {
+        $this->evaluadores->removeElement($evaluadores);
+    }
+
+    /**
+     * Get evaluadores
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getEvaluadores()
+    {
+        return $this->evaluadores;
+    }
+
+    /**
+     * Set nombres
+     *
+     * @param string $nombres
+     * @return Usuario
+     */
+    public function setNombres($nombres)
+    {
+        $this->nombres = $nombres;
+    
+        return $this;
+    }
+
+    /**
+     * Get nombres
+     *
+     * @return string 
+     */
+    public function getNombres()
+    {
+        return $this->nombres;
+    }
+
+    /**
+     * Set apellidos
+     *
+     * @param string $apellidos
+     * @return Usuario
+     */
+    public function setApellidos($apellidos)
+    {
+        $this->apellidos = $apellidos;
+    
+        return $this;
+    }
+
+    /**
+     * Get apellidos
+     *
+     * @return string 
+     */
+    public function getApellidos()
+    {
+        return $this->apellidos;
+    }
+
+    /**
+     * Set perfil
+     *
+     * @param \App\WebBundle\Entity\Perfil $perfil
+     * @return Usuario
+     */
+    public function setPerfil(\App\WebBundle\Entity\Perfil $perfil = null)
+    {
+        $this->perfil = $perfil;
+    
+        return $this;
+    }
+
+    /**
+     * Get perfil
+     *
+     * @return \App\WebBundle\Entity\Perfil 
+     */
+    public function getPerfil()
+    {
+        return $this->perfil;
+    }
+
+    /**
+     * Set tipoDocumento
+     *
+     * @param \App\WebBundle\Entity\TipoDocumento $tipoDocumento
+     * @return Usuario
+     */
+    public function setTipoDocumento(\App\WebBundle\Entity\TipoDocumento $tipoDocumento = null)
+    {
+        $this->tipoDocumento = $tipoDocumento;
+    
+        return $this;
+    }
+
+    /**
+     * Get tipoDocumento
+     *
+     * @return \App\WebBundle\Entity\TipoDocumento 
+     */
+    public function getTipoDocumento()
+    {
+        return $this->tipoDocumento;
+    }
+}

@@ -1,0 +1,14 @@
+<form id="myform"  method="post" {{ form_enctype(form) }}>
+<input type="hidden" id="perfil_id" value='{{entity.id}}'/>
+{{form_row(form.nombre)}}
+{{form_row(form.descripcion)}}
+<div class="form-group">
+         <ul id='tree' class="easyui-tree panel"  style="height:250px;overflow-y:auto;margin-top:5px;">
+       
+        </ul>
+</div>
+</form>
+{% block ScriptFooter %}
+<script src="{{ asset('js/pages/Perfil/update.js') }}"></script> 
+{% endblock %}
+

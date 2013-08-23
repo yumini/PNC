@@ -1,0 +1,86 @@
+{% extends 'AppWebBundle:Default:layout.html.twig' %}
+
+{% block body %}
+<div class="panel">
+<div class="row">
+  <div class="col-lg-3">
+    <div class="thumbnail">
+       <a href="#" class="thumbnail">
+           <img data-src="holder.js/100%x180" alt="" src="{{ asset('images/home-01.png')}}">
+    </a>
+      <div class="caption">
+        <h3>Quienes Somos?</h3>
+        <p>
+        El Centro de Desarrollo Industrial - CDI, es un organismo que forma parte de la Sociedad Nacional de Industrias del Perú.
+
+        </p>
+        <p><a href="#" class="btn btn-primary">Conoce mas</a> </p>
+      </div>
+    </div>
+  </div>   
+  <div class="col-lg-3">
+    <div class="thumbnail">
+       <a href="#" class="thumbnail">
+           <img data-src="holder.js/100%x180" alt="" src="{{ asset('images/home-02.png')}}">
+    </a>
+      <div class="caption">
+        <h3>Que es el Premio Nacional de la Calidad?</h3>
+        <p>
+        Es el Reconocimiento más importante que se otorga en el Perú a las empresas que han demostrado una gestión de calidad de nivel superior.
+        </p>
+        <p><a href="#" class="btn btn-primary">Conoce mas</a> </p>
+      </div>
+    </div>
+  </div>
+        <div class="col-lg-3">
+    <div class="thumbnail">
+       <a href="#" class="thumbnail">
+      <img data-src="holder.js/100%x180" alt="" src="{{ asset('images/home-03.png')}}">
+    </a>
+      <div class="caption">
+       <h3>Como Postular?</h3>
+        <p>
+        Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.
+        </p>
+        <p><a href="#" class="btn btn-primary">Registrate</a> </p>
+      </div>
+    </div>
+  </div>
+        <div class="col-lg-3">
+    <div class="thumbnail">
+       <a href="#" class="thumbnail">
+      <img data-src="holder.js/100%x180" alt="" src="{{ asset('images/home-04.png') }}">
+    </a>
+      <div class="caption">
+        <h3>Quiero ser evaluador</h3>
+        <p>
+        Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.
+        </p>
+        <p><a href="#" class="btn btn-primary">Registrate</a> </p>
+      </div>
+    </div>
+  </div>
+        </div>
+</div>
+{% endblock %}
+
+{%block windows %}
+  <!-- Modal -->
+  <div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">Iniciar Sesion</h4>
+        </div>
+        <div class="modal-body">
+           {{ block('fos_user_content') }}
+        </div>
+        <div class="modal-footer">
+          <a href="#" class="btn btn-default" data-dismiss="modal">Salir</a>
+          <a href="#" class="btn btn-primary">Entrar</a>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+{% endblock %}

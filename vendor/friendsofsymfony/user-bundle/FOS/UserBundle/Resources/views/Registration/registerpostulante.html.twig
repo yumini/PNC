@@ -1,0 +1,15 @@
+{% extends "FOSUserBundle::layout.html.twig" %}
+{% trans_default_domain 'FOSUserBundle' %}
+{% block fos_user_content %}
+<form action="{{ path('fos_user_registration_register',{ 'perfil': perfil }) }}" {{ form_enctype(form) }} method="POST" class="fos_user_registration_register">
+	
+    {{ form_widget(form) }}
+    <div>
+        <input type="submit" value="{{ 'registration.submit'|trans }}" />
+    </div>
+</form>
+<script type="text/javascript">
+	$("#fos_user_registration_form_perfil").val(3);
+	$("#fos_user_registration_form_perfil").parent().hide();
+</script>
+{% endblock fos_user_content %}

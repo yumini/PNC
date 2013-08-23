@@ -1,0 +1,26 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <table class="records_list table table-bordered table-hover table-condensed table-striped" style="width:100%">
+        <thead>
+            <tr>
+                <th class="grid-header">Nombres</th>
+                <th class="grid-header">Apellidos</th>
+                <th class="grid-header">Profesion</th>
+                <th class="grid-header">Lider</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td>{{ entity.nombres }}</td>
+                <td>{{ entity.apellidos }}</td>
+                <td>{{ entity.profesion }}</td>
+                
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+       
+    {% endblock %}

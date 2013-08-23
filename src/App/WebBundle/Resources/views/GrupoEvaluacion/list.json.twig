@@ -1,0 +1,14 @@
+{% set contador =0 %}
+{ "items":[
+{% for elemento in entities %}
+    {% set contador = contador+1 %}
+    {
+        "id":"{{ elemento.id }}",
+        "nombre": "{{ elemento.nombre }}",
+        "descripcion":"{{ elemento.descripcion }}"
+    }
+   {% if contador<entities|length %}
+    ,
+    {% endif %}
+{% endfor %}]}
+                 

@@ -1,0 +1,91 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Evaluador list</h1>
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombres</th>
+                <th>Apellidos</th>
+                <th>Direccion</th>
+                <th>Numdoc</th>
+                <th>Sexo</th>
+                <th>Curriculum</th>
+                <th>Empresa</th>
+                <th>Cargo</th>
+                <th>Direccionempresa</th>
+                <th>Distritoemp</th>
+                <th>Telefonoemp</th>
+                <th>Faxemp</th>
+                <th>Emailemp</th>
+                <th>Distrito</th>
+                <th>Telefono</th>
+                <th>Celular</th>
+                <th>Foto</th>
+                <th>Profesion</th>
+                <th>Especializacion</th>
+                <th>Email1</th>
+                <th>Email2</th>
+                <th>Disponibleviaje</th>
+                <th>Disponiblereunion</th>
+                <th>Estadotermino</th>
+                <th>Fechacreacion</th>
+                <th>Fechaactualizacion</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('evaluador_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.nombres }}</td>
+                <td>{{ entity.apellidos }}</td>
+                <td>{{ entity.direccion }}</td>
+                <td>{{ entity.numdoc }}</td>
+                <td>{{ entity.sexo }}</td>
+                <td>{{ entity.curriculum }}</td>
+                <td>{{ entity.empresa }}</td>
+                <td>{{ entity.cargo }}</td>
+                <td>{{ entity.direccionempresa }}</td>
+                <td>{{ entity.distritoemp }}</td>
+                <td>{{ entity.telefonoemp }}</td>
+                <td>{{ entity.faxemp }}</td>
+                <td>{{ entity.emailemp }}</td>
+                <td>{{ entity.distrito }}</td>
+                <td>{{ entity.telefono }}</td>
+                <td>{{ entity.celular }}</td>
+                <td>{{ entity.foto }}</td>
+                <td>{{ entity.profesion }}</td>
+                <td>{{ entity.especializacion }}</td>
+                <td>{{ entity.email1 }}</td>
+                <td>{{ entity.email2 }}</td>
+                <td>{{ entity.disponibleviaje }}</td>
+                <td>{{ entity.disponiblereunion }}</td>
+                <td>{{ entity.estadotermino }}</td>
+                <td>{% if entity.fechaCreacion %}{{ entity.fechaCreacion|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if entity.fechaActualizacion %}{{ entity.fechaActualizacion|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('evaluador_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('evaluador_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <ul>
+        <li>
+            <a href="{{ path('evaluador_new') }}">
+                Create a new entry
+            </a>
+        </li>
+    </ul>
+    {% endblock %}

@@ -1,0 +1,16 @@
+{% set contador =0 %}
+{% set contadorMensajes =0 %}
+{ "items":[
+{% for elemento in entities %}
+    {% set contador = contador+1 %}
+    {
+        "id":"{{ elemento.id }}",
+        "nombre": "{{ elemento.nombre }}",
+        "descripcion":"{{ elemento.descripcion }}",
+        "active":0
+    }
+   {% if contador<entities|length %}
+    ,
+    {% endif %}
+{% endfor %}]}
+                 

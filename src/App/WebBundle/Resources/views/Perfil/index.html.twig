@@ -1,0 +1,65 @@
+{% block ScriptHead %}
+    <script src="{{ asset('js/pages/Perfil/index.js') }}"></script> 
+{% endblock %}
+<div class="container-list">
+     <table class="table table-bordered table-condensed" style="width:100%;">
+         <tr class="form-header">
+             <td>
+                 <div class="row-fluid">
+                     <span class="col-lg-10"><h4><i class="glyphicon glyphicon-list"></i> {{title_list}}</h4></span>
+                  <span class="col-lg-2 right">
+                      
+                   <ul class="list-options">
+                    <li>
+                        <button id="btnNew" class="btn btn-success" > <i class="glyphicon glyphicon-file"></i> Nuevo</button>
+                    </li>
+                </ul>
+                  </span>
+                 </div>
+             </td>
+         </tr>
+       
+     <tr><td class="noborder">            
+    <table class="table table-bordered table-hover table-condensed table-striped" style="width:100%">
+        <thead>
+            <tr >
+                <th class="grid-header" style="text-align: center;">Nombre Perfil</th>
+		<th class="grid-header" style="text-align: center;">Descripcion</th>
+		<th class="grid-header" style="text-align: center;">Estado</th>
+                <th class="grid-header" style="width: 60px;text-align: center;">Opciones</th>
+            </tr>
+        </thead>
+        <tbody>
+         
+        {% for entity in pagination %}
+            <tr>
+                
+                <td>{{ entity.nombre }}</td>
+		<td>{{ entity.descripcion }}</td>
+                <td>{% if entity.estado==1 %}{{ "Activo" }}{% endif %} {% if entity.estado==0 %}{{ "Inactivo" }}{% endif %}</td>
+                   
+                
+                
+                <td style="text-align: center;font-size: 12px;">
+                    <a href="#" class="row-show" data-id="{{ entity.id }}"><i class="glyphicon glyphicon-search"> </i></a>
+                    <a href="#" class="row-edit" data-id="{{ entity.id }}"><i class="glyphicon glyphicon-pencil"> </i></a>
+                    <a href="#" class="row-delete" data-id="{{ entity.id }}"><i class="glyphicon glyphicon-trash"> </i></a>
+                
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+                     <div>
+                     {{ knp_pagination_render(pagination,'AppWebBundle:Default:pagination.html.twig') }}
+                     
+                     </div>
+                 </td>
+             </tr>
+            
+             </table>
+    </div>
+
+{% block windows %}
+    <div id="winForm"></div>
+{% endblock %}
