@@ -1,0 +1,186 @@
+<?php
+
+namespace App\WebBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Concurso
+ *
+ * @ORM\Table(name="concurso")
+ * @ORM\Entity(repositoryClass="App\WebBundle\Entity\ConcursoRepository")
+ */
+class Concurso
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nombreconcurso", type="string", length=30)
+     */
+    private $nombre;
+
+    /**
+     * @var \Date
+     *
+     * @ORM\Column(name="fechainicio", type="date")
+     */
+    private $fechaInicio;
+
+    /**
+     * @var \Date
+     *
+     * @ORM\Column(name="fechafin", type="date")
+     */
+    private $fechaFin;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="presentacion", type="text")
+     */
+    private $presentacion;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="objetivos", type="string", length=200)
+     */
+    private $objetivos;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="requisitos", type="string", length=200)
+     */
+    private $requisitos;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="participantes", type="string", length=200)
+     */
+    private $participantes;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="beneficios", type="string", length=200)
+     */
+    private $beneficios;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="categorias", type="string", length=200)
+     */
+    private $categorias;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="premiootorgar", type="string", length=200)
+     */
+    private $premiootorgar;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="medallas", type="string", length=200)
+     */
+    private $medallas;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="cuotaparticipacion", type="string", length=200)
+     */
+    private $cuota;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="infocomplementaria", type="string", length=200)
+     */
+    private $informacion;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="anio", type="decimal")
+     */
+    private $anio;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="estado_empresa", type="string", length=1)
+     */
+    private $estadoemp;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="estado_proyecto", type="string", length=1)
+     */
+    private $estadopy;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="estado", type="string", length=1)
+     */
+    private $estado;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="termino_aceptacion", type="text")
+     */
+    private $terminoacepta;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="inc_puntaje", type="integer")
+     */
+    private $incpuntaje;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="evalua_criterio", type="integer")
+     */
+    private $evaluacriterio;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="informe_retro", type="text")
+     */
+    private $informeretro;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="calificacion", type="text")
+     */
+    private $calificacion;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="prefijo", type="string", length=30)
+     */
+    private $prefijo;
+
+  
+}

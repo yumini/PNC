@@ -8,12 +8,18 @@
 {% endblock %}
 <div class="row">
     <div class="col-lg-8" style="padding: 5px 5px 0px 35px;margin: 0px 0px;">
-      <div class="panel  panel-gray">
+      <div class="panel panel-default">
           <div class="panel-heading"> 
-              <span class="glyphicon glyphicon-th-large"> </span>Hangout
-          <button id="btnNew" class="btn btn-success btn-mini pull-right" > 
-                <i class="glyphicon glyphicon-plus"></i> Nueva Conversación
-          </button>
+            <nav class="navbar navbar-default" role="navigation" style="z-index:0">
+            <div class="navbar-header">
+              
+              <a class="navbar-brand" href="#"> <span class="glyphicon glyphicon-th-large"> </span> Hangout</a>
+            </div>
+            <div class="collapse navbar-collapse navbar-ex2-collapse">
+              <button id="btnNew" type="button" class="btn btn-success navbar-btn pull-right"> <span class="glyphicon glyphicon-plus"> </span> Nueva Conversación</button>
+            </div>
+        </nav>
+
           </div>
           <div id="content-mensajeria" >
               <div class="row">

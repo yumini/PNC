@@ -87,7 +87,13 @@ var BootstrapWindow= Backbone.Model.extend({
         
         this.Footer.append( "<a id=\""+id+"\" href=\"#\" class=\"btn "+options.class+"\" >"+options.label+"</a>");
         $("#"+id).click(options.fn);
+    },
+    setWidth:function(width){
+        this.Dialog.css("width",width+"px");
+    },
+    setHeight:function(height){
+        //this.Content.css("height",height+"px");
+        this.Body.css("height",height+"px");
     }
-    
     
 });

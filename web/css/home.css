@@ -5,14 +5,37 @@
     Description:
         Purpose of the stylesheet follows.
 */
-html, body { height: 100%; }
-#header{
+body {
+
+overflow: hidden;
+}
+
+.border-content {
+margin-left: 0;
+margin-right: 0;
+background-color: #fff;
+border-width: 1px;
+border-color: #ddd;
+border-radius: 4px 4px 0 0;
+box-shadow: none;
+}
+
+.panel-heading{
+  padding: 0px;
+}
+#main-header{
     width: 100%;
-    height: 120px;
+    height: 80px;
     position: relative; 
-    background:url("../img/ww_head_bg.png") #3B4449 no-repeat;
-    padding-top: 80px;
+    background:url("../images/bg.png") #3B4449 no-repeat;
+    background-repeat: repeat-x;
     
+}
+#main-header-title{
+    width: 200;
+    height: 40px;
+    padding: 20px;
+    color: #fff;
 }
 #headerHome{
     width: 100%;
@@ -75,11 +98,8 @@ html, body { height: 100%; }
     padding: 1px 1px;
     font-size: 10px;
 }
-#cuerpo{
-    width:100%;
-    border: 0px 0px;
-    padding: 0px;
-    margin: 0px;
+#main-body{
+   
     overflow: hidden;
 }
 

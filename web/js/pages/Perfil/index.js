@@ -135,7 +135,7 @@ OptionButton.prototype={
     },
     Refresh:function(){
         var url=Routing.generate(this.routeList);
-        new jAjax().Load(url,'cuerpo','get','','');
+        new jAjax().Load(url,'main-body','get','','');
     }
 }
 

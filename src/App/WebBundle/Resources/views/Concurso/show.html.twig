@@ -1,0 +1,126 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Concurso</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Nombre</th>
+                <td>{{ entity.nombre }}</td>
+            </tr>
+            <tr>
+                <th>Fechainicio</th>
+                <td>{{ entity.fechaInicio|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Fechafin</th>
+                <td>{{ entity.fechaFin|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Presentacion</th>
+                <td>{{ entity.presentacion }}</td>
+            </tr>
+            <tr>
+                <th>Objetivos</th>
+                <td>{{ entity.objetivos }}</td>
+            </tr>
+            <tr>
+                <th>Requisitos</th>
+                <td>{{ entity.requisitos }}</td>
+            </tr>
+            <tr>
+                <th>Participantes</th>
+                <td>{{ entity.participantes }}</td>
+            </tr>
+            <tr>
+                <th>Beneficios</th>
+                <td>{{ entity.beneficios }}</td>
+            </tr>
+            <tr>
+                <th>Categorias</th>
+                <td>{{ entity.categorias }}</td>
+            </tr>
+            <tr>
+                <th>Premiootorgar</th>
+                <td>{{ entity.premiootorgar }}</td>
+            </tr>
+            <tr>
+                <th>Medallas</th>
+                <td>{{ entity.medallas }}</td>
+            </tr>
+            <tr>
+                <th>Cuota</th>
+                <td>{{ entity.cuota }}</td>
+            </tr>
+            <tr>
+                <th>Informacion</th>
+                <td>{{ entity.informacion }}</td>
+            </tr>
+            <tr>
+                <th>Anio</th>
+                <td>{{ entity.anio }}</td>
+            </tr>
+            <tr>
+                <th>Estadoemp</th>
+                <td>{{ entity.estadoemp }}</td>
+            </tr>
+            <tr>
+                <th>Estadopy</th>
+                <td>{{ entity.estadopy }}</td>
+            </tr>
+            <tr>
+                <th>Estado</th>
+                <td>{{ entity.estado }}</td>
+            </tr>
+            <tr>
+                <th>Terminoacepta</th>
+                <td>{{ entity.terminoacepta }}</td>
+            </tr>
+            <tr>
+                <th>Incpuntaje</th>
+                <td>{{ entity.incpuntaje }}</td>
+            </tr>
+            <tr>
+                <th>Evaluacriterio</th>
+                <td>{{ entity.evaluacriterio }}</td>
+            </tr>
+            <tr>
+                <th>Informeretro</th>
+                <td>{{ entity.informeretro }}</td>
+            </tr>
+            <tr>
+                <th>Calificacion</th>
+                <td>{{ entity.calificacion }}</td>
+            </tr>
+            <tr>
+                <th>Prefijo</th>
+                <td>{{ entity.prefijo }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('concurso') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('concurso_edit', { 'id': entity.id }) }}">
+            Edit
+        </a>
+    </li>
+    <li>
+        <form action="{{ path('concurso_delete', { 'id': entity.id }) }}" method="post">
+            <input type="hidden" name="_method" value="DELETE" />
+            {{ form_widget(delete_form) }}
+            <button type="submit">Delete</button>
+        </form>
+    </li>
+</ul>
+{% endblock %}

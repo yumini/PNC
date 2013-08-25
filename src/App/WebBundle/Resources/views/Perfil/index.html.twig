@@ -1,31 +1,30 @@
 {% block ScriptHead %}
     <script src="{{ asset('js/pages/Perfil/index.js') }}"></script> 
 {% endblock %}
-<div class="container-list">
-     <table class="table table-bordered table-condensed" style="width:100%;">
-         <tr class="form-header">
-             <td>
-                 <div class="row-fluid">
-                     <span class="col-lg-10"><h4><i class="glyphicon glyphicon-list"></i> {{title_list}}</h4></span>
-                  <span class="col-lg-2 right">
-                      
-                   <ul class="list-options">
-                    <li>
-                        <button id="btnNew" class="btn btn-success" > <i class="glyphicon glyphicon-file"></i> Nuevo</button>
-                    </li>
-                </ul>
-                  </span>
-                 </div>
-             </td>
-         </tr>
-       
-     <tr><td class="noborder">            
+<div class="panel panel-default">
+  <div class="panel-heading panel-primary ">
+    <nav class="navbar navbar-default" role="navigation" style="z-index:0">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex2-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">{{ title_list }}</a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex2-collapse">
+          <button id="btnNew" type="button" class="btn btn-success navbar-btn pull-right"> <span class="glyphicon glyphicon-plus"> </span> Nuevo</button>
+        </div>
+    </nav>
+  </div>
+  <div class="panel-body">
     <table class="table table-bordered table-hover table-condensed table-striped" style="width:100%">
         <thead>
             <tr >
                 <th class="grid-header" style="text-align: center;">Nombre Perfil</th>
-		<th class="grid-header" style="text-align: center;">Descripcion</th>
-		<th class="grid-header" style="text-align: center;">Estado</th>
+        <th class="grid-header" style="text-align: center;">Descripcion</th>
+        <th class="grid-header" style="text-align: center;">Estado</th>
                 <th class="grid-header" style="width: 60px;text-align: center;">Opciones</th>
             </tr>
         </thead>
@@ -35,7 +34,7 @@
             <tr>
                 
                 <td>{{ entity.nombre }}</td>
-		<td>{{ entity.descripcion }}</td>
+        <td>{{ entity.descripcion }}</td>
                 <td>{% if entity.estado==1 %}{{ "Activo" }}{% endif %} {% if entity.estado==0 %}{{ "Inactivo" }}{% endif %}</td>
                    
                 
@@ -50,15 +49,15 @@
         {% endfor %}
         </tbody>
     </table>
-                     <div>
-                     {{ knp_pagination_render(pagination,'AppWebBundle:Default:pagination.html.twig') }}
-                     
-                     </div>
-                 </td>
-             </tr>
-            
-             </table>
+    <div>
+        {{ knp_pagination_render(pagination,'AppWebBundle:Default:pagination.html.twig') }}
     </div>
+  </div>
+
+
+
+</div>
+  
 
 {% block windows %}
     <div id="winForm"></div>

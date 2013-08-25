@@ -23,7 +23,7 @@
 
     {% if previous is defined %}
         <li>
-            <a href="javascript:new jAjax().Load('{{ path(route, query|merge({(pageParameterName): previous})) }}','cuerpo','get','','')">&laquo;&nbsp;{{ 'Anterior'|trans }}</a>
+            <a href="javascript:new jAjax().Load('{{ path(route, query|merge({(pageParameterName): previous})) }}','main-body','get','','')">&laquo;&nbsp;{{ 'Anterior'|trans }}</a>
         </li>
     {% else %}
         <li class="disabled">
@@ -33,11 +33,11 @@
 
     {% if startPage > 1 %}
         <li>
-            <a href="javascript:new jAjax().Load('{{ path(route, query|merge({(pageParameterName): 1})) }}','cuerpo','get','','')">1</a>
+            <a href="javascript:new jAjax().Load('{{ path(route, query|merge({(pageParameterName): 1})) }}','main-body','get','','')">1</a>
         </li>
         {% if startPage == 3 %}
             <li>
-                <a href="javascript:new jAjax().Load('{{ path(route, query|merge({(pageParameterName): 2})) }}','cuerpo','get','','')">2</a>
+                <a href="javascript:new jAjax().Load('{{ path(route, query|merge({(pageParameterName): 2})) }}','main-body','get','','')">2</a>
             </li>
         {% elseif startPage != 2 %}
         <li class="disabled">
@@ -50,7 +50,7 @@
         {% if page != current %}
             <li>
                
-                <a href="javascript:new jAjax().Load('{{ path(route, query|merge({(pageParameterName): page})) }}','cuerpo','get','','')">{{ page }}</a>
+                <a href="javascript:new jAjax().Load('{{ path(route, query|merge({(pageParameterName): page})) }}','main-body','get','','')">{{ page }}</a>
             </li>
         {% else %}
             <li class="active">
@@ -68,19 +68,19 @@
                 </li>
             {% else %}
                 <li>
-                    <a href="javascript:new jAjax().Load('{{ path(route, query|merge({(pageParameterName): (pageCount - 1)})) }}','cuerpo','get','','')">{{ pageCount -1 }}</a>
+                    <a href="javascript:new jAjax().Load('{{ path(route, query|merge({(pageParameterName): (pageCount - 1)})) }}','main-body','get','','')">{{ pageCount -1 }}</a>
                     
                 </li>
             {% endif %}
         {% endif %}
         <li>
-            <a href="javascript:new jAjax().Load('{{ path(route, query|merge({(pageParameterName): pageCount})) }}','cuerpo','get','','')">{{ pageCount }}</a>
+            <a href="javascript:new jAjax().Load('{{ path(route, query|merge({(pageParameterName): pageCount})) }}','main-body','get','','')">{{ pageCount }}</a>
         </li>
     {% endif %}
 
     {% if next is defined %}
         <li>
-            <a href="javascript:new jAjax().Load('{{ path(route, query|merge({(pageParameterName): next})) }}','cuerpo','get','','')">{{ 'Siguiente'|trans }}&nbsp;&raquo;</a>
+            <a href="javascript:new jAjax().Load('{{ path(route, query|merge({(pageParameterName): next})) }}','main-body','get','','')">{{ 'Siguiente'|trans }}&nbsp;&raquo;</a>
         </li>
     {% else %}
         <li class="disabled">

@@ -8,7 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use App\WebBundle\Menu\MenuBuilder;
-
+use App\WebBundle\Entity\Perfil;
 /**
 * @Route("/admin")
 */
@@ -23,9 +23,11 @@ class PrivateController extends Controller {
     {
         $em = $this->getDoctrine()->getManager();
         $user = $this->container->get("security.context")->getToken()->getUser();
+  
+        $user = $em->getRepository('AppWebBundle:Usuario')->find($user->getId());
+
         $menuEntity=new MenuBuilder($em,$this->title,$user);
         $menuHTML=$menuEntity->CreateMenu($user->getPerfil()->getId());
-
         return array(
             'title' => $this->title,
             'Menu' => $menuHTML

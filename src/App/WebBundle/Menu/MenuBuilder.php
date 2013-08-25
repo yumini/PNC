@@ -26,24 +26,23 @@ class MenuBuilder {
         //$em = $this->getDoctrine()->getManager();
         $entities =  $this->em->getRepository('AppWebBundle:Menu')->findByParent($perfilid,0);
          
-        $cadena.="<div class=\"navbar  navbar-inverse\">";
-        $cadena.="<div class=\"navbar-inner\">";
-        $cadena.="<div class=\"container-fluid\">";
+        $cadena.="<div class=\"navbar  navbar-inverse navbar-main\">";
+        $cadena.="<div class=\"navbar-header\">";
         
-        $cadena.="<button type=\"button\" class=\"navbar-toggle\" data-toggle=\"collapse\" data-target=\".navbar-inverse-collapse\">";
+        $cadena.="<button type=\"button\" class=\"navbar-toggle\" data-toggle=\"collapse\" data-target=\".navbar-collapse\">";
         $cadena.=" <span class=\"icon-bar\"></span>";
         $cadena.=" <span class=\"icon-bar\"></span>";
         $cadena.=" <span class=\"icon-bar\"></span>";
         $cadena.="</button>";
-        $cadena.="<a href=\"#\"  class=\"navbar-brand\"><small><h6 style='margin:0px 0px;padding:0px 0px'>".$this->title."</h6></small></a>";
-        $cadena.="<div class=\"nav-collapse collapse navbar-inverse-collapse\">";
+        $cadena.="<a href=\"#\"  class=\"navbar-brand\"><small>PNC</small></a>";
+        $cadena.="</div>";
+        $cadena.="<div class=\"navbar-collapse collapse navbar-collapse\">";
         $cadena.="<ul class=\"nav navbar-nav\">";
         foreach ($entities as $entity) {
             $cadena.=$this->CreateSubMenu($perfilid,$entity);
         }
         $cadena.="</ul>";
         $cadena.=$this->GetHTMLConfigMenu();
-        $cadena.="</div>";
         $cadena.="</div>";
         $cadena.="</div>";
         $cadena.="</div>";
@@ -66,15 +65,15 @@ class MenuBuilder {
             $cadena.="</li>";
         }else{
             
-            $cadena.=" <li><a href=\"#\" onclick=\"new jAjax().Load(Routing.generate('".$entity->getUrl()."'),'cuerpo','get','','');return false;\">".$entity->getTitulo()."</a></li>";
+            $cadena.=" <li><a href=\"#\" onclick=\"new jAjax().Load(Routing.generate('".$entity->getUrl()."'),'main-body','get','','');return false;\">".$entity->getTitulo()."</a></li>";
         }
         return $cadena;
     }
     public function GetHTMLConfigMenu(){
         $cadena="
-         <ul class=\"nav navbar-nav pull-right\">
+         <ul class=\"nav navbar-nav navbar-right\">
                       
-                      <li class=\"divider-vertical\"></li>
+                     
                       <li class=\"dropdown\">
                         <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\"><i class=\"glyphicon glyphicon-user icon-white\"> </i> ".$this->user->getUsername()." <b class=\"caret\"></b></a>
                         <ul class=\"dropdown-menu\">
@@ -91,7 +90,7 @@ class MenuBuilder {
     }
     public function GetHTMLConfigMenuDefault(){
         $cadena="
-         <ul class=\"nav navbar-nav pull-right\">
+         <ul class=\"nav navbar-nav navbar-right\">
                       
                       <li class=\"divider-vertical\"></li>
                       <li >
