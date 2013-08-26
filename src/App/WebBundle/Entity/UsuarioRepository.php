@@ -12,4 +12,12 @@ use Doctrine\ORM\EntityRepository;
  */
 class UsuarioRepository extends EntityRepository
 {
+    public function FindAllPaginator($paginator,$page,$limit){
+        $em=$this->getEntityManager();
+        $dql   = "SELECT u FROM AppWebBundle:Usuario u";
+        $query = $em->createQuery($dql);
+        $pagination = $paginator->paginate($query,$page,$limit);
+        return $pagination;
+    
+    }
 }

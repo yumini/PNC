@@ -53,7 +53,13 @@ class Usuario extends BaseUser
      * @ORM\Column(name="nrodocumento", type="string", length=20)
      */
     protected $nroDocumento;
-
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="validaregistro", type="string", length=1)
+     */
+    protected $validaregistro;
+    
     /**
     * @ORM\OneToMany(targetEntity="Nota", mappedBy="usuario")
     */
@@ -307,5 +313,27 @@ class Usuario extends BaseUser
     public function getNroDocumento()
     {
         return $this->nroDocumento;
+    }
+    /**
+     * Set validaregistro
+     *
+     * @param string $validaregistro
+     * @return Usuario
+     */
+    public function setValidaRegistro($validaregistro)
+    {
+        $this->validaregistro = $validaregistro;
+    
+        return $this;
+    }
+
+    /**
+     * Get validaregistro
+     *
+     * @return string 
+     */
+    public function getValidaRegistro()
+    {
+        return $this->validaregistro;
     }
 }
