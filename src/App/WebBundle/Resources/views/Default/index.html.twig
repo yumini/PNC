@@ -24,7 +24,7 @@
            <img data-src="holder.js/100%x180" alt="" src="{{ asset('images/home-02.png')}}">
     </a>
       <div class="caption">
-        <h3>Que es el Premio Nacional de la Calidad?</h3>
+        <h3>Que es el PNC?</h3>
         <p>
         Es el Reconocimiento más importante que se otorga en el Perú a las empresas que han demostrado una gestión de calidad de nivel superior.
         </p>
@@ -42,7 +42,7 @@
         <p>
         Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.
         </p>
-        <p><a href="#" class="btn btn-primary">Registrate</a> </p>
+        <p><a href="{{ path('fos_user_registration_register',{perfil:'postulante'}) }}" class="btn btn-primary">Registrate</a> </p>
       </div>
     </div>
   </div>
@@ -56,7 +56,7 @@
         <p>
         Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.
         </p>
-        <p><a href="#" class="btn btn-primary">Registrate</a> </p>
+        <p><a href="{{ path('fos_user_registration_register',{perfil:'evaluador'}) }}" class="btn btn-primary">Registrate</a> </p>
       </div>
     </div>
   </div>

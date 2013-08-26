@@ -1,11 +1,43 @@
 {% extends "FOSUserBundle::layout.html.twig" %}
 {% trans_default_domain 'FOSUserBundle' %}
 {% block fos_user_content %}
-<form action="{{ path('fos_user_registration_register',{ 'perfil': perfil }) }}" {{ form_enctype(form) }} method="POST" class="fos_user_registration_register">
+<form action="{{ path('fos_user_registration_register',{ 'perfil': perfil }) }}" {{ form_enctype(form) }} method="POST" class="form-register">
+		<div class="form-group">
+			<div class="row">
+		  	<div class="col-lg-6">
+		    	<label class="control-label">Tipo Documento</label>
+	     		{{form_widget(form.tipoDocumento)}}
+		    </div>
+		    <div class="col-lg-6">
+		    	<label class="control-label">{{form_label(form.nroDocumento)}}:</label>
+		    	 {{form_widget(form.nroDocumento)}}
+			</div>
+		</div>
+			<div class="row">
+		  	<div class="col-lg-6">
+		    	<label class="control-label">{{form_label(form.nombres)}}</label>
+	     		{{form_widget(form.nombres)}}
+		    </div>
+		    <div class="col-lg-6">
+		    	<label class="control-label">{{form_label(form.apellidos)}}:</label>
+		    	 {{form_widget(form.apellidos)}}
+			</div>
+			</div>
+
+			<div class="row">
+		  	<div class="col-lg-12">
+		    	<label class="control-label">{{form_label(form.email)}}</label>
+	     		{{form_widget(form.email)}}
+		    </div>
+			</div>
+			{{form_row(form.username)}}
+			{{form_row(form.plainPassword)}}
+			{{form_row(form.perfil)}}
+	  	</div>
 	
-    {{ form_widget(form) }}
+    {{form_widget(form._token)}}
     <div>
-        <input type="submit" value="{{ 'registration.submit'|trans }}" />
+        <input type="submit" value="{{ 'registration.submit'|trans }}" class="btn btn-lg btn-primary btn-block"/>
     </div>
 </form>
 <script type="text/javascript">
@@ -13,3 +45,5 @@
 	$("#fos_user_registration_form_perfil").parent().hide();
 </script>
 {% endblock fos_user_content %}
+
+

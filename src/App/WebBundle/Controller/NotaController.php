@@ -21,7 +21,7 @@ class NotaController extends Controller
     /**
      * @Route("/",name="_admin_nota_new", options={"expose"=true})
      * @Method("PUT")
-     * @Template()
+     * @Template("AppWebBundle:Default:result.json.twig")
      */
     public function AddNotaAction(Request $request)
     {
@@ -39,7 +39,7 @@ class NotaController extends Controller
         $em->persist($entity);
         $em->flush();
         return array(
-            'respuesta' => "{success:true}"
+            'result' => "{success:true}"
         );       
     }
     /**
@@ -211,27 +211,25 @@ class NotaController extends Controller
     /**
      * Deletes a Nota entity.
      *
-     * @Route("/{id}", name="nota_delete")
+     * @Route("/{id}/delete", name="_admin_nota_delete",options={"expose"=true})
      * @Method("DELETE")
+     * @Template("AppWebBundle:Default:result.json.twig")
      */
     public function deleteAction(Request $request, $id)
     {
-        $form = $this->createDeleteForm($id);
-        $form->bind($request);
-
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+            $msg="";
+            $result=true;
             $entity = $em->getRepository('AppWebBundle:Nota')->find($id);
 
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Nota entity.');
+            if ($entity) {
+                $em->remove($entity);
+                $em->flush();
             }
 
-            $em->remove($entity);
-            $em->flush();
-        }
-
-        return $this->redirect($this->generateUrl('nota'));
+           
+        return array(
+            'result' => "{success:'$result',msg:'$msg'}"
+        );  
     }
 
     /**

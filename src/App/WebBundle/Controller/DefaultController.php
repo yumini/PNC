@@ -13,7 +13,7 @@ use App\WebBundle\Menu\MenuBuilder;
 */
 class DefaultController extends Controller
 {
-    private $title="Premio Nacional de la Calidad";
+    private $title="Bienvenido";
     /**
      * @Route("/", name="_index")
      * @Template()

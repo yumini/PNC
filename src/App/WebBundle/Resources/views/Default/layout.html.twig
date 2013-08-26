@@ -10,6 +10,7 @@
 {% block css %}
     
     <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet">
+     <link href="{{ asset('css/bootstrap-custom.css') }}" rel="stylesheet">
     <link href="{{ asset('css/bootstrap-glyphicons.css') }}" rel="stylesheet">
     <link href="{{ asset('css/home.css') }}" rel="stylesheet">
   
@@ -33,19 +34,37 @@
 </head>
 
 <body>
+ <div style="background-color:#3B4449">    
+<nav class="navbar navbar-main" role="navigation">
+  <!-- Brand and toggle get grouped for better mobile display -->
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="{{ path('_index') }}">Premio Nacional a la Calidad</a>
+  </div>
+
+  
+  <div class="collapse navbar-collapse navbar-ex1-collapse">
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="{{ path('fos_user_security_login') }}"><i class="glyphicon glyphicon-lock icon-white"> </i> Iniciar Sesion </a> 
+          </li>
+    </ul>
+  </div>
+  </nav>  
+
+    <div id="main-header">
+    <div id="main-header-title" >
+       <h2> {{title}}</h2>
+    </div> 
+    </div>
+  </div>
+  <div class="container" style="height: 100%;border-color: #ffffff; padding: 0px 0px; border-style:none" >   
+   
      
-     <div class="container-fluid" style="height: 100%;border-color: #ffffff; padding: 0px 0px; border-style:none" >   
-    <div class="navbar navbar-fixed-top navbar-inverse"><div class="navbar-inner"><div class="container-fluid"><button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-inverse-collapse"> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span></button><a href="#"  class="navbar-brand"><small><h6 style='margin:0px 0px;padding:0px 0px'>Premio Nacional de la Calidad</h6></small></a><div class="nav-collapse collapse navbar-inverse-collapse">
-         <ul class="nav navbar-nav pull-right">
-                      
-                      <li class="divider-vertical"></li>
-                      <li >
-                      <a href="{{ path('fos_user_security_login') }}">
-                        <i class="glyphicon glyphicon-lock icon-white"> </i> Iniciar Sesion 
-                       </a> 
-                      </li>
-                    </ul></div></div></div></div>
-     <div id="headerHome"></div>
 {% block body %}
 
 {% endblock %}

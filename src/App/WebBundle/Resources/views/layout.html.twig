@@ -1,27 +1,7 @@
-{% extends 'AppWebBundle:Default:layoutPage.html.twig' %}
+{% extends 'AppWebBundle:Default:layout.html.twig' %}
 {% block ScriptHead %}
 <script src="{{ asset('js/pages/Default/login.js') }}"></script> 
 {% endblock %}
 {% block body %}
-
-<div class="row" >
-  <div class="col-lg-4">
-   
-  </div>   
-  <div class="col-lg-4">
-      <p>
-      <div class="panel">
-          <div class="panel-heading">Inicio de Sesion</div>
-          
-       {{ block('fos_user_content') }}
-              
-      </div>
-      </p>
-  </div>
-        
-        <div class="col-lg-4">
-   
-  </div>
-        </div>
-
+{{ block('fos_user_content') }}
 {% endblock %}

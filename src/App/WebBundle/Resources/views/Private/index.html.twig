@@ -8,20 +8,25 @@
 
 	<div class="jumbotron">
         <h1>Bienvenido</h1>
-        <p>Bienvenido usuario completa tu información</p>
-        <p>
-          <a class="btn btn-lg btn-primary" href="../../components/#navbar">completar mis datos</a>
-        </p>
+        <p>Espera un momento porfavor se esta cargando tu información</p>
+        
       </div>
 </div>
 
 {% endblock %}
 {% block ScriptFooter %}
 <script type="text/javascript">
-    //var ajax=new JAjax();
-    //alert(Routing.generate('usuario')); 
-    
-    //var script="{{ asset('js/pages/Usuario/index.js') }}"
-    //new jAjax().Load(Routing.generate('_admin_inicio'),"cuerpo","get","","");
+    var ajax=new jAjax();
+    var url='';
+    {% if user.perfil.id == 1 %}
+        url=Routing.generate('_admin_inicio');
+    {% endif %}
+    {% if user.perfil.id == 2 %}
+        url=Routing.generate('_admin_inicio');
+    {% endif %}
+    {% if user.perfil.id == 3 %}
+        url=Routing.generate('_admin_inicio_postulante');
+    {% endif %}
+    new jAjax().Load(url,"main-body","get","","");
 </script>
 {% endblock %}

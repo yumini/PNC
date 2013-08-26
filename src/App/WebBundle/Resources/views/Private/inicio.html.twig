@@ -46,48 +46,30 @@
         </div>
   </div>
   <div class="col-lg-4"  style="padding: 5px 35px;margin: 0px 0px;">
-    <div class="accordion" id="accordion2">
-  <div class="accordion-group">
-    <div class="accordion-heading">
-      <a class="accordion-toggle panel-gray-header" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
-        <span class="glyphicon glyphicon-list"></span> Mis Notas
-      </a>
-    </div>
-    <div id="collapseOne" class="accordion-body collapse in">
-      <div class="accordion-inner">
-          <div id="container-notas" style="height:300px;">
+<ul class="nav nav-tabs" style="font-size:11px;">
+  <li class="active">
+    <a href="#ini-tab-1" data-toggle="tab">Mis Notas</a>
+  </li>
+  <li><a href="#ini-tab-2" data-toggle="tab">Calendario de Concursos</a></li>
+ 
+</ul>
+<div class="tab-content">
+  <div class="tab-pane active" id="ini-tab-1">
+     <div id="container-notas" style="height:300px;">
             <!--contenedor de notas--> 
           </div>
           <div id="container-nota-new">
           
           </div>
-      </div>
-    </div>
   </div>
-  <div class="accordion-group">
-    <div class="accordion-heading">
-      <a class="accordion-toggle panel-gray-header" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
-        Calendario de Concursos
-      </a>
-    </div>
-    <div id="collapseTwo" class="accordion-body collapse">
-      <div class="accordion-inner">
-       
-            
-                
-            
-
-              
-        
-      </div>
-    </div>
+  <div class="tab-pane" id="ini-tab-2">
   </div>
-  
 </div>
-        
+
+         
        
   </div>
-</div
+</div>
 
 
 <!--plantilla conversaciones-->
@@ -135,10 +117,13 @@
 </textarea>                        
             
 <!--plantilla nota-->
-<textarea id="template-notas-item" style="display:none">
-    <a href="#">
-    <input type="checkbox" name="" value=""/> <%= entity.descripcion %>
+<textarea id="template-notas-item" style="display:none;font-size:11px;">
+   <a href="#" class="nota-delete" data-id="<%= entity.id %>">
+    <i class="glyphicon glyphicon-remove"> </i>
    </a>
+   
+    <input type="checkbox" name="" value=""/> <%= entity.descripcion %>
+
 </textarea> 
 
 <textarea id="template-notas-item-new" style="display:none">

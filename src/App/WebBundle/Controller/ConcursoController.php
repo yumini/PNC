@@ -124,8 +124,7 @@ class ConcursoController extends Controller
         }
 
         $editForm = $this->createForm(new ConcursoType(), $entity);
-        $deleteForm = $this->createDeleteForm($id);
-
+        
         return array(
             'entity'      => $entity,
             'form'   => $editForm->createView()

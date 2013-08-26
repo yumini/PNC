@@ -30,7 +30,8 @@ class PrivateController extends Controller {
         $menuHTML=$menuEntity->CreateMenu($user->getPerfil()->getId());
         return array(
             'title' => $this->title,
-            'Menu' => $menuHTML
+            'Menu' => $menuHTML,
+            'user'=>$user
             );
     }
     /**
@@ -39,9 +40,10 @@ class PrivateController extends Controller {
      */
     public function inicioAction()
     {
-      
+        $user = $this->container->get("security.context")->getToken()->getUser();
         return array(
-            'title' => $this->title
+            'title' => $this->title,
+            'user'=>$user
             );
     }
      /**
@@ -51,8 +53,10 @@ class PrivateController extends Controller {
     public function inicioPostulanteAction()
     {
       
+        $user = $this->container->get("security.context")->getToken()->getUser();
         return array(
-            'title' => $this->title
+            'title' => $this->title,
+            'user' => $user
             );
     }
 

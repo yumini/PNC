@@ -30,8 +30,8 @@ class RegistrationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('perfil','entity', array('class'=>'App\WebBundle\Entity\Perfil', 'property'=>'nombre', ))
-            ->add('tipoDocumento','entity', array('class'=>'App\WebBundle\Entity\TipoDocumento', 'property'=>'nombre', ))
+            ->add('perfil','entity', array('class'=>'App\WebBundle\Entity\Perfil', 'property'=>'nombre' ))
+            ->add('tipoDocumento','entity', array('class'=>'App\WebBundle\Entity\TipoDocumento', 'property'=>'nombre', 'attr' => array('class'=>'form-control input-small')))
             ->add('nroDocumento')
             ->add('nombres')
             ->add('apellidos')

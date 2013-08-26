@@ -72,7 +72,8 @@ class RegistrationController extends ContainerAware
 
         return $this->container->get('templating')->renderResponse('FOSUserBundle:Registration:register'.$perfil.'.html.'.$this->getEngine(), array(
             'form' => $form->createView(),
-            'perfil'=>$perfil
+            'perfil'=>$perfil,
+            'title'=>'Registro de Usuarios: '.$perfil
         ));
     }
 
@@ -141,6 +142,7 @@ class RegistrationController extends ContainerAware
 
         return $this->container->get('templating')->renderResponse('FOSUserBundle:Registration:confirmed.html.'.$this->getEngine(), array(
             'user' => $user,
+             'title'=>'Confirmación de Registro de Usuario'
         ));
     }
 

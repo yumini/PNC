@@ -2,7 +2,7 @@
 var ViewsNotas={
 	NotasContainer: Backbone.View.extend({
 		events: {
- 			"click .list-group-item": "LoadItemDetaills"
+ 			"click .nota-delete": "Delete"
         },
 		initialize: function(){
 			_.bindAll(this);
@@ -30,11 +30,20 @@ var ViewsNotas={
 			this.collection.fetch({reset:true});
 			console.log('se cargo la collecion notas de BD');
 		},
-		LoadItemDetaills:function(evt){
+		Delete:function(evt){
 			var id=$(evt.currentTarget).attr('data-id');
 			var model = this.collection.get(id);
 			var indice=this.collection.indexOf(model);
-			console.log("el id es:"+id);
+			var parent=this;
+			var url=Routing.generate('_admin_nota_delete',{id:id})
+			$.ajax({
+				type:'DELETE',
+	            url:url,
+	            dataType:"html",
+	            success:function (data) {
+	                parent.viewContainer.render();
+	            }
+        	});
 		}
 
 	}),
@@ -57,7 +66,8 @@ var ViewsNotas={
 		className: 'input-group',
 		events: {
                     "click .btn": "AddNota",
-                    'keyup #txtNota': 'KeyAddNota'
+                    'keyup #txtNota': 'KeyAddNota',
+                    'click .nota-delete':'Delete',
         },
 		initialize: function() {
 			this.template = _.template($('#template-notas-item-new').val());
@@ -92,14 +102,30 @@ var ViewsNotas={
 			this.viewContainer=v;
 		},
 		Save:function(nota){
+			console.log("registrando nota en BD")
+			var parent=this;
 			var url=Routing.generate('_admin_nota_new')
 			$.ajax({
 				type:'PUT',
 				data:nota.toJSON(),
 	            url:url,
-	            dataType:"json",
+	            dataType:"html",
 	            success:function (data) {
-	                this.viewContainer.render();
+	                parent.viewContainer.render();
+	            }
+        	});
+		},
+		Delete:function(evt){
+			console.log("eliminando nota en BD");
+			var id=$(evt.currentTarget).attr('data-id');
+			var parent=this;
+			var url=Routing.generate('_admin_nota_delete',{id:id})
+			$.ajax({
+				type:'DELETE',
+	            url:url,
+	            dataType:"html",
+	            success:function (data) {
+	                parent.viewContainer.render();
 	            }
         	});
 		},
