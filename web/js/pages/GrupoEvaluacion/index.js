@@ -93,28 +93,26 @@ var Views={
 
 
 
-//OPCIONES PARA EVALUADOR Y POSTULANTE
-var OptionButton={Evaluador: {}, Postulante:{}};
+//OPCIONES PARA Botones
+var myWindow=null;
 
-OptionButton.Evaluador=function(){
-	this.routeNew='gevaluacion_evaluador_new';
-    this.routeList='_admin_perfil';
-    this.routeSave='perfil_create';
+
+var OptionButton=function(){
+    this.routeNewGrupo='_admin_grupo_new';
+    this.routeNewEvaluador='_admin_evaluadorgrupo_new';
+    this.routeSavePostulante='_admin_postulantegrupo_new';
+    
 }
-
-OptionButton.Evaluador.prototype={
-	New:function(){
-		console.log("nuevo evaluador");
-		//el new debe tener el codigo que carga la ventana popUp
-		var parent=this;
-		//var url=Routing.generate(this.routeNew);
-		this.Window=new BootstrapWindow({id:"winForm",title:"Nuevo Evaluador"});
-        //this.Window.Load(url,"");
+OptionButton.prototype={
+    New:function(){
+        this.Window=new BootstrapWindow({id:"winForm",title:"Nuevo Grupo de Evaluación"});
+        var url=Routing.generate(this.routeNewGrupo);
+        this.Window.Load(url,"");
         this.Window.Show();
-        //agregando los botones
-        this.Window.AddButton('btn-perfil-cancel',{
+         var parent=this;
+        this.Window.AddButton('btn-grupo-cancel',{
             label:'Cancelar',
-            class:'btn-default',
+            'class':'btn-default',
             fn:function(){
                 parent.Window.Hide();
             }
@@ -123,29 +121,24 @@ OptionButton.Evaluador.prototype={
        
         this.Window.AddButton('btn-perfil-save',{
             label:'Grabar',
-            class:'btn-success',
+            'class':'btn-success',
             fn:function(){
                 parent.Save();               
                 parent.Window.Hide();
             }
         });
-	},
+    },
 	Save:function(){
 		//aqui va el codigo que envia los parametros a la accion que graba
 	},
 	List:function(){
 		//esta funcion realizara un refresh del listado de evaluadores
-	}
+}
 }
 
-
-
 $(document).ready(function() {
-	
-	var vs = new Views.GrupoEvaluacionContainer();
-	vs.setElement($('#container-grupoevaluacion')).render();
-	$("#btnNewEvaluador").click(function(event) {
-		new OptionButton.Evaluador().New();
-	});
-	
+  $("#btnNewGrupos").click(function(){
+      new OptionButton().New();   
+  });
+    
 });

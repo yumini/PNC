@@ -50,6 +50,7 @@ class GrupoEvaluacionController extends Controller
         //$entities=$entity->getPostulantes();
         return array(
             'entities' => $entities,
+            
         );
     }
     /**
@@ -117,7 +118,7 @@ class GrupoEvaluacionController extends Controller
     /**
      * Displays a form to create a new GrupoEvaluacion entity.
      *
-     * @Route("/new", name="grupoevaluacion_new")
+     * @Route("/new", name="_admin_grupo_new", options={"expose"=true})
      * @Method("GET")
      * @Template()
      */
