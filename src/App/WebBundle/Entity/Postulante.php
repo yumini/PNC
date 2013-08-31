@@ -87,7 +87,12 @@ class Postulante
      * @ORM\JoinTable(name="postulantegrupo")
      */
     private $grupos;
-
+    /**
+    * @ORM\ManyToOne(targetEntity="PostulanteContacto", inversedBy="postulantes")
+    * @ORM\JoinColumn(name="postulantes_id", referencedColumnName="id")
+    */
+    protected $postulantecontacto;
+    
     public function __construct() {
         $this->grupos = new \Doctrine\Common\Collections\ArrayCollection();
     }
@@ -348,5 +353,28 @@ class Postulante
     public function getUsuario()
     {
         return $this->usuario;
+    }
+
+    /**
+     * Set postulantecontacto
+     *
+     * @param \App\WebBundle\Entity\PostulanteContacto $postulantecontacto
+     * @return Postulante
+     */
+    public function setPostulantecontacto(\App\WebBundle\Entity\PostulanteContacto $postulantecontacto = null)
+    {
+        $this->postulantecontacto = $postulantecontacto;
+    
+        return $this;
+    }
+
+    /**
+     * Get postulantecontacto
+     *
+     * @return \App\WebBundle\Entity\PostulanteContacto 
+     */
+    public function getPostulantecontacto()
+    {
+        return $this->postulantecontacto;
     }
 }
