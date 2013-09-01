@@ -57,9 +57,14 @@ class Catalogo
     private $estado;
 
     /**
-    * @ORM\OneToMany(targetEntity="Catalogo", mappedBy="postulante")
+    * @ORM\OneToMany(targetEntity="Catalogo", mappedBy="postulantecontactotipo")
     */
-    protected $postulantes;
+    protected $postulantecontactotipos;
+    
+     public function __construct()
+    {
+        $this->postulantecontactotipos = new \Doctrine\Common\Collections\ArrayCollection();
+    }
     
     /**
      * Get id
@@ -185,44 +190,38 @@ class Catalogo
     {
         return $this->estado;
     }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->postulantes = new \Doctrine\Common\Collections\ArrayCollection();
-    }
     
+
     /**
-     * Add postulantes
+     * Add postulantecontactotipos
      *
-     * @param \App\WebBundle\Entity\Catalogo $postulantes
+     * @param \App\WebBundle\Entity\Catalogo $postulantecontactotipos
      * @return Catalogo
      */
-    public function addPostulante(\App\WebBundle\Entity\Catalogo $postulantes)
+    public function addPostulantecontactotipo(\App\WebBundle\Entity\Catalogo $postulantecontactotipos)
     {
-        $this->postulantes[] = $postulantes;
+        $this->postulantecontactotipos[] = $postulantecontactotipos;
     
         return $this;
     }
 
     /**
-     * Remove postulantes
+     * Remove postulantecontactotipos
      *
-     * @param \App\WebBundle\Entity\Catalogo $postulantes
+     * @param \App\WebBundle\Entity\Catalogo $postulantecontactotipos
      */
-    public function removePostulante(\App\WebBundle\Entity\Catalogo $postulantes)
+    public function removePostulantecontactotipo(\App\WebBundle\Entity\Catalogo $postulantecontactotipos)
     {
-        $this->postulantes->removeElement($postulantes);
+        $this->postulantecontactotipos->removeElement($postulantecontactotipos);
     }
 
     /**
-     * Get postulantes
+     * Get postulantecontactotipos
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getPostulantes()
+    public function getPostulantecontactotipos()
     {
-        return $this->postulantes;
+        return $this->postulantecontactotipos;
     }
 }

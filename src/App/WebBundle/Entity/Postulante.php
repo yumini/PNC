@@ -87,14 +87,15 @@ class Postulante
      * @ORM\JoinTable(name="postulantegrupo")
      */
     private $grupos;
+   
     /**
-    * @ORM\ManyToOne(targetEntity="PostulanteContacto", inversedBy="postulantes")
-    * @ORM\JoinColumn(name="postulantes_id", referencedColumnName="id")
+    * @ORM\OneToMany(targetEntity="Postulante", mappedBy="postulantecontacto")
     */
-    protected $postulantecontacto;
+    protected $postulantecontactos;
     
     public function __construct() {
         $this->grupos = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->postulantecontactos = new \Doctrine\Common\Collections\ArrayCollection();
     }
     /**
      * Add gruposEvaluacion
@@ -356,25 +357,35 @@ class Postulante
     }
 
     /**
-     * Set postulantecontacto
+     * Add postulantecontactos
      *
-     * @param \App\WebBundle\Entity\PostulanteContacto $postulantecontacto
+     * @param \App\WebBundle\Entity\Postulante $postulantecontactos
      * @return Postulante
      */
-    public function setPostulantecontacto(\App\WebBundle\Entity\PostulanteContacto $postulantecontacto = null)
+    public function addPostulantecontacto(\App\WebBundle\Entity\Postulante $postulantecontactos)
     {
-        $this->postulantecontacto = $postulantecontacto;
+        $this->postulantecontactos[] = $postulantecontactos;
     
         return $this;
     }
 
     /**
-     * Get postulantecontacto
+     * Remove postulantecontactos
      *
-     * @return \App\WebBundle\Entity\PostulanteContacto 
+     * @param \App\WebBundle\Entity\Postulante $postulantecontactos
      */
-    public function getPostulantecontacto()
+    public function removePostulantecontacto(\App\WebBundle\Entity\Postulante $postulantecontactos)
     {
-        return $this->postulantecontacto;
+        $this->postulantecontactos->removeElement($postulantecontactos);
+    }
+
+    /**
+     * Get postulantecontactos
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPostulantecontactos()
+    {
+        return $this->postulantecontactos;
     }
 }
