@@ -20,7 +20,8 @@
         <thead>
             <tr >
                 <th class="grid-header" style="text-align: center;">Nombre</th>
-                <th class="grid-header" style="text-align: center;"Nombre Usuario</th>
+                <th class="grid-header" style="text-align: center;">Nombre Usuario</th>
+                <th class="grid-header" style="text-align: center;">Perfil</th>
                 <th class="grid-header" style="text-align: center;">Estado</th>
                 <th class="grid-header" style="text-align: center;">Registro valido</th>
                 <th class="grid-header" style="width: 60px;text-align: center;">Opciones</th>
@@ -33,6 +34,7 @@
                 
                 <td>{{entity.nombres ~ " " ~ entity.apellidos}}</td>
                 <td>{{ entity.usernameCanonical }}</td>
+                <td>{{ entity.perfil.nombre }}</td>
                 <td>{% if entity.enabled==1 %}{{ "Activo" }}{% endif %} {% if entity.enabled==0 %}{{ "Inactivo" }}{% endif %}</td>
                 <td>{% if entity.validaregistro==1 %}{{ "Registro Valido" }}{% endif %} {% if entity.validaregistro==0 %}{{ "Registro no Valido" }}{% endif %}</td>
                 <td style="text-align: center;font-size: 12px;">

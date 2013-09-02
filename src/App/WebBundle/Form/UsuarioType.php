@@ -31,7 +31,8 @@ class UsuarioType extends AbstractType
             ->add('apellidos')
             ->add('nroDocumento')
             ->add('validaregistro')
-            ->add('perfil')
+            //->add('perfil')
+            ->add('perfil','entity', array('class'=>'App\WebBundle\Entity\Perfil', 'property'=>'nombre', ))
             ->add('tipoDocumento')
             ->add('conversaciones')
         ;

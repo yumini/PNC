@@ -48,7 +48,7 @@ class Perfil
     private $menus;
 
      /**
-    * @ORM\OneToMany(targetEntity="Usuario", mappedBy="usuario")
+    * @ORM\OneToMany(targetEntity="Usuario", mappedBy="perfil")
     */
     protected $usuarios;
 
@@ -195,7 +195,7 @@ class Perfil
      * Add usuarios
      *
      * @param \App\WebBundle\Entity\Usuario $usuarios
-     * @return Perfil
+     * @return usuarios
      */
     public function addUsuario(\App\WebBundle\Entity\Usuario $usuarios)
     {

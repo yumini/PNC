@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * GrupoEvaluacion
  *
- * @ORM\Table()
+ * @ORM\Table(name="grupoevaluacion")
  * @ORM\Entity(repositoryClass="App\WebBundle\Entity\GrupoEvaluacionRepository")
  */
 class GrupoEvaluacion
