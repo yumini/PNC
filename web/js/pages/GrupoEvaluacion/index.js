@@ -105,8 +105,11 @@ var OptionButton=function(){
 }
 OptionButton.prototype={
     New:function(){
+    	 console.log(this.routeNewGrupo);
         this.Window=new BootstrapWindow({id:"winForm",title:"Nuevo Grupo de Evaluación"});
         var url=Routing.generate(this.routeNewGrupo);
+       
+        console.log(url)
         this.Window.Load(url,"");
         this.Window.Show();
          var parent=this;
@@ -137,6 +140,8 @@ OptionButton.prototype={
 }
 
 $(document).ready(function() {
+	var vs = new Views.GrupoEvaluacionContainer();
+vs.setElement($('#container-grupoevaluacion')).render();
   $("#btnNewGrupos").click(function(){
       new OptionButton().New();   
   });
