@@ -166,7 +166,7 @@ class UsuarioController extends Controller
                 $result=false;
             }
             return array(
-            'result' => "{success:'$result',message:'$msg'}"
+            'result' => "{\"success\":\"$result\",\"message\":\"$msg\"}"
 
             );
     }

@@ -124,3 +124,14 @@ margin-bottom: 0px;
 .navbar-main .navbar-link:hover {
   color: #ffffff;
 }
+
+
+.alert-info  a{
+  color: #3a87ad;
+  background-color: #d9edf7;
+  border-color: #bce8f1;
+}
+
+.alert-info a:hover {
+  color: #2d6987;
+}

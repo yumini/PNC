@@ -147,7 +147,7 @@ box-shadow: none;
     text-align: center;
 }
 
-
+/*
 a{
 	color: #000;
 	text-decoration: none;    
@@ -156,7 +156,7 @@ a:hover{
 	
 	color: #F90;
 	text-decoration: none;
-}
+}*/
 .panel-green {
   border-color: #d6e9c6;
 }

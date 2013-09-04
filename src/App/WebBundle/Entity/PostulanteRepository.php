@@ -25,4 +25,14 @@ class PostulanteRepository extends EntityRepository
                 return null;
         }
     }
+    public function FindByUser($idusuario){
+        $em=$this->getEntityManager();
+        $dql= "SELECT p FROM AppWebBundle:Postulante p WHERE p.usuario_id=:id";
+        $query=$em->createQuery($dql)->setParameter('id', $idusuario);
+        try {
+                return $query->getSingleResult();
+        } catch (\Doctrine\ORM\NoResultException $e) {
+                return null;
+        }
+    }
 }

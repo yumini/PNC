@@ -14,8 +14,10 @@ OptionButton.prototype={
                     type:'PUT',
                     url:url,
                     dataType:"html",
-                    success:function(datos){
-                            alert(datos);
+                    success:function(request){
+                            var obj = jQuery.parseJSON(request);
+                            console.log(obj)
+                            alert(obj.message)
                             new OptionButton().Refresh();
                     },
                     error:function(objeto, quepaso, otroobj){

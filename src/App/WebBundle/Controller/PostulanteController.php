@@ -13,7 +13,7 @@ use App\WebBundle\Form\PostulanteType;
 /**
  * Postulante controller.
  *
- * @Route("/postulante")
+ * @Route("/admin/postulante")
  */
 class PostulanteController extends Controller
 {
@@ -80,6 +80,27 @@ class PostulanteController extends Controller
         );
     }
 
+    /**
+     * Finds and displays a Postulante entity.
+     *
+     * @Route("/{id}/perfil", name="_admin_postulante_perfil", options={"expose"=true})
+     * @Method("GET")
+     * @Template()
+     */
+    public function perfilAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $user = $this->container->get("security.context")->getToken()->getUser();
+        //$entity = $em->getRepository('AppWebBundle:Postulante')->findByUser($user->getId());
+        $entity=new Postulante();
+        $entity->setRazonsocial("Coca Cola");
+        $entity->setRuc("45784589125");
+        $entity->setDireccion(" Av. Angamos 168....");
+        $entity->setTelefono("073-4545455");
+        return array(
+            'entity'      => $entity
+        );
+    }
     /**
      * Finds and displays a Postulante entity.
      *
