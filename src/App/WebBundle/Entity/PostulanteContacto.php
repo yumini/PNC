@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * PostulanteContacto
  *
- * @ORM\Table(name="psotulantecontacto")
+ * @ORM\Table(name="postulantecontacto")
  * @ORM\Entity(repositoryClass="App\WebBundle\Entity\PostulanteContactoRepository")
  */
 class PostulanteContacto
@@ -57,23 +57,18 @@ class PostulanteContacto
     private $email;
 
      /**
-    * @ORM\ManyToOne(targetEntity="Catalago", inversedBy="postulantecontactotipos")
-    * @ORM\JoinColumn(name="catalogo_id", referencedColumnName="id")
-    */
-    private $postulantecontactotipo;
-    
-     /**
-    * @ORM\ManyToOne(targetEntity="Postulante", inversedBy="postulantecontactos")
-    * @ORM\JoinColumn(name="postulante_id", referencedColumnName="id")
+    * @ORM\ManyToOne(targetEntity="Catalogo", inversedBy="postulantecontactos")
+    * @ORM\JoinColumn(name="catalogo_tc_id", referencedColumnName="id")
     */
     private $postulantecontacto;
     
-    public function __construct() {
-       $this->postulantecontactotipo = new \Doctrine\Common\Collections\ArrayCollection();
-       $this->postulantecontacto = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-     
-    /**
+     /**
+    * @ORM\ManyToOne(targetEntity="Postulante", inversedBy="postulantes")
+    * @ORM\JoinColumn(name="postulante_id", referencedColumnName="id")
+    */
+    private $postulante;
+    
+      /**
      * Get id
      *
      * @return integer 
@@ -197,37 +192,14 @@ class PostulanteContacto
     {
         return $this->email;
     }
-
-    /**
-     * Set postulantecontactotipo
-     *
-     * @param \App\WebBundle\Entity\Catalago $postulantecontactotipo
-     * @return PostulanteContacto
-     */
-    public function setPostulantecontactotipo(\App\WebBundle\Entity\Catalago $postulantecontactotipo = null)
-    {
-        $this->postulantecontactotipo = $postulantecontactotipo;
-    
-        return $this;
-    }
-
-    /**
-     * Get postulantecontactotipo
-     *
-     * @return \App\WebBundle\Entity\Catalago 
-     */
-    public function getPostulantecontactotipo()
-    {
-        return $this->postulantecontactotipo;
-    }
-
+   
     /**
      * Set postulantecontacto
      *
-     * @param \App\WebBundle\Entity\Postulante $postulantecontacto
+     * @param \App\WebBundle\Entity\Catalogo $postulantecontacto
      * @return PostulanteContacto
      */
-    public function setPostulantecontacto(\App\WebBundle\Entity\Postulante $postulantecontacto = null)
+    public function setPostulantecontacto(\App\WebBundle\Entity\Catalogo $postulantecontacto = null)
     {
         $this->postulantecontacto = $postulantecontacto;
     
@@ -237,10 +209,33 @@ class PostulanteContacto
     /**
      * Get postulantecontacto
      *
-     * @return \App\WebBundle\Entity\Postulante 
+     * @return \App\WebBundle\Entity\Catalogo 
      */
     public function getPostulantecontacto()
     {
         return $this->postulantecontacto;
+    }
+
+    /**
+     * Set postulante
+     *
+     * @param \App\WebBundle\Entity\Postulante $postulante
+     * @return PostulanteContacto
+     */
+    public function setPostulante(\App\WebBundle\Entity\Postulante $postulante = null)
+    {
+        $this->postulante = $postulante;
+    
+        return $this;
+    }
+
+    /**
+     * Get postulante
+     *
+     * @return \App\WebBundle\Entity\Postulante 
+     */
+    public function getPostulante()
+    {
+        return $this->postulante;
     }
 }
