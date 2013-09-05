@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use App\WebBundle\Entity\Usuario;
+use App\WebBundle\Entity\Postulante;
 use App\WebBundle\Form\UsuarioType;
 
 /**
@@ -150,13 +151,31 @@ class UsuarioController extends Controller
             $em = $this->getDoctrine()->getManager();
             
             $entity = $em->getRepository('AppWebBundle:Usuario')->find($id);
+            
             if($entity)
             {
                 if($entity->getValidaRegistro()==("0"))
                 {
+                    //activa el registro de usurio
                     $entity->setValidaRegistro("1");
                     $em->persist($entity);
                     $em->flush();
+                    //preguntar si es evaluador o postulante
+                    if($entity->getPerfil()->getNombre()=="Postulante"){
+                        $entitypostulante=new Postulante();
+                        $entitypostulante->setRazonsocial($entity->getNombres());
+                        $entitypostulante->SetRuc($entity->getNroDocumento());
+                        $em->persist($entitypostulante);
+                        $em->flush();
+                    }
+                    if($entity->getPerfil()->getNombre()=="Evaluador"){
+                        $entityevaluador=new Evaluador();
+                        $entityevaluador->setNombres($entity->getNombres());
+                        $entityevaluador->setApellidos($entity->getApellidos());
+                        $entityevaluador->SetNumDoc($entity->getNroDocumento());
+                        $em->persist($entityevaluador);
+                        $em->flush();
+                    }
                 }else{
                     $msg="Usuario se encuentra con el registro activo"; 
                     $result=false;

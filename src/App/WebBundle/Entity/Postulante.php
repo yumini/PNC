@@ -87,9 +87,15 @@ class Postulante
      * @ORM\JoinTable(name="postulantegrupo")
      */
     private $grupos;
-
+   
+    /**
+    * @ORM\OneToMany(targetEntity="Postulante", mappedBy="postulantecontacto")
+    */
+    protected $postulantecontactos;
+    
     public function __construct() {
         $this->grupos = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->postulantecontactos = new \Doctrine\Common\Collections\ArrayCollection();
     }
     /**
      * Add gruposEvaluacion
@@ -348,5 +354,38 @@ class Postulante
     public function getUsuario()
     {
         return $this->usuario;
+    }
+
+    /**
+     * Add postulantecontactos
+     *
+     * @param \App\WebBundle\Entity\Postulante $postulantecontactos
+     * @return Postulante
+     */
+    public function addPostulantecontacto(\App\WebBundle\Entity\Postulante $postulantecontactos)
+    {
+        $this->postulantecontactos[] = $postulantecontactos;
+    
+        return $this;
+    }
+
+    /**
+     * Remove postulantecontactos
+     *
+     * @param \App\WebBundle\Entity\Postulante $postulantecontactos
+     */
+    public function removePostulantecontacto(\App\WebBundle\Entity\Postulante $postulantecontactos)
+    {
+        $this->postulantecontactos->removeElement($postulantecontactos);
+    }
+
+    /**
+     * Get postulantecontactos
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPostulantecontactos()
+    {
+        return $this->postulantecontactos;
     }
 }

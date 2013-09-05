@@ -1,3 +1,4 @@
+var myWindow=null;
 var Models={
 	GrupoEvaluacion: Backbone.Model.extend({}),
 	Evaluador: Backbone.Model.extend({}),
@@ -94,9 +95,6 @@ var Views={
 
 
 //OPCIONES PARA Botones
-var myWindow=null;
-
-
 var OptionButton=function(){
     this.routeNewGrupo='_admin_grupo_new';
     this.routeNewEvaluador='_admin_evaluadorgrupo_new';
@@ -140,8 +138,10 @@ OptionButton.prototype={
 }
 
 $(document).ready(function() {
-	var vs = new Views.GrupoEvaluacionContainer();
-vs.setElement($('#container-grupoevaluacion')).render();
+  
+  var vs = new Views.GrupoEvaluacionContainer();
+      vs.setElement($('#container-grupoevaluacion')).render();
+	
   $("#btnNewGrupos").click(function(){
       new OptionButton().New();   
   });

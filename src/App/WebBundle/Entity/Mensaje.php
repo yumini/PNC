@@ -8,7 +8,7 @@ use App\WebBundle\Entity\Conversacion;
 /**
  * Mensaje
  *
- * @ORM\Table()
+ * @ORM\Table(name="mensaje")
  * @ORM\Entity(repositoryClass="App\WebBundle\Entity\MensajeRepository")
  */
 class Mensaje

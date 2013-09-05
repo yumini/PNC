@@ -30,12 +30,11 @@ var ViewsNotas={
 			this.collection.fetch({reset:true});
 			console.log('se cargo la collecion notas de BD');
 		},
-		Delete:function(evt){
-			var id=$(evt.currentTarget).attr('data-id');
-			var model = this.collection.get(id);
-			var indice=this.collection.indexOf(model);
-			var parent=this;
-			var url=Routing.generate('_admin_nota_delete',{id:id})
+		Delete:function(id){
+                        this.IdEntity=id;
+                        alert("hola"+id);
+			console.log("eliminando nota en BD");
+			var url=Routing.generate('_admin_nota_delete',{id:this.IdEntity})
 			$.ajax({
 				type:'DELETE',
 	            url:url,
@@ -44,7 +43,7 @@ var ViewsNotas={
 	                parent.viewContainer.render();
 	            }
         	});
-		}
+		},
 
 	}),
 	NotaItem: Backbone.View.extend({
@@ -115,11 +114,11 @@ var ViewsNotas={
 	            }
         	});
 		},
-		Delete:function(evt){
+		 Delete:function(id){
+                        this.IdEntity=id;
+                        alert("hola"+id);
 			console.log("eliminando nota en BD");
-			var id=$(evt.currentTarget).attr('data-id');
-			var parent=this;
-			var url=Routing.generate('_admin_nota_delete',{id:id})
+			var url=Routing.generate('_admin_nota_delete',{id:this.IdEntity})
 			$.ajax({
 				type:'DELETE',
 	            url:url,
@@ -146,4 +145,8 @@ $(document).ready(function() {
 	viewNotaNew.SetViewContainer(vs);
 	viewNotaNew.setElement($('#container-nota-new')).render();
 	
+      $(".nota-delete").click(function(){
+      var id=$(this).attr("data-id"); 
+      new OptionButton().Delete(id);  
+  });
 });

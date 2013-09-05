@@ -7,7 +7,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * Nota
  *
- * @ORM\Table()
+ * @ORM\Table(name="nota")
  * @ORM\Entity(repositoryClass="App\WebBundle\Entity\NotaRepository")
  */
 class Nota

@@ -37,7 +37,7 @@ class Usuario extends BaseUser
 
     /**
     * @ORM\ManyToOne(targetEntity="Perfil", inversedBy="usuarios")
-    * @ORM\JoinColumn(name="perfil_id", referencedColumnName="id")
+    * @ORM\JoinColumn(name="perfil_id", referencedColumnName="id", nullable=false)
     */
     protected $perfil;
 
@@ -50,7 +50,7 @@ class Usuario extends BaseUser
     /**
      * @var string
      *
-     * @ORM\Column(name="nrodocumento", type="string", length=20)
+     * @ORM\Column(name="nrodocumento", type="string", length=11)
      */
     protected $nroDocumento;
     /**
@@ -83,6 +83,7 @@ class Usuario extends BaseUser
         $this->evaluadores = new \Doctrine\Common\Collections\ArrayCollection();
         parent::__construct();
         $this->roles = array('ROLE_USERNOVALIDATED');
+        $this->validaregistro=0;
     }
     
 
