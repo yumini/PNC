@@ -1,5 +1,5 @@
-{% block ScriptFooter %}
- 
+{% block ScriptHead %}
+  <script src="{{ asset('js/pages/Postulante/perfil.js') }}"></script> 
 {% endblock %}
 <ol class="breadcrumb" style="font-size:12px;">
   <li><a href="#">Inicio</a></li>
@@ -18,7 +18,11 @@
       	<h4>
       			<span class="glyphicon glyphicon-user"></span>
       		{{ entity.razonSocial }}
-      	<span style="float:right;"><a href="#" class="btn btn-info" style="font-size:12px;"><span class="glyphicon glyphicon-edit"></span></a></span>
+      	<span style="float:right;">
+          <a id="btnEdit" href="javascript:void(0)" class="btn btn-info" data-id="{{ entity.id }}" style="font-size:12px;" >
+            <span class="glyphicon glyphicon-edit"></span>
+          </a>
+        </span>
       	
          </h4>
          

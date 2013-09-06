@@ -91,12 +91,14 @@ class PostulanteController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $user = $this->container->get("security.context")->getToken()->getUser();
-        //$entity = $em->getRepository('AppWebBundle:Postulante')->findByUser($user->getId());
+        $entity = $em->getRepository('AppWebBundle:Postulante')->findByUser($user->getId());
+        /*
         $entity=new Postulante();
         $entity->setRazonsocial("Coca Cola");
         $entity->setRuc("45784589125");
         $entity->setDireccion(" Av. Angamos 168....");
         $entity->setTelefono("073-4545455");
+        */
         return array(
             'entity'      => $entity
         );
