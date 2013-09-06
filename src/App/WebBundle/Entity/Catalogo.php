@@ -3,7 +3,7 @@
 namespace App\WebBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use App\WebBundle\Entity\PostulanteContacto;
 /**
  * Catalogo
  *
@@ -57,7 +57,7 @@ class Catalogo
     private $estado;
 
     /**
-    * @ORM\OneToMany(targetEntity="Catalogo", mappedBy="postulantecontactotipo")
+    * @ORM\OneToMany(targetEntity="PostulanteContacto", mappedBy="postulantecontactotipo")
     */
     protected $postulantecontactotipos;
     
