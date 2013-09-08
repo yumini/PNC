@@ -38,21 +38,21 @@ class Catalogo
     /**
      * @var string
      *
-     * @ORM\Column(name="descripcion", type="string", length=30)
+     * @ORM\Column(name="descripcion", type="text", nullable=true)
      */
     private $descripcion;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="abreviatura", type="string", length=20)
+     * @ORM\Column(name="abreviatura", type="string", length=250)
      */
     private $abreviatura;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="estado", type="integer", length=1)
+     * @ORM\Column(name="estado", type="boolean")
      */
     private $estado;
 
@@ -61,9 +61,21 @@ class Catalogo
     */
     protected $postulantecatalogos;
     
+    /**
+    * @ORM\OneToMany(targetEntity="Usuario", mappedBy="catalogo")
+    */
+    protected $tdicatalogos;
+    
+    /**
+    * @ORM\OneToMany(targetEntity="ConflictoInteresEvaluador", mappedBy="catalogo")
+    */
+    protected $tvicatalogos;
+    
      public function __construct()
     {
         $this->postulantecatalogos = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->tdicatalogos = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->tvicatalogos = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
     /**
@@ -222,5 +234,71 @@ class Catalogo
     public function getPostulantecatalogos()
     {
         return $this->postulantecatalogos;
+    }
+
+    /**
+     * Add tdicatalogos
+     *
+     * @param \App\WebBundle\Entity\Usuario $tdicatalogos
+     * @return Catalogo
+     */
+    public function addTdicatalogo(\App\WebBundle\Entity\Usuario $tdicatalogos)
+    {
+        $this->tdicatalogos[] = $tdicatalogos;
+    
+        return $this;
+    }
+
+    /**
+     * Remove tdicatalogos
+     *
+     * @param \App\WebBundle\Entity\Usuario $tdicatalogos
+     */
+    public function removeTdicatalogo(\App\WebBundle\Entity\Usuario $tdicatalogos)
+    {
+        $this->tdicatalogos->removeElement($tdicatalogos);
+    }
+
+    /**
+     * Get tdicatalogos
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTdicatalogos()
+    {
+        return $this->tdicatalogos;
+    }
+
+    /**
+     * Add tvicatalogos
+     *
+     * @param \App\WebBundle\Entity\ConflictoInteresEvaluador $tvicatalogos
+     * @return Catalogo
+     */
+    public function addTvicatalogo(\App\WebBundle\Entity\ConflictoInteresEvaluador $tvicatalogos)
+    {
+        $this->tvicatalogos[] = $tvicatalogos;
+    
+        return $this;
+    }
+
+    /**
+     * Remove tvicatalogos
+     *
+     * @param \App\WebBundle\Entity\ConflictoInteresEvaluador $tvicatalogos
+     */
+    public function removeTvicatalogo(\App\WebBundle\Entity\ConflictoInteresEvaluador $tvicatalogos)
+    {
+        $this->tvicatalogos->removeElement($tvicatalogos);
+    }
+
+    /**
+     * Get tvicatalogos
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTvicatalogos()
+    {
+        return $this->tvicatalogos;
     }
 }

@@ -1,0 +1,16 @@
+{% set contador =0 %}
+{ "items":[
+{% for elemento in entities %}
+    {% set contador = contador+1 %}
+    {
+        "id":"{{ elemento.id }}",
+        "codcatalogo":"{{ elemento.codcatalogo }}",
+        "nombre": "{{ elemento.nombre }}",
+        "descripcion":"{{ elemento.descripcion }}",
+        "abreviatura":"{{ elemento.abreviatura }}"
+    }
+   {% if contador<entities|length %}
+    ,
+    {% endif %}
+{% endfor %}]}
+                 
