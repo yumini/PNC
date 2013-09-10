@@ -57,13 +57,13 @@ class Catalogo
     private $estado;
 
     /**
-    * @ORM\OneToMany(targetEntity="PostulanteContacto", mappedBy="postulantecontactotipo")
+    * @ORM\OneToMany(targetEntity="PostulanteContacto", mappedBy="catalogo")
     */
-    protected $postulantecontactotipos;
+    protected $postulantecatalogos;
     
      public function __construct()
     {
-        $this->postulantecontactotipos = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->postulantecatalogos = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
     /**
@@ -190,38 +190,37 @@ class Catalogo
     {
         return $this->estado;
     }
-    
 
     /**
-     * Add postulantecontactotipos
+     * Add postulantecatalogos
      *
-     * @param \App\WebBundle\Entity\Catalogo $postulantecontactotipos
+     * @param \App\WebBundle\Entity\PostulanteContacto $postulantecatalogos
      * @return Catalogo
      */
-    public function addPostulantecontactotipo(\App\WebBundle\Entity\Catalogo $postulantecontactotipos)
+    public function addPostulantecatalogo(\App\WebBundle\Entity\PostulanteContacto $postulantecatalogos)
     {
-        $this->postulantecontactotipos[] = $postulantecontactotipos;
+        $this->postulantecatalogos[] = $postulantecatalogos;
     
         return $this;
     }
 
     /**
-     * Remove postulantecontactotipos
+     * Remove postulantecatalogos
      *
-     * @param \App\WebBundle\Entity\Catalogo $postulantecontactotipos
+     * @param \App\WebBundle\Entity\PostulanteContacto $postulantecatalogos
      */
-    public function removePostulantecontactotipo(\App\WebBundle\Entity\Catalogo $postulantecontactotipos)
+    public function removePostulantecatalogo(\App\WebBundle\Entity\PostulanteContacto $postulantecatalogos)
     {
-        $this->postulantecontactotipos->removeElement($postulantecontactotipos);
+        $this->postulantecatalogos->removeElement($postulantecatalogos);
     }
 
     /**
-     * Get postulantecontactotipos
+     * Get postulantecatalogos
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getPostulantecontactotipos()
+    public function getPostulantecatalogos()
     {
-        return $this->postulantecontactotipos;
+        return $this->postulantecatalogos;
     }
 }

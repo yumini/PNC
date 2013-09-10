@@ -159,23 +159,26 @@ class UsuarioController extends Controller
                     //activa el registro de usurio
                     $entity->setValidaRegistro("1");
                     $em->persist($entity);
-                    $em->flush();
+                    //$em->flush();
                     //preguntar si es evaluador o postulante
                     if($entity->getPerfil()->getNombre()=="Postulante"){
                         $entitypostulante=new Postulante();
                         $entitypostulante->setRazonsocial($entity->getNombres());
                         $entitypostulante->SetRuc($entity->getNroDocumento());
+                        $entitypostulante->setUsuario($entity);
                         $em->persist($entitypostulante);
-                        $em->flush();
+                        //$em->flush();
                     }
                     if($entity->getPerfil()->getNombre()=="Evaluador"){
                         $entityevaluador=new Evaluador();
                         $entityevaluador->setNombres($entity->getNombres());
                         $entityevaluador->setApellidos($entity->getApellidos());
                         $entityevaluador->SetNumDoc($entity->getNroDocumento());
+                        $entityevaluador->setUsuario($entity);
                         $em->persist($entityevaluador);
-                        $em->flush();
+                       
                     }
+                    $em->flush();
                 }else{
                     $msg="Usuario se encuentra con el registro activo"; 
                     $result=false;

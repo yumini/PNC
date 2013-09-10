@@ -17,7 +17,7 @@
       <div class="well  well-sm" style="font-size:12px;">
       	<h4>
       			<span class="glyphicon glyphicon-user"></span>
-      		{{ entity.razonSocial }}
+      		{{ entity.razonSocial|default('-')  }}
       	<span style="float:right;">
           <a id="btnEdit" href="javascript:void(0)" class="btn btn-info" data-id="{{ entity.id }}" style="font-size:12px;" >
             <span class="glyphicon glyphicon-edit"></span>
@@ -28,23 +28,23 @@
          
           <div class="row">
           	<div class="col-md-5"><label>RUC:</label></div>
-          	<div class="col-md-7">{{ entity.ruc }}</div>
+          	<div class="col-md-7">{{ entity.ruc|default('-') }}</div>
           </div>
           <div class="row">
           	<div class="col-md-5"><label>Dirección:</label></div>
-          	<div class="col-md-7">{{ entity.direccion }}</div>
+          	<div class="col-md-7">{{ entity.direccion|default('-') }}</div>
           </div>
           <div class="row">
           	<div class="col-md-5"><label>Telefono:</label></div>
-          	<div class="col-md-7">{{ entity.telefono }}</div>
+          	<div class="col-md-7">{{ entity.telefono|default('-') }}</div>
           </div>
           <div class="row">
           	<div class="col-md-5"><label>Fax:</label></div>
-          	<div class="col-md-7">{{ entity.fax }}</div>
+          	<div class="col-md-7">{{ entity.fax|default('-') }}</div>
           </div>
           <div class="row">
           	<div class="col-md-5"><label>Web:</label></div>
-          	<div class="col-md-7">{{ entity.web }}</div>
+          	<div class="col-md-7"><a href="http://{{ entity.web|default('#') }}" target="_blank">{{ entity.web|default('-') }}</a></div>
           </div>
       </div>
   </div>
@@ -122,7 +122,7 @@
   </div>
  
 </div>
-
+<div id="winFormPerfil"></div>
 
 
 

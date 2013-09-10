@@ -11,16 +11,12 @@ class PostulanteType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('razonsocial')
-            ->add('direccion')
-            ->add('ruc')
-            ->add('telefono')
-            ->add('web')
-            ->add('fax')
-            ->add('fechaCreacion')
-            ->add('fechaActualizacion')
-            ->add('usuario')
-            ->add('grupos')
+            ->add('razonsocial','text',array('required' => true,'attr' => array('class'=>'form-control input-small')))
+            ->add('direccion','text',array('required' => true,'attr' => array('class'=>'form-control input-small')))
+            ->add('ruc','text',array('required' => true,'attr' => array('class'=>'form-control input-small')))
+            ->add('telefono','text',array('required' => true,'attr' => array('class'=>'form-control input-small')))
+            ->add('web','text',array('required' => false,'attr' => array('class'=>'form-control input-small')))
+            ->add('fax','text',array('required' => false,'attr' => array('class'=>'form-control input-small')))            
         ;
     }
 

@@ -33,7 +33,7 @@ box-shadow: none;
     width: 100%;
     height: 80px;
     position: relative; 
-    /*background:url("../images/bg.png") #3B4449 no-repeat;*/
+    background:url("../images/bg.png") #3B4449 no-repeat;
     background-repeat: repeat-x;
     
 }

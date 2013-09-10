@@ -83,11 +83,11 @@ class PostulanteController extends Controller
     /**
      * Finds and displays a Postulante entity.
      *
-     * @Route("/{id}/perfil", name="_admin_postulante_perfil", options={"expose"=true})
+     * @Route("/perfil", name="_admin_postulante_perfil", options={"expose"=true})
      * @Method("GET")
      * @Template()
      */
-    public function perfilAction($id)
+    public function perfilAction()
     {
         $em = $this->getDoctrine()->getManager();
         $user = $this->container->get("security.context")->getToken()->getUser();
@@ -131,7 +131,7 @@ class PostulanteController extends Controller
     /**
      * Displays a form to edit an existing Postulante entity.
      *
-     * @Route("/{id}/edit", name="postulante_edit")
+     * @Route("/{id}/edit", name="_admin_postulante_edit", options={"expose"=true})
      * @Method("GET")
      * @Template()
      */
@@ -146,48 +146,43 @@ class PostulanteController extends Controller
         }
 
         $editForm = $this->createForm(new PostulanteType(), $entity);
-        $deleteForm = $this->createDeleteForm($id);
-
         return array(
             'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+            'form'   => $editForm->createView()
         );
     }
 
     /**
      * Edits an existing Postulante entity.
      *
-     * @Route("/{id}", name="postulante_update")
+     * @Route("/{id}/update", name="_admin_postulante_update", options={"expose"=true})
      * @Method("PUT")
-     * @Template("AppWebBundle:Postulante:edit.html.twig")
+     * @Template("AppWebBundle:Default:result.json.twig")
      */
     public function updateAction(Request $request, $id)
     {
+        $msg="";
+        $result=true;       
         $em = $this->getDoctrine()->getManager();
-
         $entity = $em->getRepository('AppWebBundle:Postulante')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Postulante entity.');
-        }
-
-        $deleteForm = $this->createDeleteForm($id);
         $editForm = $this->createForm(new PostulanteType(), $entity);
         $editForm->bind($request);
-
-        if ($editForm->isValid()) {
+        
+        if ($entity) {
+           
             $em->persist($entity);
             $em->flush();
+        }else{
+            $result=false;
+            $msg="postulante no encontrado";
 
-            return $this->redirect($this->generateUrl('postulante_edit', array('id' => $id)));
         }
-
         return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+            'result' => "{\"success\":\"$result\",\"message\":\"$msg\"}"
+
         );
+
+      
     }
     /**
      * Deletes a Postulante entity.

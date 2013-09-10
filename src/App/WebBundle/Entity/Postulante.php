@@ -31,35 +31,35 @@ class Postulante
     /**
      * @var string
      *
-     * @ORM\Column(name="direccion", type="string", length=150)
+     * @ORM\Column(name="direccion", type="string", length=150, nullable=true)
      */
     private $direccion;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="ruc", type="string", length=11)
+     * @ORM\Column(name="ruc", type="string", length=11, nullable=true)
      */
     private $ruc;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="telefono", type="string", length=20)
+     * @ORM\Column(name="telefono", type="string", length=20, nullable=true)
      */
     private $telefono;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="web", type="string", length=50)
+     * @ORM\Column(name="web", type="string", length=50, nullable=true)
      */
     private $web;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="fax", type="string", length=20)
+     * @ORM\Column(name="fax", type="string", length=20, nullable=true)
      */
     private $fax;
     
@@ -91,11 +91,11 @@ class Postulante
     /**
     * @ORM\OneToMany(targetEntity="Postulante", mappedBy="postulantecontacto")
     */
-    protected $postulantecontactos;
+    protected $postulantes;
     
     public function __construct() {
         $this->grupos = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->postulantecontactos = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->postulantes = new \Doctrine\Common\Collections\ArrayCollection();
     }
     /**
      * Add gruposEvaluacion
@@ -356,36 +356,37 @@ class Postulante
         return $this->usuario;
     }
 
+
     /**
-     * Add postulantecontactos
+     * Add postulantes
      *
-     * @param \App\WebBundle\Entity\Postulante $postulantecontactos
+     * @param \App\WebBundle\Entity\Postulante $postulantes
      * @return Postulante
      */
-    public function addPostulantecontacto(\App\WebBundle\Entity\Postulante $postulantecontactos)
+    public function addPostulante(\App\WebBundle\Entity\Postulante $postulantes)
     {
-        $this->postulantecontactos[] = $postulantecontactos;
+        $this->postulantes[] = $postulantes;
     
         return $this;
     }
 
     /**
-     * Remove postulantecontactos
+     * Remove postulantes
      *
-     * @param \App\WebBundle\Entity\Postulante $postulantecontactos
+     * @param \App\WebBundle\Entity\Postulante $postulantes
      */
-    public function removePostulantecontacto(\App\WebBundle\Entity\Postulante $postulantecontactos)
+    public function removePostulante(\App\WebBundle\Entity\Postulante $postulantes)
     {
-        $this->postulantecontactos->removeElement($postulantecontactos);
+        $this->postulantes->removeElement($postulantes);
     }
 
     /**
-     * Get postulantecontactos
+     * Get postulantes
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getPostulantecontactos()
+    public function getPostulantes()
     {
-        return $this->postulantecontactos;
+        return $this->postulantes;
     }
 }

@@ -2,18 +2,18 @@ var myWindow=null;
 
 
 var OptionButton=function(){
-    this.routeList='_admin_postulante';
+    this.routeList='_admin_postulante_perfil';
     this.routeEdit='_admin_postulante_edit';
     this.routeUpdate='_admin_postulante_update';    
 }
 OptionButton.prototype={
     Edit:function(id){
         this.IdEntity=id;
-        this.Window=new BootstrapWindow({id:"winForm",title:"Editar Concurso"});
-        this.Window.setWidth(1000);
-        this.Window.setHeight(300);
-        //var url=Routing.generate(this.routeEdit,{id:id});
-        //this.Window.Load(url,"");
+        this.Window=new BootstrapWindow({id:"winFormPerfil",title:"Editar Mi Perfil"});
+        this.Window.setWidth(600);
+        this.Window.setHeight(360);
+        var url=Routing.generate(this.routeEdit,{id:id});
+        this.Window.Load(url,"");
         this.Window.Show();
         var parent=this;
         this.Window.AddButton('btn-perfil-cancel',{
@@ -38,16 +38,12 @@ OptionButton.prototype={
             console.log("actualizando perfil con id:"+this.IdEntity);
             var parent=this;
             var url=Routing.generate(this.routeUpdate,{id:this.IdEntity});
-            params = $('#myform').serializeObject();
+            params = $('#myPerfilform').serializeObject();
             var nodes = $('#tree').tree('getChecked');
             var s = '';
-            for(var i=0; i<nodes.length; i++){
-                if (s != '') s += ',';
-                s += nodes[i].id;
-            }
-            params.perfil=s;           
+                    
             $.ajax({
-                    type:'POST',
+                    type:'PUT',
                     url:url,
                     data:params,
                     dataType:"html",
