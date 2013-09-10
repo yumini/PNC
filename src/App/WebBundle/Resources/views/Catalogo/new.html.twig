@@ -1,0 +1,11 @@
+<form id="myform"  method="post" {{ form_enctype(form) }}>
+   <input type="hidden" id="codcat" value='{{codcat}}'/>
+    
+    {{form_row(form.nombre)}}
+    {{form_row(form.descripcion)}}
+    {% if codcat=="TDI" %} {{form_row(form.abreviatura)}}{% endif %}    
+    {{form_row(form.estado)}}
+    
+
+</form>
+

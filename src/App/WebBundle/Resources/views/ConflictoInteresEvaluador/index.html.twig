@@ -1,0 +1,49 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>ConflictoInteresEvaluador list</h1>
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Razonsocial</th>
+                <th>Ruc</th>
+                <th>Fecini</th>
+                <th>Fecfin</th>
+                <th>Detalle</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('conflictointeresevaluador_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.razonsocial }}</td>
+                <td>{{ entity.ruc }}</td>
+                <td>{% if entity.fecini %}{{ entity.fecini|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if entity.fecfin %}{{ entity.fecfin|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ entity.detalle }}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('conflictointeresevaluador_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('conflictointeresevaluador_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <ul>
+        <li>
+            <a href="{{ path('conflictointeresevaluador_new') }}">
+                Create a new entry
+            </a>
+        </li>
+    </ul>
+    {% endblock %}

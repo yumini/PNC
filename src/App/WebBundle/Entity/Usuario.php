@@ -42,7 +42,7 @@ class Usuario extends BaseUser
     protected $perfil;
 
      /**
-    * @ORM\ManyToOne(targetEntity="TipoDocumento", inversedBy="usuarios")
+    * @ORM\ManyToOne(targetEntity="Catalogo", inversedBy="tdicatalogos")
     * @ORM\JoinColumn(name="tipodocumento_id", referencedColumnName="id")
     */
     protected $tipoDocumento;
@@ -273,10 +273,10 @@ class Usuario extends BaseUser
     /**
      * Set tipoDocumento
      *
-     * @param \App\WebBundle\Entity\TipoDocumento $tipoDocumento
+     * @param \App\WebBundle\Entity\Catalogo $tipoDocumento
      * @return Usuario
      */
-    public function setTipoDocumento(\App\WebBundle\Entity\TipoDocumento $tipoDocumento = null)
+    public function setTipoDocumento(\App\WebBundle\Entity\Catalogo $tipoDocumento = null)
     {
         $this->tipoDocumento = $tipoDocumento;
     
@@ -286,7 +286,7 @@ class Usuario extends BaseUser
     /**
      * Get tipoDocumento
      *
-     * @return \App\WebBundle\Entity\TipoDocumento 
+     * @return \App\WebBundle\Entity\Catalogo
      */
     public function getTipoDocumento()
     {
