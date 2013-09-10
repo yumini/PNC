@@ -116,6 +116,46 @@ class CatalogoController extends Controller
         );
     }
     /**
+     * Lists all Tipo Criterio.
+     *
+     * @Route("/list/catalogo/tcc/{_format}", defaults={"_format"="html"},name="_admin_tcc_list", options={"expose"=true})
+     * @Method("GET")
+     * @Template()
+     */
+    public function listCatalogoTccAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $page=$this->get('request')->query->get('page', 1);
+        $paginator=$this->get('knp_paginator');
+        $pagination = $em->getRepository('AppWebBundle:Catalogo')->FindAllPaginator($paginator,$page,10,"TCC");
+
+        return array(
+            'pagination' => $pagination,
+            'title_list'=> "Listado de Catalogo - Tipo Criterio Concurso",
+            'action'=> "catalogo"
+        );
+    }
+    /**
+     * Lists all Tipo Criterio arbol.
+     *
+     * @Route("/list/catalogo/tac/{_format}", defaults={"_format"="html"},name="_admin_tac_list", options={"expose"=true})
+     * @Method("GET")
+     * @Template()
+     */
+    public function listCatalogoTacAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $page=$this->get('request')->query->get('page', 1);
+        $paginator=$this->get('knp_paginator');
+        $pagination = $em->getRepository('AppWebBundle:Catalogo')->FindAllPaginator($paginator,$page,10,"TAC");
+
+        return array(
+            'pagination' => $pagination,
+            'title_list'=> "Listado de Catalogo - Tipo Arbol Criterio",
+            'action'=> "catalogo"
+        );
+    }
+    /**
      * Creates a new Catalogo entity.
      *
      * @Route("/{codcat}/create/", name="_admin_td_save", options={"expose"=true})

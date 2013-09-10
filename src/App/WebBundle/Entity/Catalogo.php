@@ -45,7 +45,7 @@ class Catalogo
     /**
      * @var string
      *
-     * @ORM\Column(name="abreviatura", type="string", length=250)
+     * @ORM\Column(name="abreviatura", type="string", length=250 , nullable=true)
      */
     private $abreviatura;
 
@@ -71,11 +71,23 @@ class Catalogo
     */
     protected $tvicatalogos;
     
+    /**
+    * @ORM\OneToMany(targetEntity="ConcursoCriterio", mappedBy="catalogo")
+    */
+    protected $tcccatalogos;
+    
+    /**
+    * @ORM\OneToMany(targetEntity="ConcursoCriterio", mappedBy="catalogo")
+    */
+    protected $tcacatalogos;
+    
      public function __construct()
     {
         $this->postulantecatalogos = new \Doctrine\Common\Collections\ArrayCollection();
         $this->tdicatalogos = new \Doctrine\Common\Collections\ArrayCollection();
         $this->tvicatalogos = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->tcccatalogos = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->tcacatalogos = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
     /**
@@ -300,5 +312,71 @@ class Catalogo
     public function getTvicatalogos()
     {
         return $this->tvicatalogos;
+    }
+
+    /**
+     * Add tcccatalogos
+     *
+     * @param \App\WebBundle\Entity\ConcursoCriterio $tcccatalogos
+     * @return Catalogo
+     */
+    public function addTcccatalogo(\App\WebBundle\Entity\ConcursoCriterio $tcccatalogos)
+    {
+        $this->tcccatalogos[] = $tcccatalogos;
+    
+        return $this;
+    }
+
+    /**
+     * Remove tcccatalogos
+     *
+     * @param \App\WebBundle\Entity\ConcursoCriterio $tcccatalogos
+     */
+    public function removeTcccatalogo(\App\WebBundle\Entity\ConcursoCriterio $tcccatalogos)
+    {
+        $this->tcccatalogos->removeElement($tcccatalogos);
+    }
+
+    /**
+     * Get tcccatalogos
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTcccatalogos()
+    {
+        return $this->tcccatalogos;
+    }
+
+    /**
+     * Add tcacatalogos
+     *
+     * @param \App\WebBundle\Entity\ConcursoCriterio $tcacatalogos
+     * @return Catalogo
+     */
+    public function addTcacatalogo(\App\WebBundle\Entity\ConcursoCriterio $tcacatalogos)
+    {
+        $this->tcacatalogos[] = $tcacatalogos;
+    
+        return $this;
+    }
+
+    /**
+     * Remove tcacatalogos
+     *
+     * @param \App\WebBundle\Entity\ConcursoCriterio $tcacatalogos
+     */
+    public function removeTcacatalogo(\App\WebBundle\Entity\ConcursoCriterio $tcacatalogos)
+    {
+        $this->tcacatalogos->removeElement($tcacatalogos);
+    }
+
+    /**
+     * Get tcacatalogos
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTcacatalogos()
+    {
+        return $this->tcacatalogos;
     }
 }
