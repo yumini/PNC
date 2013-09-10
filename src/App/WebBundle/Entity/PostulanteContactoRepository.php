@@ -12,10 +12,10 @@ use Doctrine\ORM\EntityRepository;
  */
 class PostulanteContactoRepository extends EntityRepository
 {
-    public function FindByUser($idusuario){
+    public function FindByPostulante($idusuario){
         $em=$this->getEntityManager();
         $dql= "SELECT pc FROM AppWebBundle:PostulanteContacto pc 
-                JOIN pc.postulantes p WHERE p.usuario_id=:id";
+                JOIN pc.postulante p WHERE p.id=:id";
         $query=$em->createQuery($dql)->setParameter('id', $idusuario);
         try {
                 return $query->getResult();

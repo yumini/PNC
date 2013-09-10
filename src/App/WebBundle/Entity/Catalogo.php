@@ -45,7 +45,7 @@ class Catalogo
     /**
      * @var string
      *
-     * @ORM\Column(name="abreviatura", type="string", length=250)
+     * @ORM\Column(name="abreviatura", type="string", length=250, nullable=true)
      */
     private $abreviatura;
 

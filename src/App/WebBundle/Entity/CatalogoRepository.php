@@ -23,13 +23,21 @@ class CatalogoRepository extends EntityRepository
                 return null;
         }
     }
+    public function getCatalogosQueryBuilder($codcat){
+        $em=$this->getEntityManager();
+        return $em->createQueryBuilder('c')->where('c.codcatalogo= ?1')->setParameter(1,$codcat);
+        
+    }
     
-     public function FindAllPaginator($paginator,$page,$limit,$codcat){
+    public function FindAllPaginator($paginator,$page,$limit,$codcat){
         $em=$this->getEntityManager();
         $dql   = "SELECT c FROM AppWebBundle:Catalogo c WHERE c.codcatalogo=:codcatalogo ";
         $query = $em->createQuery($dql)
                  ->setParameter('codcatalogo', $codcat);
         $pagination = $paginator->paginate($query,$page,$limit);
         return $pagination;
+    }
+    public function getTipoContactos(){
+        return $this->getCatalogosQueryBuilder("TCP");
     }
 }

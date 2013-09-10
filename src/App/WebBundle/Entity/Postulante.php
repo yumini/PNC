@@ -97,26 +97,8 @@ class Postulante
         $this->grupos = new \Doctrine\Common\Collections\ArrayCollection();
         $this->postulantes = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    /**
-     * Add gruposEvaluacion
-     *
-     * @param App\WebBundle\Entity\GrupoEvaluacion $grupos
-     */
-    public function addGrupos(App\WebBundle\Entity\Perfil $grupos)
-    {
-        $this->grupos[] = $grupos;
-    }
+  
 
-    /**
-     * Get grupos
-     *
-     * @return Doctrine\Common\Collections\Collection 
-     */
-    public function getGrupos()
-    {
-        return $this->grupos;
-    }
-    
     /**
      * Get id
      *
@@ -264,7 +246,7 @@ class Postulante
     {
         return $this->fax;
     }
-    
+
     /**
      * Set fechaCreacion
      *
@@ -310,28 +292,6 @@ class Postulante
     {
         return $this->fechaActualizacion;
     }
-    /**
-     * Add grupos
-     *
-     * @param \App\WebBundle\Entity\GrupoEvaluacion $grupos
-     * @return GrupoEvaluacion
-     */
-    public function addGrupo(\App\WebBundle\Entity\GrupoEvaluacion $grupos)
-    {
-        $this->grupos[] = $grupos;
-    
-        return $this;
-    }
-
-    /**
-     * Remove grupos
-     *
-     * @param \App\WebBundle\Entity\Grupo $grupos
-     */
-    public function removeGrupo(\App\WebBundle\Entity\Grupo $grupos)
-    {
-        $this->grupos->removeElement($grupos);
-    }
 
     /**
      * Set usuario
@@ -356,6 +316,38 @@ class Postulante
         return $this->usuario;
     }
 
+    /**
+     * Add grupos
+     *
+     * @param \App\WebBundle\Entity\GrupoEvaluacion $grupos
+     * @return Postulante
+     */
+    public function addGrupo(\App\WebBundle\Entity\GrupoEvaluacion $grupos)
+    {
+        $this->grupos[] = $grupos;
+    
+        return $this;
+    }
+
+    /**
+     * Remove grupos
+     *
+     * @param \App\WebBundle\Entity\GrupoEvaluacion $grupos
+     */
+    public function removeGrupo(\App\WebBundle\Entity\GrupoEvaluacion $grupos)
+    {
+        $this->grupos->removeElement($grupos);
+    }
+
+    /**
+     * Get grupos
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getGrupos()
+    {
+        return $this->grupos;
+    }
 
     /**
      * Add postulantes

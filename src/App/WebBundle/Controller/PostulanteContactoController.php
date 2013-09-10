@@ -13,7 +13,7 @@ use App\WebBundle\Form\PostulanteContactoType;
 /**
  * PostulanteContacto controller.
  *
- * @Route("/postulantecontacto")
+ * @Route("/admin/postulantecontacto")
  */
 class PostulanteContactoController extends Controller
 {
@@ -21,15 +21,16 @@ class PostulanteContactoController extends Controller
     /**
      * Lists all PostulanteContacto entities.
      *
-     * @Route("/", name="postulantecontacto")
+     * @Route("/{id}/contactos", name="_admin_postulantecontacto", options={"expose"=true})
      * @Method("GET")
      * @Template()
      */
-    public function indexAction()
+    public function contactosPostulanteAction($id)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('AppWebBundle:PostulanteContacto')->findAll();
+        $entities = $em->getRepository('AppWebBundle:PostulanteContacto')->FindByPostulante($id);
+        //$entities = $em->getRepository('AppWebBundle:PostulanteContacto')->findAll($id);
 
         return array(
             'entities' => $entities,
@@ -65,13 +66,13 @@ class PostulanteContactoController extends Controller
     /**
      * Displays a form to create a new PostulanteContacto entity.
      *
-     * @Route("/new", name="postulantecontacto_new")
+     * @Route("/new", name="_admin_postulantecontacto_new", options={"expose"=true})
      * @Method("GET")
      * @Template()
      */
     public function newAction()
     {
-        $entity = new PostulanteContacto();
+         $entity = new PostulanteContacto();
         $form   = $this->createForm(new PostulanteContactoType(), $entity);
 
         return array(

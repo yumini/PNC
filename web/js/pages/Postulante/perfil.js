@@ -1,12 +1,14 @@
+var OptionButton = OptionButton || {Perfil: {}, Contactos: {}};
 var myWindow=null;
 
 
-var OptionButton=function(){
+OptionButton.Perfil=function(){
     this.routeList='_admin_postulante_perfil';
+   
     this.routeEdit='_admin_postulante_edit';
     this.routeUpdate='_admin_postulante_update';    
 }
-OptionButton.prototype={
+OptionButton.Perfil.prototype={
     Edit:function(id){
         this.IdEntity=id;
         this.Window=new BootstrapWindow({id:"winFormPerfil",title:"Editar Mi Perfil"});
@@ -60,10 +62,50 @@ OptionButton.prototype={
     Refresh:function(){
         var url=Routing.generate(this.routeList);
         new jAjax().Load(url,'main-body','get','','');
-    }
+    },
+
+   
+
 }
 
+OptionButton.Contactos=function(){
+     this.routeList='_admin_postulantecontacto';
+     this.routeNew='_admin_postulantecontacto_new';
+};
 
+OptionButton.Contactos.prototype={
+     Refresh:function(){
+        var id=$("#hdnEntity_id").val();
+        var url=Routing.generate(this.routeList,{id:id});
+        new jAjax().Load(url,'containerContactos','get','','');
+    },
+    New:function(){
+        this.Window=new BootstrapWindow({id:"winFormContacto",title:"Agregar Contacto"});
+        this.Window.setWidth(600);
+        this.Window.setHeight(360);
+        var url=Routing.generate(this.routeNew);
+        this.Window.Load(url,"");
+        this.Window.Show();
+        var parent=this;
+        this.Window.AddButton('btn-contactonew-cancel',{
+            label:'Cancelar',
+            'class':'btn-default',
+            fn:function(){
+                parent.Window.Hide();
+            }
+            
+        })
+       
+        this.Window.AddButton('btn-contactonew-save',{
+            label:'Grabar',
+            'class':'btn-success',
+            fn:function(){
+                parent.Update();               
+                parent.Window.Hide();
+            }
+        });
+    },
+};
 //al leer el documento
 $(document).ready(function() {
   
@@ -71,7 +113,15 @@ $(document).ready(function() {
   $("#btnEdit").click(function(){
   	var id=$(this).attr("data-id"); 
   	console.log("el id es:"+id);
-    new OptionButton().Edit(id);   
+    new OptionButton.Perfil().Edit(id);   
   });
+
+
+    $("#btnContactoNew").click(function(){
+    var id=$(this).attr("data-id"); 
+    console.log("el id es:"+id);
+    new OptionButton.Contactos().New(id);   
+  });
+   new OptionButton.Contactos().Refresh();   
   
 });
