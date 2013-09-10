@@ -23,7 +23,9 @@ class CatalogoRepository extends EntityRepository
                 return null;
         }
     }
-    
+    public function getTipoDocumentoIdentidad(){
+       return $this->getCatalogos("TDI");
+   }
      public function FindAllPaginator($paginator,$page,$limit,$codcat){
         $em=$this->getEntityManager();
         $dql   = "SELECT c FROM AppWebBundle:Catalogo c WHERE c.codcatalogo=:codcatalogo ";

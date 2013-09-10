@@ -38,49 +38,49 @@ class ConcursoCriterio
     /**
      * @var string
      *
-     * @ORM\Column(name="descripcion", type="string", length=250)
+     * @ORM\Column(name="descripcion", type="string", length=250, nullable=true)
      */
     private $descripcion;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="puntaje", type="integer")
+     * @ORM\Column(name="puntaje", type="integer", nullable=true)
      */
     private $puntaje;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="glosa", type="text")
+     * @ORM\Column(name="glosa", type="text", nullable=true)
      */
     private $glosa;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="comentario", type="text")
+     * @ORM\Column(name="comentario", type="text", nullable=true)
      */
     private $comentario;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="detalle", type="text")
+     * @ORM\Column(name="detalle", type="text", nullable=true)
      */
     private $detalle;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="proposito", type="text")
+     * @ORM\Column(name="proposito", type="text", nullable=true)
      */
     private $proposito;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="nota", type="text")
+     * @ORM\Column(name="nota", type="text", nullable=true)
      */
     private $nota;
 
