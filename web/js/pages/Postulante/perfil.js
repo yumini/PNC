@@ -51,7 +51,7 @@ OptionButton.Perfil.prototype={
                     dataType:"html",
                     success:function(datos){
                             
-                            new OptionButton().Refresh();
+                            new OptionButton.Perfil().Refresh();
                     },
                     error:function(objeto, quepaso, otroobj){
 
