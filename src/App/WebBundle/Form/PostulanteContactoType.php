@@ -11,16 +11,18 @@ class PostulanteContactoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nombre')
-            ->add('cargo')
-            ->add('telefono')
-            ->add('fax')
-            ->add('email')
-            ->add('postulantecontacto')
-            ->add('postulante','entity', array('class'=>'App\WebBundle\Entity\Catalogo','property'=>'nombre', 
-                 'query_builder' => function(CatalogoRepository $er) {    
-                        return $er->getTipoContactos(); 
-                }) )
+            ->add('nombre','text',array('required' => true,'attr' => array('class'=>'form-control input-small')))
+            ->add('cargo','text',array('required' => true,'attr' => array('class'=>'form-control input-small')))
+            ->add('telefono','text',array('required' => true,'attr' => array('class'=>'form-control input-small')))
+            ->add('fax','text',array('required' => true,'attr' => array('class'=>'form-control input-small')))
+            ->add('email','text',array('required' => true,'attr' => array('class'=>'form-control input-small')))
+            //->add('postulantecontacto')
+            ->add('postulantecontacto','entity', array('attr' => array('class'=>'form-control input-small'),'class'=>'App\WebBundle\Entity\Catalogo','property'=>'nombre',  
+                    'query_builder' => function(CatalogoRepository $er) {
+                        return $er->getTipoContactosQueryBuilder();
+                        
+                    }
+            ))
         ;
     }
 

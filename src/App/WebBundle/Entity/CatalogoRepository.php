@@ -24,8 +24,7 @@ class CatalogoRepository extends EntityRepository
         }
     }
     public function getCatalogosQueryBuilder($codcat){
-        $em=$this->getEntityManager();
-        return $em->createQueryBuilder('c')->where('c.codcatalogo= ?1')->setParameter(1,$codcat);
+        return $this->createQueryBuilder('c')->where('c.codcatalogo= ?1')->setParameter(1,$codcat);
         
     }
     
@@ -37,7 +36,7 @@ class CatalogoRepository extends EntityRepository
         $pagination = $paginator->paginate($query,$page,$limit);
         return $pagination;
     }
-    public function getTipoContactos(){
+    public function getTipoContactosQueryBuilder(){
         return $this->getCatalogosQueryBuilder("TCP");
     }
 }

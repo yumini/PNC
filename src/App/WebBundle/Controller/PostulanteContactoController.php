@@ -39,28 +39,29 @@ class PostulanteContactoController extends Controller
     /**
      * Creates a new PostulanteContacto entity.
      *
-     * @Route("/", name="postulantecontacto_create")
+     * @Route("/save", name="_admin_postulantecontacto_save", options={"expose"=true})
      * @Method("POST")
-     * @Template("AppWebBundle:PostulanteContacto:new.html.twig")
+     * @Template("AppWebBundle:Default:result.json.twig")
      */
     public function createAction(Request $request)
     {
         $entity  = new PostulanteContacto();
         $form = $this->createForm(new PostulanteContactoType(), $entity);
         $form->bind($request);
-
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
-            $em->flush();
-
-            return $this->redirect($this->generateUrl('postulantecontacto_show', array('id' => $entity->getId())));
-        }
+        $em = $this->getDoctrine()->getManager();
+        $user = $this->container->get("security.context")->getToken()->getUser();
+        $postulante = $em->getRepository('AppWebBundle:Postulante')->findByUser($user->getId());
+       
+        $entity->setPostulante($postulante);
+        
+        $em->persist($entity);
+        $em->flush();
 
         return array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
+            'result' => "{\"success\":\"true\"}"
         );
+
+       
     }
 
     /**
@@ -136,7 +137,7 @@ class PostulanteContactoController extends Controller
     /**
      * Edits an existing PostulanteContacto entity.
      *
-     * @Route("/{id}", name="postulantecontacto_update")
+     * @Route("/{id}/update", name="postulantecontacto_update")
      * @Method("PUT")
      * @Template("AppWebBundle:PostulanteContacto:edit.html.twig")
      */

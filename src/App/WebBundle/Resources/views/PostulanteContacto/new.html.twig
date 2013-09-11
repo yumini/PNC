@@ -1,20 +1,42 @@
-{% extends '::base.html.twig' %}
 
-{% block body -%}
-    <h1>PostulanteContacto creation</h1>
-
-    <form action="{{ path('postulantecontacto_create') }}" method="post" {{ form_enctype(form) }}>
-        {{ form_widget(form) }}
-        <p>
-            <button type="submit">Create</button>
-        </p>
+    <form id="myform" method="post" {{ form_enctype(form) }}>
+       
+        <div class="row">
+            <div class="col-lg-12">
+                <label class="control-label">Tipo Contacto:</label><br/>
+                {{form_widget(form.postulantecontacto)}}
+            </div>
+           
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <label class="control-label">Nombre:</label><br/>
+                {{form_widget(form.nombre)}}
+            </div>
+           
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <label class="control-label">Cargo:</label><br/>
+                {{form_widget(form.cargo)}}
+            </div>
+           <div class="col-lg-6">
+                <label class="control-label">Telefono:</label><br/>
+                {{form_widget(form.telefono)}}
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-lg-12">
+                <label class="control-label">Fax:</label>
+                {{form_widget(form.fax)}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <label class="control-label">Email:</label>
+                {{form_widget(form.email)}}
+            </div>
+        </div>
+        
     </form>
-
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('postulantecontacto') }}">
-            Back to the list
-        </a>
-    </li>
-</ul>
-{% endblock %}

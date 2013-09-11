@@ -11,7 +11,7 @@ OptionButton.Perfil=function(){
 OptionButton.Perfil.prototype={
     Edit:function(id){
         this.IdEntity=id;
-        this.Window=new BootstrapWindow({id:"winFormPerfil",title:"Editar Mi Perfil"});
+        this.Window=new BootstrapWindow({id:"winForm",title:"Editar Mi Perfil"});
         this.Window.setWidth(600);
         this.Window.setHeight(360);
         var url=Routing.generate(this.routeEdit,{id:id});
@@ -71,6 +71,7 @@ OptionButton.Perfil.prototype={
 OptionButton.Contactos=function(){
      this.routeList='_admin_postulantecontacto';
      this.routeNew='_admin_postulantecontacto_new';
+     this.routeSave='_admin_postulantecontacto_save';
 };
 
 OptionButton.Contactos.prototype={
@@ -80,7 +81,7 @@ OptionButton.Contactos.prototype={
         new jAjax().Load(url,'containerContactos','get','','');
     },
     New:function(){
-        this.Window=new BootstrapWindow({id:"winFormContacto",title:"Agregar Contacto"});
+        this.Window=new BootstrapWindow({id:"winForm",title:"Agregar Contacto"});
         this.Window.setWidth(600);
         this.Window.setHeight(360);
         var url=Routing.generate(this.routeNew);
@@ -100,11 +101,32 @@ OptionButton.Contactos.prototype={
             label:'Grabar',
             'class':'btn-success',
             fn:function(){
-                parent.Update();               
+                parent.Save();               
                 parent.Window.Hide();
             }
         });
     },
+    Save:function(){
+            var parent=this;
+            var url=Routing.generate(this.routeSave);
+            params = $('#myform').serializeObject();
+            console.log(params);
+            
+            $.ajax({
+                    type:'POST',
+                    url:url,
+                    data:params,
+                    dataType:"html",
+                    success:function(datos){
+                            //parent.Window.AddHTML(datos);
+                           new OptionButton.Contactos().Refresh(); 
+                    },
+                    error:function(objeto, quepaso, otroobj){
+
+                    }
+            });
+        
+    }
 };
 //al leer el documento
 $(document).ready(function() {
