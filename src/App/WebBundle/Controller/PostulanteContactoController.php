@@ -110,7 +110,7 @@ class PostulanteContactoController extends Controller
     /**
      * Displays a form to edit an existing PostulanteContacto entity.
      *
-     * @Route("/{id}/edit", name="postulantecontacto_edit")
+     * @Route("/{id}/edit", name="_admin_postulantecontacto_edit", options={"expose"=true})
      * @Method("GET")
      * @Template()
      */
@@ -125,87 +125,76 @@ class PostulanteContactoController extends Controller
         }
 
         $editForm = $this->createForm(new PostulanteContactoType(), $entity);
-        $deleteForm = $this->createDeleteForm($id);
+      
 
         return array(
             'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+            'form'   => $editForm->createView()
         );
     }
 
     /**
      * Edits an existing PostulanteContacto entity.
      *
-     * @Route("/{id}/update", name="postulantecontacto_update")
-     * @Method("PUT")
-     * @Template("AppWebBundle:PostulanteContacto:edit.html.twig")
+     * @Route("/{id}/update", name="_admin_postulantecontacto_update", options={"expose"=true})
+     * @Method("POST")
+     * @Template("AppWebBundle:Default:result.json.twig")
      */
     public function updateAction(Request $request, $id)
     {
+        
+        $msg="";
+        $result=true;       
         $em = $this->getDoctrine()->getManager();
-
         $entity = $em->getRepository('AppWebBundle:PostulanteContacto')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find PostulanteContacto entity.');
-        }
-
-        $deleteForm = $this->createDeleteForm($id);
         $editForm = $this->createForm(new PostulanteContactoType(), $entity);
         $editForm->bind($request);
-
-        if ($editForm->isValid()) {
+        
+        if ($entity) {
+           
             $em->persist($entity);
             $em->flush();
+        }else{
+            $result=false;
+            $msg="contacto no encontrado para el postulante";
 
-            return $this->redirect($this->generateUrl('postulantecontacto_edit', array('id' => $id)));
         }
-
         return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+            'result' => "{\"success\":\"$result\",message:\"$msg\"}"
+
         );
+
+       
     }
     /**
      * Deletes a PostulanteContacto entity.
      *
-     * @Route("/{id}", name="postulantecontacto_delete")
+     * @Route("/{id}", name="_admin_postulantecontacto_delete", options={"expose"=true})
      * @Method("DELETE")
+     * @Template("AppWebBundle:Default:result.json.twig")
      */
     public function deleteAction(Request $request, $id)
     {
-        $form = $this->createDeleteForm($id);
-        $form->bind($request);
-
-        if ($form->isValid()) {
+        
+            $msg="Se elimino el registro satisfactoriamente";
+            $result=true;
             $em = $this->getDoctrine()->getManager();
+            
             $entity = $em->getRepository('AppWebBundle:PostulanteContacto')->find($id);
-
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find PostulanteContacto entity.');
+            if($entity)
+            {
+                $em->remove($entity);
+                $em->flush();
+            
+            }else{
+                $msg="No se encontro el registro"; 
+                $result=false;
             }
+            return array(
+            'result' => "{\"success\":\"$result\",message:\"$msg\"}"
 
-            $em->remove($entity);
-            $em->flush();
-        }
-
-        return $this->redirect($this->generateUrl('postulantecontacto'));
+            );
     }
 
-    /**
-     * Creates a form to delete a PostulanteContacto entity by id.
-     *
-     * @param mixed $id The entity id
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createDeleteForm($id)
-    {
-        return $this->createFormBuilder(array('id' => $id))
-            ->add('id', 'hidden')
-            ->getForm()
-        ;
-    }
+   
 }

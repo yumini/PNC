@@ -72,6 +72,9 @@ OptionButton.Contactos=function(){
      this.routeList='_admin_postulantecontacto';
      this.routeNew='_admin_postulantecontacto_new';
      this.routeSave='_admin_postulantecontacto_save';
+     this.routeEdit='_admin_postulantecontacto_edit';
+     this.routeUpdate='_admin_postulantecontacto_update';
+     this.routeDelete='_admin_postulantecontacto_delete';
 };
 
 OptionButton.Contactos.prototype={
@@ -126,24 +129,96 @@ OptionButton.Contactos.prototype={
                     }
             });
         
+    },
+    Edit:function(id){
+        this.IdEntity=id;
+        this.Window=new BootstrapWindow({id:"winForm",title:"Editar Contacto"});
+        this.Window.setWidth(600);
+        this.Window.setHeight(360);
+        var url=Routing.generate(this.routeEdit,{id:id});
+        this.Window.Load(url,"");
+        this.Window.Show();
+        var parent=this;
+        this.Window.AddButton('btn-contacto-cancel',{
+            label:'Cancelar',
+            'class':'btn-default',
+            fn:function(){
+                parent.Window.Hide();
+            }
+            
+        })
+       
+        this.Window.AddButton('btn-contacto-save',{
+            label:'Grabar',
+            'class':'btn-success',
+            fn:function(){
+                parent.Update();               
+                parent.Window.Hide();
+            }
+        });
+    },
+    Update:function(){
+            console.log("actualizando contacto con id:"+this.IdEntity);
+            var parent=this;
+            var url=Routing.generate(this.routeUpdate,{id:this.IdEntity});
+            params = $('#myform').serializeObject();
+            var nodes = $('#tree').tree('getChecked');
+            var s = '';
+            for(var i=0; i<nodes.length; i++){
+                if (s != '') s += ',';
+                s += nodes[i].id;
+            }
+            params.perfil=s;           
+            $.ajax({
+                    type:'POST',
+                    url:url,
+                    data:params,
+                    dataType:"html",
+                    success:function(datos){
+                            new OptionButton.Contactos().Refresh(); 
+                    },
+                    error:function(objeto, quepaso, otroobj){
+
+                    }
+            });           
+    },
+    Delete:function(id){
+        this.IdEntity=id;
+        if(confirm("Desea eliminar el contacto seleccionado?")){
+             var url=Routing.generate(this.routeDelete,{id:this.IdEntity});
+             $.ajax({
+                    type:'DELETE',
+                    url:url,
+                    dataType:"html",
+                    success:function(datos){
+                            
+                            new OptionButton.Contactos().Refresh(); 
+                    },
+                    error:function(objeto, quepaso, otroobj){
+
+                    }
+            }); 
+        }
     }
 };
 //al leer el documento
 $(document).ready(function() {
   
-  console.log("se cargo el perfil...")
-  $("#btnEdit").click(function(){
-  	var id=$(this).attr("data-id"); 
-  	console.log("el id es:"+id);
-    new OptionButton.Perfil().Edit(id);   
-  });
+    $("#btnEdit").click(function(){
+      	var id=$(this).attr("data-id"); 
+      	console.log("el id es:"+id);
+        new OptionButton.Perfil().Edit(id);   
+    });
 
 
     $("#btnContactoNew").click(function(){
-    var id=$(this).attr("data-id"); 
-    console.log("el id es:"+id);
-    new OptionButton.Contactos().New(id);   
-  });
-   new OptionButton.Contactos().Refresh();   
+        var id=$(this).attr("data-id"); 
+        console.log("el id es:"+id);
+        new OptionButton.Contactos().New(id);   
+    });
+    
+    new OptionButton.Contactos().Refresh(); 
+
+  
   
 });

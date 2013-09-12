@@ -1,19 +1,15 @@
 {% block ScriptHead %}
   <script src="{{ asset('js/pages/Postulante/perfil.js') }}"></script> 
 {% endblock %}
-<ol class="breadcrumb" style="font-size:12px;">
+<ol class="breadcrumb" style="font-size:12px;margin-bottom:2px;">
   <li><a href="#">Inicio</a></li>
   
   <li class="active">Mis Datos Personales</li>
 </ol>
-<div class="row" style="margin: 5px;">
+<div class="row">
     <div class="col-lg-4">
 
-          <h3>
-          
-          	Datos de Perfil
-          	
-          </h3>
+          <h3 style="margin-top:4px;">Datos de Perfil</h3>
       <div class="well  well-sm" style="font-size:12px;">
       	<h4>
       			<span class="glyphicon glyphicon-user"></span>
@@ -47,10 +43,13 @@
           	<div class="col-md-7"><a href="http://{{ entity.web|default('#') }}" target="_blank">{{ entity.web|default('-') }}</a></div>
           </div>
       </div>
+      <h3 >Categorias del Postulante</h3>
+      <div class="well  well-sm" style="font-size:12px;">
+        categorias...
+      </div>  
   </div>
   <div class="col-lg-8"  >
-  	<h3>
-  		Datos de Contacto
+  	<h3 style="margin-top:4px;">Datos de Contacto
   		<span style="float:right;"><a id="btnContactoNew" href="#" class="btn btn-info" style="font-size:12px;"><span class="glyphicon glyphicon-plus"></span></a></span>
   	</h3>
 <div id="containerContactos">
