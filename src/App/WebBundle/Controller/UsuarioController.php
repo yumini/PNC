@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use App\WebBundle\Entity\Usuario;
 use App\WebBundle\Entity\Postulante;
+use App\WebBundle\Entity\Evaluador;
 use App\WebBundle\Form\UsuarioType;
 
 /**

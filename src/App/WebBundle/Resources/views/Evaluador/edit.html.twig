@@ -1,28 +1,136 @@
-{% extends '::base.html.twig' %}
-
-{% block body -%}
-    <h1>Evaluador edit</h1>
-
-    <form action="{{ path('evaluador_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(edit_form) }}>
+    <form id="myPerfilform" method="post" {{ form_enctype(form) }}>
         <input type="hidden" name="_method" value="PUT" />
-        {{ form_widget(edit_form) }}
-        <p>
-            <button type="submit">Edit</button>
-        </p>
+        <ul class="nav nav-tabs" style="font-size:11px;">
+            <li class="active"><a href="#conc-tab-1" data-toggle="tab">Datos Generales</a></li>
+            <li><a href="#conc-tab-2" data-toggle="tab">Trabajo</a></li>
+            <li><a href="#conc-tab-3" data-toggle="tab">Domicilio</a></li>
+            <li><a href="#conc-tab-4" data-toggle="tab">Disponibilidad</a></li>
+  
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane active" id="conc-tab-1">
+            <div class="row">
+                <div class="col-lg-12">
+                <label class="control-label">Nombres</label><br/>
+                {{form_widget(form.nombres)}}
+                </div>
+           
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                <label class="control-label">Apellidos</label><br/>
+                {{form_widget(form.apellidos)}}
+                </div>
+           </div>
+            <div class="row">
+             <div class="col-lg-6">
+                <label class="control-label">Sexo:</label><br/>
+                {{form_widget(form.evaluadorsexo)}}
+             </div>
+            <div class="col-lg-6">
+                <label class="control-label">Numero Documento</label><br/>
+                {{form_widget(form.numdoc)}}
+            </div>
+            </div> 
+            <div class="row">
+                <div class="col-lg-12">
+                <label class="control-label">Profesión</label><br/>
+                {{form_widget(form.profesion)}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                <label class="control-label">Especialización</label><br/>
+                {{form_widget(form.especializacion)}}
+                </div>
+           </div>        
+           
+          </div>
+       
+        <div class="tab-pane" id="conc-tab-2">
+        <div class="row">
+            <div class="col-lg-12">
+                <label class="control-label">Empresa</label>
+                {{form_widget(form.empresa)}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <label class="control-label">Cargo</label>
+                {{form_widget(form.cargo)}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <label class="control-label">Dirección</label>
+                {{form_widget(form.direccionempresa)}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <label class="control-label">Distrito Empresa</label>
+                {{form_widget(form.distritoemp)}}
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-lg-6">
+                <label class="control-label">Telefono Empresa</label>
+                {{form_widget(form.telefonoemp)}}
+            </div>
+            <div class="col-lg-6">
+                <label class="control-label">Fax Empresa</label>
+                {{form_widget(form.faxemp)}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <label class="control-label">Email Empresa</label>
+                {{form_widget(form.emailemp)}}
+            </div>
+        </div>
+     </div>
+        <div class="tab-pane" id="conc-tab-3">
+            <div class="row">
+                <div class="col-lg-12">
+                <label class="control-label">Dirección</label><br/>
+                {{form_widget(form.direccion)}}
+                </div>
+           
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                <label class="control-label">Distrito</label><br/>
+                {{form_widget(form.distrito)}}
+                </div>
+           
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                <label class="control-label">Telefono</label><br/>
+                {{form_widget(form.telefono)}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                <label class="control-label">Celular</label><br/>
+                {{form_widget(form.celular)}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                <label class="control-label">Email</label><br>
+                1.{{form_widget(form.email1)}}<br>
+                2.{{form_widget(form.email2)}}
+                </div>
+            </div>
+        </div>
+          <div class="tab-pane" id="conc-tab-4">
+               <div class="col-lg-12">
+                <label class="control-label">Tengo Disponibilidad para Viajar</label>
+                {{form_widget(form.disponibleviaje)}}
+                </div>
+              
+          </div>          
+         </div>
     </form>
-
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('evaluador') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>
-        <form action="{{ path('evaluador_delete', { 'id': entity.id }) }}" method="post">
-            <input type="hidden" name="_method" value="DELETE" />
-            {{ form_widget(delete_form) }}
-            <button type="submit">Delete</button>
-        </form>
-    </li>
-</ul>
-{% endblock %}

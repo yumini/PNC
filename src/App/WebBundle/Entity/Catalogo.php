@@ -85,6 +85,11 @@ class Catalogo
     */
     protected $tcacatalogos;
     
+    /**
+    * @ORM\OneToMany(targetEntity="Evaluador", mappedBy="catalogo")
+    */
+    protected $tsxcatalogos;
+    
      public function __construct()
     {
         $this->postulantecatalogos = new \Doctrine\Common\Collections\ArrayCollection();
@@ -92,6 +97,7 @@ class Catalogo
         $this->tvicatalogos = new \Doctrine\Common\Collections\ArrayCollection();
         $this->tcccatalogos = new \Doctrine\Common\Collections\ArrayCollection();
         $this->tcacatalogos = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->tsxcatalogos = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
     /**
@@ -382,5 +388,38 @@ class Catalogo
     public function getTcacatalogos()
     {
         return $this->tcacatalogos;
+    }
+
+    /**
+     * Add tsxcatalogos
+     *
+     * @param \App\WebBundle\Entity\Evaluador $tsxcatalogos
+     * @return Catalogo
+     */
+    public function addTsxcatalogo(\App\WebBundle\Entity\Evaluador $tsxcatalogos)
+    {
+        $this->tsxcatalogos[] = $tsxcatalogos;
+    
+        return $this;
+    }
+
+    /**
+     * Remove tsxcatalogos
+     *
+     * @param \App\WebBundle\Entity\Evaluador $tsxcatalogos
+     */
+    public function removeTsxcatalogo(\App\WebBundle\Entity\Evaluador $tsxcatalogos)
+    {
+        $this->tsxcatalogos->removeElement($tsxcatalogos);
+    }
+
+    /**
+     * Get tsxcatalogos
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTsxcatalogos()
+    {
+        return $this->tsxcatalogos;
     }
 }

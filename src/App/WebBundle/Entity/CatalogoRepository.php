@@ -39,4 +39,10 @@ class CatalogoRepository extends EntityRepository
     public function getTipoContactosQueryBuilder(){
         return $this->getCatalogosQueryBuilder("TCP");
     }
+    public function getTipoDocumentoIdentidadQueryBuilder(){
+        return $this->getCatalogosQueryBuilder("TDI");
+    }
+    public function getTipoSexoQueryBuilder(){
+        return $this->getCatalogosQueryBuilder("TSX");
+    }
 }

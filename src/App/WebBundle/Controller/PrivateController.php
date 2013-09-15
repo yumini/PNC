@@ -60,6 +60,19 @@ class PrivateController extends Controller {
             );
     }
 
+    /**
+     * @Route("/inicioEvaluador", name="_admin_inicio_evaluador", options={"expose"=true})
+     * @Template()
+     */
+    public function inicioEvaluadorAction()
+    {
+      
+        $user = $this->container->get("security.context")->getToken()->getUser();
+        return array(
+            'title' => $this->title,
+            'user' => $user
+            );
+    }
 }
 
 ?>

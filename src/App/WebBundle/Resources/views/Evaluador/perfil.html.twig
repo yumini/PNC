@@ -1,0 +1,76 @@
+{% block ScriptHead %}
+  <script src="{{ asset('js/pages/Evaluador/perfil.js') }}"></script> 
+{% endblock %}
+<ol class="breadcrumb" style="font-size:12px;margin-bottom:2px;">
+  <li><a href="#">Inicio</a></li>
+  
+  <li class="active">Mis Datos Personales</li>
+</ol>
+<div class="row">
+    <div class="col-lg-4">
+
+          <h3 style="margin-top:4px;">Datos de Perfil</h3>
+      <div class="well  well-sm" style="font-size:12px;">
+      	<h4>
+      	    <span class="glyphicon glyphicon-user"></span>
+      		{{entity.apellidos ~ " " ~ entity.nombres}}
+      	<span style="float:right;">
+          <a id="btnEdit" href="javascript:void(0)" class="btn btn-info" data-id="{{ entity.id }}" style="font-size:12px;" >
+            <span class="glyphicon glyphicon-edit"></span>
+          </a>
+        </span>
+      	
+         </h4>
+         
+          <div class="row">
+          	<div class="col-md-5"><label>DNI:</label></div>
+          	<div class="col-md-7">{{ entity.numdoc|default('-') }}</div>
+          </div>
+          <div class="row">
+          	<div class="col-md-5"><label>Profesión:</label></div>
+          	<div class="col-md-7">{{ entity.profesion|default('-') }}</div>
+          </div>
+          <div class="row">
+          	<div class="col-md-5"><label>Dirección:</label></div>
+          	<div class="col-md-7">{{ entity.direccion|default('-') }}</div>
+          </div>
+          <div class="row">
+          	<div class="col-md-5"><label>Telefono:</label></div>
+          	<div class="col-md-7">{{ entity.telefono|default('-') }}</div>
+          </div>
+          <div class="row">
+          	<div class="col-md-5"><label>Celular:</label></div>
+          	<div class="col-md-7">{{ entity.celular|default('-') }}</div>
+          </div>
+          <div class="row">
+          	<div class="col-md-5"><label>Email 1:</label></div>
+          	<div class="col-md-7">{{ entity.email1|default('-') }}</a></div>
+          </div>
+          <div class="row">
+          	<div class="col-md-5"><label>Email 2:</label></div>
+          	<div class="col-md-7">{{ entity.email2|default('-') }}</a></div>
+          </div>
+          <div class="row">
+          	<div class="col-md-5"><label>Empresa:</label></div>
+          	<div class="col-md-7">{{ entity.empresa|default('-') }}</a></div>
+          </div>
+          <div class="row">
+          	<div class="col-md-5"><label>Cargo:</label></div>
+          	<div class="col-md-7">{{ entity.cargo|default('-') }}</a></div>
+          </div>       
+      </div>
+      
+  </div>
+  <div class="col-lg-8"  >
+  	<h3 style="margin-top:4px;">Conflictos de Interes
+  		<span style="float:right;"><a id="btnConflictoNew" href="#" class="btn btn-info" style="font-size:12px;"><span class="glyphicon glyphicon-plus"></span></a></span>
+  	</h3>
+<div id="containerConflicto">
+</div>
+  	
+      
+  </div>
+ 
+</div>
+<div id="winForm"></div>
+<input type="hidden" id="hdnEntity_id" value="{{entity.id|default('-') }}"/>

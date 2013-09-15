@@ -12,4 +12,15 @@ use Doctrine\ORM\EntityRepository;
  */
 class ConflictoInteresEvaluadorRepository extends EntityRepository
 {
+    public function FindByConflicto($idevaluador){
+        $em=$this->getEntityManager();
+        $dql= "SELECT ci FROM AppWebBundle:ConflictoInteresEvaluador ci 
+                JOIN ci.evaluador ev WHERE ev.id=:id";
+        $query=$em->createQuery($dql)->setParameter('id', $idevaluador);
+        try {
+                return $query->getResult();
+        } catch (\Doctrine\ORM\NoResultException $e) {
+                return null;
+        }
+    }
 }
