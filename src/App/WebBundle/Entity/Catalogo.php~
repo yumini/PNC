@@ -386,27 +386,4 @@ class Catalogo
     {
         return $this->tcacatalogos;
     }
-
-    /**
-     * Set codigo
-     *
-     * @param integer $codigo
-     * @return Catalogo
-     */
-    public function setCodigo($codigo)
-    {
-        $this->codigo = $codigo;
-    
-        return $this;
-    }
-
-    /**
-     * Get codigo
-     *
-     * @return integer 
-     */
-    public function getCodigo()
-    {
-        return $this->codigo;
-    }
 }

@@ -23,6 +23,18 @@ class CatalogoRepository extends EntityRepository
                 return null;
         }
     }
+    public function getCatalogoByCodigo($catalogo,$codigo){
+        $em=$this->getEntityManager();
+        $dql= "SELECT c FROM AppWebBundle:Catalogo c WHERE c.codcatalogo=:codcatalogo and c.codigo=:codigo";
+        $query=$em->createQuery($dql)
+                ->setParameter('codcatalogo', $catalogo)
+                ->setParameter('codigo', $codigo);
+        try {
+                return $query->getSingleResult();
+        } catch (\Doctrine\ORM\NoResultException $e) {
+                return null;
+        }
+    }
     public function getCatalogosQueryBuilder($codcat){
         return $this->createQueryBuilder('c')->where('c.codcatalogo= ?1')->setParameter(1,$codcat);
         
@@ -38,5 +50,8 @@ class CatalogoRepository extends EntityRepository
     }
     public function getTipoContactosQueryBuilder(){
         return $this->getCatalogosQueryBuilder("TCP");
+    }
+    public function getTipoCriteriosQueryBuilder(){
+        return $this->getCatalogosQueryBuilder("TIPOCRITERIO");
     }
 }

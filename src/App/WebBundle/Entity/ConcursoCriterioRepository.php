@@ -12,4 +12,30 @@ use Doctrine\ORM\EntityRepository;
  */
 class ConcursoCriterioRepository extends EntityRepository
 {
+	public function FindByConcurso($idConcurso){
+        $em=$this->getEntityManager();
+        $dql= "SELECT cp FROM AppWebBundle:ConcursoCriterio cp 
+                JOIN cp.concurso c WHERE c.id=:id";
+        $query=$em->createQuery($dql)->setParameter('id', $idConcurso);
+        try {
+                return $query->getResult();
+        } catch (\Doctrine\ORM\NoResultException $e) {
+                return null;
+        }
+    }
+     public function FindByParentId($idConcurso,$idpadre){
+        $em=$this->getEntityManager();
+        $dql= "SELECT cp FROM AppWebBundle:ConcursoCriterio cp 
+                JOIN cp.concurso c 
+                WHERE c.id=:idconcurso
+                AND cp.idpadre=:idpadre";
+        $query=$em->createQuery($dql)
+                ->setParameter('idconcurso', $idConcurso)
+                ->setParameter('idpadre', $idpadre);
+        try {
+                return $query->getResult();
+        } catch (\Doctrine\ORM\NoResultException $e) {
+                return null;
+        }
+    }
 }

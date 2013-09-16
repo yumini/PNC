@@ -2,22 +2,22 @@ var myWindow=null;
 
 
 var OptionButton=function(){
-    this.routeList='_admin_concurso';
-    this.routeNew='_admin_concurso_new';
-    this.routeSave='_admin_concurso_save';
-    this.routeEdit='_admin_concurso_edit';
+    //this.routeList='_admin_concursocriterio_new';
+    this.routeNew='_admin_concursocriterio_new';
+    this.routeSave='_admin_concursocriterio_save';
+    /*this.routeEdit='_admin_concurso_edit';
     this.routeUpdate='_admin_concurso_update';
     this.routeDelete='_admin_concurso_delete';
-    this.routeCriterios="_admin_concurso_criterio";
+*/
     
 }
 OptionButton.prototype={
     New:function(){
-
-        this.Window=new BootstrapWindow({id:"winForm",title:"Nuevo Concurso"});
-        this.Window.setWidth(1000);
+    	var idConcurso=$("#idConcurso").val();
+        this.Window=new BootstrapWindow({id:"winForm",title:"Nuevo Criterio"});
+        this.Window.setWidth(700);
         this.Window.setHeight(300);
-        var url=Routing.generate(this.routeNew);
+        var url=Routing.generate(this.routeNew,{id:idConcurso});
         this.Window.Load(url,"");
         this.Window.Show();
          var parent=this;
@@ -43,7 +43,7 @@ OptionButton.prototype={
             var parent=this;
             var url=Routing.generate(this.routeSave);
             params = $('#myform').serializeObject();
-            console.log(params);
+            params.idConcurso=$("#idConcurso").val();  
             
             $.ajax({
                     type:'POST',
@@ -61,7 +61,7 @@ OptionButton.prototype={
         
     },
     Edit:function(id){
-        this.IdEntity=id;
+       /* this.IdEntity=id;
         this.Window=new BootstrapWindow({id:"winForm",title:"Editar Concurso"});
         this.Window.setWidth(1000);
         this.Window.setHeight(300);
@@ -86,8 +86,10 @@ OptionButton.prototype={
                 parent.Window.Hide();
             }
         });
+*/
     },
     Update:function(){
+    	/*
             console.log("actualizando perfil con id:"+this.IdEntity);
             var parent=this;
             var url=Routing.generate(this.routeUpdate,{id:this.IdEntity});
@@ -111,9 +113,10 @@ OptionButton.prototype={
                     error:function(objeto, quepaso, otroobj){
 
                     }
-            });           
+            });     */      
     },
     Delete:function(id){
+    	/*
         this.IdEntity=id;
         if(confirm("Desea eliminar el perfil seleccionado?")){
              var url=Routing.generate(this.routeDelete,{id:this.IdEntity});
@@ -130,47 +133,60 @@ OptionButton.prototype={
                     }
             }); 
         }
+        */
     },
     Refresh:function(){
+    	/*
         var url=Routing.generate(this.routeList);
         new jAjax().Load(url,'main-body','get','','');
-    },
-    Criterios:function(id){
-         var url=Routing.generate(this.routeCriterios,{id:id});
-         $.ajax({
-                    type:'GET',
-                    url:url,
-                    dataType:"html",
-                    success:function(datos){
-                           $("#main-body").html(datos);
-                    },
-                    error:function(objeto, quepaso, otroobj){
-
-                    }
-            }); 
+        */
     }
 }
 
 
-//al leer el documento
+
 $(document).ready(function() {
-  
-  
-  $("#btnNew").click(function(){
-    console.log("nuevo concurso");
-      new OptionButton().New();   
-  });
-  
-  $(".row-edit").click(function(){
-      var id=$(this).attr("data-id"); 
-      new OptionButton().Edit(id);  
-  });
-    $(".row-delete").click(function(){
-      var id=$(this).attr("data-id"); 
-      new OptionButton().Delete(id);  
-    });
-    $(".row-criterios").click(function(){
-      var id=$(this).attr("data-id"); 
-      new OptionButton().Criterios(id);  
-    });
+
+	var fnOpciones=function(id){
+		var options=""
+		if (id){
+	    	options+='<div style="width:100%">';
+	    	options+='<a href="#" class="row-show" data-id="'+id+'" title="Ver Detalle"><i class="glyphicon glyphicon-search"> </i></a> ';
+	        options+='<a href="#" class="row-edit" data-id="'+id+'" title="Editar"><i class="glyphicon glyphicon-pencil"> </i></a> ';
+	        options+='<a href="#" class="row-add" data-id="'+id+'"><i class="glyphicon glyphicon-plus" title="Criterios"> </i></a> ';
+	        options+='<a href="#" class="row-delete" data-id="'+id+'" title="Eliminar"><i class="glyphicon glyphicon-trash"> </i></a> ';
+	        options+='</div>';
+	        return options;
+	    } else {
+	        return '';
+	    }
+	}
+	
+	$('#gridCriterios').treegrid({
+	
+    url:Routing.generate("_admin_concurso_criterio_json",{id:$("#idConcurso").val()}),
+    idField:'id',
+    treeField:'descripcion',
+    method: 'get',
+    columns:[[
+        {title:'Código',field:'codigo',width:40},
+        {field:'descripcion',title:'Descripción',align:'left'},
+        {field:'tipoArbol',title:'Tipo',width:100},
+        {field:'puntaje',title:'Puntaje',width:80},
+        {field:'id',title:'Opciones',width:60,formatter:fnOpciones,align:'center'}
+    ]],
+    onLoadSuccess:function(){
+    	$("#grid").children('div').eq(0).css("width","100%");
+    	$("#grid").children('div').eq(0).children('div').eq(0).css("width","100%");
+    	$(".datagrid-btable").width("100%");
+    	$(".datagrid-header-inner").width("100%");
+    	$(".datagrid-htable").width("100%");
+    }
+	});
+
+	$('#btnNewCriterio').click(function(){
+		new OptionButton().New();
+	});
+
 });
+

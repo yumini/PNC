@@ -1,0 +1,64 @@
+{% block ScriptHead %}
+    <script src="{{ asset('js/pages/ConcursoCriterio/index.js') }}"></script> 
+{% endblock %}
+<input id="idConcurso" type="hidden" value="{{concurso.id}}" />
+<ol class="breadcrumb" style="font-size:12px;margin-bottom:2px;">
+  <li><a href="#">Inicio</a></li>
+   <li><a href="#">Concurso</a></li>
+  <li class="active">Criterios</li>
+</ol>
+<div class="panel panel-default">
+  <div class="panel-heading panel-primary ">
+    <nav class="navbar navbar-default" role="navigation" style="z-index:0">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex2-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">{{ title_list }}: {{concurso.nombre}}</a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex2-collapse">
+          <button id="btnNewCriterio" type="button" class="btn btn-success navbar-btn pull-right"> <span class="glyphicon glyphicon-plus"> </span> Nuevo</button>
+        </div>
+    </nav>
+  </div>
+  <div class="panel-body">
+    
+       <div class="row">
+        <div class="col-md-4">
+<label>Concurso:</label><br/>
+{{concurso.nombre}}
+        </div>
+        <div class="col-md-1">
+<label>Año:</label><br/>
+{{concurso.anio}}
+        </div>
+         <div class="col-md-2">
+<label>Inicio del Proceso:</label><br/>
+{% if concurso.fechaInicio %}{{ concurso.fechaInicio|date('d/m/Y') }}{% endif %}
+         </div>
+          <div class="col-md-2">
+<label>Fin del Proceso:</label><br/>
+{% if concurso.fechaFin %}{{ concurso.fechaFin|date('d/m/Y') }}{% endif %}
+          </div>
+           <div class="col-md-3">
+
+           </div>
+      
+    </div>
+    <div id="grid" style="width:100%">
+     <div id="gridCriterios"  style="height:400px;" >
+        
+    </div>
+   </div>
+  </div>
+
+
+
+</div>
+  
+
+{% block windows %}
+    <div id="winForm"></div>
+{% endblock %}

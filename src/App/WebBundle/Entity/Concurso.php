@@ -24,7 +24,7 @@ class Concurso
     /**
      * @var string
      *
-     * @ORM\Column(name="nombreconcurso", type="string", length=30)
+     * @ORM\Column(name="nombreconcurso", type="string", length=100)
      */
     private $nombre;
 
@@ -182,8 +182,16 @@ class Concurso
      */
     private $prefijo;
 
-  
-
+      /**
+    * @ORM\OneToMany(targetEntity="ConcursoCriterio", mappedBy="concurso")
+    */
+    protected $criterios;
+    
+    public function __construct()
+    {
+        $this->criterios = new \Doctrine\Common\Collections\ArrayCollection();
+       
+    }
     /**
      * Get id
      *
@@ -721,5 +729,38 @@ class Concurso
     public function getPrefijo()
     {
         return $this->prefijo;
+    }
+
+    /**
+     * Add criterios
+     *
+     * @param \App\WebBundle\Entity\ConcursoCriterio $criterios
+     * @return Concurso
+     */
+    public function addCriterio(\App\WebBundle\Entity\ConcursoCriterio $criterios)
+    {
+        $this->criterios[] = $criterios;
+    
+        return $this;
+    }
+
+    /**
+     * Remove criterios
+     *
+     * @param \App\WebBundle\Entity\ConcursoCriterio $criterios
+     */
+    public function removeCriterio(\App\WebBundle\Entity\ConcursoCriterio $criterios)
+    {
+        $this->criterios->removeElement($criterios);
+    }
+
+    /**
+     * Get criterios
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getCriterios()
+    {
+        return $this->criterios;
     }
 }

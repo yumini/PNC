@@ -41,8 +41,7 @@ OptionButton.Perfil.prototype={
             var parent=this;
             var url=Routing.generate(this.routeUpdate,{id:this.IdEntity});
             params = $('#myPerfilform').serializeObject();
-            var nodes = $('#tree').tree('getChecked');
-            var s = '';
+           
                     
             $.ajax({
                     type:'PUT',

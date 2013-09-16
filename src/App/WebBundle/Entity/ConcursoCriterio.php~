@@ -24,9 +24,9 @@ class ConcursoCriterio
     /**
      * @var integer
      *
-     * @ORM\Column(name="idpadre", type="integer")
+     * @ORM\Column(name="ipdadre", type="integer")
      */
-    private $idpadre;
+    private $ipdadre;
 
     /**
      * @var string
@@ -113,26 +113,26 @@ class ConcursoCriterio
     }
 
     /**
-     * Set idpadre
+     * Set ipdadre
      *
-     * @param integer $idpadre
+     * @param integer $ipdadre
      * @return ConcursoCriterio
      */
-    public function setidpadre($idpadre)
+    public function setIpdadre($ipdadre)
     {
-        $this->idpadre = $idpadre;
+        $this->ipdadre = $ipdadre;
     
         return $this;
     }
 
     /**
-     * Get idpadre
+     * Get ipdadre
      *
      * @return integer 
      */
-    public function getidpadre()
+    public function getIpdadre()
     {
-        return $this->idpadre;
+        return $this->ipdadre;
     }
 
     /**
@@ -363,28 +363,5 @@ class ConcursoCriterio
     public function getTipoArbolCriterio()
     {
         return $this->tipoArbolCriterio;
-    }
-
-    /**
-     * Set concurso
-     *
-     * @param \App\WebBundle\Entity\Concurso $concurso
-     * @return ConcursoCriterio
-     */
-    public function setConcurso(\App\WebBundle\Entity\Concurso $concurso = null)
-    {
-        $this->concurso = $concurso;
-    
-        return $this;
-    }
-
-    /**
-     * Get concurso
-     *
-     * @return \App\WebBundle\Entity\Concurso 
-     */
-    public function getConcurso()
-    {
-        return $this->concurso;
     }
 }
