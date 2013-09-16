@@ -61,6 +61,12 @@ class ConflictoInteresEvaluador
     * @ORM\JoinColumn(name="tipovinculointeres_id", referencedColumnName="id")
     */
     protected $tipoVinculo;
+    
+    /**
+    * @ORM\ManyToOne(targetEntity="Evaluador", inversedBy="evaluadores")
+    * @ORM\JoinColumn(name="evaluador_id", referencedColumnName="id")
+    */
+    private $evaluador;
 
 
     /**
@@ -209,5 +215,28 @@ class ConflictoInteresEvaluador
     public function getTipoVinculo()
     {
         return $this->tipoVinculo;
+    }
+
+    /**
+     * Set evaluador
+     *
+     * @param \App\WebBundle\Entity\Evaluador $evaluador
+     * @return ConflictoInteresEvaluador
+     */
+    public function setEvaluador(\App\WebBundle\Entity\Evaluador $evaluador = null)
+    {
+        $this->evaluador = $evaluador;
+    
+        return $this;
+    }
+
+    /**
+     * Get evaluador
+     *
+     * @return \App\WebBundle\Entity\Evaluador 
+     */
+    public function getEvaluador()
+    {
+        return $this->evaluador;
     }
 }

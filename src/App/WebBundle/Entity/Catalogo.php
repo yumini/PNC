@@ -51,7 +51,6 @@ class Catalogo
 
     /**
      * @var string
-     *
      * @ORM\Column(name="abreviatura", type="string", length=250 , nullable=true)
      */
     private $abreviatura;
@@ -88,6 +87,11 @@ class Catalogo
     */
     protected $tcacatalogos;
     
+    /**
+    * @ORM\OneToMany(targetEntity="Evaluador", mappedBy="catalogo")
+    */
+    protected $tsxcatalogos;
+    
      public function __construct()
     {
         $this->postulantecatalogos = new \Doctrine\Common\Collections\ArrayCollection();
@@ -95,8 +99,11 @@ class Catalogo
         $this->tvicatalogos = new \Doctrine\Common\Collections\ArrayCollection();
         $this->tcccatalogos = new \Doctrine\Common\Collections\ArrayCollection();
         $this->tcacatalogos = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->tsxcatalogos = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
+   
+
     /**
      * Get id
      *
@@ -105,6 +112,29 @@ class Catalogo
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set codigo
+     *
+     * @param integer $codigo
+     * @return Catalogo
+     */
+    public function setCodigo($codigo)
+    {
+        $this->codigo = $codigo;
+    
+        return $this;
+    }
+
+    /**
+     * Get codigo
+     *
+     * @return integer 
+     */
+    public function getCodigo()
+    {
+        return $this->codigo;
     }
 
     /**
@@ -202,7 +232,7 @@ class Catalogo
     /**
      * Set estado
      *
-     * @param integer $estado
+     * @param boolean $estado
      * @return Catalogo
      */
     public function setEstado($estado)
@@ -215,7 +245,7 @@ class Catalogo
     /**
      * Get estado
      *
-     * @return integer 
+     * @return boolean 
      */
     public function getEstado()
     {
@@ -388,25 +418,35 @@ class Catalogo
     }
 
     /**
-     * Set codigo
+     * Add tsxcatalogos
      *
-     * @param integer $codigo
+     * @param \App\WebBundle\Entity\Evaluador $tsxcatalogos
      * @return Catalogo
      */
-    public function setCodigo($codigo)
+    public function addTsxcatalogo(\App\WebBundle\Entity\Evaluador $tsxcatalogos)
     {
-        $this->codigo = $codigo;
+        $this->tsxcatalogos[] = $tsxcatalogos;
     
         return $this;
     }
 
     /**
-     * Get codigo
+     * Remove tsxcatalogos
      *
-     * @return integer 
+     * @param \App\WebBundle\Entity\Evaluador $tsxcatalogos
      */
-    public function getCodigo()
+    public function removeTsxcatalogo(\App\WebBundle\Entity\Evaluador $tsxcatalogos)
     {
-        return $this->codigo;
+        $this->tsxcatalogos->removeElement($tsxcatalogos);
+    }
+
+    /**
+     * Get tsxcatalogos
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTsxcatalogos()
+    {
+        return $this->tsxcatalogos;
     }
 }

@@ -18,54 +18,54 @@ use App\WebBundle\Form\ConflictoInteresEvaluadorType;
 class ConflictoInteresEvaluadorController extends Controller
 {
 
-    /**
-     * Lists all ConflictoInteresEvaluador entities.
+     /**
+     * Lists all PostulanteContacto entities.
      *
-     * @Route("/", name="conflictointeresevaluador")
+     * @Route("/{id}/conflictos", name="_admin_conflictodeinteres", options={"expose"=true})
      * @Method("GET")
      * @Template()
      */
-    public function indexAction()
+    public function ConflictodeInteresAction($id)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('AppWebBundle:ConflictoInteresEvaluador')->findAll();
+        $entities = $em->getRepository('AppWebBundle:ConflictoInteresEvaluador')->FindByConflicto($id);
+        //$entities = $em->getRepository('AppWebBundle:PostulanteContacto')->findAll($id);
 
-        return array(
+         return array(
             'entities' => $entities,
         );
     }
     /**
-     * Creates a new ConflictoInteresEvaluador entity.
+     * Creates a new PostulanteContacto entity.
      *
-     * @Route("/", name="conflictointeresevaluador_create")
+     * @Route("/save", name="_admin_conflictodeinteres_save", options={"expose"=true})
      * @Method("POST")
-     * @Template("AppWebBundle:ConflictoInteresEvaluador:new.html.twig")
+     * @Template("AppWebBundle:Default:result.json.twig")
      */
     public function createAction(Request $request)
     {
         $entity  = new ConflictoInteresEvaluador();
         $form = $this->createForm(new ConflictoInteresEvaluadorType(), $entity);
         $form->bind($request);
-
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
-            $em->flush();
-
-            return $this->redirect($this->generateUrl('conflictointeresevaluador_show', array('id' => $entity->getId())));
-        }
+        $em = $this->getDoctrine()->getManager();
+        $user = $this->container->get("security.context")->getToken()->getUser();
+        $evaluador = $em->getRepository('AppWebBundle:Evaluador')->findByUser($user->getId());
+       
+        $entity->setEvaluador($evaluador);
+        
+        $em->persist($entity);
+        $em->flush();
 
         return array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
+            'result' => "{\"success\":\"true\"}"
         );
     }
 
     /**
-     * Displays a form to create a new ConflictoInteresEvaluador entity.
+     * Displays a form to create a new PostulanteContacto entity.
      *
-     * @Route("/new", name="conflictointeresevaluador_new")
+     * @Route("/new", name="_admin_conflictodeinteres_new", options={"expose"=true})
      * @Method("GET")
      * @Template()
      */
@@ -106,9 +106,9 @@ class ConflictoInteresEvaluadorController extends Controller
     }
 
     /**
-     * Displays a form to edit an existing ConflictoInteresEvaluador entity.
+     * Displays a form to edit an existing PostulanteContacto entity.
      *
-     * @Route("/{id}/edit", name="conflictointeresevaluador_edit")
+     * @Route("/{id}/edit", name="_admin_conflictodeinteres_edit", options={"expose"=true})
      * @Method("GET")
      * @Template()
      */
@@ -123,73 +123,71 @@ class ConflictoInteresEvaluadorController extends Controller
         }
 
         $editForm = $this->createForm(new ConflictoInteresEvaluadorType(), $entity);
-        $deleteForm = $this->createDeleteForm($id);
+      
 
         return array(
             'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+            'form'   => $editForm->createView()
         );
     }
 
-    /**
-     * Edits an existing ConflictoInteresEvaluador entity.
+   /**
+     * Edits an existing PostulanteContacto entity.
      *
-     * @Route("/{id}", name="conflictointeresevaluador_update")
-     * @Method("PUT")
-     * @Template("AppWebBundle:ConflictoInteresEvaluador:edit.html.twig")
+     * @Route("/{id}/update", name="_admin_conflictodeinteres_update", options={"expose"=true})
+     * @Method("POST")
+     * @Template("AppWebBundle:Default:result.json.twig")
      */
     public function updateAction(Request $request, $id)
     {
+       $msg="";
+        $result=true;       
         $em = $this->getDoctrine()->getManager();
-
         $entity = $em->getRepository('AppWebBundle:ConflictoInteresEvaluador')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find ConflictoInteresEvaluador entity.');
-        }
-
-        $deleteForm = $this->createDeleteForm($id);
         $editForm = $this->createForm(new ConflictoInteresEvaluadorType(), $entity);
         $editForm->bind($request);
-
-        if ($editForm->isValid()) {
+        
+        if ($entity) {
+           
             $em->persist($entity);
             $em->flush();
+        }else{
+            $result=false;
+            $msg="conflicto no encontrado para el evaluador";
 
-            return $this->redirect($this->generateUrl('conflictointeresevaluador_edit', array('id' => $id)));
         }
-
         return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+            'result' => "{\"success\":\"$result\",message:\"$msg\"}"
+
         );
     }
     /**
-     * Deletes a ConflictoInteresEvaluador entity.
+     * Deletes a PostulanteContacto entity.
      *
-     * @Route("/{id}", name="conflictointeresevaluador_delete")
+     * @Route("/{id}", name="_admin_conflictodeinteres_delete", options={"expose"=true})
      * @Method("DELETE")
+     * @Template("AppWebBundle:Default:result.json.twig")
      */
     public function deleteAction(Request $request, $id)
     {
-        $form = $this->createDeleteForm($id);
-        $form->bind($request);
-
-        if ($form->isValid()) {
+         $msg="Se elimino el registro satisfactoriamente";
+            $result=true;
             $em = $this->getDoctrine()->getManager();
+            
             $entity = $em->getRepository('AppWebBundle:ConflictoInteresEvaluador')->find($id);
-
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find ConflictoInteresEvaluador entity.');
+            if($entity)
+            {
+                $em->remove($entity);
+                $em->flush();
+            
+            }else{
+                $msg="No se encontro el registro"; 
+                $result=false;
             }
+            return array(
+            'result' => "{\"success\":\"$result\",message:\"$msg\"}"
 
-            $em->remove($entity);
-            $em->flush();
-        }
-
-        return $this->redirect($this->generateUrl('conflictointeresevaluador'));
+            );
     }
 
     /**

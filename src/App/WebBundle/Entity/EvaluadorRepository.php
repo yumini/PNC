@@ -12,7 +12,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class EvaluadorRepository extends EntityRepository
 {
-	public function getEvaluadores($id){
+    public function getEvaluadores($id){
         $em=$this->getEntityManager();
         $dql= "SELECT ev FROM AppWebBundle:Evaluador ev 
                 JOIN ev.grupos g
@@ -23,6 +23,20 @@ class EvaluadorRepository extends EntityRepository
                 return $query->getResult();
         } catch (\Doctrine\ORM\NoResultException $e) {
                 return null;
+        }
+    }
+    
+    public function FindByUser($idusuario){
+        $em=$this->getEntityManager();
+        $dql= "SELECT e FROM AppWebBundle:Evaluador e 
+                JOIN e.usuario u
+                WHERE u.id=:id";
+        $query=$em->createQuery($dql)
+        ->setParameter('id', $idusuario);
+        try {
+                return $query->getSingleResult();
+        } catch (\Doctrine\ORM\NoResultException $e) {
+               return null;
         }
     }
 }

@@ -1,0 +1,50 @@
+<div class="list-group">
+ {% for entity in entities %}
+<a href="#" class="list-group-item" >
+    <h4 class="list-group-item-heading">{{ entity.getTipoVinculo().nombre}}</small></h4>
+    <p class="list-group-item-text">
+		<div class="row" style="font-size:12px;">
+                            <div class="row">
+				<div class="col-lg-6">
+				<label>Razon Social:</label>
+					{{entity.razonsocial|default('-')}} <br/>
+                                </div>
+
+                                <div class="col-lg-6">
+				<label>RUC:</label>
+					{{entity.ruc|default('-')}}
+                                </div>
+                                    
+                           </div>
+                           <div class="row">
+				<div class="col-lg-6">
+				<label>Fecha Inicio:</label><br/>
+					{{entity.fecini|date("d/m/Y")}}
+                                </div>
+
+                                <div class="col-lg-6">
+				<label>Fecha Inicio:</label><br/>
+					{{entity.fecfin|date("d/m/Y")}}
+                                </div>
+                                    
+                           </div>
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <label>Detalle:</label><br/>
+					{{entity.detalle|default('-')}}
+                            </div>
+                        </div>        
+                               
+             	
+        </div>
+          				
+    </p>
+    <button type="button" class="btn btn-info btn-xs" onclick="new OptionButton.Conflictos().Edit('{{entity.id}}')"> 
+    	<span class="glyphicon glyphicon-edit"></span> Editar
+    </button>
+     <button type="button" class="btn btn-danger btn-xs" onclick="new OptionButton.Conflictos().Delete('{{entity.id}}')"> 
+     	<span class="glyphicon glyphicon-remove"></span> Eliminar
+     </button>
+  </a>
+   {% endfor %}
+  </div>

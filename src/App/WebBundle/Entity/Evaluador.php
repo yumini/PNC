@@ -31,175 +31,168 @@ class Evaluador
     /**
      * @var string
      *
-     * @ORM\Column(name="apellidos", type="string", length=250)
+     * @ORM\Column(name="apellidos", type="string", length=250, nullable=true)
      */
     private $apellidos;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="direccion", type="string", length=250)
+     * @ORM\Column(name="direccion", type="string", length=250, nullable=true)
      */
     private $direccion;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="numdoc", type="string", length=20)
+     * @ORM\Column(name="numdoc", type="string", length=20, nullable=true)
      */
     private $numdoc;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="sexo", type="string", length=1)
-     */
-    private $sexo;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="curriculum", type="string", length=20)
+     * @ORM\Column(name="curriculum", type="string", length=20, nullable=true)
      */
     private $curriculum;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="empresa", type="string", length=250)
+     * @ORM\Column(name="empresa", type="string", length=250, nullable=true)
      */
     private $empresa;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="cargo", type="string", length=250)
+     * @ORM\Column(name="cargo", type="string", length=250, nullable=true)
      */
     private $cargo;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="direccionempresa", type="string", length=250)
+     * @ORM\Column(name="direccionempresa", type="string", length=250, nullable=true)
      */
     private $direccionempresa;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="distritoemp", type="string", length=250)
+     * @ORM\Column(name="distritoemp", type="string", length=250, nullable=true)
      */
     private $distritoemp;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="telefonoemp", type="string", length=250)
+     * @ORM\Column(name="telefonoemp", type="string", length=250, nullable=true)
      */
     private $telefonoemp;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="faxemp", type="string", length=250)
+     * @ORM\Column(name="faxemp", type="string", length=250, nullable=true)
      */
     private $faxemp;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="emailemp", type="string", length=250)
+     * @ORM\Column(name="emailemp", type="string", length=250, nullable=true)
      */
     private $emailemp;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="distrito", type="string", length=250)
+     * @ORM\Column(name="distrito", type="string", length=250, nullable=true)
      */
     private $distrito;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="telefono", type="string", length=250)
+     * @ORM\Column(name="telefono", type="string", length=250, nullable=true)
      */
     private $telefono;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="celular", type="string", length=250)
+     * @ORM\Column(name="celular", type="string", length=250, nullable=true)
      */
     private $celular;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="foto", type="string", length=50)
+     * @ORM\Column(name="foto", type="string", length=50, nullable=true)
      */
     private $foto;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="profesion", type="string", length=250)
+     * @ORM\Column(name="profesion", type="string", length=250, nullable=true)
      */
     private $profesion;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="especializacion", type="string", length=250)
+     * @ORM\Column(name="especializacion", type="string", length=250, nullable=true)
      */
     private $especializacion;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="email1", type="string", length=250)
+     * @ORM\Column(name="email1", type="string", length=250, nullable=true)
      */
     private $email1;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="email2", type="string", length=250)
+     * @ORM\Column(name="email2", type="string", length=250, nullable=true)
      */
     private $email2;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="disponibleviaje", type="string", length=1)
+     * @ORM\Column(name="disponibleviaje", type="boolean", nullable=true)
      */
     private $disponibleviaje;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="disponiblereunion", type="string", length=21)
+     * @ORM\Column(name="disponiblereunion", type="boolean", nullable=true)
      */
     private $disponiblereunion;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="estadotermino", type="string", length=1)
+     * @ORM\Column(name="estadotermino", type="boolean", nullable=true)
      */
     private $estadotermino;
 
     /**
      * @var \DateTime
      * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(name="fechaCreacion", type="datetime")
+     * @ORM\Column(name="fechaCreacion", type="datetime", nullable=true)
      */
     private $fechaCreacion;
 
     /**
      * @var \DateTime
      * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(name="fechaActualizacion", type="datetime")
+     * @ORM\Column(name="fechaActualizacion", type="datetime", nullable=true)
      */
     private $fechaActualizacion;
 
@@ -209,6 +202,11 @@ class Evaluador
      * @ORM\JoinTable(name="evaluadorgrupo")
      */
     private $grupos;
+    
+    /**
+    * @ORM\OneToMany(targetEntity="Evaluador", mappedBy="conflictointeresevaluador")
+    */
+    protected $evaluadores;
 
      /**
     * @ORM\ManyToOne(targetEntity="Usuario", inversedBy="evaluadores")
@@ -216,28 +214,16 @@ class Evaluador
     */
     private $usuario;
 
+     /**
+    * @ORM\ManyToOne(targetEntity="Catalogo", inversedBy="tsxcatalogos")
+    * @ORM\JoinColumn(name="catalogo_tsx_id", referencedColumnName="id")
+    */
+    private $evaluadorsexo;
+    
     public function __construct() {
         $this->grupos = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    /**
-     * Add gruposEvaluacion
-     *
-     * @param App\WebBundle\Entity\GrupoEvaluacion $grupos
-     */
-    public function addGrupos(App\WebBundle\Entity\Perfil $grupos)
-    {
-        $this->grupos[] = $grupos;
-    }
 
-    /**
-     * Get grupos
-     *
-     * @return Doctrine\Common\Collections\Collection 
-     */
-    public function getGrupos()
-    {
-        return $this->grupos;
-    }
     /**
      * Get id
      *
@@ -338,29 +324,6 @@ class Evaluador
     public function getNumdoc()
     {
         return $this->numdoc;
-    }
-
-    /**
-     * Set sexo
-     *
-     * @param string $sexo
-     * @return Evaluador
-     */
-    public function setSexo($sexo)
-    {
-        $this->sexo = $sexo;
-    
-        return $this;
-    }
-
-    /**
-     * Get sexo
-     *
-     * @return string 
-     */
-    public function getSexo()
-    {
-        return $this->sexo;
     }
 
     /**
@@ -734,7 +697,7 @@ class Evaluador
     /**
      * Set disponibleviaje
      *
-     * @param string $disponibleviaje
+     * @param boolean $disponibleviaje
      * @return Evaluador
      */
     public function setDisponibleviaje($disponibleviaje)
@@ -747,7 +710,7 @@ class Evaluador
     /**
      * Get disponibleviaje
      *
-     * @return string 
+     * @return boolean 
      */
     public function getDisponibleviaje()
     {
@@ -757,7 +720,7 @@ class Evaluador
     /**
      * Set disponiblereunion
      *
-     * @param string $disponiblereunion
+     * @param boolean $disponiblereunion
      * @return Evaluador
      */
     public function setDisponiblereunion($disponiblereunion)
@@ -770,7 +733,7 @@ class Evaluador
     /**
      * Get disponiblereunion
      *
-     * @return string 
+     * @return boolean 
      */
     public function getDisponiblereunion()
     {
@@ -780,7 +743,7 @@ class Evaluador
     /**
      * Set estadotermino
      *
-     * @param string $estadotermino
+     * @param boolean $estadotermino
      * @return Evaluador
      */
     public function setEstadotermino($estadotermino)
@@ -793,7 +756,7 @@ class Evaluador
     /**
      * Get estadotermino
      *
-     * @return string 
+     * @return boolean 
      */
     public function getEstadotermino()
     {
@@ -845,12 +808,12 @@ class Evaluador
     {
         return $this->fechaActualizacion;
     }
-    
+
     /**
      * Add grupos
      *
      * @param \App\WebBundle\Entity\GrupoEvaluacion $grupos
-     * @return GrupoEvaluacion
+     * @return Evaluador
      */
     public function addGrupo(\App\WebBundle\Entity\GrupoEvaluacion $grupos)
     {
@@ -862,13 +825,55 @@ class Evaluador
     /**
      * Remove grupos
      *
-     * @param \App\WebBundle\Entity\Grupo $grupos
+     * @param \App\WebBundle\Entity\GrupoEvaluacion $grupos
      */
-    public function removeGrupo(\App\WebBundle\Entity\Grupo $grupos)
+    public function removeGrupo(\App\WebBundle\Entity\GrupoEvaluacion $grupos)
     {
         $this->grupos->removeElement($grupos);
     }
-   
+
+    /**
+     * Get grupos
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getGrupos()
+    {
+        return $this->grupos;
+    }
+
+    /**
+     * Add evaluadores
+     *
+     * @param \App\WebBundle\Entity\Evaluador $evaluadores
+     * @return Evaluador
+     */
+    public function addEvaluadore(\App\WebBundle\Entity\Evaluador $evaluadores)
+    {
+        $this->evaluadores[] = $evaluadores;
+    
+        return $this;
+    }
+
+    /**
+     * Remove evaluadores
+     *
+     * @param \App\WebBundle\Entity\Evaluador $evaluadores
+     */
+    public function removeEvaluadore(\App\WebBundle\Entity\Evaluador $evaluadores)
+    {
+        $this->evaluadores->removeElement($evaluadores);
+    }
+
+    /**
+     * Get evaluadores
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getEvaluadores()
+    {
+        return $this->evaluadores;
+    }
 
     /**
      * Set usuario
@@ -891,5 +896,28 @@ class Evaluador
     public function getUsuario()
     {
         return $this->usuario;
+    }
+
+    /**
+     * Set evaluadorsexo
+     *
+     * @param \App\WebBundle\Entity\Catalogo $evaluadorsexo
+     * @return Evaluador
+     */
+    public function setEvaluadorsexo(\App\WebBundle\Entity\Catalogo $evaluadorsexo = null)
+    {
+        $this->evaluadorsexo = $evaluadorsexo;
+    
+        return $this;
+    }
+
+    /**
+     * Get evaluadorsexo
+     *
+     * @return \App\WebBundle\Entity\Catalogo 
+     */
+    public function getEvaluadorsexo()
+    {
+        return $this->evaluadorsexo;
     }
 }

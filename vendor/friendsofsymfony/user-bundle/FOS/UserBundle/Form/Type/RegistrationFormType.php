@@ -33,8 +33,7 @@ class RegistrationFormType extends AbstractType
             ->add('perfil','entity', array('class'=>'App\WebBundle\Entity\Perfil', 'property'=>'nombre' ))
             ->add('tipoDocumento','entity', array('class'=>'App\WebBundle\Entity\Catalogo', 'property'=>'nombre', 
                                                    'attr' => array('class'=>'form-control input-small'),
-                                                   'query_builder' => function(\App\WebBundle\Entity\CatalogoRepository $er){return $er->createQueryBuilder('c')->where('c.codcatalogo= ?1')->setParameter(1, 'TDI');},
-//                                                    'query_builder' => function(\App\WebBundle\Entity\CatalogoRepository $er){return $er->getTipoDocumentoIdentidad();},
+                                                   'query_builder' => function(\App\WebBundle\Entity\CatalogoRepository $er){return $er->getTipoDocumentoIdentidadQueryBuilder();},
                                                   ))
             ->add('nroDocumento')
             ->add('nombres')

@@ -82,6 +82,23 @@ class EvaluadorController extends Controller
     }
 
     /**
+     * Finds and displays a Postulante entity.
+     *
+     * @Route("/perfil", name="_admin_evaluador_perfil", options={"expose"=true})
+     * @Method("GET")
+     * @Template()
+     */
+    public function perfilAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $user = $this->container->get("security.context")->getToken()->getUser();
+        $entity = $em->getRepository('AppWebBundle:Evaluador')->findByUser($user->getId());
+       
+        return array(
+            'entity'      => $entity
+        );
+    }
+    /**
      * Finds and displays a Evaluador entity.
      *
      * @Route("/{id}", name="evaluador_show")
@@ -106,10 +123,10 @@ class EvaluadorController extends Controller
         );
     }
 
-    /**
-     * Displays a form to edit an existing Evaluador entity.
+     /**
+     * Displays a form to edit an existing Postulante entity.
      *
-     * @Route("/{id}/edit", name="evaluador_edit")
+     * @Route("/{id}/edit", name="_admin_evaluador_edit", options={"expose"=true})
      * @Method("GET")
      * @Template()
      */
@@ -128,43 +145,38 @@ class EvaluadorController extends Controller
 
         return array(
             'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+            'form'   => $editForm->createView()
         );
     }
 
     /**
-     * Edits an existing Evaluador entity.
+     * Edits an existing Postulante entity.
      *
-     * @Route("/{id}", name="evaluador_update")
+     * @Route("/{id}/update", name="_admin_evaluador_update", options={"expose"=true})
      * @Method("PUT")
-     * @Template("AppWebBundle:Evaluador:edit.html.twig")
+     * @Template("AppWebBundle:Default:result.json.twig")
      */
     public function updateAction(Request $request, $id)
     {
+        $msg="";
+        $result=true;       
         $em = $this->getDoctrine()->getManager();
-
         $entity = $em->getRepository('AppWebBundle:Evaluador')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Evaluador entity.');
-        }
-
-        $deleteForm = $this->createDeleteForm($id);
         $editForm = $this->createForm(new EvaluadorType(), $entity);
         $editForm->bind($request);
-
-        if ($editForm->isValid()) {
+        
+        if ($entity) {
+           
             $em->persist($entity);
             $em->flush();
+        }else{
+            $result=false;
+            $msg="postulante no encontrado";
 
-            return $this->redirect($this->generateUrl('evaluador_edit', array('id' => $id)));
         }
-
         return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+            'result' => "{\"success\":\"$result\",\"message\":\"$msg\"}"
+
         );
     }
     /**
