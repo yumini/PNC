@@ -2,7 +2,7 @@ var myWindow=null;
 
 
 var OptionButton=function(){
-    //this.routeList='_admin_concursocriterio_new';
+    this.routeList='_admin_concurso_criterio';
     this.routeNew='_admin_concursocriterio_new';
     this.routeSave='_admin_concursocriterio_save';
     /*this.routeEdit='_admin_concurso_edit';
@@ -136,10 +136,10 @@ OptionButton.prototype={
         */
     },
     Refresh:function(){
-    	/*
-        var url=Routing.generate(this.routeList);
+    	
+        var url=Routing.generate(this.routeList,{id:$("#idConcurso").val()});
         new jAjax().Load(url,'main-body','get','','');
-        */
+        
     }
 }
 
