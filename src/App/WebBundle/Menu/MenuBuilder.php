@@ -23,7 +23,17 @@ class MenuBuilder {
     }
     public function CreateMenu($perfilid){
         $cadena="";
-        //$em = $this->getDoctrine()->getManager();
+        switch($perfilid){
+            case "1":
+                $urlHome="_admin_inicio";
+                break;
+            case "2":
+                $urlHome="_admin_inicio";
+                break;
+            case "3":
+                $urlHome="_admin_inicio_postulante";
+                break;
+        }
         $entities =  $this->em->getRepository('AppWebBundle:Menu')->findByParent($perfilid,0);
          
         $cadena.="<div class=\"navbar  navbar-inverse navbar-main\">";
@@ -34,7 +44,7 @@ class MenuBuilder {
         $cadena.=" <span class=\"icon-bar\"></span>";
         $cadena.=" <span class=\"icon-bar\"></span>";
         $cadena.="</button>";
-        $cadena.="<a href=\"#\"  class=\"navbar-brand\"><small>PNC</small></a>";
+        $cadena.="<a href=\"javascript:return false;\" onclick=\"new jAjax().Load(Routing.generate('".$urlHome."'),'main-body','get','','');return false;\"  class=\"navbar-brand\"><small>PNC</small></a>";
         $cadena.="</div>";
         $cadena.="<div class=\"navbar-collapse collapse navbar-collapse\">";
         $cadena.="<ul class=\"nav navbar-nav\">";
