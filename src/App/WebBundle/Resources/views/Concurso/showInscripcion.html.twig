@@ -1,0 +1,49 @@
+{% block ScriptHead %}
+    <script src="{{ asset('js/pages/Concurso/showInscripcion.js') }}"></script> 
+{% endblock %}
+
+<div class="row">
+	<div class="col-md-9">
+		<div class="panel panel-default">
+		
+  <div class="panel-body">
+
+  	<ol class="breadcrumb" style="font-size:12px;margin-bottom:2px;">
+  		<li><a href="#">Inicio</a></li>
+  		<li class="active">{{entity.nombre}}</li>
+	</ol>
+	<h3><b>{{entity.nombre}}</b></h3>
+  <h4>Presentacion</h4>
+   <p>
+  Año: {{entity.anio}}
+  </p>
+  <p>
+  Del {% if entity.fechaInicio %}{{ entity.fechaInicio|date('d/m/Y') }}{% endif %}
+  al {% if entity.fechaFin %}{{ entity.fechaFin|date('d/m/Y') }}{% endif %}
+  </p>
+  <p>
+  	{{entity.presentacion|raw}}
+  </p>
+   <h4>Proceso de Calificación</h4>
+	<p>
+  	{{entity.calificacion|raw}}
+  </p>
+  	</div>
+		</div>
+	</div>
+	<div class="col-md-3">
+		<div class="well">
+			<h4>Inscripción</h4>
+	<p>
+  	Deseas inscribirte en el concurso, presiona inscribirte, completa los datos de tu proyecto y participa en este concurso
+  	<p>
+  	 <button type="button" class="btn btn-success" onclick="new OptionButton().New({{entity.id}})">Inscribirme</button>
+  	</p>
+  </p>
+		</div>
+	</div>
+</div>
+
+{% block windows %}
+    <div id="winForm"></div>
+{% endblock %}

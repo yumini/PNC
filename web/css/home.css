@@ -147,16 +147,34 @@ box-shadow: none;
     text-align: center;
 }
 
-/*
-a{
+
+a.black{
 	color: #000;
 	text-decoration: none;    
 }
-a:hover{
+a.black:hover{
 	
 	color: #F90;
 	text-decoration: none;
-}*/
+}
+a.green{
+  color: #50AA38;
+  text-decoration: none;    
+}
+a.green:hover{
+  
+  color: #F90;
+  text-decoration: none;
+}
+a.red{
+  color: #FF0000;
+  text-decoration: none;    
+}
+a.red:hover{
+  
+  color: #F90;
+  text-decoration: none;
+}
 .panel-green {
   border-color: #d6e9c6;
 }

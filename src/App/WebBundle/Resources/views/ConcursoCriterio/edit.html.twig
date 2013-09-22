@@ -1,28 +1,55 @@
-{% extends '::base.html.twig' %}
 
-{% block body -%}
-    <h1>ConcursoCriterio edit</h1>
+    <form  id="myform" method="post" {{ form_enctype(form) }}>
+       
+       
+        <div class="row">
+            <div class="col-lg-6">
+                <label class="control-label">Tipo Criterio:</label><br/>
+                {{form_widget(form.tipoCriterio)}}
+            </div>
+            <div class="col-lg-3">
+                <label class="control-label">Código:</label><br/>
+                {{form_widget(form.codigo)}}
+            </div>
+             <div class="col-lg-3">
+                <label class="control-label">puntaje</label>
+                {{form_widget(form.puntaje)}}
+            </div>
+        </div>
+        
+        <div class="row">
+             <div class="col-lg-12">
+                <label class="control-label">Descripción</label><br/>
+                {{form_widget(form.descripcion)}}
+            </div>
+           
+        </div>
+       
+       <br/>
+        
+        <div class="row">
+            <div class="col-lg-12">
+               
 
-    <form action="{{ path('concursocriterio_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(edit_form) }}>
-        <input type="hidden" name="_method" value="PUT" />
-        {{ form_widget(edit_form) }}
-        <p>
-            <button type="submit">Edit</button>
-        </p>
-    </form>
+<ul class="nav nav-tabs" style="font-size:11px;">
+  <li class="active"><a href="#conc-tab-1" data-toggle="tab">Glosa</a></li>
+  <li><a href="#conc-tab-2" data-toggle="tab">Comentarios</a></li>
 
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('concursocriterio') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>
-        <form action="{{ path('concursocriterio_delete', { 'id': entity.id }) }}" method="post">
-            <input type="hidden" name="_method" value="DELETE" />
-            {{ form_widget(delete_form) }}
-            <button type="submit">Delete</button>
-        </form>
-    </li>
 </ul>
-{% endblock %}
+<div class="tab-content">
+  <div class="tab-pane active" id="conc-tab-1">
+     <br/>
+                {{form_widget(form.glosa)}}
+       
+  </div>
+  <div class="tab-pane" id="conc-tab-2">
+       <br/>
+                {{form_widget(form.comentario)}}
+  </div>
+</div>
+
+            </div>
+        </div>
+
+
+    </form>

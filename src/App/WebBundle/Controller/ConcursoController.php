@@ -18,6 +18,27 @@ use App\WebBundle\Form\ConcursoType;
 class ConcursoController extends Controller
 {
 
+     /**
+     * Lists all Concurso activos.
+     *
+     * @Route("/activos", name="_admin_concursos_activos", options={"expose"=true})
+     * @Method("GET")
+     * @Template()
+     */
+    public function activosAction()
+    {
+
+        $em = $this->getDoctrine()->getManager();
+        $page=$this->get('request')->query->get('page', 1);
+        $paginator=$this->get('knp_paginator');
+        $pagination = $em->getRepository('AppWebBundle:Concurso')->FindAllPaginator($paginator,$page,4);
+
+        return array(
+            'pagination' => $pagination,
+            'title_list'=> "Listado de Concursos",
+            'action'=> "concurso"
+        );
+    }
     /**
      * Lists all Concurso entities.
      *
@@ -103,6 +124,21 @@ class ConcursoController extends Controller
         return array(
             'entity'      => $entity,
             'delete_form' => $deleteForm->createView(),
+        );
+    }
+     /**
+     * Finds and displays a Concurso entity.
+     *
+     * @Route("/{id}/inscripcion", name="_admin_concurso_showInscripcion", options={"expose"=true})
+     * @Method("GET")
+     * @Template()
+     */
+    public function showInscripcionAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $entity = $em->getRepository('AppWebBundle:Concurso')->find($id);
+        return array(
+            'entity'      => $entity
         );
     }
 

@@ -37,12 +37,12 @@ class Usuario extends BaseUser
 
     /**
     * @ORM\ManyToOne(targetEntity="Perfil", inversedBy="usuarios")
-    * @ORM\JoinColumn(name="perfil_id", referencedColumnName="id", nullable=false)
+    * @ORM\JoinColumn(name="perfil_id", referencedColumnName="id")
     */
     protected $perfil;
 
      /**
-    * @ORM\ManyToOne(targetEntity="Catalogo", inversedBy="tdicatalogos")
+    * @ORM\ManyToOne(targetEntity="TipoDocumento", inversedBy="usuarios")
     * @ORM\JoinColumn(name="tipodocumento_id", referencedColumnName="id")
     */
     protected $tipoDocumento;
@@ -50,16 +50,10 @@ class Usuario extends BaseUser
     /**
      * @var string
      *
-     * @ORM\Column(name="nrodocumento", type="string", length=11)
+     * @ORM\Column(name="nrodocumento", type="string", length=20)
      */
     protected $nroDocumento;
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="validaregistro", type="string", length=1)
-     */
-    protected $validaregistro;
-    
+
     /**
     * @ORM\OneToMany(targetEntity="Nota", mappedBy="usuario")
     */
@@ -82,8 +76,6 @@ class Usuario extends BaseUser
         $this->notas = new \Doctrine\Common\Collections\ArrayCollection();
         $this->evaluadores = new \Doctrine\Common\Collections\ArrayCollection();
         parent::__construct();
-        $this->roles = array('ROLE_USERNOVALIDATED');
-        $this->validaregistro=0;
     }
     
 
@@ -273,10 +265,10 @@ class Usuario extends BaseUser
     /**
      * Set tipoDocumento
      *
-     * @param \App\WebBundle\Entity\Catalogo $tipoDocumento
+     * @param \App\WebBundle\Entity\TipoDocumento $tipoDocumento
      * @return Usuario
      */
-    public function setTipoDocumento(\App\WebBundle\Entity\Catalogo $tipoDocumento = null)
+    public function setTipoDocumento(\App\WebBundle\Entity\TipoDocumento $tipoDocumento = null)
     {
         $this->tipoDocumento = $tipoDocumento;
     
@@ -286,55 +278,10 @@ class Usuario extends BaseUser
     /**
      * Get tipoDocumento
      *
-     * @return \App\WebBundle\Entity\Catalogo
+     * @return \App\WebBundle\Entity\TipoDocumento 
      */
     public function getTipoDocumento()
     {
         return $this->tipoDocumento;
-    }
-
-    /**
-     * Set nroDocumento
-     *
-     * @param string $nroDocumento
-     * @return Usuario
-     */
-    public function setNroDocumento($nroDocumento)
-    {
-        $this->nroDocumento = $nroDocumento;
-    
-        return $this;
-    }
-
-    /**
-     * Get nroDocumento
-     *
-     * @return string 
-     */
-    public function getNroDocumento()
-    {
-        return $this->nroDocumento;
-    }
-    /**
-     * Set validaregistro
-     *
-     * @param string $validaregistro
-     * @return Usuario
-     */
-    public function setValidaRegistro($validaregistro)
-    {
-        $this->validaregistro = $validaregistro;
-    
-        return $this;
-    }
-
-    /**
-     * Get validaregistro
-     *
-     * @return string 
-     */
-    public function getValidaRegistro()
-    {
-        return $this->validaregistro;
     }
 }

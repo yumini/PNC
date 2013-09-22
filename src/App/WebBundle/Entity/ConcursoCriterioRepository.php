@@ -23,7 +23,7 @@ class ConcursoCriterioRepository extends EntityRepository
                 return null;
         }
     }
-     public function FindByParentId($idConcurso,$idpadre){
+    public function FindByParentId($idConcurso,$idpadre){
         $em=$this->getEntityManager();
         $dql= "SELECT cp FROM AppWebBundle:ConcursoCriterio cp 
                 JOIN cp.concurso c 
@@ -38,4 +38,40 @@ class ConcursoCriterioRepository extends EntityRepository
                 return null;
         }
     }
+    public function GetIds($id){
+        $conn = $this->getEntityManager()->getConnection('database_connection');//create a connection with your DB
+        $sql="
+        SELECT GROUP_CONCAT(T.id) as ids FROM
+        (
+            SELECT c.* from concursocriterio c
+            WHERE c.id=$id
+            UNION
+            SELECT s.* from concursocriterio c join concursocriterio s ON s.idpadre=c.id
+            WHERE c.id=$id
+            UNION
+            SELECT a.* from concursocriterio c 
+            join concursocriterio s ON s.idpadre=c.id
+            join concursocriterio a ON a.idpadre=s.id
+            WHERE c.id=$id
+            UNION
+            SELECT p.* from concursocriterio c 
+            join concursocriterio s ON s.idpadre=c.id
+            join concursocriterio a ON a.idpadre=s.id
+            join concursocriterio p ON p.idpadre=a.id
+            WHERE c.id=$id
+        ) T";  
+        $stmt = $conn->prepare($sql);  
+        $stmt->execute(); 
+        $result=$stmt->fetch(); 
+        return  $result['ids']; 
+    }
+    public function Remove($id){
+        $conn = $this->getEntityManager()->getConnection('database_connection');//create a connection with your DB
+        $ids=$this->GetIds($id);
+        $sql="delete from  concursocriterio where id in ($ids)";                   
+        $stmt = $conn->prepare($sql);  
+        $stmt->execute(); 
+         
+    }
+
 }

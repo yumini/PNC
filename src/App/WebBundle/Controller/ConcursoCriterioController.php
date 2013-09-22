@@ -9,6 +9,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use App\WebBundle\Entity\ConcursoCriterio;
 use App\WebBundle\Form\ConcursoCriterioType;
+use App\WebBundle\Form\ConcursoSubcriterioType;
+use App\WebBundle\Form\ConcursoAreaAnalisisType;
+use App\WebBundle\Form\ConcursoPreguntaType;
 use App\WebBundle\Services\ConcursoCriterioService;
 
 /**
@@ -57,22 +60,46 @@ class ConcursoCriterioController extends Controller
     /**
      * Creates a new ConcursoCriterio entity.
      *
-     * @Route("/save", name="_admin_concursocriterio_save", options={"expose"=true})
+     * @Route("/{id}/save", name="_admin_concursocriterio_save", options={"expose"=true})
      * @Method("POST")
      * @Template("AppWebBundle:Default:result.json.twig")
      */
-    public function createAction(Request $request)
+    public function createAction(Request $request,$id)
     {
-         $em = $this->getDoctrine()->getManager();
-        $idConcurso=$request->request->get('idConcurso');
-        $concurso = $em->getRepository('AppWebBundle:Concurso')->find($idConcurso);
-        $tipoArbol= $em->getRepository('AppWebBundle:Catalogo')->getCatalogoByCodigo("TIPOARBOLCRITERIO","1");
+        //$id=$request->request->get('id');
+        $idPadre=$request->request->get('idPadre');
+        $em = $this->getDoctrine()->getManager();
+        $criteriopadre = $em->getRepository('AppWebBundle:ConcursoCriterio')->find($idPadre);
+
+        
+        $concurso = $em->getRepository('AppWebBundle:Concurso')->find($id);
+
+         if($idPadre!=0)
+            $tipoArbolCodigo=$criteriopadre->getTipoArbolCriterio()->getCodigo()+1;
+        else
+            $tipoArbolCodigo=1;
+
+        $tipoArbol= $em->getRepository('AppWebBundle:Catalogo')->getCatalogoByCodigo("TIPOARBOLCRITERIO",$tipoArbolCodigo);
         $entity  = new ConcursoCriterio();
-        $form = $this->createForm(new ConcursoCriterioType(), $entity);
+        switch ($tipoArbolCodigo) {
+            case '1':
+                    $form   = $this->createForm(new ConcursoCriterioType(), $entity);
+                break;
+            case '2':
+                    $form   = $this->createForm(new ConcursoSubcriterioType(), $entity);
+                break;            
+            case '3':
+                $form   = $this->createForm(new ConcursoAreaAnalisisType(), $entity);
+                break;
+            case '4':
+                $form   = $this->createForm(new ConcursoPreguntaType(), $entity);
+                break;
+        }
+
         $form->bind($request);
         
         $entity->setConcurso($concurso);
-        $entity->setidpadre(0);
+        $entity->setidpadre($idPadre);
         $entity->setTipoArbolCriterio($tipoArbol);
         $em->persist($entity);
         $em->flush();
@@ -91,17 +118,51 @@ class ConcursoCriterioController extends Controller
      * @Method("GET")
      * @Template("AppWebBundle:ConcursoCriterio:new.html.twig")
      */
-    public function newAction($id)
+    public function newAction(Request $request,$id)
     {
+        
+        $idPadre=$request->query->get('idPadre');
+        $em = $this->getDoctrine()->getManager();
         $entity = new ConcursoCriterio();
-        $form   = $this->createForm(new ConcursoCriterioType(), $entity);
+        $criterio = $em->getRepository('AppWebBundle:ConcursoCriterio')->find($idPadre);
+        $template="";
+        if($idPadre!=0)
+            $tipoArbol=$criterio->getTipoArbolCriterio()->getCodigo()+1;
+        else
+            $tipoArbol=1;
 
-        return array(
+        switch ($tipoArbol) {
+            case '1':
+                 $form   = $this->createForm(new ConcursoCriterioType(), $entity);
+                 $template="AppWebBundle:ConcursoCriterio:new.html.twig";
+                 $entityPadre=null;
+                break;
+            case '2':
+                 $form   = $this->createForm(new ConcursoSubcriterioType(), $entity);
+                  $template="AppWebBundle:ConcursoCriterio:new2.html.twig";
+                  $entityPadre=$criterio;
+                break;            
+            case '3':
+                $form   = $this->createForm(new ConcursoAreaAnalisisType(), $entity);
+                $template="AppWebBundle:ConcursoCriterio:new3.html.twig";
+                $entityPadre=$criterio;
+                break;
+            case '4':
+                $form   = $this->createForm(new ConcursoPreguntaType(), $entity);
+                $template="AppWebBundle:ConcursoCriterio:new4.html.twig";
+                $entityPadre=$criterio;
+                break;
+        }
+       
+        return $this->render($template,array(
             'entity' => $entity,
             'form'   => $form->createView(),
-        );
+            'entityPadre'=> $entityPadre 
+        ));
+        
     }
 
+    
     /**
      * Finds and displays a ConcursoCriterio entity.
      *
@@ -130,7 +191,7 @@ class ConcursoCriterioController extends Controller
     /**
      * Displays a form to edit an existing ConcursoCriterio entity.
      *
-     * @Route("/{id}/edit", name="concursocriterio_edit")
+     * @Route("/{id}/edit", name="_admin_concursocriterio_edit", options={"expose"=true})
      * @Method("GET")
      * @Template()
      */
@@ -138,94 +199,117 @@ class ConcursoCriterioController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('AppWebBundle:ConcursoCriterio')->find($id);
+        $entity = $em->getRepository('AppWebBundle:ConcursoCriterio')->find($id);        
 
+        $template="";
+        $tipoArbol=$entity->getTipoArbolCriterio()->getCodigo();
+
+        switch ($tipoArbol) {
+            case '1':
+                 $form   = $this->createForm(new ConcursoCriterioType(), $entity);
+                 $template="AppWebBundle:ConcursoCriterio:edit.html.twig";
+                 $entityPadre=null;
+                break;
+            case '2':
+                 $form   = $this->createForm(new ConcursoSubcriterioType(), $entity);
+                  $template="AppWebBundle:ConcursoCriterio:edit2.html.twig";
+                  $entityPadre= $em->getRepository('AppWebBundle:ConcursoCriterio')->find($entity->getidpadre()); 
+                break;            
+            case '3':
+                $form   = $this->createForm(new ConcursoAreaAnalisisType(), $entity);
+                $template="AppWebBundle:ConcursoCriterio:edit3.html.twig";
+                $entityPadre= $em->getRepository('AppWebBundle:ConcursoCriterio')->find($entity->getidpadre()); 
+                break;
+            case '4':
+                $form   = $this->createForm(new ConcursoPreguntaType(), $entity);
+                $template="AppWebBundle:ConcursoCriterio:edit4.html.twig";
+                $entityPadre= $em->getRepository('AppWebBundle:ConcursoCriterio')->find($entity->getidpadre()); 
+                break;
+        }
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find ConcursoCriterio entity.');
+            throw $this->createNotFoundException('Unable to find Concurso entity.');
         }
 
-        $editForm = $this->createForm(new ConcursoCriterioType(), $entity);
-        $deleteForm = $this->createDeleteForm($id);
-
-        return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        );
+       return $this->render($template,array(
+            'entity' => $entity,
+            'form'   => $form->createView(),
+            'entityPadre'=> $entityPadre 
+        ));
     }
 
     /**
      * Edits an existing ConcursoCriterio entity.
      *
-     * @Route("/{id}/update", name="concursocriterio_update")
-     * @Method("PUT")
-     * @Template("AppWebBundle:ConcursoCriterio:edit.html.twig")
+     * @Route("/{id}/update", name="_admin_concursocriterio_update", options={"expose"=true})
+     * @Method("POST")
+     * @Template("AppWebBundle:Default:result.json.twig")
      */
     public function updateAction(Request $request, $id)
     {
+        $msg="";
+        $result=true;       
         $em = $this->getDoctrine()->getManager();
-
         $entity = $em->getRepository('AppWebBundle:ConcursoCriterio')->find($id);
+        $tipoArbol=$entity->getTipoArbolCriterio()->getCodigo();
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find ConcursoCriterio entity.');
+        switch ($tipoArbol) {
+            case '1':
+                $form= $this->createForm(new ConcursoCriterioType(), $entity);
+                break;
+            case '2':
+                 $form= $this->createForm(new ConcursoSubcriterioType(), $entity);
+                break;            
+            case '3':
+                $form= $this->createForm(new ConcursoAreaAnalisisType(), $entity);
+                break;
+            case '4':
+                $form= $this->createForm(new ConcursoPreguntaType(), $entity);
+                break;
         }
 
-        $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createForm(new ConcursoCriterioType(), $entity);
-        $editForm->bind($request);
-
-        if ($editForm->isValid()) {
+        $form->bind($request);
+        
+        if ($entity) {
+           
             $em->persist($entity);
             $em->flush();
+        }else{
+            $result=false;
+            $msg="elemento no encontrado";
 
-            return $this->redirect($this->generateUrl('concursocriterio_edit', array('id' => $id)));
         }
-
         return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+            'result' => "{\"success\":\"$result\",\"message\":\"$msg\"}"
+
         );
+
+       
     }
     /**
      * Deletes a ConcursoCriterio entity.
      *
-     * @Route("/{id}/delete", name="concursocriterio_delete")
+     * @Route("/{id}/delete", name="_admin_concursocriterio_delete", options={"expose"=true})
      * @Method("DELETE")
+     * @Template("AppWebBundle:Default:result.json.twig")
      */
     public function deleteAction(Request $request, $id)
     {
-        $form = $this->createDeleteForm($id);
-        $form->bind($request);
-
-        if ($form->isValid()) {
+            $msg="Se elimino el registro satisfactoriamente";
+            $result=true;
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('AppWebBundle:ConcursoCriterio')->find($id);
-
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find ConcursoCriterio entity.');
+            try {
+                $em->getRepository('AppWebBundle:ConcursoCriterio')->Remove($id);
+            } catch (Exception $e) {
+                $msg=$e->getMessage(); 
+                $result=false;
+               
             }
+            return array(
+            'result' => "{\"success:\"$result\",\"message\":\"$msg\"}"
 
-            $em->remove($entity);
-            $em->flush();
-        }
-
-        return $this->redirect($this->generateUrl('concursocriterio'));
+            );
+           
     }
 
-    /**
-     * Creates a form to delete a ConcursoCriterio entity by id.
-     *
-     * @param mixed $id The entity id
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createDeleteForm($id)
-    {
-        return $this->createFormBuilder(array('id' => $id))
-            ->add('id', 'hidden')
-            ->getForm()
-        ;
-    }
+   
 }

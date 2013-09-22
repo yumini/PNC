@@ -44,6 +44,7 @@ class ConcursoCriterioService {
            $cadena.="\"descripcion\":\"".$entity->getDescripcion()."\",";
            $cadena.="\"tipoArbol\":\"".$entity->getTipoArbolCriterio()->getNombre()."\",";
            $cadena.="\"puntaje\":\"".$entity->getPuntaje()."\",";
+           $cadena.="\"tipoOpciones\":\"".$entity->getId().'-'.$entity->getTipoArbolCriterio()->getCodigo()."\",";
            $cadena.="\"children\":[";
            $i=0;
             foreach ($entities as $sub_entity) {
@@ -61,7 +62,8 @@ class ConcursoCriterioService {
            $cadena.="\"codigo\":\"".$entity->getCodigo()."\",";
            $cadena.="\"tipoArbol\":\"".$entity->getTipoArbolCriterio()->getNombre()."\",";
            $cadena.="\"descripcion\":\"".$entity->getDescripcion()."\",";
-           $cadena.="\"puntaje\":\"".$entity->getPuntaje()."\"";
+           $cadena.="\"puntaje\":\"".$entity->getPuntaje()."\",";
+           $cadena.="\"tipoOpciones\":\"".$entity->getId().'-'.$entity->getTipoArbolCriterio()->getCodigo()."\"";
            $cadena.="}";
         }
         return $cadena;
