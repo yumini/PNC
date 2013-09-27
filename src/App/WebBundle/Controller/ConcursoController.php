@@ -31,7 +31,7 @@ class ConcursoController extends Controller
         $em = $this->getDoctrine()->getManager();
         $page=$this->get('request')->query->get('page', 1);
         $paginator=$this->get('knp_paginator');
-        $pagination = $em->getRepository('AppWebBundle:Concurso')->FindAllPaginator($paginator,$page,4);
+        $pagination = $em->getRepository('AppWebBundle:Concurso')->FindAllPaginator($paginator,$page,3);
 
         return array(
             'pagination' => $pagination,

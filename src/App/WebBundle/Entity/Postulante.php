@@ -93,9 +93,15 @@ class Postulante
     */
     protected $postulantes;
     
+    /**
+    * @ORM\OneToMany(targetEntity="Inscripcion", mappedBy="postulante")
+    */
+    protected $inscripciones;
+    
     public function __construct() {
         $this->grupos = new \Doctrine\Common\Collections\ArrayCollection();
         $this->postulantes = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->inscripciones = new \Doctrine\Common\Collections\ArrayCollection();
     }
   
 
@@ -380,5 +386,38 @@ class Postulante
     public function getPostulantes()
     {
         return $this->postulantes;
+    }
+
+    /**
+     * Add inscripciones
+     *
+     * @param \App\WebBundle\Entity\Inscripcion $inscripciones
+     * @return Postulante
+     */
+    public function addInscripcione(\App\WebBundle\Entity\Inscripcion $inscripciones)
+    {
+        $this->inscripciones[] = $inscripciones;
+    
+        return $this;
+    }
+
+    /**
+     * Remove inscripciones
+     *
+     * @param \App\WebBundle\Entity\Inscripcion $inscripciones
+     */
+    public function removeInscripcione(\App\WebBundle\Entity\Inscripcion $inscripciones)
+    {
+        $this->inscripciones->removeElement($inscripciones);
+    }
+
+    /**
+     * Get inscripciones
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getInscripciones()
+    {
+        return $this->inscripciones;
     }
 }

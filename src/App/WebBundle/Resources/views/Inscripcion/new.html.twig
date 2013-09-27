@@ -1,0 +1,126 @@
+<form id="myform"  method="post" {{ form_enctype(form) }} action="{{ path('_admin_inscripcion_upload') }}" enctype="multipart/form-data">
+
+<ul class="nav nav-pills">
+  <li id="wizard1" class="active"><a href="#">1. Terminos de Aceptación</a></li>
+  <li id="wizard2" class="disabled"><a href="#">2. Datos de Inscripción</a></li>
+  <li id="wizard3" class="disabled"><a href="#">3. Documentos</a></li>
+</ul>
+<ul id="tabWizard" class="nav nav-tabs" style="font-size:11px;display:none;">
+  <li class="active"><a href="#conc-tab-1" data-toggle="tab">Terminos de Aceptación</a></li>
+  <li><a href="#conc-tab-2" data-toggle="tab">Proyecto</a></li>
+  <li><a href="#conc-tab-3" data-toggle="tab">Archivos</a></li>
+</ul>
+<div class="tab-content">
+  <div class="tab-pane active" id="conc-tab-1">
+<h3> {{concurso.nombre}}</h3>
+        <div class="form-group">
+            <div class="col-lg-12" style="text-align:justify">
+                <label class="control-label">Terminos de Aceptación:</label><br/>
+                <textarea class="form-control" rows="9" readonly>
+                  {{concurso.terminoacepta|raw}}
+                </textarea>
+                
+            </div>
+            
+        </div>
+         <div class="form-group">
+            <div class="col-lg-12" style="text-align:justify">
+                <label class="control-label">
+                <input type="checkbox" id="chkTerminos" onclick="new OptionButton().ValidateTerminos();"/> Acepto los Terminos
+                </label>
+                
+            </div>
+            
+        </div>
+  </div>
+  <div class="tab-pane" id="conc-tab-2">
+    
+        <div class="row">
+            <div class="col-lg-7">
+                <label class="control-label">Nombre del Proyecto</label>
+                {{form_widget(form.nombreproyecto)}}
+            </div>
+            <div class="col-lg-5">
+                <label class="control-label">Nombre Corto</label>
+                {{form_widget(form.nombrecorto)}}
+            </div>
+        </div>
+         <div class="row">
+            <div class="col-lg-12">
+                <label class="control-label">Nombre del Equipo</label>
+                {{form_widget(form.nombreequipo)}}
+            </div>
+           
+        </div>   
+        <div class="row">
+            <div class="col-lg-12">
+                <label class="control-label">Integrantes</label>
+                {{form_widget(form.integrantes)}}
+            </div>
+           
+        </div>   
+         <div class="row">
+            <div class="col-lg-3">
+                <label class="control-label">Fecha Inicio</label>
+                {{form_widget(form.fechainiciopy)}}
+            </div>
+             <div class="col-lg-3">
+                <label class="control-label">Fecha Fin</label>
+                {{form_widget(form.fechafinpy)}}
+            </div>
+             <div class="col-lg-6">
+              
+            </div>
+           
+        </div>   
+     
+  </div>
+  <div class="tab-pane" id="conc-tab-3" style="height:280px;">
+
+      <div class="form-group">
+            <div class="col-lg-6" style="text-align:justify">
+              <div class="well">
+                <h5><b>Informe de Postulacíon Completo</b></h5>
+                <div id="upload1" class="drop">
+                 
+                  <p>Arrastrar aqui</p>
+                  <p style="font-size:11px;">
+                  Por favor seleccione un documento o arrastrelo hasta aqui para agregarlo
+                  </p>
+                   <a class="btn btn-info">Seleccione el documento</a>
+                  <input type="file" name="upl" multiple />
+                </div>
+              </div>
+                
+            </div>
+             <div class="col-lg-6" style="text-align:justify">
+             <div class="well">
+              <h5><b>Informe de Postulacíon sin información confidencial</b></h5>
+
+                <div id="upload2" class="drop">
+                  
+                   <p>Arrastrar aqui</p>
+                <p style="font-size:11px;">
+                  Por favor seleccione un documento o arrastrelo hasta aqui para agregarlo
+                </p>
+                   <a class="btn btn-info">Seleccione el documento</a>
+                  <input type="file" name="upl" multiple />
+                </div>
+              </div>
+            </div>
+        </div>
+ <ul id="ulFiles">
+          <!-- The file uploads will be shown here -->
+        </ul>
+  </div>
+ 
+   
+  
+  
+</div>
+
+</form>
+{% block ScriptFooter %}
+<script src="{{ asset('js/pages/Inscripcion/new.js') }}"></script> 
+<script src="{{ asset('js/script.js') }}"></script>
+{% endblock %}
