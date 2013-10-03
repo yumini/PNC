@@ -15,7 +15,7 @@ class DefaultController extends Controller
 {
     private $title="Bienvenido";
     /**
-     * @Route("/", name="_index")
+     * @Route("/", name="_index", options={"expose"=true})
      * @Template()
      */
     public function indexAction()

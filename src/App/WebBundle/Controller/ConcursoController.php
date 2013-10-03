@@ -137,8 +137,23 @@ class ConcursoController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $entity = $em->getRepository('AppWebBundle:Concurso')->find($id);
+        $tipoConcurso=$entity->getTipoConcurso();
+        
+        $user = $this->container->get("security.context")->getToken()->getUser();
+        $postulante = $em->getRepository('AppWebBundle:Postulante')->findByUser($user->getId());
+
+        $register=$em->getRepository('AppWebBundle:Inscripcion')->IsRegister($postulante->getId(),$id);
+        $inscripciones=$em->getRepository('AppWebBundle:Inscripcion')->GetConcursos($postulante->getId());
+        $enabledInscripcion="";
+        if($register)
+            if($tipoConcurso->getCodigo()==1)
+                $enabledInscripcion="disabled";
+        
         return array(
-            'entity'      => $entity
+            'entity'        =>$entity,
+            'isRegister'    =>$register,
+            'inscripciones'     =>$inscripciones,
+            'EnabledInscripcion'=>$enabledInscripcion
         );
     }
 

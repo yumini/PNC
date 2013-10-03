@@ -23,6 +23,7 @@
             <tr >
                 <th class="grid-header" style="text-align: center;">Concurso</th>
                 <th class="grid-header" style="text-align: center;">Anio</th>
+                <th class="grid-header" style="text-align: center;">Tipo</th>
                 <th class="grid-header" style="text-align: center;">Fecha Inicio</th>
                 <th class="grid-header" style="text-align: center;">Fecha Fin</th>
                 <th class="grid-header" style="width: 100px;text-align: center;">Opciones</th>
@@ -35,6 +36,7 @@
                 
                 <td>{{ entity.nombre }}</td>
                 <td>{{ entity.anio }}</td>
+                <td>{{ entity.tipoConcurso.nombre }}</td>
                 <td>{% if entity.fechaInicio %}{{ entity.fechaInicio|date('Y-m-d H:i:s') }}{% endif %}</td>
                 <td>{% if entity.fechaFin %}{{ entity.fechaFin|date('Y-m-d H:i:s') }}{% endif %}</td>
                 <td style="text-align: center;font-size: 12px;">

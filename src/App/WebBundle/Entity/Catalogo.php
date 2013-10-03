@@ -91,6 +91,11 @@ class Catalogo
     * @ORM\OneToMany(targetEntity="Evaluador", mappedBy="catalogo")
     */
     protected $tsxcatalogos;
+
+     /**
+    * @ORM\OneToMany(targetEntity="Concurso", mappedBy="catalogo")
+    */
+    protected $concursos;
     
      public function __construct()
     {
@@ -100,6 +105,8 @@ class Catalogo
         $this->tcccatalogos = new \Doctrine\Common\Collections\ArrayCollection();
         $this->tcacatalogos = new \Doctrine\Common\Collections\ArrayCollection();
         $this->tsxcatalogos = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->concursos = new \Doctrine\Common\Collections\ArrayCollection();
+
     }
     
    
@@ -448,5 +455,38 @@ class Catalogo
     public function getTsxcatalogos()
     {
         return $this->tsxcatalogos;
+    }
+
+    /**
+     * Add concursos
+     *
+     * @param \App\WebBundle\Entity\Concurso $concursos
+     * @return Catalogo
+     */
+    public function addConcurso(\App\WebBundle\Entity\Concurso $concursos)
+    {
+        $this->concursos[] = $concursos;
+    
+        return $this;
+    }
+
+    /**
+     * Remove concursos
+     *
+     * @param \App\WebBundle\Entity\Concurso $concursos
+     */
+    public function removeConcurso(\App\WebBundle\Entity\Concurso $concursos)
+    {
+        $this->concursos->removeElement($concursos);
+    }
+
+    /**
+     * Get concursos
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getConcursos()
+    {
+        return $this->concursos;
     }
 }

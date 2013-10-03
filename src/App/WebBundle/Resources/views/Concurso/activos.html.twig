@@ -1,9 +1,10 @@
+<h3><b>Listado de Concursos</b></h3>
 <div class="list-group">
    {% for entity in pagination %}
            <a href="#" class="list-group-item ">
     <h4 class="list-group-item-heading">{{entity.nombre}}</h4>
-    <p class="list-group-item-text">{{entity.presentacion|raw}}</p>
-    <button type="button" data-type="inscripcion" class="btn btn-success" onclick="new Concurso().Detail({{entity.id}})">Ver Detalle</button>
+    <p class="list-group-item-text">{{entity.presentacion|slice(0,250)|raw}}...</p>
+    <button type="button" data-type="inscripcion" class="btn btn-success btn-xs" onclick="new Concurso().Detail({{entity.id}})">Ver Detalle</button>
   </a>
         {% endfor %}
   

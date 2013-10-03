@@ -186,6 +186,12 @@ class Concurso
     * @ORM\OneToMany(targetEntity="ConcursoCriterio", mappedBy="concurso")
     */
     protected $criterios;
+
+    /**
+    * @ORM\ManyToOne(targetEntity="Catalogo", inversedBy="concursos")
+    * @ORM\JoinColumn(name="tipoconcurso_id", referencedColumnName="id")
+    */
+    protected $tipoConcurso;
     
     public function __construct()
     {
@@ -762,5 +768,28 @@ class Concurso
     public function getCriterios()
     {
         return $this->criterios;
+    }
+
+    /**
+     * Set tipoConcurso
+     *
+     * @param \App\WebBundle\Entity\Catalogo $tipoConcurso
+     * @return Concurso
+     */
+    public function setTipoConcurso(\App\WebBundle\Entity\Catalogo $tipoConcurso = null)
+    {
+        $this->tipoConcurso = $tipoConcurso;
+    
+        return $this;
+    }
+
+    /**
+     * Get tipoConcurso
+     *
+     * @return \App\WebBundle\Entity\Catalogo 
+     */
+    public function getTipoConcurso()
+    {
+        return $this->tipoConcurso;
     }
 }

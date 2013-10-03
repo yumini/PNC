@@ -38,4 +38,5 @@ class PostulanteRepository extends EntityRepository
                return null;
         }
     }
+   
 }

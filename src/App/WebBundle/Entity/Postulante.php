@@ -420,4 +420,11 @@ class Postulante
     {
         return $this->inscripciones;
     }
+   
+    public function IsValid(){
+        if($this->ruc!="" && $this->razonsocial!="" && $this->direccion!="")
+            return 1;
+                
+        return 0;
+    }
 }

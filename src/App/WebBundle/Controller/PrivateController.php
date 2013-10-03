@@ -1,11 +1,12 @@
 <?php
 
 namespace App\WebBundle\Controller;
-
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\SecurityContext;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use App\WebBundle\Menu\MenuBuilder;
 use App\WebBundle\Entity\Perfil;
@@ -54,9 +55,12 @@ class PrivateController extends Controller {
     {
       
         $user = $this->container->get("security.context")->getToken()->getUser();
+        $em = $this->getDoctrine()->getManager();
+        $postulante = $em->getRepository('AppWebBundle:Postulante')->findByUser($user->getId());
         return array(
             'title' => $this->title,
-            'user' => $user
+            'user' => $user,
+            'postulante' => $postulante
             );
     }
 
@@ -72,6 +76,34 @@ class PrivateController extends Controller {
             'title' => $this->title,
             'user' => $user
             );
+    }
+
+    /**
+     *
+     * @Route("/upload/postulante/new", name="_admin_postulante_upload", options={"expose"=true})
+     * @Method("POST")
+     * @Template("AppWebBundle:Default:result.json.twig")
+     */
+    public function uploadAction(Request $request)
+    {
+        
+       $allowed = array('jpg', 'jpeg', 'png','bmp');
+       if(isset($_FILES['filePerfil']) && $_FILES['filePerfil']['error'] == 0){
+
+            $extension = pathinfo($_FILES['filePerfil']['name'], PATHINFO_EXTENSION);
+
+            if(!in_array(strtolower($extension), $allowed)){
+               $result="error";
+            }
+
+            if(move_uploaded_file($_FILES['filePerfil']['tmp_name'], 'uploads/user.jpg')){
+               $result="success";
+            }
+        }
+
+        return array(
+            'result' => "{status:$result}"
+        );
     }
 }
 

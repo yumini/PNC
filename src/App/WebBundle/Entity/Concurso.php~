@@ -186,6 +186,12 @@ class Concurso
     * @ORM\OneToMany(targetEntity="ConcursoCriterio", mappedBy="concurso")
     */
     protected $criterios;
+
+    /**
+    * @ORM\ManyToOne(targetEntity="Catalogo", inversedBy="concursos")
+    * @ORM\JoinColumn(name="tipoconcurso_id", referencedColumnName="id")
+    */
+    protected $tipoConcurso;
     
     public function __construct()
     {
