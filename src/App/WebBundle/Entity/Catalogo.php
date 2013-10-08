@@ -92,10 +92,20 @@ class Catalogo
     */
     protected $tsxcatalogos;
 
-     /**
+    /**
     * @ORM\OneToMany(targetEntity="Concurso", mappedBy="catalogo")
     */
     protected $concursos;
+    
+    /**
+    * @ORM\OneToMany(targetEntity="Etapa", mappedBy="tipoEtapa")
+    */
+    protected $etapasTipoEtapa;
+    
+    /**
+    * @ORM\OneToMany(targetEntity="Etapa", mappedBy="tipoConcurso")
+    */
+    protected $etapasTipoConcurso;
     
      public function __construct()
     {
@@ -106,6 +116,8 @@ class Catalogo
         $this->tcacatalogos = new \Doctrine\Common\Collections\ArrayCollection();
         $this->tsxcatalogos = new \Doctrine\Common\Collections\ArrayCollection();
         $this->concursos = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->etapasTipoConcurso= new \Doctrine\Common\Collections\ArrayCollection();
+        $this->etapasTipoEtapa= new \Doctrine\Common\Collections\ArrayCollection();
 
     }
     
@@ -488,5 +500,71 @@ class Catalogo
     public function getConcursos()
     {
         return $this->concursos;
+    }
+
+    /**
+     * Add etapasTipoEtapa
+     *
+     * @param \App\WebBundle\Entity\Etapa $etapasTipoEtapa
+     * @return Catalogo
+     */
+    public function addEtapasTipoEtapa(\App\WebBundle\Entity\Etapa $etapasTipoEtapa)
+    {
+        $this->etapasTipoEtapa[] = $etapasTipoEtapa;
+    
+        return $this;
+    }
+
+    /**
+     * Remove etapasTipoEtapa
+     *
+     * @param \App\WebBundle\Entity\Etapa $etapasTipoEtapa
+     */
+    public function removeEtapasTipoEtapa(\App\WebBundle\Entity\Etapa $etapasTipoEtapa)
+    {
+        $this->etapasTipoEtapa->removeElement($etapasTipoEtapa);
+    }
+
+    /**
+     * Get etapasTipoEtapa
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getEtapasTipoEtapa()
+    {
+        return $this->etapasTipoEtapa;
+    }
+
+    /**
+     * Add etapasTipoConcurso
+     *
+     * @param \App\WebBundle\Entity\Etapa $etapasTipoConcurso
+     * @return Catalogo
+     */
+    public function addEtapasTipoConcurso(\App\WebBundle\Entity\Etapa $etapasTipoConcurso)
+    {
+        $this->etapasTipoConcurso[] = $etapasTipoConcurso;
+    
+        return $this;
+    }
+
+    /**
+     * Remove etapasTipoConcurso
+     *
+     * @param \App\WebBundle\Entity\Etapa $etapasTipoConcurso
+     */
+    public function removeEtapasTipoConcurso(\App\WebBundle\Entity\Etapa $etapasTipoConcurso)
+    {
+        $this->etapasTipoConcurso->removeElement($etapasTipoConcurso);
+    }
+
+    /**
+     * Get etapasTipoConcurso
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getEtapasTipoConcurso()
+    {
+        return $this->etapasTipoConcurso;
     }
 }
