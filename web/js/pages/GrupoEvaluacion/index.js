@@ -1,111 +1,20 @@
+var OptionButton = OptionButton || {GrupoEvaluacion: {}, Evaluador: {},Postulante:{}};
 var myWindow=null;
-var Models={
-	GrupoEvaluacion: Backbone.Model.extend({}),
-	Evaluador: Backbone.Model.extend({}),
-	Postulante: Backbone.Model.extend({})
+
+
+OptionButton.GrupoEvaluacion=function(){
+    this.routeList='_admin_grupoevaluacion';
+    this.routeNew='_admin_grupoevaluacion_new';
+    this.routeSave='_admin_grupoevaluacion_save';
+    this.routeEdit='_admin_grupoevaluacion_edit';
+    this.routeUpdate='_admin_grupoevaluacion_update';  
+    this.routeDelete='_admin_grupoevaluacion_delete';  
 }
-
-var Collections={
-	GrupoEvaluacion: Backbone.Collection.extend({
-		model: Models.GrupoEvaluacion,
-		url: Routing.generate("_admin_grupoevaluacion_list"),
-		parse: function(response) {
-                    console.log("devolviendo datos GrupoEvaluacion");
-                    return response.items;
-        }
-	})
-}
-
-var Views={
-	GrupoEvaluacionContainer: Backbone.View.extend({
-		events: {
- 			"click .list-group-item": "LoadItemDetaills"
-        },
-		initialize: function(){
-			_.bindAll(this);
-			this.template = _.template($('#template-gruposevaluacion').val());
-			this.collection=new Collections.GrupoEvaluacion();
-			this.collection.on('reset', this.LoadItems, this);
-			this.LoadData();
-		},
-		render:function(){
-			this.$el.html(this.template());
-			this.LoadItems();
-			return this;
-		},
-		LoadItems:function(){
-			this.$el.find('#list-grupoevaluacion').empty();
-			var v = null;
-			this.collection.each(function(item,idx) {
-				v = new Views.GrupoEvaluacionItem({model:item});		
-				this.$el.find('#list-grupoevaluacion').append(v.render().el);
-			},this);                     
-			return this;
-		},
-		LoadData:function(evdata){
-			evdata = evdata || {};			
-			this.collection.fetch({reset:true});
-			console.log('se cargo la collecion GrupoEvaluacion de BD');
-		},
-		LoadItemDetaills:function(evt){
-			var id=$(evt.currentTarget).attr('data-id');
-			var model = this.collection.get(id);
-			var indice=this.collection.indexOf(model);
-			console.log("el id es:"+id);
- 			$(".list-group-item").removeClass("active")
-            $('#geva-'+id).addClass("active");
- $.ajax({type:'GET',
-			data:{grupo_id:id},
-	                url:Routing.generate('_admin_grupoevaluacion_postulantes_list'),
-	                dataType:"html",
-	                success:function (data) {
-	                $("#container-postulantes").html(data);
-                        }
-                        });
-            
-			$.ajax({
-				type:'GET',
-				data:{grupo_id:id},
-	            url:Routing.generate('_admin_grupoevaluacion_evaluadores_list'),
-	            dataType:"html",
-	            success:function (data) {
-	                $("#container-evaluadores").html(data);
-	            }
-        	});
-		}
-
-	}),
-	GrupoEvaluacionItem: Backbone.View.extend({
-		className: 'list-group-item',
-        tagName:"a",
-		initialize: function() {
-			this.template = _.template($('#template-grupoevaluacion-item').val());
-			
-		},
-		render: function() {
-			this.$el.attr('href', 'javascript:return void(0);')
-			this.$el.attr('id', 'geva-'+this.model.id);
-			this.$el.attr('data-id',this.model.id);
-			this.$el.html(this.template({entity:this.model.toJSON()}));
-			return this;
-		},
-	})
-}
-
-
-
-//OPCIONES PARA Botones
-var OptionButton=function(){
-    this.routeNewGrupo='_admin_grupo_new';
-    this.routeNewEvaluador='_admin_evaluadorgrupo_new';
-    this.routeSavePostulante='_admin_postulantegrupo_new';
-    
-}
-OptionButton.prototype={
-    New:function(){
+OptionButton.GrupoEvaluacion.prototype={
+	New:function(){
     	 console.log(this.routeNewGrupo);
         this.Window=new BootstrapWindow({id:"winForm",title:"Nuevo Grupo de Evaluación"});
-        var url=Routing.generate(this.routeNewGrupo);
+        var url=Routing.generate(this.routeNew);
        
         console.log(url)
         this.Window.Load(url,"");
@@ -130,20 +39,136 @@ OptionButton.prototype={
         });
     },
 	Save:function(){
-		//aqui va el codigo que envia los parametros a la accion que graba
-	},
-	List:function(){
-		//esta funcion realizara un refresh del listado de evaluadores
-}
-}
+		var parent=this;
+            var url=Routing.generate(this.routeSave);
+            params = $('#myform').serializeObject();
+            console.log(params);
+            
+            $.ajax({
+                    type:'POST',
+                    url:url,
+                    data:params,
+                    dataType:"html",
+                    success:function(datos){
+                            //parent.Window.AddHTML(datos);
+                            parent.Refresh();
+                    },
+                    error:function(objeto, quepaso, otroobj){
 
+                    }
+            });
+	},
+    Edit:function(id){
+        this.IdEntity=id;
+        this.Window=new BootstrapWindow({id:"winForm",title:"Editar Grupo de Evaluación"});
+        
+        var url=Routing.generate(this.routeEdit,{id:id});
+        this.Window.Load(url,"");
+        this.Window.Show();
+        var parent=this;
+        this.Window.AddButton('btn-concurso-cancel',{
+            label:'Cancelar',
+            'class':'btn-default',
+            fn:function(){
+                parent.Window.Hide();
+            }
+            
+        })
+       
+        this.Window.AddButton('btn-concurso-save',{
+            label:'Grabar',
+            'class':'btn-success',
+            fn:function(){
+                parent.Update();               
+                parent.Window.Hide();
+            }
+        });
+    },
+    Update:function(){
+           
+            var parent=this;
+            var url=Routing.generate(this.routeUpdate,{id:this.IdEntity});
+            params = $('#myform').serializeObject();
+                    
+            $.ajax({
+                    type:'POST',
+                    url:url,
+                    data:params,
+                    dataType:"html",
+                    success:function(datos){
+                            
+                            new OptionButton.GrupoEvaluacion().Refresh();
+                    },
+                    error:function(objeto, quepaso, otroobj){
+
+                    }
+            });           
+    },
+    Delete:function(id){
+        this.IdEntity=id;
+        if(confirm("Desea eliminar el Grupo de Evaluación seleccionado?")){
+             var url=Routing.generate(this.routeDelete,{id:this.IdEntity});
+             $.ajax({
+                    type:'POST',
+                    url:url,
+                    dataType:"html",
+                    success:function(datos){
+                            
+                            new OptionButton.GrupoEvaluacion().Refresh();
+                    },
+                    error:function(objeto, quepaso, otroobj){
+
+                    }
+            }); 
+        }
+    },
+	Refresh:function(){
+		 var url=Routing.generate(this.routeList);
+        new jAjax().Load(url,'main-body','get','','');
+	},
+	Select:function(obj,id){
+		$(".list-group-item").removeClass("active")
+        $(obj).addClass("active");
+ 		$.ajax({type:'GET',
+			data:{grupo_id:id},
+	        url:Routing.generate('_admin_grupoevaluacion_postulantes_list'),
+	        dataType:"html",
+	        success:function (data) {
+	            $("#container-postulantes").html(data);
+            }
+        });
+
+        $.ajax({
+				type:'GET',
+				data:{grupo_id:id},
+	            url:Routing.generate('_admin_grupoevaluacion_evaluadores_list'),
+	            dataType:"html",
+	            success:function (data) {
+	                $("#container-evaluadores").html(data);
+	            }
+        });
+            
+	}
+}
+//al leer el documento
 $(document).ready(function() {
   
-  var vs = new Views.GrupoEvaluacionContainer();
-      vs.setElement($('#container-grupoevaluacion')).render();
-	
-  $("#btnNewGrupos").click(function(){
-      new OptionButton().New();   
+  $(".list-group-item").click(function(){
+  	var id=$(this).attr('data-id');
+    console.log("select grupo");
+      new OptionButton.GrupoEvaluacion().Select(this,id);   
   });
-    
+  $("#btnNewGrupo").click(function(){
+      new OptionButton.GrupoEvaluacion().New();   
+  });
+  $("button[data-type='edit']").click(function(event) {
+      var id=$(this).attr("data-id");
+      new OptionButton.GrupoEvaluacion().Edit(id);
+  });
+  $("button[data-type='delete']").click(function(event) {
+      var id=$(this).attr("data-id");
+      new OptionButton.GrupoEvaluacion().Delete(id);
+  });
+
 });
+

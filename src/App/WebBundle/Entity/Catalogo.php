@@ -101,6 +101,11 @@ class Catalogo
     * @ORM\OneToMany(targetEntity="Etapa", mappedBy="tipoEtapa")
     */
     protected $etapasTipoEtapa;
+
+    /**
+    * @ORM\OneToMany(targetEntity="Usuario", mappedBy="tipoDocumento")
+    */
+    protected $usuarios;
     
     /**
     * @ORM\OneToMany(targetEntity="Etapa", mappedBy="tipoConcurso")
@@ -118,6 +123,7 @@ class Catalogo
         $this->concursos = new \Doctrine\Common\Collections\ArrayCollection();
         $this->etapasTipoConcurso= new \Doctrine\Common\Collections\ArrayCollection();
         $this->etapasTipoEtapa= new \Doctrine\Common\Collections\ArrayCollection();
+        $this->usuarios= new \Doctrine\Common\Collections\ArrayCollection();
 
     }
     

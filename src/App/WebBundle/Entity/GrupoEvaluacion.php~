@@ -3,7 +3,7 @@
 namespace App\WebBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo; 
+
 /**
  * GrupoEvaluacion
  *
@@ -44,20 +44,20 @@ class GrupoEvaluacion
 
     /**
      * @var \DateTime
-     * @Gedmo\Timestampable(on="create")
+     *
      * @ORM\Column(name="fechaCreacion", type="datetime")
      */
     private $fechaCreacion;
 
     /**
      * @var \DateTime
-     * @Gedmo\Timestampable(on="update")
+     *
      * @ORM\Column(name="fechaActualizacion", type="datetime")
      */
     private $fechaActualizacion;
 
     /**
-     * @ORM\ManyToMany(targetEntity="GrupoEvaluacion", mappedBy="Evaluador", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="GrupoEvaluacion", mappedBy="Evaluador")
      */
     private $evaluadores;
     
@@ -226,28 +226,5 @@ class GrupoEvaluacion
     public function getEvaluadores()
     {
         return $this->evaluadores;
-    }
-
-    /**
-     * Set concurso
-     *
-     * @param \App\WebBundle\Entity\Concurso $concurso
-     * @return GrupoEvaluacion
-     */
-    public function setConcurso(\App\WebBundle\Entity\Concurso $concurso = null)
-    {
-        $this->concurso = $concurso;
-    
-        return $this;
-    }
-
-    /**
-     * Get concurso
-     *
-     * @return \App\WebBundle\Entity\Concurso 
-     */
-    public function getConcurso()
-    {
-        return $this->concurso;
     }
 }

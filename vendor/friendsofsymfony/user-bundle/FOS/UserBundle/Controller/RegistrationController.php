@@ -92,6 +92,7 @@ class RegistrationController extends ContainerAware
 
         return $this->container->get('templating')->renderResponse('FOSUserBundle:Registration:checkEmail.html.'.$this->getEngine(), array(
             'user' => $user,
+             'title'=>'Registro de Usuarios: '
         ));
     }
 

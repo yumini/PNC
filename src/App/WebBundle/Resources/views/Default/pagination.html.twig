@@ -23,11 +23,11 @@
 
     {% if previous is defined %}
         <li>
-            <a href="javascript:new jAjax().Load('{{ path(route, query|merge({(pageParameterName): previous})) }}','main-body','get','','')">&laquo;&nbsp;{{ 'Anterior'|trans }}</a>
+            <a href="javascript:new jAjax().Load('{{ path(route, query|merge({(pageParameterName): previous})) }}','main-body','get','','')">&laquo;&nbsp;{{ ''|trans }}</a>
         </li>
     {% else %}
         <li class="disabled">
-            <span>&laquo;&nbsp;{{ 'Anterior'|trans }}</span>
+            <span>&laquo;&nbsp;{{ ''|trans }}</span>
         </li>
     {% endif %}
 
@@ -80,11 +80,11 @@
 
     {% if next is defined %}
         <li>
-            <a href="javascript:new jAjax().Load('{{ path(route, query|merge({(pageParameterName): next})) }}','main-body','get','','')">{{ 'Siguiente'|trans }}&nbsp;&raquo;</a>
+            <a href="javascript:new jAjax().Load('{{ path(route, query|merge({(pageParameterName): next})) }}','main-body','get','','')">{{ ''|trans }}&nbsp;&raquo;</a>
         </li>
     {% else %}
         <li class="disabled">
-            <span>{{ 'Siguiente'|trans }}&nbsp;&raquo;</span>
+            <span>{{ ''|trans }}&nbsp;&raquo;</span>
         </li>
     {% endif %}
     </ul>

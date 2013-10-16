@@ -155,10 +155,11 @@ class UsuarioController extends Controller
             
             if($entity)
             {
-                if($entity->getValidaRegistro()==("0"))
+                if($entity->getValidaRegistro()!=("1"))
                 {
                     //activa el registro de usurio
                     $entity->setValidaRegistro("1");
+
                     $em->persist($entity);
                     //$em->flush();
                     //preguntar si es evaluador o postulante

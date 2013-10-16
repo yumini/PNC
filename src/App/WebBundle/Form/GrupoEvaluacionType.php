@@ -11,11 +11,10 @@ class GrupoEvaluacionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nombre')
-            ->add('descripcion')
-            ->add('estado')
-            ->add('fechaCreacion')
-            ->add('fechaActualizacion')
+            ->add('concurso','entity', array('attr' => array('class'=>'form-control input-small'),'class'=>'App\WebBundle\Entity\Concurso', 'property'=>'nombre', ))
+            ->add('nombre','text',array('required' => true,'attr' => array('class'=>'form-control input-small')))
+            ->add('descripcion','textarea',array('required' => true,'attr' => array('class'=>'form-control','rows'=>'4')))
+            
         ;
     }
 

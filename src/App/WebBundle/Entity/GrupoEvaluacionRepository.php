@@ -12,5 +12,11 @@ use Doctrine\ORM\EntityRepository;
  */
 class GrupoEvaluacionRepository extends EntityRepository
 {
-	 
+	 public function FindAllPaginator($paginator,$page,$limit){
+        $em=$this->getEntityManager();
+        $dql   = "SELECT p FROM AppWebBundle:GrupoEvaluacion p order by p.nombre";
+        $query = $em->createQuery($dql);
+        $pagination = $paginator->paginate($query,$page,$limit);
+        return $pagination;
+    }
 }

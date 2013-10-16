@@ -81,44 +81,43 @@ class GrupoEvaluacionController extends Controller
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
-
-        $entities = $em->getRepository('AppWebBundle:GrupoEvaluacion')->findAll();
+        $page=$this->get('request')->query->get('page', 1);
+        $paginator=$this->get('knp_paginator');
+        $pagination = $em->getRepository('AppWebBundle:GrupoEvaluacion')->FindAllPaginator($paginator,$page,5);
 
         return array(
-            'entities' => $entities,
+            'pagination' => $pagination,
+            'title_list'=> "Grupos de Evaluación",
+            'action'=> "grupoevaluacion"
         );
     }
     /**
      * Creates a new GrupoEvaluacion entity.
      *
-     * @Route("/", name="grupoevaluacion_create")
+     * @Route("/save", name="_admin_grupoevaluacion_save", options={"expose"=true})
      * @Method("POST")
-     * @Template("AppWebBundle:GrupoEvaluacion:new.html.twig")
+     * @Template("AppWebBundle:Default:result.json.twig")
      */
     public function createAction(Request $request)
     {
+
         $entity  = new GrupoEvaluacion();
         $form = $this->createForm(new GrupoEvaluacionType(), $entity);
         $form->bind($request);
-
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
-            $em->flush();
-
-            return $this->redirect($this->generateUrl('grupoevaluacion_show', array('id' => $entity->getId())));
-        }
+        $em = $this->getDoctrine()->getManager();
+        $entity->setEstado(1);
+        $em->persist($entity);
+        $em->flush();
 
         return array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
+            'result' => "{success:true}"
         );
     }
 
     /**
      * Displays a form to create a new GrupoEvaluacion entity.
      *
-     * @Route("/new", name="_admin_grupo_new", options={"expose"=true})
+     * @Route("/new", name="_admin_grupoevaluacion_new", options={"expose"=true})
      * @Method("GET")
      * @Template()
      */
@@ -161,7 +160,7 @@ class GrupoEvaluacionController extends Controller
     /**
      * Displays a form to edit an existing GrupoEvaluacion entity.
      *
-     * @Route("/{id}/edit", name="grupoevaluacion_edit")
+     * @Route("/{id}/edit", name="_admin_grupoevaluacion_edit", options={"expose"=true})
      * @Method("GET")
      * @Template()
      */
@@ -176,87 +175,72 @@ class GrupoEvaluacionController extends Controller
         }
 
         $editForm = $this->createForm(new GrupoEvaluacionType(), $entity);
-        $deleteForm = $this->createDeleteForm($id);
-
         return array(
             'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+            'form'   => $editForm->createView()
         );
     }
 
     /**
      * Edits an existing GrupoEvaluacion entity.
      *
-     * @Route("/{id}", name="grupoevaluacion_update")
-     * @Method("PUT")
-     * @Template("AppWebBundle:GrupoEvaluacion:edit.html.twig")
+     * @Route("/{id}/update", name="_admin_grupoevaluacion_update", options={"expose"=true})
+     * @Method("POST")
+     * @Template("AppWebBundle:Default:result.json.twig")
      */
     public function updateAction(Request $request, $id)
     {
+        $msg="";
+        $result=true;       
         $em = $this->getDoctrine()->getManager();
-
         $entity = $em->getRepository('AppWebBundle:GrupoEvaluacion')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find GrupoEvaluacion entity.');
-        }
-
-        $deleteForm = $this->createDeleteForm($id);
         $editForm = $this->createForm(new GrupoEvaluacionType(), $entity);
         $editForm->bind($request);
-
-        if ($editForm->isValid()) {
+        
+        if ($entity) {
+           
             $em->persist($entity);
             $em->flush();
+        }else{
+            $result=false;
+            $msg="grupo de Evaluación no encontrado";
 
-            return $this->redirect($this->generateUrl('grupoevaluacion_edit', array('id' => $id)));
         }
-
         return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+            'result' => "{success:'$result',message:'$msg'}"
+
         );
+
+      
     }
     /**
      * Deletes a GrupoEvaluacion entity.
      *
-     * @Route("/{id}", name="grupoevaluacion_delete")
-     * @Method("DELETE")
+     * @Route("/{id}/delete", name="_admin_grupoevaluacion_delete", options={"expose"=true})
+     * @Method("POST")
+     * @Template("AppWebBundle:Default:result.json.twig")
      */
     public function deleteAction(Request $request, $id)
     {
-        $form = $this->createDeleteForm($id);
-        $form->bind($request);
-
-        if ($form->isValid()) {
+            $msg="Se elimino el registro satisfactoriamente";
+            $result=true;
             $em = $this->getDoctrine()->getManager();
+            
             $entity = $em->getRepository('AppWebBundle:GrupoEvaluacion')->find($id);
-
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find GrupoEvaluacion entity.');
+            if($entity)
+            {
+                $em->remove($entity);
+                $em->flush();
+            
+            }else{
+                $msg="No se encontro el registro"; 
+                $result=false;
             }
+            return array(
+            'result' => "{\"success\":\"$result\",\"message\":\"$msg\"}"
 
-            $em->remove($entity);
-            $em->flush();
-        }
-
-        return $this->redirect($this->generateUrl('grupoevaluacion'));
+            );
     }
 
-    /**
-     * Creates a form to delete a GrupoEvaluacion entity by id.
-     *
-     * @param mixed $id The entity id
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createDeleteForm($id)
-    {
-        return $this->createFormBuilder(array('id' => $id))
-            ->add('id', 'hidden')
-            ->getForm()
-        ;
-    }
+   
 }

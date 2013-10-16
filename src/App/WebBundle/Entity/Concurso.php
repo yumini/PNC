@@ -182,7 +182,7 @@ class Concurso
      */
     private $prefijo;
 
-      /**
+    /**
     * @ORM\OneToMany(targetEntity="ConcursoCriterio", mappedBy="concurso")
     */
     protected $criterios;
@@ -192,6 +192,11 @@ class Concurso
     * @ORM\JoinColumn(name="tipoconcurso_id", referencedColumnName="id")
     */
     protected $tipoConcurso;
+    
+    /**
+    * @ORM\OneToMany(targetEntity="GrupoEvaluacion", mappedBy="concurso")
+    */
+    protected $gruposEvaluacion;
     
     public function __construct()
     {
@@ -791,5 +796,38 @@ class Concurso
     public function getTipoConcurso()
     {
         return $this->tipoConcurso;
+    }
+
+    /**
+     * Add gruposEvaluacion
+     *
+     * @param \App\WebBundle\Entity\GrupoEvaluacion $gruposEvaluacion
+     * @return Concurso
+     */
+    public function addGruposEvaluacion(\App\WebBundle\Entity\GrupoEvaluacion $gruposEvaluacion)
+    {
+        $this->gruposEvaluacion[] = $gruposEvaluacion;
+    
+        return $this;
+    }
+
+    /**
+     * Remove gruposEvaluacion
+     *
+     * @param \App\WebBundle\Entity\GrupoEvaluacion $gruposEvaluacion
+     */
+    public function removeGruposEvaluacion(\App\WebBundle\Entity\GrupoEvaluacion $gruposEvaluacion)
+    {
+        $this->gruposEvaluacion->removeElement($gruposEvaluacion);
+    }
+
+    /**
+     * Get gruposEvaluacion
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getGruposEvaluacion()
+    {
+        return $this->gruposEvaluacion;
     }
 }

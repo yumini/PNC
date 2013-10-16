@@ -42,7 +42,7 @@ class Usuario extends BaseUser
     protected $perfil;
 
      /**
-    * @ORM\ManyToOne(targetEntity="TipoDocumento", inversedBy="usuarios")
+    * @ORM\ManyToOne(targetEntity="Catalogo", inversedBy="usuarios")
     * @ORM\JoinColumn(name="tipodocumento_id", referencedColumnName="id")
     */
     protected $tipoDocumento;
@@ -54,6 +54,20 @@ class Usuario extends BaseUser
      */
     protected $nroDocumento;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="imagen", type="string", length=20)
+     */
+    protected $imagen;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="validaregistro", type="string", length=1)
+     */
+    protected $validaregistro;
+    
     /**
     * @ORM\OneToMany(targetEntity="Nota", mappedBy="usuario")
     */
@@ -72,6 +86,7 @@ class Usuario extends BaseUser
 
     public function __construct()
     {
+        $this->imagen="default.jpg";
         $this->conversaciones = new \Doctrine\Common\Collections\ArrayCollection();
         $this->notas = new \Doctrine\Common\Collections\ArrayCollection();
         $this->evaluadores = new \Doctrine\Common\Collections\ArrayCollection();
@@ -262,13 +277,38 @@ class Usuario extends BaseUser
         return $this->perfil;
     }
 
+   
+
+    /**
+     * Set nroDocumento
+     *
+     * @param string $nroDocumento
+     * @return Usuario
+     */
+    public function setNroDocumento($nroDocumento)
+    {
+        $this->nroDocumento = $nroDocumento;
+    
+        return $this;
+    }
+
+    /**
+     * Get nroDocumento
+     *
+     * @return string 
+     */
+    public function getNroDocumento()
+    {
+        return $this->nroDocumento;
+    }
+
     /**
      * Set tipoDocumento
      *
-     * @param \App\WebBundle\Entity\TipoDocumento $tipoDocumento
+     * @param \App\WebBundle\Entity\Catalogo $tipoDocumento
      * @return Usuario
      */
-    public function setTipoDocumento(\App\WebBundle\Entity\TipoDocumento $tipoDocumento = null)
+    public function setTipoDocumento(\App\WebBundle\Entity\Catalogo $tipoDocumento = null)
     {
         $this->tipoDocumento = $tipoDocumento;
     
@@ -278,10 +318,33 @@ class Usuario extends BaseUser
     /**
      * Get tipoDocumento
      *
-     * @return \App\WebBundle\Entity\TipoDocumento 
+     * @return \App\WebBundle\Entity\Catalogo 
      */
     public function getTipoDocumento()
     {
         return $this->tipoDocumento;
+    }
+
+    /**
+     * Set imagen
+     *
+     * @param string $imagen
+     * @return Usuario
+     */
+    public function setImagen($imagen)
+    {
+        $this->imagen = $imagen;
+    
+        return $this;
+    }
+
+    /**
+     * Get imagen
+     *
+     * @return string 
+     */
+    public function getImagen()
+    {
+        return $this->imagen;
     }
 }

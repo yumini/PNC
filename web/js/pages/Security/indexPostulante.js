@@ -41,8 +41,10 @@ new Concurso().List();
             data.context.addClass('error');
         },
         done:function (e, data) {
-        		var name=$("#imgPerfil").attr("data-name")
-                $("#imgPerfil").attr("src",name+"?r="+Math.random());
+        	var obj = jQuery.parseJSON(data.result);
+        	console.log(data.result);
+        		var path=$("#imgPerfil").attr('data-path');
+                $("#imgPerfil").attr("src",path+obj.name+"?r="+Math.random());
 
             
         }

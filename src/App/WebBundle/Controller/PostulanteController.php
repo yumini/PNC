@@ -211,17 +211,37 @@ class PostulanteController extends Controller
     }
 
     /**
-     * Creates a form to delete a Postulante entity by id.
      *
-     * @param mixed $id The entity id
-     *
-     * @return \Symfony\Component\Form\Form The form
+     * @Route("/upload/postulante/new", name="_admin_postulante_upload", options={"expose"=true})
+     * @Method("POST")
+     * @Template("AppWebBundle:Default:result.json.twig")
      */
-    private function createDeleteForm($id)
+    public function uploadAction(Request $request)
     {
-        return $this->createFormBuilder(array('id' => $id))
-            ->add('id', 'hidden')
-            ->getForm()
-        ;
+        
+       $user = $this->container->get("security.context")->getToken()->getUser();
+       $allowed = array('jpg', 'jpeg', 'png','bmp');
+       if(isset($_FILES['filePerfil']) && $_FILES['filePerfil']['error'] == 0){
+
+            $extension = pathinfo($_FILES['filePerfil']['name'], PATHINFO_EXTENSION);
+
+            if(!in_array(strtolower($extension), $allowed)){
+               $result="error";
+            }
+            $fileName=$user->getId().".".$extension;
+            if(move_uploaded_file($_FILES['filePerfil']['tmp_name'], 'images/usuarios/'.$fileName)){
+                $em = $this->getDoctrine()->getManager();
+                $user->setImagen($fileName);
+                $em->persist($user);
+                $em->flush();
+               $result="success";
+            }
+        }
+
+        return array(
+            'result' => "{\"status\":\"$result\",\"name\":\"$fileName\"}"
+        );
     }
+
+
 }
