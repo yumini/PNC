@@ -128,6 +128,7 @@ class RegistrationController extends ContainerAware
 
         $dispatcher->dispatch(FOSUserEvents::REGISTRATION_CONFIRMED, new FilterUserResponseEvent($user, $request, $response));
 
+       
         return $response;
     }
 
@@ -140,6 +141,12 @@ class RegistrationController extends ContainerAware
         if (!is_object($user) || !$user instanceof UserInterface) {
             throw new AccessDeniedException('This user does not have access to this section.');
         }
+        $userAdmin = $this->container->get('fos_user.user_manager')->findUserByUsernameOrEmail('admin');
+        $emailAdmin=$userAdmin->getEmail();
+        $template =  'FOSUserBundle:Registration:newUserEmail.txt.twig';
+        
+        $rendered = $this->container->get('templating')->renderResponse($template, array( 'user' => $user ));
+        $this->container->get('fos_user.mailer')->sendEmailInfoAdminNewRegisterMessage($rendered,$user,'pnc@gmail.com',$emailAdmin);
         
         return $this->container->get('templating')->renderResponse('FOSUserBundle:Registration:confirmed.html.'.$this->getEngine(), array(
             'user' => $user,

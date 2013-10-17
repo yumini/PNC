@@ -165,8 +165,8 @@ class UsuarioController extends Controller
                     //preguntar si es evaluador o postulante
                     if($entity->getPerfil()->getNombre()=="Postulante"){
                         $entitypostulante=new Postulante();
-                        $entitypostulante->setRazonsocial($entity->getNombres());
-                        $entitypostulante->SetRuc($entity->getNroDocumento());
+                        $entitypostulante->setRazonsocial("");
+                        $entitypostulante->SetRuc("");
                         $entitypostulante->setUsuario($entity);
                         $em->persist($entitypostulante);
                         //$em->flush();

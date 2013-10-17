@@ -9,11 +9,11 @@
 <div class="row">
     <div class="col-lg-4">
 
-          <h3 style="margin-top:4px;">Datos de Perfil</h3>
+          <h3 style="margin-top:4px;">Ficha de postulante</h3>
       <div class="well  well-sm" style="font-size:12px;">
       	<h4>
       			<span class="glyphicon glyphicon-user"></span>
-      		{{ entity.razonSocial|default('-')  }}
+      		{{ entity.razonSocial|default('Nombre o Razon Social')  }}
       	<span style="float:right;">
           <a id="btnEdit" href="javascript:void(0)" class="btn btn-info" data-id="{{ entity.id }}" style="font-size:12px;" >
             <span class="glyphicon glyphicon-edit"></span>
@@ -24,7 +24,7 @@
          
           <div class="row">
           	<div class="col-md-5"><label>RUC:</label></div>
-          	<div class="col-md-7">{{ entity.ruc|default('-') }}</div>
+          	<div class="col-md-7">{{ entity.ruc|default('Ruc de la Empresa') }}</div>
           </div>
           <div class="row">
           	<div class="col-md-5"><label>Dirección:</label></div>
