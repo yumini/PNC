@@ -4,17 +4,8 @@ var jAjax=function(){
 };
 jAjax.prototype={
     Load:function(url,contentId,method,params,js){
-        $("#"+contentId).on({
-            ajaxStart: function() { 
-                console.log("ajaxstart");
-                //console.log( $(this));
-                $("#"+contentId).addClass("loading"); 
-            },
-            ajaxStop: function() {
-                console.log("ajaxStop"); 
-                $("#"+contentId).removeClass("loading"); 
-            }    
-        });
+        
+        $("#"+contentId).html("<div class='home-loading'>Cargando...</div>") ;
         $.ajax({
             type:method,
             url:url,

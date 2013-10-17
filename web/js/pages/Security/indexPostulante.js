@@ -27,6 +27,8 @@ new Concurso().List();
         add: function (e, data) {
             // Automatically upload the file once it is added to the queue
             var jqXHR = data.submit();
+            var path=$("#imgPerfil").attr('data-path')+'../iconos/loadin1.png';
+            $("#imgPerfil").attr("src",path);
         },
 
         progress: function(e, data){
@@ -63,4 +65,7 @@ $(document).ready(function() {
 		var url=Routing.generate("_admin_postulante_perfil");
 	    new jAjax().Load(url,"main-body","GET","","");
 	});
+
+	
+
 });

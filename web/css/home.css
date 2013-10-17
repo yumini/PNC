@@ -229,3 +229,20 @@ body.loading {
 body.loading .modalLoading {
     display: block;
 }
+.home-loading{
+	background-image: url(../images/iconos/loading.gif);
+	background-repeat: no-repeat;
+	background-position: left;
+	width: 80px;
+	margin-top: 100px;
+	margin-right: auto;
+	margin-bottom: 5px;
+	margin-left: auto;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	padding-top: 7px;
+	padding-right: 5px;
+	padding-bottom: 7px;
+	padding-left: 35px;
+	color: #666;
+}

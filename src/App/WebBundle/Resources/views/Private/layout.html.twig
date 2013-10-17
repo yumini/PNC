@@ -84,19 +84,7 @@
 </html>
 {% block ScriptFooter %}
 {% endblock %}
-<script type="text/javascript">
-$(document).on({
-    ajaxStart: function() { 
-        console.log("ajaxstart");
-        //console.log( $(this));
-        //$(this.body).addClass("loading"); 
-    },
-    ajaxStop: function() {
-        console.log("ajaxStop"); 
-        //$(this.body).removeClass("loading"); 
-    }    
-});
-</script>
+
 <script src="{{ asset('js/jquery.knob.js') }}"></script>
 <script src="{{ asset('js/jquery.ui.widget.js') }}"></script>
 <script src="{{ asset('js/jquery.iframe-transport.js') }}"></script>

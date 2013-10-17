@@ -66,8 +66,13 @@ class CatalogoRepository extends EntityRepository
     public function getTipoEtapasQueryBuilder(){
         return $this->getCatalogosQueryBuilder("TIPOETAPA");
     }
-    public function getCategoriasPostulante(){
+    public function getCategoriasPostulanteQueryBuilder(){
         return $this->getCatalogosQueryBuilder("CATEGORIAPOSTULANTE");
+    }
+    public function getCategoriasPostulante(){
+        $q=$this->getCategoriasPostulanteQueryBuilder();
+        return $q->getQuery()->getResult();
+       
     }
 
 }

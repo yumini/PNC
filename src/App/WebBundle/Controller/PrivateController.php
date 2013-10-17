@@ -26,14 +26,18 @@ class PrivateController extends Controller {
         $user = $this->container->get("security.context")->getToken()->getUser();
   
         $user = $em->getRepository('AppWebBundle:Usuario')->find($user->getId());
-
-        $menuEntity=new MenuBuilder($em,$this->title,$user);
-        $menuHTML=$menuEntity->CreateMenu($user->getPerfil()->getId());
-        return array(
-            'title' => $this->title,
-            'Menu' => $menuHTML,
-            'user'=>$user
-            );
+        if($user->getValidaregistro()=="1"){
+            $menuEntity=new MenuBuilder($em,$this->title,$user);
+            $menuHTML=$menuEntity->CreateMenu($user->getPerfil()->getId());
+            return array(
+                'title' => $this->title,
+                'Menu' => $menuHTML,
+                'user'=>$user
+                );
+        }else{
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
+        
     }
     /**
      * @Route("/inicio", name="_admin_inicio", options={"expose"=true})

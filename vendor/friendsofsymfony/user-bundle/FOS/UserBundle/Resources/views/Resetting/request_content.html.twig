@@ -1,14 +1,53 @@
 {% trans_default_domain 'FOSUserBundle' %}
 
 <form action="{{ path('fos_user_resetting_send_email') }}" method="POST" class="fos_user_resetting_request">
-    <div>
-        {% if invalid_username is defined %}
-            <p>{{ 'resetting.request.invalid_username'|trans({'%username%': invalid_username}) }}</p>
-        {% endif %}
-        <label for="username">{{ 'resetting.request.username'|trans }}</label>
+    <p>&nbsp;</p>
+    <div class="row">
+            <div class="col-lg-3">
+            </div>
+            <div class="col-lg-6" style="text-align: center">
+                
+                <p>Bienvenido! Ingrese su nombre de usuario para poder restablecer su contraseña</p>
+            </div>
+            <div class="col-lg-3">
+            </div>
+        </div>
+      
+       
+   
+        <div class="row">
+        <div class="col-lg-3">
+            </div>
+            <div class="col-lg-6">
+                 <label for="username"> {{ 'resetting.request.username'|trans }}</label>
         <input type="text" id="username" name="username" required="required" />
+            </div>
+            <div class="col-lg-3">
+            </div>
+        </div>
+    <br/>
+    {% if invalid_username is defined %}
+        <div class="row">
+            <div class="col-lg-3">
+            </div>
+            <div class="col-lg-6">
+                <div class="alert alert-warning">
+                {{ 'resetting.request.invalid_username'|trans({'%username%': invalid_username}) }}
+                </div>
+            </div>
+            <div class="col-lg-3">
+            </div>
+        </div>
+    
+        {% endif %}
+    <div class="row">
+         <div class="col-lg-3">
+            </div>
+        <div class="col-lg-6">
+            <input type="submit" value="{{ 'resetting.request.submit'|trans }}" class="btn btn-lg btn-primary btn-block" />
+        </div>
+             <div class="col-lg-3">
+            </div>
     </div>
-    <div>
-        <input type="submit" value="{{ 'resetting.request.submit'|trans }}" />
-    </div>
+     
 </form>
