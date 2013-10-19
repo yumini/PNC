@@ -43,9 +43,34 @@
           	<div class="col-md-7"><a href="http://{{ entity.web|default('#') }}" target="_blank">{{ entity.web|default('-') }}</a></div>
           </div>
       </div>
-      <h3 >Categorias del Postulante</h3>
+      <h3 >Categorias del Postulante
+       <button id="btnCategoriaNew" class="btn btn-info btn-xs pull-right"  data-id="{{ entity.id }}" data-type="delete">
+                            <span class="glyphicon glyphicon-plus"> </span>
+      </button>
+      </h3> 
+     
+     
       <div class="well  well-sm" style="font-size:12px;">
-        categorias...
+          <div>
+          
+          </div>
+               <div id="list-categorias" class="list-group">
+         
+            {% for categoria in entity.categorias %}
+                <a href="#" class="list-group-item" data-toggle="popover" title="" data-content="And here's some amazing content. It's very engaging. right?" data-original-title="A Title">             
+                    <p class="list-group-item-text" data-id="{{ categoria.id }}">
+                         <button class="btn btn-danger btn-xs pull-right"  data-id="{{ entity.id }}" data-type="delete">
+                            <span class="glyphicon glyphicon-trash"> </span>
+                        </button>
+                                          
+                        
+                        <b> {{categoria.nombre}}</b> <br/>
+                       
+                    </p>
+                </a>
+            {% endfor %}
+            
+        </div>
       </div>  
   </div>
   <div class="col-lg-8"  >

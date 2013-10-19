@@ -98,10 +98,17 @@ class Postulante
     */
     protected $inscripciones;
     
+    /**
+     * @ORM\ManyToMany(targetEntity="Catalogo", inversedBy="categoriasPostulante")
+     * @ORM\JoinTable(name="postulantecategoria")
+     */
+    private $categorias;
+    
     public function __construct() {
         $this->grupos = new \Doctrine\Common\Collections\ArrayCollection();
         $this->postulantes = new \Doctrine\Common\Collections\ArrayCollection();
         $this->inscripciones = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->categorias = new \Doctrine\Common\Collections\ArrayCollection();
     }
   
 
@@ -426,5 +433,38 @@ class Postulante
             return 1;
                 
         return 0;
+    }
+
+    /**
+     * Add categorias
+     *
+     * @param \App\WebBundle\Entity\Catalogo $categorias
+     * @return Postulante
+     */
+    public function addCategoria(\App\WebBundle\Entity\Catalogo $categorias)
+    {
+        $this->categorias[] = $categorias;
+    
+        return $this;
+    }
+
+    /**
+     * Remove categorias
+     *
+     * @param \App\WebBundle\Entity\Catalogo $categorias
+     */
+    public function removeCategoria(\App\WebBundle\Entity\Catalogo $categorias)
+    {
+        $this->categorias->removeElement($categorias);
+    }
+
+    /**
+     * Get categorias
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getCategorias()
+    {
+        return $this->categorias;
     }
 }

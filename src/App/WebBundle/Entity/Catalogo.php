@@ -112,6 +112,11 @@ class Catalogo
     */
     protected $etapasTipoConcurso;
     
+    /**
+     * @ORM\ManyToMany(targetEntity="Postulante", mappedBy="categorias", cascade={"persist"})
+     */
+    private $postulanteCategorias;
+    
      public function __construct()
     {
         $this->postulantecatalogos = new \Doctrine\Common\Collections\ArrayCollection();
@@ -124,7 +129,7 @@ class Catalogo
         $this->etapasTipoConcurso= new \Doctrine\Common\Collections\ArrayCollection();
         $this->etapasTipoEtapa= new \Doctrine\Common\Collections\ArrayCollection();
         $this->usuarios= new \Doctrine\Common\Collections\ArrayCollection();
-
+        $this->postulanteCategorias = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
    
@@ -572,5 +577,71 @@ class Catalogo
     public function getEtapasTipoConcurso()
     {
         return $this->etapasTipoConcurso;
+    }
+
+    /**
+     * Add usuarios
+     *
+     * @param \App\WebBundle\Entity\Usuario $usuarios
+     * @return Catalogo
+     */
+    public function addUsuario(\App\WebBundle\Entity\Usuario $usuarios)
+    {
+        $this->usuarios[] = $usuarios;
+    
+        return $this;
+    }
+
+    /**
+     * Remove usuarios
+     *
+     * @param \App\WebBundle\Entity\Usuario $usuarios
+     */
+    public function removeUsuario(\App\WebBundle\Entity\Usuario $usuarios)
+    {
+        $this->usuarios->removeElement($usuarios);
+    }
+
+    /**
+     * Get usuarios
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getUsuarios()
+    {
+        return $this->usuarios;
+    }
+
+    /**
+     * Add postulanteCategorias
+     *
+     * @param \App\WebBundle\Entity\Postulante $postulanteCategorias
+     * @return Catalogo
+     */
+    public function addPostulanteCategoria(\App\WebBundle\Entity\Postulante $postulanteCategorias)
+    {
+        $this->postulanteCategorias[] = $postulanteCategorias;
+    
+        return $this;
+    }
+
+    /**
+     * Remove postulanteCategorias
+     *
+     * @param \App\WebBundle\Entity\Postulante $postulanteCategorias
+     */
+    public function removePostulanteCategoria(\App\WebBundle\Entity\Postulante $postulanteCategorias)
+    {
+        $this->postulanteCategorias->removeElement($postulanteCategorias);
+    }
+
+    /**
+     * Get postulanteCategorias
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPostulanteCategorias()
+    {
+        return $this->postulanteCategorias;
     }
 }
