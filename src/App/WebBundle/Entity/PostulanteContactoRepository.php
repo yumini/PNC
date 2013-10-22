@@ -23,4 +23,14 @@ class PostulanteContactoRepository extends EntityRepository
                 return null;
         }
     }
+    public function FindByPostulantePaginator($paginator,$page,$limit,$idusuario){
+        $em=$this->getEntityManager();
+        $dql= "SELECT pc FROM AppWebBundle:PostulanteContacto pc 
+                JOIN pc.postulante p 
+                JOIN pc.postulantecontacto ct
+                WHERE p.id=:id order by ct.codigo asc";
+        $query=$em->createQuery($dql)->setParameter('id', $idusuario);
+        $pagination = $paginator->paginate($query,$page,$limit);
+        return $pagination;
+    }
 }

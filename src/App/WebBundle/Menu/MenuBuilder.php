@@ -15,6 +15,7 @@ class MenuBuilder {
     private $em;
     private $title;
     private $user;
+    private $urlPerfil;
      public function __construct($em,$title,  \App\WebBundle\Entity\Usuario $user)
     {
         $this->em=$em;
@@ -26,12 +27,17 @@ class MenuBuilder {
         switch($perfilid){
             case "1":
                 $urlHome="_admin_inicio";
+                $this->urlPerfil="#";
                 break;
-            case "2":
+            case "2"://evaluador
                 $urlHome="_admin_inicio";
+                $this->urlPerfil="_admin_evaluador_perfil";
+                
                 break;
             case "3":
                 $urlHome="_admin_inicio_postulante";
+                $this->urlPerfil="_admin_postulante_perfil";
+                
                 break;
         }
         $entities =  $this->em->getRepository('AppWebBundle:Menu')->findByParent($perfilid,0);
@@ -87,8 +93,8 @@ class MenuBuilder {
                       <li class=\"dropdown\">
                         <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\"><i class=\"glyphicon glyphicon-user icon-white\"> </i> ".$this->user->getUsername()." <b class=\"caret\"></b></a>
                         <ul class=\"dropdown-menu\">
-                          <li><a href=\"#\">Mis Datos Personales</a></li>
-                          <li><a href=\"#\">Cambiar mi contraseña</a></li>
+                          <li><a href=\"javascript:return false;\" onclick=\"new jAjax().Load(Routing.generate('".$this->urlPerfil."'),'main-body','get','','');return false;\">Mis Datos Personales</a></li>
+                          <li><a href=\"../change-password/change-password\">Cambiar mi contraseña</a></li>
                           
                           <li class=\"divider\"></li>
                           <li><a href=\"../logout\"><i class=\"glyphicon glyphicon-off\"> </i> Cerrar Sesión</a></li>

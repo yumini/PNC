@@ -203,8 +203,9 @@ OptionButton.Contactos.prototype={
 
 OptionButton.Categoria=function(){
     this.routeList='_admin_postulante_perfil';
-    this.routeNew='_admin_postulante_categoria_new';
-    this.routeSave='_admin_postulante_categoria_save';
+    this.routeNew='_admin_postulantecategoria_new';
+    this.routeSave='_admin_postulantecategoria_save';
+    this.routeDelete='_admin_postulantecategoria_delete';
      
 }
 OptionButton.Categoria.prototype={
@@ -215,9 +216,9 @@ OptionButton.Categoria.prototype={
     New:function(){
         this.Window=new BootstrapWindow({id:"winForm",title:"Agregar Categoria"});
         this.Window.setWidth(600);
-        this.Window.setHeight(360);
-        //var url=Routing.generate(this.routeNew);
-        //this.Window.Load(url,"");
+        //this.Window.setHeight(360);
+        var url=Routing.generate(this.routeNew);
+        this.Window.Load(url,"");
         this.Window.Show();
         var parent=this;
         this.Window.AddButton('btn-contactonew-cancel',{
@@ -239,7 +240,7 @@ OptionButton.Categoria.prototype={
         });
     },
     Save:function(){
-            /*var parent=this;
+            var parent=this;
             var url=Routing.generate(this.routeSave);
             params = $('#myform').serializeObject();
             console.log(params);
@@ -249,34 +250,39 @@ OptionButton.Categoria.prototype={
                     url:url,
                     data:params,
                     dataType:"html",
-                    success:function(datos){
-                            //parent.Window.AddHTML(datos);
-                           new OptionButton.Contactos().Refresh(); 
+                    success:function(request){
+                        var obj = jQuery.parseJSON(request);
+                        if(obj.success=="true"){
+                            new OptionButton.Categoria().Refresh();
+                        }else{
+                            alert(obj.msg);
+                        }
+                         
                     },
                     error:function(objeto, quepaso, otroobj){
 
                     }
-            });*/
+            });
         
     },
    
     Delete:function(id){
-        /*this.IdEntity=id;
-        if(confirm("Desea eliminar el contacto seleccionado?")){
+        this.IdEntity=id;
+        if(confirm("Desea eliminar la categoria seleccionada?")){
              var url=Routing.generate(this.routeDelete,{id:this.IdEntity});
              $.ajax({
-                    type:'DELETE',
+                    type:'POST',
                     url:url,
                     dataType:"html",
                     success:function(datos){
                             
-                            new OptionButton.Contactos().Refresh(); 
+                            new OptionButton.Categoria().Refresh(); 
                     },
                     error:function(objeto, quepaso, otroobj){
 
                     }
             }); 
-        }*/
+        }
     }
 };
 //al leer el documento
@@ -300,7 +306,10 @@ $(document).ready(function() {
         console.log("el id es:"+id);
         new OptionButton.Categoria().New(id);   
     });
-    
+    $("a[data-type='categoria-delete']").click(function(event) {
+      var id=$(this).attr("data-id");
+       new OptionButton.Categoria().Delete(id);   
+    });
     new OptionButton.Contactos().Refresh(); 
 
   

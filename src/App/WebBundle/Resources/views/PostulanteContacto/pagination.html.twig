@@ -1,0 +1,92 @@
+{#
+/**
+ * @file
+ * Twitter Bootstrap Sliding pagination control implementation.
+ *
+ * View that can be used with the pagination module 
+ * from the Twitter Bootstrap CSS Toolkit
+ * http://twitter.github.com/bootstrap/
+ *
+ * This view has been ported from Pagerfanta progect
+ * https://github.com/whiteoctober/Pagerfanta/
+ * https://github.com/whiteoctober/Pagerfanta/blob/master/src/Pagerfanta/View/TwitterBootstrapView.php
+ *
+ * @author Pablo Díez <pablodip@gmail.com>
+ * @author Jan Sorgalla <jsorgalla@gmail.com>
+ * @author Artem Ponomarenko <imenem@inbox.ru>
+ */
+#}
+
+{% if pageCount > 1 %}
+<div>
+    <ul class="pagination nomargin">
+
+    {% if previous is defined %}
+        <li>
+            <a href="javascript:new jAjax().Load('{{ path(route, query|merge({(pageParameterName): previous})) }}','containerContactos','get','','')">&laquo;&nbsp;{{ ''|trans }}</a>
+        </li>
+    {% else %}
+        <li class="disabled">
+            <span>&laquo;&nbsp;{{ ''|trans }}</span>
+        </li>
+    {% endif %}
+
+    {% if startPage > 1 %}
+        <li>
+            <a href="javascript:new jAjax().Load('{{ path(route, query|merge({(pageParameterName): 1})) }}','containerContactos','get','','')">1</a>
+        </li>
+        {% if startPage == 3 %}
+            <li>
+                <a href="javascript:new jAjax().Load('{{ path(route, query|merge({(pageParameterName): 2})) }}','containerContactos','get','','')">2</a>
+            </li>
+        {% elseif startPage != 2 %}
+        <li class="disabled">
+            <span>&hellip;</span>
+        </li>
+        {% endif %}
+    {% endif %}
+
+    {% for page in pagesInRange %}
+        {% if page != current %}
+            <li>
+               
+                <a href="javascript:new jAjax().Load('{{ path(route, query|merge({(pageParameterName): page})) }}','containerContactos','get','','')">{{ page }}</a>
+            </li>
+        {% else %}
+            <li class="active">
+                <span>{{ page }}</span>
+            </li>
+        {% endif %}
+
+    {% endfor %}
+
+    {% if pageCount > endPage %}
+        {% if pageCount > (endPage + 1) %}
+            {% if pageCount > (endPage + 2) %}
+                <li class="disabled">
+                    <span>&hellip;</span>
+                </li>
+            {% else %}
+                <li>
+                    <a href="javascript:new jAjax().Load('{{ path(route, query|merge({(pageParameterName): (pageCount - 1)})) }}','containerContactos','get','','')">{{ pageCount -1 }}</a>
+                    
+                </li>
+            {% endif %}
+        {% endif %}
+        <li>
+            <a href="javascript:new jAjax().Load('{{ path(route, query|merge({(pageParameterName): pageCount})) }}','containerContactos','get','','')">{{ pageCount }}</a>
+        </li>
+    {% endif %}
+
+    {% if next is defined %}
+        <li>
+            <a href="javascript:new jAjax().Load('{{ path(route, query|merge({(pageParameterName): next})) }}','containerContactos','get','','')">{{ ''|trans }}&nbsp;&raquo;</a>
+        </li>
+    {% else %}
+        <li class="disabled">
+            <span>{{ ''|trans }}&nbsp;&raquo;</span>
+        </li>
+    {% endif %}
+    </ul>
+</div>
+{% endif %}

@@ -55,7 +55,7 @@ class CatalogoRepository extends EntityRepository
         return $this->getCatalogosQueryBuilder("TDI");
     }
     public function getTipoSexoQueryBuilder(){
-        return $this->getCatalogosQueryBuilder("TSX");
+        return $this->getCatalogosQueryBuilder("SEXO");
     }
     public function getTipoCriteriosQueryBuilder(){
         return $this->getCatalogosQueryBuilder("TIPOCRITERIO");

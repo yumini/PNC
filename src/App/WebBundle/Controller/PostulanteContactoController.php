@@ -28,12 +28,21 @@ class PostulanteContactoController extends Controller
     public function contactosPostulanteAction($id)
     {
         $em = $this->getDoctrine()->getManager();
-
-        $entities = $em->getRepository('AppWebBundle:PostulanteContacto')->FindByPostulante($id);
+/*
+        $entities = $em->getRepository('AppWebBundle:PostulanteContacto')->FindByPostulantePaginator($id);
         //$entities = $em->getRepository('AppWebBundle:PostulanteContacto')->findAll($id);
 
         return array(
             'entities' => $entities,
+        );*/
+        
+        $page=$this->get('request')->query->get('page', 1);
+        $paginator=$this->get('knp_paginator');
+        $pagination = $em->getRepository('AppWebBundle:PostulanteContacto')->FindByPostulantePaginator($paginator,$page,3,$id);
+
+        return array(
+            'pagination' => $pagination,
+            'idPostulante'=>$id
         );
     }
     /**

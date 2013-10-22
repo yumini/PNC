@@ -116,7 +116,8 @@ var ViewsNotas={
 		},
 		 Delete:function(id){
                         this.IdEntity=id;
-                        alert("hola"+id);
+                       
+                        console.log(id);
 			console.log("eliminando nota en BD");
 			var url=Routing.generate('_admin_nota_delete',{id:this.IdEntity})
 			$.ajax({

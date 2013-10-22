@@ -244,4 +244,83 @@ class PostulanteController extends Controller
     }
 
 
+    /**
+     * Displays a form to create a new Postulante entity.
+     *
+     * @Route("/categoria/new", name="_admin_postulantecategoria_new", options={"expose"=true})
+     * @Method("GET")
+     * @Template("AppWebBundle:Postulante:newCategoria.html.twig")
+     */
+    public function newCategoriaAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entities = $em->getRepository('AppWebBundle:Catalogo')->getCategoriasPostulante();
+
+        return array(
+            'entities' => $entities,
+        );
+    }
+    /**
+     * Displays a form to create a new Postulante entity.
+     *
+     * @Route("/categoria/save", name="_admin_postulantecategoria_save", options={"expose"=true})
+     * @Method("POST")
+     * @Template("AppWebBundle:Default:result.json.twig")
+     */
+    public function saveCategoriaAction(Request $request)
+    {
+        $msg="";
+        $success="true";
+        $categoriaId=$request->request->get('categoriaId');
+        $em = $this->getDoctrine()->getManager();
+        $user = $this->container->get("security.context")->getToken()->getUser();
+        $entity = $em->getRepository('AppWebBundle:Postulante')->findByUser($user->getId());
+        
+        $categoria=$em->getRepository('AppWebBundle:Catalogo')->find($categoriaId);
+        
+        $checkCategoria = function ($id) {
+            return function($key, \App\WebBundle\Entity\Catalogo $c) use ($id) {
+                return $c->getId() == $id;
+            };
+        };
+        $categorias=$entity->getCategorias();
+        $existe=$categorias->exists($checkCategoria($categoriaId));
+
+        if(!$existe){
+            $entity->addCategoria($categoria);
+            $em->persist($entity);
+            $em->flush();
+        }else{
+            $msg="categoria ya se encuentra registrada";
+            $success="false";
+        }
+        return array(
+            'result' => "{\"success\":\"$success\",\"msg\":\"$msg\"}"
+        );
+    }
+    
+    /**
+     * Displays a form to create a new Postulante entity.
+     *
+     * @Route("/categoria/delete", name="_admin_postulantecategoria_delete", options={"expose"=true})
+     * @Method("POST")
+     * @Template("AppWebBundle:Default:result.json.twig")
+     */
+    public function deleteCategoriaAction(Request $request)
+    {
+        $msg="";
+        $success="true";
+        $id=$request->query->get('id');
+        $em = $this->getDoctrine()->getManager();
+        $user = $this->container->get("security.context")->getToken()->getUser();
+        $entity = $em->getRepository('AppWebBundle:Postulante')->findByUser($user->getId());
+        $categoria=$em->getRepository('AppWebBundle:Catalogo')->find($id);
+        $entity->removeCategoria($categoria);
+        $em->persist($entity);
+        $em->flush();
+        return array(
+            'result' => "{\"success\":\"$success\",\"msg\":\"$msg\"}"
+        );
+    }
 }

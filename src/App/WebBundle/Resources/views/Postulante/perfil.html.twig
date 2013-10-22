@@ -57,7 +57,7 @@
                <div id="list-categorias" class="list-group">
          
             {% for categoria in entity.categorias %}
-                <a href="#" class="list-group-item" data-toggle="popover" title="" data-content="And here's some amazing content. It's very engaging. right?" data-original-title="A Title">             
+                <a href="#" class="list-group-item" data-id="{{categoria.id}}" data-type="categoria-delete">             
                     <p class="list-group-item-text" data-id="{{ categoria.id }}">
                          <button class="btn btn-danger btn-xs pull-right"  data-id="{{ entity.id }}" data-type="delete">
                             <span class="glyphicon glyphicon-trash"> </span>
