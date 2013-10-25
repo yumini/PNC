@@ -146,6 +146,7 @@ class UsuarioController extends Controller
      */
     public function ActiveAction(Request $request, $id)
     {
+        
        /*tu codigo debe devolver {result:true,ms:""}*/
         $msg="Se realizó la activación de registro correctamente.";
             $result=true;
@@ -181,6 +182,9 @@ class UsuarioController extends Controller
                        
                     }
                     $em->flush();
+                    $this->SendEmailConfirmedActivation($entity);
+                    
+                     
                 }else{
                     $msg="Usuario se encuentra con el registro activo"; 
                     $result=false;
@@ -267,5 +271,20 @@ class UsuarioController extends Controller
             ->add('id', 'hidden')
             ->getForm()
         ;
+    }
+    
+    public function SendEmailConfirmedActivation(Usuario $entity){
+        $message = \Swift_Message::newInstance()
+                    ->setSubject('Bienvenido a PNC')
+                    ->setFrom('nmedinson@gmail.com')
+                    ->setTo($entity->getEmail())
+                    ->setBody(
+                            $this->renderView(
+                                'AppWebBundle:Usuario:activationConfirmed.html.twig',
+                                array('user' => $entity)
+                                ) 
+                     );
+         $this->get('mailer')->send($message);
+        
     }
 }

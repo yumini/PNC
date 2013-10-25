@@ -1,42 +1,34 @@
 <div class="list-group">
- {% for entity in entities %}
+ {% for entity in pagination %}
 <a href="#" class="list-group-item" >
     <h4 class="list-group-item-heading">{{ entity.getTipoVinculo().nombre}}</small></h4>
     <p class="list-group-item-text">
 		<div class="row" style="font-size:12px;">
-                            <div class="row">
-				<div class="col-lg-6">
-				<label>Razon Social:</label>
+                            
+				<div class="col-lg-3">
+				<label>Razon Social:</label><br/>
 					{{entity.razonsocial|default('-')}} <br/>
                                 </div>
 
-                                <div class="col-lg-6">
-				<label>RUC:</label>
+                                <div class="col-lg-2">
+				<label>RUC:</label><br/>
 					{{entity.ruc|default('-')}}
                                 </div>
-                                    
-                           </div>
-                           <div class="row">
-				<div class="col-lg-6">
+                               <div class="col-lg-2">
 				<label>Fecha Inicio:</label><br/>
 					{{entity.fecini|date("d/m/Y")}}
                                 </div>
 
-                                <div class="col-lg-6">
+                                <div class="col-lg-2">
 				<label>Fecha Inicio:</label><br/>
 					{{entity.fecfin|date("d/m/Y")}}
+                                </div> 
+                                <div class="col-lg-3">
+				<label>Razon Social:</label><br/>
+					{{entity.detalle|default('-')}} <br/>
                                 </div>
-                                    
                            </div>
-                        <div class="row">
-                            <div class="col-lg-4">
-                                <label>Detalle:</label><br/>
-					{{entity.detalle|default('-')}}
-                            </div>
-                        </div>        
-                               
-             	
-        </div>
+                                             
           				
     </p>
     <button type="button" class="btn btn-info btn-xs" onclick="new OptionButton.Conflictos().Edit('{{entity.id}}')"> 
@@ -48,3 +40,6 @@
   </a>
    {% endfor %}
   </div>
+ <div>
+        {{ knp_pagination_render(pagination,'AppWebBundle:ConflictoInteresEvaluador:pagination.html.twig') }}
+    </div>

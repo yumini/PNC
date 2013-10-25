@@ -23,4 +23,14 @@ class ConflictoInteresEvaluadorRepository extends EntityRepository
                 return null;
         }
     }
+    public function FindByEvaluadorPaginator($paginator,$page,$limit,$idusuario){
+        $em=$this->getEntityManager();
+        $dql= "SELECT pc FROM AppWebBundle:ConflictoInteresEvaluador pc 
+                JOIN pc.evaluador p 
+               
+                WHERE p.id=:id ";
+        $query=$em->createQuery($dql)->setParameter('id', $idusuario);
+        $pagination = $paginator->paginate($query,$page,$limit);
+        return $pagination;
+    }
 }

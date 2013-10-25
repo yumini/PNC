@@ -291,6 +291,8 @@ class PostulanteController extends Controller
             $entity->addCategoria($categoria);
             $em->persist($entity);
             $em->flush();
+            $msg="Categoria registrada satisfactoriamente.";
+            $success="true";
         }else{
             $msg="categoria ya se encuentra registrada";
             $success="false";

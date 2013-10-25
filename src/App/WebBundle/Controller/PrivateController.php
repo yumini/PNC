@@ -46,6 +46,7 @@ class PrivateController extends Controller {
     public function inicioAction()
     {
         $user = $this->container->get("security.context")->getToken()->getUser();
+        
         return array(
             'title' => $this->title,
             'user'=>$user
@@ -76,9 +77,12 @@ class PrivateController extends Controller {
     {
       
         $user = $this->container->get("security.context")->getToken()->getUser();
+        $em = $this->getDoctrine()->getManager();
+        $evaluador = $em->getRepository('AppWebBundle:Evaluador')->findByUser($user->getId());
         return array(
             'title' => $this->title,
-            'user' => $user
+            'user' => $user,
+            'evaluador' => $evaluador
             );
     }
 

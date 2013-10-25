@@ -7,48 +7,45 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use App\WebBundle\Entity\ConflictoInteresEvaluador;
-use App\WebBundle\Form\ConflictoInteresEvaluadorType;
+use App\WebBundle\Entity\EvaluadorDisponibilidad;
+use App\WebBundle\Form\EvaluadorDisponibilidadType;
 
 /**
- * ConflictoInteresEvaluador controller.
+ * EvaluadorDisponibilidad controller.
  *
- * @Route("/conflictointeresevaluador")
+ * @Route("/admin/evaluadordisponibilidad")
  */
-class ConflictoInteresEvaluadorController extends Controller
+class EvaluadorDisponibilidadController extends Controller
 {
 
-     /**
-     * Lists all PostulanteContacto entities.
+    /**
+     * Lists all EvaluadorDisponibilidad entities.
      *
-     * @Route("/{id}/conflictos", name="_admin_conflictodeinteres", options={"expose"=true})
+     * @Route("/{id}/list", name="_admin_evaluadordisponibilidad", options={"expose"=true})
      * @Method("GET")
      * @Template()
      */
-    public function ConflictodeInteresAction($id)
+    public function indexAction($id)
     {
-       
-         $em = $this->getDoctrine()->getManager();
-        $page=$this->get('request')->query->get('page', 1);
-        $paginator=$this->get('knp_paginator');
-        $pagination = $em->getRepository('AppWebBundle:ConflictoInteresEvaluador')->FindByEvaluadorPaginator($paginator,$page,3,$id);
+        $em = $this->getDoctrine()->getManager();
+
+        $entities = $em->getRepository('AppWebBundle:EvaluadorDisponibilidad')->FindByEvaluador($id);
 
         return array(
-            'pagination' => $pagination,
-            'idEvaluador'=>$id
+            'entities' => $entities,
         );
     }
     /**
-     * Creates a new PostulanteContacto entity.
+     * Creates a new EvaluadorDisponibilidad entity.
      *
-     * @Route("/save", name="_admin_conflictodeinteres_save", options={"expose"=true})
+     * @Route("/", name="_admin_evaluadordisponibilidad_save", options={"expose"=true})
      * @Method("POST")
      * @Template("AppWebBundle:Default:result.json.twig")
      */
     public function createAction(Request $request)
     {
-        $entity  = new ConflictoInteresEvaluador();
-        $form = $this->createForm(new ConflictoInteresEvaluadorType(), $entity);
+        $entity  = new EvaluadorDisponibilidad();
+        $form = $this->createForm(new EvaluadorDisponibilidadType(), $entity);
         $form->bind($request);
         $em = $this->getDoctrine()->getManager();
         $user = $this->container->get("security.context")->getToken()->getUser();
@@ -62,19 +59,21 @@ class ConflictoInteresEvaluadorController extends Controller
         return array(
             'result' => "{\"success\":\"true\"}"
         );
+        
+       
     }
 
     /**
-     * Displays a form to create a new PostulanteContacto entity.
+     * Displays a form to create a new EvaluadorDisponibilidad entity.
      *
-     * @Route("/new", name="_admin_conflictodeinteres_new", options={"expose"=true})
+     * @Route("/new", name="_admin_evaluadordisponibilidad_new", options={"expose"=true})
      * @Method("GET")
      * @Template()
      */
     public function newAction()
     {
-        $entity = new ConflictoInteresEvaluador();
-        $form   = $this->createForm(new ConflictoInteresEvaluadorType(), $entity);
+        $entity = new EvaluadorDisponibilidad();
+        $form   = $this->createForm(new EvaluadorDisponibilidadType(), $entity);
 
         return array(
             'entity' => $entity,
@@ -83,9 +82,9 @@ class ConflictoInteresEvaluadorController extends Controller
     }
 
     /**
-     * Finds and displays a ConflictoInteresEvaluador entity.
+     * Finds and displays a EvaluadorDisponibilidad entity.
      *
-     * @Route("/{id}", name="conflictointeresevaluador_show")
+     * @Route("/{id}", name="evaluadordisponibilidad_show")
      * @Method("GET")
      * @Template()
      */
@@ -93,10 +92,10 @@ class ConflictoInteresEvaluadorController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('AppWebBundle:ConflictoInteresEvaluador')->find($id);
+        $entity = $em->getRepository('AppWebBundle:EvaluadorDisponibilidad')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find ConflictoInteresEvaluador entity.');
+            throw $this->createNotFoundException('Unable to find EvaluadorDisponibilidad entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -108,45 +107,47 @@ class ConflictoInteresEvaluadorController extends Controller
     }
 
     /**
-     * Displays a form to edit an existing PostulanteContacto entity.
+     * Displays a form to edit an existing EvaluadorDisponibilidad entity.
      *
-     * @Route("/{id}/edit", name="_admin_conflictodeinteres_edit", options={"expose"=true})
+     * @Route("/{id}/edit", name="_admin_evaluadordisponibilidad_edit", options={"expose"=true})
      * @Method("GET")
      * @Template()
      */
     public function editAction($id)
     {
-        $em = $this->getDoctrine()->getManager();
+       $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('AppWebBundle:ConflictoInteresEvaluador')->find($id);
+        $entity = $em->getRepository('AppWebBundle:EvaluadorDisponibilidad')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find ConflictoInteresEvaluador entity.');
+            throw $this->createNotFoundException('Unable to find EvaluadorDisponibilidad entity.');
         }
 
-        $editForm = $this->createForm(new ConflictoInteresEvaluadorType(), $entity);
+        $editForm = $this->createForm(new EvaluadorDisponibilidadType(), $entity);
       
 
         return array(
             'entity'      => $entity,
             'form'   => $editForm->createView()
         );
+        
+       
     }
 
-   /**
-     * Edits an existing PostulanteContacto entity.
+    /**
+     * Edits an existing EvaluadorDisponibilidad entity.
      *
-     * @Route("/{id}/update", name="_admin_conflictodeinteres_update", options={"expose"=true})
+     * @Route("/{id}/update", name="_admin_evaluadordisponibilidad_update", options={"expose"=true})
      * @Method("POST")
      * @Template("AppWebBundle:Default:result.json.twig")
      */
     public function updateAction(Request $request, $id)
     {
-       $msg="";
+        $msg="";
         $result=true;       
         $em = $this->getDoctrine()->getManager();
-        $entity = $em->getRepository('AppWebBundle:ConflictoInteresEvaluador')->find($id);
-        $editForm = $this->createForm(new ConflictoInteresEvaluadorType(), $entity);
+        $entity = $em->getRepository('AppWebBundle:EvaluadorDisponibilidad')->find($id);
+        $editForm = $this->createForm(new EvaluadorDisponibilidadType(), $entity);
         $editForm->bind($request);
         
         if ($entity) {
@@ -155,20 +156,22 @@ class ConflictoInteresEvaluadorController extends Controller
             $em->flush();
         }else{
             $result=false;
-            $msg="conflicto no encontrado para el evaluador";
+            $msg="dia no encontrado para el evaluador";
 
         }
         return array(
             'result' => "{\"success\":\"$result\",message:\"$msg\"}"
 
         );
+        
+       
     }
     /**
-     * Deletes a PostulanteContacto entity.
+     * Deletes a EvaluadorDisponibilidad entity.
      *
-     * @Route("/{id}", name="_admin_conflictodeinteres_delete", options={"expose"=true})
-     * @Method("DELETE")
+     * @Route("/{id}/delete", name="_admin_evaluadordisponibilidad_delete", options={"expose"=true})
      * @Template("AppWebBundle:Default:result.json.twig")
+     * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id)
     {
@@ -176,7 +179,7 @@ class ConflictoInteresEvaluadorController extends Controller
             $result=true;
             $em = $this->getDoctrine()->getManager();
             
-            $entity = $em->getRepository('AppWebBundle:ConflictoInteresEvaluador')->find($id);
+            $entity = $em->getRepository('AppWebBundle:EvaluadorDisponibilidad')->find($id);
             if($entity)
             {
                 $em->remove($entity);
@@ -190,10 +193,12 @@ class ConflictoInteresEvaluadorController extends Controller
             'result' => "{\"success\":\"$result\",message:\"$msg\"}"
 
             );
+            
+       
     }
 
     /**
-     * Creates a form to delete a ConflictoInteresEvaluador entity by id.
+     * Creates a form to delete a EvaluadorDisponibilidad entity by id.
      *
      * @param mixed $id The entity id
      *

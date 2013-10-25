@@ -16,8 +16,11 @@ OptionButton.prototype={
                     dataType:"html",
                     success:function(request){
                             var obj = jQuery.parseJSON(request);
-                            console.log(obj)
-                            alert(obj.message)
+                            //console.log(obj)
+                            //alert(obj.message)
+                            bootbox.alert(obj.message, function() {
+                                //console.log("Alert Callback");
+                            });
                             new OptionButton().Refresh();
                     },
                     error:function(objeto, quepaso, otroobj){

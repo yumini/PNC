@@ -1,37 +1,59 @@
 {% block ScriptFooter %}
  <script src="{{ asset('js/pages/Security/indexEvaluador.js') }}"></script> 
 {% endblock %}
-<div class="row" style="margin: 5px 5px 5px 5px;">
+
+{% if evaluador.IsValid()==0 %}
+<div class="row" >
   <div class="col-lg-12" >
       <div class="alert alert-info">
         
          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-         <strong>Advertencia!</strong> Es necesario que complete su perfil para poder evaluar en algun concurso.<a href="javascript:new OptionButton().Perfil();"><b> Actualiza tu perfil aqui</b></a>
+         <strong>Advertencia!</strong> Es necesario que complete su perfil para poder participar en algun concurso.<a href="javascript:new OptionButton().Perfil();"><b> Actualiza tu perfil aqui</b></a>
       </div>
           
   </div>
 </div>
-<div class="row" style="margin: 5px 5px 5px 5px;">
-    <div class="col-lg-4">
-      <div class="well">
-          <h3>Bienvenido Sr(a).:</h3>
-          <h5>{{ user.nombres}} {{user.apellidos}}</h5>
-          <p>Bienvenido a la seccion de inscripcion para evaluar concursos, desde aqui podras inscribirte y seleccionar los concursos que te interese evaluar.</p>
+{% endif %}
+<div class="row" >
+    <div class="col-lg-3">
+     
+      <div class="well" style="margin:0px;">
+        
+         
+          
+
+                <div id="uploadFoto">
+                <a id="lnkFotoPerfil" href="#" class="thumbnail">
+                  <img id="imgPerfil" data-src="holder.js/100%x180" alt="100%x180" src="{{ asset('images/usuarios/')}}{{user.imagen}}" data-path="{{ asset('images/usuarios/')}}"/>
+                </a>
+                  <input id="filePerfil" type="file" name="filePerfil" style="display:none;" multiple />
+                </div>
+              
+          <p style="text-align:center;padding:2px;">
+           <form id="formUploadPerfil" method="post"  action="{{ path('_admin_postulante_upload') }}" enctype="multipart/form-data">
+            <ul class="nav nav-pills">
+              <li>
+                <a id="btnPerfil" href="#"> 
+                  <span class="glyphicon glyphicon-pencil"></span>
+                  Editar Perfil
+                </a></li>
+              <li>
+                <a  id="btnFotoPerfil" href="#">
+                  <span class="glyphicon glyphicon-user"></span>
+                  Cambiar Foto
+                </a>
+              </li>
+              
+            </ul>
+          </form>
+          </p>
+          <h4><b>{{ user.nombres}} {{user.apellidos}}</b></h4>
+          <p>Bienvenido ,  mira nuestros concursos y participa</p>
       </div>
   </div>
-  <div class="col-lg-8"  style="padding: 5px 35px;margin: 0px 0px;">
-    <div class="list-group">
-  <a href="#" class="list-group-item ">
-    <h4 class="list-group-item-heading">List group item heading</h4>
-    <p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-    <button type="button" class="btn btn-success">Conoce mas</button>
-  </a>
-  <a href="#" class="list-group-item ">
-    <h4 class="list-group-item-heading">List group item heading</h4>
-    <p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-    <button type="button" class="btn btn-success btn-sm">Conoce mas</button>
-  </a>
-</div>
+  <div class="col-lg-9"   id="container-concursos">
+   
        
   </div>
 </div
+

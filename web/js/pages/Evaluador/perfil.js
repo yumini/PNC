@@ -62,7 +62,7 @@ OptionButton.Perfil.prototype={
     Refresh:function(){
         var url=Routing.generate(this.routeList);
         new jAjax().Load(url,'main-body','get','','');
-    },
+    }
 
    
 
@@ -195,6 +195,135 @@ OptionButton.Conflictos.prototype={
         }
     }
 };
+
+
+OptionButton.Disponibilidad=function(){
+     this.routeList='_admin_evaluadordisponibilidad';
+     this.routeNew='_admin_evaluadordisponibilidad_new';
+     this.routeSave='_admin_evaluadordisponibilidad_save';
+     this.routeEdit='_admin_evaluadordisponibilidad_edit';
+     this.routeUpdate='_admin_evaluadordisponibilidad_update';
+     this.routeDelete='_admin_evaluadordisponibilidad_delete';
+};
+
+OptionButton.Disponibilidad.prototype={
+     Refresh:function(){
+        var id=$("#hdnEntity_id").val();
+        var url=Routing.generate(this.routeList,{id:id});
+        new jAjax().Load(url,'containerDisponibildad','get','','');
+    },
+    New:function(){
+        this.Window=new BootstrapWindow({id:"winForm",title:"Agregar Disponibilidad"});
+        this.Window.setWidth(600);
+        //this.Window.setHeight(360);
+        var url=Routing.generate(this.routeNew);
+        this.Window.Load(url,"");
+        this.Window.Show();
+        var parent=this;
+        this.Window.AddButton('btn-disponibilidad-cancel',{
+            label:'Cancelar',
+            'class':'btn-default',
+            fn:function(){
+                parent.Window.Hide();
+            }
+            
+        })
+       
+        this.Window.AddButton('btn-disponibilidad-save',{
+            label:'Grabar',
+            'class':'btn-success',
+            fn:function(){
+                parent.Save();               
+                parent.Window.Hide();
+            }
+        });
+    },
+    Save:function(){
+            var parent=this;
+            var url=Routing.generate(this.routeSave);
+            params = $('#myDisponibilidadform').serializeObject();
+            console.log(params);
+            
+            $.ajax({
+                    type:'POST',
+                    url:url,
+                    data:params,
+                    dataType:"html",
+                    success:function(datos){
+                            //parent.Window.AddHTML(datos);
+                           new OptionButton.Disponibilidad().Refresh(); 
+                    },
+                    error:function(objeto, quepaso, otroobj){
+
+                    }
+            });
+        
+    },
+    Edit:function(id){
+        this.IdEntity=id;
+        this.Window=new BootstrapWindow({id:"winForm",title:"Editar Conflicto de Interes"});
+        this.Window.setWidth(600);
+        //this.Window.setHeight(360);
+        var url=Routing.generate(this.routeEdit,{id:id});
+        this.Window.Load(url,"");
+        this.Window.Show();
+        var parent=this;
+        this.Window.AddButton('btn-contacto-cancel',{
+            label:'Cancelar',
+            'class':'btn-default',
+            fn:function(){
+                parent.Window.Hide();
+            }
+            
+        })
+       
+        this.Window.AddButton('btn-contacto-save',{
+            label:'Grabar',
+            'class':'btn-success',
+            fn:function(){
+                parent.Update();               
+                parent.Window.Hide();
+            }
+        });
+    },
+    Update:function(){
+            
+            var parent=this;
+            var url=Routing.generate(this.routeUpdate,{id:this.IdEntity});
+            params = $('#myDisponibilidadform').serializeObject();
+                   
+            $.ajax({
+                    type:'POST',
+                    url:url,
+                    data:params,
+                    dataType:"html",
+                    success:function(datos){
+                            new OptionButton.Disponibilidad().Refresh(); 
+                    },
+                    error:function(objeto, quepaso, otroobj){
+
+                    }
+            });           
+    },
+    Delete:function(id){
+        this.IdEntity=id;
+        if(confirm("Desea eliminar el dia seleccionado?")){
+             var url=Routing.generate(this.routeDelete,{id:this.IdEntity});
+             $.ajax({
+                    type:'DELETE',
+                    url:url,
+                    dataType:"html",
+                    success:function(datos){
+                            
+                            new OptionButton.Disponibilidad().Refresh(); 
+                    },
+                    error:function(objeto, quepaso, otroobj){
+
+                    }
+            }); 
+        }
+    }
+};
 //al leer el documento
 $(document).ready(function() {
   
@@ -210,9 +339,13 @@ $(document).ready(function() {
         console.log("el id es:"+id);
         new OptionButton.Conflictos().New(id);   
     });
-    
+     $("#btnDisponibilidadNew").click(function(){
+        var id=$(this).attr("data-id"); 
+        console.log("el id es:"+id);
+        new OptionButton.Disponibilidad().New(id);   
+    });
     new OptionButton.Conflictos().Refresh(); 
-
+    new OptionButton.Disponibilidad().Refresh(); 
   
   
 });

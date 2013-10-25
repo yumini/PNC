@@ -117,6 +117,11 @@ class Catalogo
      */
     private $postulanteCategorias;
     
+    /**
+    * @ORM\OneToMany(targetEntity="EvaluadorDisponibilidad", mappedBy="dia")
+    */
+    private $diasdisponiblesEvaluador;
+    
      public function __construct()
     {
         $this->postulantecatalogos = new \Doctrine\Common\Collections\ArrayCollection();
@@ -130,6 +135,7 @@ class Catalogo
         $this->etapasTipoEtapa= new \Doctrine\Common\Collections\ArrayCollection();
         $this->usuarios= new \Doctrine\Common\Collections\ArrayCollection();
         $this->postulanteCategorias = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->diasdisponiblesEvaluador = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
    
@@ -643,5 +649,38 @@ class Catalogo
     public function getPostulanteCategorias()
     {
         return $this->postulanteCategorias;
+    }
+
+    /**
+     * Add diasdisponiblesEvaluador
+     *
+     * @param \App\WebBundle\Entity\Evaluador $diasdisponiblesEvaluador
+     * @return Catalogo
+     */
+    public function addDiasdisponiblesEvaluador(\App\WebBundle\Entity\Evaluador $diasdisponiblesEvaluador)
+    {
+        $this->diasdisponiblesEvaluador[] = $diasdisponiblesEvaluador;
+    
+        return $this;
+    }
+
+    /**
+     * Remove diasdisponiblesEvaluador
+     *
+     * @param \App\WebBundle\Entity\Evaluador $diasdisponiblesEvaluador
+     */
+    public function removeDiasdisponiblesEvaluador(\App\WebBundle\Entity\Evaluador $diasdisponiblesEvaluador)
+    {
+        $this->diasdisponiblesEvaluador->removeElement($diasdisponiblesEvaluador);
+    }
+
+    /**
+     * Get diasdisponiblesEvaluador
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getDiasdisponiblesEvaluador()
+    {
+        return $this->diasdisponiblesEvaluador;
     }
 }

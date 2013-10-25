@@ -1,0 +1,24 @@
+<form id="myDisponibilidadform" method="post" {{ form_enctype(form) }}>
+              <div class="row">
+                <div class="col-lg-12">
+                <label class="control-label">Dia</label><br/>
+                {{form_widget(form.dia)}}
+                </div>
+           
+            </div>
+        <br/>
+         <div class="row">
+                <div class="col-lg-4" style="text-align: center;">
+                <label class="control-label">Mañana</label><br/>
+                {{form_widget(form.manana)}}
+                </div>
+                <div class="col-lg-4" style="text-align: center;">
+                <label class="control-label">Tarde</label><br/>
+                {{form_widget(form.tarde)}}
+                </div>
+                 <div class="col-lg-4" style="text-align: center;">
+                <label class="control-label">Noche</label><br/>
+                {{form_widget(form.noche)}}
+                </div>
+            </div>
+</form>

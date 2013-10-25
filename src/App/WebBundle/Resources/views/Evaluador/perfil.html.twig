@@ -7,24 +7,35 @@
   <li class="active">Mis Datos Personales</li>
 </ol>
 <div class="row">
-    <div class="col-lg-4">
-
-          <h3 style="margin-top:4px;">Ficha del Evaluador</h3>
-      <div class="well  well-sm" style="font-size:12px;">
-      	<h4>
-      	    <span class="glyphicon glyphicon-user"></span>
-      		{{entity.apellidos ~ " " ~ entity.nombres}}
-      	<span style="float:right;">
-          <a id="btnEdit" href="javascript:void(0)" class="btn btn-info" data-id="{{ entity.id }}" style="font-size:12px;" >
-            <span class="glyphicon glyphicon-edit"></span>
-          </a>
-        </span>
-      	
-         </h4>
-         
+    <div class="col-lg-3">
+        <h3 style="margin-top:4px;">Ficha del Evaluador</h3>
+<div class="panel-group" id="accordion">
+  <div class="panel panel-default">
+    <div class="panel-heading2">
+      <h4 class="panel-title">
+        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+           <span class="glyphicon glyphicon-user"></span>
+      		Datos Personales
+           
+        </a>
+           
+      </h4>
+            
+    </div>
+    <div id="collapseOne" class="panel-collapse collapse in">
+      <div class="panel-body">
+        
+          <div class="row">
+          	<div class="col-md-5"><label>Evaluador:</label></div>
+          	<div class="col-md-7">{{ entity.nombres|default('-') }}</div>
+               
+                 
+          </div>
           <div class="row">
           	<div class="col-md-5"><label>DNI:</label></div>
           	<div class="col-md-7">{{ entity.numdoc|default('-') }}</div>
+               
+                 
           </div>
           <div class="row">
           	<div class="col-md-5"><label>Profesión:</label></div>
@@ -57,11 +68,61 @@
           <div class="row">
           	<div class="col-md-5"><label>Cargo:</label></div>
           	<div class="col-md-7">{{ entity.cargo|default('-') }}</a></div>
-          </div>       
+          </div>
+          
+           <div class="row">
+              <div class="col-md-9">
+              </div>
+              <div class="col-md-3">
+                 <a id="btnEdit" href="javascript:void(0)" class="btn btn-info" data-id="{{ entity.id }}" style="font-size:12px;" >
+                    <span class="glyphicon glyphicon-edit"></span>
+                </a>
+              </div>
+                 
+          </div>
+          
       </div>
-      
+    </div>
   </div>
-  <div class="col-lg-8"  >
+  <div class="panel panel-default">
+    <div class="panel-heading2">
+      <h4 class="panel-title">
+        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+            <span class="glyphicon glyphicon-calendar"></span>
+         Disponibilidad
+        </a>
+      </h4>
+    </div>
+    <div id="collapseTwo" class="panel-collapse collapse">
+      <div class="panel-body">
+        
+           <div id="containerDisponibildad" >
+         
+           
+            
+        </div>
+          <div class="row">
+              <div class="col-md-9">
+              </div>
+              <div class="col-md-3">
+                 <a id="btnDisponibilidadNew" href="javascript:void(0)" class="btn btn-info" data-id="{{ entity.id }}" style="font-size:12px;" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                </a>
+              </div>
+                 
+          </div>
+      </div>
+    </div>
+  </div>
+ 
+</div>
+          
+    
+     
+     
+
+  </div>
+  <div class="col-lg-9"  >
   	<h3 style="margin-top:4px;">Conflictos de Interes
   		<span style="float:right;"><a id="btnConflictoNew" href="#" class="btn btn-info" style="font-size:12px;"><span class="glyphicon glyphicon-plus"></span></a></span>
   	</h3>

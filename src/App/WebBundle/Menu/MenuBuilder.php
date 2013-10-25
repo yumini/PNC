@@ -30,7 +30,7 @@ class MenuBuilder {
                 $this->urlPerfil="#";
                 break;
             case "2"://evaluador
-                $urlHome="_admin_inicio";
+                $urlHome="_admin_inicio_evaluador";
                 $this->urlPerfil="_admin_evaluador_perfil";
                 
                 break;

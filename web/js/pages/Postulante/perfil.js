@@ -254,8 +254,14 @@ OptionButton.Categoria.prototype={
                         var obj = jQuery.parseJSON(request);
                         if(obj.success=="true"){
                             new OptionButton.Categoria().Refresh();
+                            bootbox.alert(obj.msg, function() {
+                                console.log("Alert Callback");
+                            });
                         }else{
-                            alert(obj.msg);
+                           
+                            bootbox.alert(obj.msg, function() {
+                                console.log("Alert Callback");
+                            });
                         }
                          
                     },
@@ -275,7 +281,9 @@ OptionButton.Categoria.prototype={
                     url:url,
                     dataType:"html",
                     success:function(datos){
-                            
+                            bootbox.alert("Categoria eliminada satisfactoriamente", function() {
+                                console.log("Alert Callback");
+                            });
                             new OptionButton.Categoria().Refresh(); 
                     },
                     error:function(objeto, quepaso, otroobj){
