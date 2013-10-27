@@ -198,9 +198,21 @@ class Concurso
     */
     protected $gruposEvaluacion;
     
+    /**
+    * @ORM\OneToMany(targetEntity="InscripcionEvaluador", mappedBy="concurso")
+    */
+    protected $inscripcionesConcurso;
+    
+    /**
+    * @ORM\OneToMany(targetEntity="Inscripcion", mappedBy="concurso")
+    */
+    protected $inscripciones;
+    
     public function __construct()
     {
         $this->criterios = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->inscripcionesConcurso = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->inscripciones = new \Doctrine\Common\Collections\ArrayCollection();
        
     }
     /**
@@ -796,5 +808,38 @@ class Concurso
     public function getTipoConcurso()
     {
         return $this->tipoConcurso;
+    }
+
+    /**
+     * Add gruposEvaluacion
+     *
+     * @param \App\WebBundle\Entity\GrupoEvaluacion $gruposEvaluacion
+     * @return Concurso
+     */
+    public function addGruposEvaluacion(\App\WebBundle\Entity\GrupoEvaluacion $gruposEvaluacion)
+    {
+        $this->gruposEvaluacion[] = $gruposEvaluacion;
+    
+        return $this;
+    }
+
+    /**
+     * Remove gruposEvaluacion
+     *
+     * @param \App\WebBundle\Entity\GrupoEvaluacion $gruposEvaluacion
+     */
+    public function removeGruposEvaluacion(\App\WebBundle\Entity\GrupoEvaluacion $gruposEvaluacion)
+    {
+        $this->gruposEvaluacion->removeElement($gruposEvaluacion);
+    }
+
+    /**
+     * Get gruposEvaluacion
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getGruposEvaluacion()
+    {
+        return $this->gruposEvaluacion;
     }
 }

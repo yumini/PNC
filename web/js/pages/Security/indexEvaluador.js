@@ -13,7 +13,7 @@ Concurso.prototype={
 		new jAjax().Load(url,"container-concursos","GET","","")
 	},
 	Detail:function(id){
-		var url=Routing.generate("_admin_concurso_showInscripcion",{id:id});
+		var url=Routing.generate("_admin_concurso_showInscripcionEvaluador",{id:id});
 		new jAjax().Load(url,"main-body","GET","","")
 	}
 }

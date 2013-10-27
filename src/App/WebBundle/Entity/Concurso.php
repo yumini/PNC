@@ -198,9 +198,21 @@ class Concurso
     */
     protected $gruposEvaluacion;
     
+    /**
+    * @ORM\OneToMany(targetEntity="InscripcionEvaluador", mappedBy="concurso")
+    */
+    protected $inscripcionesConcurso;
+    
+    /**
+    * @ORM\OneToMany(targetEntity="Inscripcion", mappedBy="concurso")
+    */
+    protected $inscripciones;
+    
     public function __construct()
     {
         $this->criterios = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->inscripcionesConcurso = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->inscripciones = new \Doctrine\Common\Collections\ArrayCollection();
        
     }
     /**
@@ -829,5 +841,71 @@ class Concurso
     public function getGruposEvaluacion()
     {
         return $this->gruposEvaluacion;
+    }
+
+    /**
+     * Add inscripcionesConcurso
+     *
+     * @param \App\WebBundle\Entity\InscripcionEvaluador $inscripcionesConcurso
+     * @return Concurso
+     */
+    public function addInscripcionesConcurso(\App\WebBundle\Entity\InscripcionEvaluador $inscripcionesConcurso)
+    {
+        $this->inscripcionesConcurso[] = $inscripcionesConcurso;
+    
+        return $this;
+    }
+
+    /**
+     * Remove inscripcionesConcurso
+     *
+     * @param \App\WebBundle\Entity\InscripcionEvaluador $inscripcionesConcurso
+     */
+    public function removeInscripcionesConcurso(\App\WebBundle\Entity\InscripcionEvaluador $inscripcionesConcurso)
+    {
+        $this->inscripcionesConcurso->removeElement($inscripcionesConcurso);
+    }
+
+    /**
+     * Get inscripcionesConcurso
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getInscripcionesConcurso()
+    {
+        return $this->inscripcionesConcurso;
+    }
+
+    /**
+     * Add inscripciones
+     *
+     * @param \App\WebBundle\Entity\Inscripcion $inscripciones
+     * @return Concurso
+     */
+    public function addInscripcione(\App\WebBundle\Entity\Inscripcion $inscripciones)
+    {
+        $this->inscripciones[] = $inscripciones;
+    
+        return $this;
+    }
+
+    /**
+     * Remove inscripciones
+     *
+     * @param \App\WebBundle\Entity\Inscripcion $inscripciones
+     */
+    public function removeInscripcione(\App\WebBundle\Entity\Inscripcion $inscripciones)
+    {
+        $this->inscripciones->removeElement($inscripciones);
+    }
+
+    /**
+     * Get inscripciones
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getInscripciones()
+    {
+        return $this->inscripciones;
     }
 }

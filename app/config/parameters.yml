@@ -8,7 +8,7 @@ parameters:
     database_password: null
     mailer_transport: gmail
     mailer_host: smtp.gmail.com
-    mailer_user: ####@gmail.com
+    mailer_user: ###@gmail.com
     mailer_password: ####
     locale: es
     secret: 4476f2bf9fe5bcc2da2ddb82faf1fdd8dea19d5e

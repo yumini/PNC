@@ -1,0 +1,104 @@
+<?php
+
+namespace App\WebBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * InscripcionEvaluador
+ *
+ * @ORM\Table()
+ * @ORM\Entity(repositoryClass="App\WebBundle\Entity\InscripcionEvaluadorRepository")
+ */
+class InscripcionEvaluador
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fechaCreacion", type="date")
+     */
+    private $fechaCreacion;
+
+    /**
+     * @var Date
+     *
+     * @ORM\Column(name="fechaActualizacion", type="Date")
+     */
+    private $fechaActualizacion;
+
+    /**
+    * @ORM\ManyToOne(targetEntity="Concurso", inversedBy="inscripcionesEvaluador")
+    * @ORM\JoinColumn(name="concurso_id", referencedColumnName="id")
+    */
+    private $concurso;
+    
+    /**
+    * @ORM\ManyToOne(targetEntity="Evaluador", inversedBy="inscripciones")
+    * @ORM\JoinColumn(name="postulante_id", referencedColumnName="id")
+    */
+    private $evaluador;
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set fechaCreacion
+     *
+     * @param \DateTime $fechaCreacion
+     * @return InscripcionEvaluador
+     */
+    public function setFechaCreacion($fechaCreacion)
+    {
+        $this->fechaCreacion = $fechaCreacion;
+    
+        return $this;
+    }
+
+    /**
+     * Get fechaCreacion
+     *
+     * @return \DateTime 
+     */
+    public function getFechaCreacion()
+    {
+        return $this->fechaCreacion;
+    }
+
+    /**
+     * Set fechaActualizacion
+     *
+     * @param \Date $fechaActualizacion
+     * @return InscripcionEvaluador
+     */
+    public function setFechaActualizacion(\Date $fechaActualizacion)
+    {
+        $this->fechaActualizacion = $fechaActualizacion;
+    
+        return $this;
+    }
+
+    /**
+     * Get fechaActualizacion
+     *
+     * @return \Date 
+     */
+    public function getFechaActualizacion()
+    {
+        return $this->fechaActualizacion;
+    }
+}

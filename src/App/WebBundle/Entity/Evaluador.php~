@@ -225,9 +225,15 @@ class Evaluador
     */
     private $diasdisponibles;
     
+    /**
+    * @ORM\OneToMany(targetEntity="InscripcionEvaluador", mappedBy="postulante")
+    */
+    protected $inscripciones;
+    
     public function __construct() {
         $this->grupos = new \Doctrine\Common\Collections\ArrayCollection();
         $this->diasdisponibles = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->inscripciones = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**

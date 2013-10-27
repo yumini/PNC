@@ -69,7 +69,18 @@
           	<div class="col-md-5"><label>Cargo:</label></div>
           	<div class="col-md-7">{{ entity.cargo|default('-') }}</a></div>
           </div>
-          
+           <div class="row">
+          	<div class="col-md-5">
+                    <label>Curriculum:</label>
+                    <a href="#" id="lnkCV"><span class="glyphicon glyphicon-paperclip"></span></a>
+                    <input id="fileCV" type="file" name="fileCV" style="display:none;" multiple />
+                    
+                </div>
+          	<div class="col-md-7">
+                    <a id="lnkCVDownload" target="_blank" href="{{ asset('docs/evaluador/cv/')}}{{entity.curriculum}}" data-path="{{ asset('docs/evaluador/cv/')}}">Ver Curriculum</a>
+                    
+                </div>
+          </div>
            <div class="row">
               <div class="col-md-9">
               </div>
@@ -97,12 +108,26 @@
       <div class="panel-body">
         
            <div id="containerDisponibildad" >
-         
-           
-            
+
         </div>
+           <div class="row">
+              <div class="col-md-12">
+                  Disponibilidad para viajar:
+                  <div class="btn-group" data-toggle="buttons">
+                    <label class="btn btn-default btn-xs {% if entity.disponibleviaje=='1'%}active{% endif %}">
+                        <input type="radio" name="disponibilidad" value="1" data-id="{{ entity.id }}" > Si
+                    </label>
+                    <label class="btn btn-default btn-xs {% if entity.disponibleviaje=='0'%}active{% endif %}">
+                        <input type="radio" name="disponibilidad" value="0" data-id="{{ entity.id }}"> No
+                    </label>
+
+                    </div>
+              </div>
+             
+          </div>
           <div class="row">
               <div class="col-md-9">
+                 
               </div>
               <div class="col-md-3">
                  <a id="btnDisponibilidadNew" href="javascript:void(0)" class="btn btn-info" data-id="{{ entity.id }}" style="font-size:12px;" >

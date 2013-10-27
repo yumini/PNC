@@ -220,5 +220,44 @@ class EvaluadorController extends Controller
         ;
     }
     
-    
+    /**
+     *
+     * @Route("/upload/evaluador/cv", name="_admin_evaluador_cvupload", options={"expose"=true})
+     * @Method("POST")
+     * @Template("AppWebBundle:Default:result.json.twig")
+     */
+    public function uploadCVAction(Request $request)
+    {
+       $msg='Curriculum se actualizó satisfactoriamente';
+       $fileName='';
+       $result='';
+       $em = $this->getDoctrine()->getManager(); 
+       $user = $this->container->get("security.context")->getToken()->getUser();
+       $entity = $em->getRepository('AppWebBundle:Evaluador')->findByUser($user->getId()); 
+       $allowed = array('pdf', 'doc', 'docx');
+       if(isset($_FILES['fileCV']) && $_FILES['fileCV']['error'] == 0){
+            $extension = pathinfo($_FILES['fileCV']['name'], PATHINFO_EXTENSION);
+
+            if(!in_array(strtolower($extension), $allowed)){
+               $result="error";
+               $msg="Formato de archivo no valido";
+            }else{
+                $fileName=$user->getId().".".$extension;
+                if(move_uploaded_file($_FILES['fileCV']['tmp_name'], 'docs/evaluador/cv/'.$fileName)){
+                    $em = $this->getDoctrine()->getManager();
+                    $entity->setCurriculum($fileName);
+                    $em->persist($entity);
+                    $em->flush();
+                    $result="success";
+                }
+            }
+        }else{
+            $result="error";
+            $msg="No se pudo cargar el archivo";
+        }
+
+        return array(
+            'result' => "{\"status\":\"$result\",\"name\":\"$fileName\", \"message\":\"$msg\"}"
+        );
+    }
 }

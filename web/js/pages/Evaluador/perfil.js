@@ -204,10 +204,11 @@ OptionButton.Disponibilidad=function(){
      this.routeEdit='_admin_evaluadordisponibilidad_edit';
      this.routeUpdate='_admin_evaluadordisponibilidad_update';
      this.routeDelete='_admin_evaluadordisponibilidad_delete';
+     this.routeDisponibilidadViaje="_admin_evaluadordisponibilidad_disponibilidadviaje"
 };
 
 OptionButton.Disponibilidad.prototype={
-     Refresh:function(){
+    Refresh:function(){
         var id=$("#hdnEntity_id").val();
         var url=Routing.generate(this.routeList,{id:id});
         new jAjax().Load(url,'containerDisponibildad','get','','');
@@ -322,6 +323,21 @@ OptionButton.Disponibilidad.prototype={
                     }
             }); 
         }
+    },
+    DisponibilidadViaje:function(id,value){
+        this.IdEntity=id;
+        var url=Routing.generate(this.routeDisponibilidadViaje,{id:this.IdEntity,estado:value});
+         $.ajax({
+                    type:'POST',
+                    url:url,
+                    dataType:"html",
+                    success:function(datos){
+                            
+                    },
+                    error:function(objeto, quepaso, otroobj){
+
+                    }
+         }); 
     }
 };
 //al leer el documento
@@ -344,8 +360,42 @@ $(document).ready(function() {
         console.log("el id es:"+id);
         new OptionButton.Disponibilidad().New(id);   
     });
+    
+    $("input[name=disponibilidad]:radio").change(function(){
+        var id=$(this).attr("data-id");
+        console.log(id);
+        new OptionButton.Disponibilidad().DisponibilidadViaje(id,$(this).val());   
+    });
+    $('#lnkCV').click(function(){
+	        $('#fileCV').click();
+    });
     new OptionButton.Conflictos().Refresh(); 
     new OptionButton.Disponibilidad().Refresh(); 
-  
+    
   
 });
+
+$('#fileCV').fileupload({
+
+        url:Routing.generate("_admin_evaluador_cvupload"),
+        singleFileUploads: true,
+        add: function (e, data) {
+            var jqXHR = data.submit();
+        },
+        progress: function(e, data){
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+        },
+        fail:function(e, data){
+            //data.context.addClass('error');
+        },
+        done:function (e, data) {
+        	var obj = jQuery.parseJSON(data.result);
+                if(obj.status=="success"){
+                    var path=$("#lnkCVDownload").attr('data-path');
+                    $("#lnkCVDownload").attr("href",path+obj.name+"?r="+Math.random()); 
+                }
+                 bootbox.alert(obj.message, function() {
+                                //console.log("Alert Callback");
+                            });
+        }
+    });

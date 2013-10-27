@@ -198,17 +198,35 @@ class EvaluadorDisponibilidadController extends Controller
     }
 
     /**
-     * Creates a form to delete a EvaluadorDisponibilidad entity by id.
+     * Deletes a EvaluadorDisponibilidad entity.
      *
-     * @param mixed $id The entity id
-     *
-     * @return \Symfony\Component\Form\Form The form
+     * @Route("/{id}/disponibilidadviaje", name="_admin_evaluadordisponibilidad_disponibilidadviaje", options={"expose"=true})
+     * @Template("AppWebBundle:Default:result.json.twig")
+     * @Method("POST")
      */
-    private function createDeleteForm($id)
+    public function disponibilidadViajeAction(Request $request,$id)
     {
-        return $this->createFormBuilder(array('id' => $id))
-            ->add('id', 'hidden')
-            ->getForm()
-        ;
+            $value=$request->query->get('estado');
+            $em = $this->getDoctrine()->getManager();           
+            $entity = $em->getRepository('AppWebBundle:Evaluador')->find($id);
+            if($entity)
+            {
+                $entity->setDisponibleviaje($value);
+                $em->persist($entity);
+                $em->flush();
+                $result=true;
+                $msg='';
+            
+            }else{
+                $msg="No se encontro el registro"; 
+                $result=false;
+            }
+            return array(
+            'result' => "{\"success\":\"$result\",message:\"$msg\"}"
+
+            );
+            
+       
     }
+
 }

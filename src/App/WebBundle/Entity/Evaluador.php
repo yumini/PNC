@@ -225,9 +225,15 @@ class Evaluador
     */
     private $diasdisponibles;
     
+    /**
+    * @ORM\OneToMany(targetEntity="InscripcionEvaluador", mappedBy="postulante")
+    */
+    protected $inscripciones;
+    
     public function __construct() {
         $this->grupos = new \Doctrine\Common\Collections\ArrayCollection();
         $this->diasdisponibles = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->inscripciones = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -965,5 +971,38 @@ class Evaluador
     public function getDiasdisponibles()
     {
         return $this->diasdisponibles;
+    }
+
+    /**
+     * Add inscripciones
+     *
+     * @param \App\WebBundle\Entity\InscripcionEvaluador $inscripciones
+     * @return Evaluador
+     */
+    public function addInscripcione(\App\WebBundle\Entity\InscripcionEvaluador $inscripciones)
+    {
+        $this->inscripciones[] = $inscripciones;
+    
+        return $this;
+    }
+
+    /**
+     * Remove inscripciones
+     *
+     * @param \App\WebBundle\Entity\InscripcionEvaluador $inscripciones
+     */
+    public function removeInscripcione(\App\WebBundle\Entity\InscripcionEvaluador $inscripciones)
+    {
+        $this->inscripciones->removeElement($inscripciones);
+    }
+
+    /**
+     * Get inscripciones
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getInscripciones()
+    {
+        return $this->inscripciones;
     }
 }

@@ -156,7 +156,36 @@ class ConcursoController extends Controller
             'EnabledInscripcion'=>$enabledInscripcion
         );
     }
+/**
+     * Finds and displays a Concurso entity.
+     *
+     * @Route("/{id}/inscripcionevaluador", name="_admin_concurso_showInscripcionEvaluador", options={"expose"=true})
+     * @Method("GET")
+     * @Template()
+     */
+    public function showInscripcionEvaluadorAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $entity = $em->getRepository('AppWebBundle:Concurso')->find($id);
+        $tipoConcurso=$entity->getTipoConcurso();
+        
+        $user = $this->container->get("security.context")->getToken()->getUser();
+        $evaluador = $em->getRepository('AppWebBundle:Evaluador')->findByUser($user->getId());
 
+        $register=$em->getRepository('AppWebBundle:InscripcionEvaluador')->IsRegister($evaluador->getId(),$id);
+        $inscripciones=$em->getRepository('AppWebBundle:InscripcionEvaluador')->GetConcursos($evaluador->getId());
+        $enabledInscripcion="";
+        if($register)
+            if($tipoConcurso->getCodigo()==1)
+                $enabledInscripcion="disabled";
+        
+        return array(
+            'entity'        =>$entity,
+            'isRegister'    =>$register,
+            'inscripciones'     =>$inscripciones,
+            'EnabledInscripcion'=>$enabledInscripcion
+        );
+    }
     /**
      * Displays a form to edit an existing Concurso entity.
      *

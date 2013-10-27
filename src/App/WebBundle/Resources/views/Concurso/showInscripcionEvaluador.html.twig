@@ -1,0 +1,69 @@
+{% block ScriptHead %}
+    <script src="{{ asset('js/pages/Concurso/showInscripcion.js') }}"></script> 
+{% endblock %}
+
+<div class="row">
+	<div class="col-md-9">
+		<div class="panel panel-default">
+		
+  <div class="panel-body">
+
+  	<ol class="breadcrumb" style="font-size:12px;margin-bottom:2px;">
+  		<li><a href="#">Inicio</a></li>
+  		<li class="active">{{entity.nombre}}</li>
+	</ol>
+  <i>{{entity.tipoConcurso.nombre}}</i>
+	<h3 style="margin-top:2px;"><b>{{entity.nombre}}</b></h3>
+
+  <h4>Presentacion</h4>
+   <p>
+  Año: {{entity.anio}}
+  </p>
+  <p>
+  Del {% if entity.fechaInicio %}{{ entity.fechaInicio|date('d/m/Y') }}{% endif %}
+  al {% if entity.fechaFin %}{{ entity.fechaFin|date('d/m/Y') }}{% endif %}
+  </p>
+  <p>
+  	{{entity.presentacion|raw}}
+  </p>
+   <h4>Proceso de Calificación</h4>
+	<p>
+  	{{entity.calificacion|raw}}
+  </p>
+  	</div>
+		</div>
+	</div>
+	<div class="col-md-3">
+		<div class="well">
+			<h4>Deseas Participar?</h4>
+	<p>
+  	Te interesa participar en la evaluación de este concurso?, Es muy facil tan solo debes presionar en "Participar"
+  	<p>
+  	 <button type="button" class="btn btn-success" onclick="new OptionButton().New({{entity.id}})" {{EnabledInscripcion}}>Participar</button>
+  	</p>
+  </p>
+		</div>
+
+    <div class="well">
+      <h4>Mis Concursos</h4>
+ 
+     <table class="table table-bordered table-hover table-condensed table-striped" style="width:100%;font-size:11px;">
+       
+        <tbody>
+        {% for inscripcion in inscripciones %}
+          <tr >
+                <td><a href="#">{{inscripcion.concurso.nombre}}</a></td>
+               
+                
+          </tr>
+        {% endfor %}
+        </tbody>
+    </p>
+  </p>
+    </div>
+	</div>
+</div>
+
+{% block windows %}
+    <div id="winForm"></div>
+{% endblock %}
