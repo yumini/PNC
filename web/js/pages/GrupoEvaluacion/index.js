@@ -1,6 +1,6 @@
 var OptionButton = OptionButton || {GrupoEvaluacion: {}, Evaluador: {},Postulante:{}};
 var myWindow=null;
-
+var grupoId=-1;
 
 OptionButton.GrupoEvaluacion=function(){
     this.routeList='_admin_grupoevaluacion';
@@ -122,40 +122,101 @@ OptionButton.GrupoEvaluacion.prototype={
             }); 
         }
     },
-	Refresh:function(){
+    Refresh:function(){
 		 var url=Routing.generate(this.routeList);
         new jAjax().Load(url,'main-body','get','','');
-	},
-	Select:function(obj,id){
-		$(".list-group-item").removeClass("active")
+    },
+    Select:function(obj,id){
+        grupoId=id;
+	$(".list-group-item").removeClass("active")
         $(obj).addClass("active");
- 		$.ajax({type:'GET',
-			data:{grupo_id:id},
-	        url:Routing.generate('_admin_grupoevaluacion_postulantes_list'),
-	        dataType:"html",
-	        success:function (data) {
-	            $("#container-postulantes").html(data);
+            new OptionButton.Evaluador().Refresh(id);
+    }
+}
+
+OptionButton.Evaluador=function(){
+    this.routeNew="_admin_grupoevaluacionevaluador_new";
+    this.routeSave="_admin_grupoevaluacionevaluador_save";
+    this.routeDelete="_admin_grupoevaluacionevaluador_delete";
+}
+OptionButton.Evaluador.prototype={
+    Refresh:function(id){
+        var url=Routing.generate('_admin_grupoevaluacionevaluador',{id:id});
+        new jAjax().Load(url,"container-evaluadores","GET","","")
+        
+    },
+    New:function(id){
+        this.GrupoId=id;
+    	 console.log(this.routeNewGrupo);
+        this.Window=new BootstrapWindow({id:"winForm",title:"Nuevo Evaluador"});
+        var url=Routing.generate(this.routeNew,{id:id});
+
+        this.Window.Load(url,"");
+        this.Window.Show();
+        var parent=this;
+        this.Window.AddButton('btn-evaluador-cancel',{
+            label:'Cancelar',
+            'class':'btn-default',
+            fn:function(){
+                parent.Window.Hide();
+            }
+            
+        })
+       
+        this.Window.AddButton('btn-evaluador-save',{
+            label:'Grabar',
+            'class':'btn-success',
+            fn:function(){
+                parent.Save();               
+                parent.Window.Hide();
             }
         });
+    },
+    Save:function(){
+	var parent=this;
+        var url=Routing.generate(this.routeSave,{id:this.GrupoId});
+        params = $('#myform').serializeObject();
+                 
+            $.ajax({
+                    type:'POST',
+                    url:url,
+                    data:params,
+                    dataType:"html",
+                    success:function(datos){
+                            //parent.Window.AddHTML(datos);
+                            parent.Refresh(parent.GrupoId);
+                    },
+                    error:function(objeto, quepaso, otroobj){
 
-        $.ajax({
-				type:'GET',
-				data:{grupo_id:id},
-	            url:Routing.generate('_admin_grupoevaluacion_evaluadores_list'),
-	            dataType:"html",
-	            success:function (data) {
-	                $("#container-evaluadores").html(data);
-	            }
-        });
-            
-	}
+                    }
+            });
+	},
+        Delete:function(id){
+            this.IdEntity=id;
+            if(confirm("Desea eliminar el evaluador seleccionado?")){
+                var url=Routing.generate(this.routeDelete,{id:this.IdEntity});
+                $.ajax({
+                        type:'POST',
+                        url:url,
+                        dataType:"html",
+                        success:function(datos){
+
+                                new OptionButton.Evaluador().Refresh(grupoId);
+                        },
+                        error:function(objeto, quepaso, otroobj){
+
+                        }
+                }); 
+            }
+        }
+    
 }
 //al leer el documento
 $(document).ready(function() {
   
   $(".list-group-item").click(function(){
   	var id=$(this).attr('data-id');
-    console.log("select grupo");
+    console.log("select grupo:"+id);
       new OptionButton.GrupoEvaluacion().Select(this,id);   
   });
   $("#btnNewGrupo").click(function(){
@@ -170,5 +231,9 @@ $(document).ready(function() {
       new OptionButton.GrupoEvaluacion().Delete(id);
   });
 
+    $("#btnNewEvaluador").click(function(event) {
+      //var id=$(this).attr("data-id");
+      new OptionButton.Evaluador().New(grupoId);
+    });
 });
 

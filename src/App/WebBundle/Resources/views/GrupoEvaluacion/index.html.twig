@@ -26,7 +26,7 @@
 
         </div>
             {% for entity in pagination %}
-                <a href="#" class="list-group-item" data-toggle="popover" title="" data-content="And here's some amazing content. It's very engaging. right?" data-original-title="A Title">             
+                <a href="#" class="list-group-item" data-toggle="popover" data-id="{{ entity.id }}" title="" data-content="And here's some amazing content. It's very engaging. right?" data-original-title="A Title">             
                     <p class="list-group-item-text" data-id="{{ entity.id }}">
                          <button class="btn btn-danger btn-xs pull-right"  data-id="{{ entity.id }}" data-type="delete">
                             <span class="glyphicon glyphicon-trash"> </span>
@@ -64,7 +64,10 @@
 
         <div class="tab-content">
           <div class="tab-pane active" id="TabEvaluadores">
-                <h4>Listado de Evaluadores</h4>
+                <h4>
+                    Listado de Evaluadores
+                <button id="btnNewEvaluador" type="button" class="btn btn-success navbar-btn pull-right btn-xs"> <span class="glyphicon glyphicon-plus"> </span></button>
+                </h4>
                 <div id="container-evaluadores">
                 </div>
             </div>
@@ -76,68 +79,7 @@
          
         </div>
     </div>
-    
-    <!--
-    <div class="panel" >
-        <div class="navbar navbar-default" role="navigation" style="z-index:0">
-        <div class="panel-heading panel-primary"> 
-            Grupos de Evaluacion
-        </div>
-            <div class="col-lg-4 navbar navbar-default" role="navigation" style="z-index:0">
-                       <div class="panel">
-                        <div class="panel-heading panel-primary">
-                        <div class="row-fluid">
-                            <span class="col-lg-4"><h4>Grupos</h4></span>
-                            <span class="right">
-                      
-                                <ul class="list-group-item-text">
-                                  <button id="btnNewGrupos" class="btn btn-success btn-mini" > <i class="glyphicon glyphicon-file"></i> Nuevo</button>
-                                </ul>
-                             </span>
-                        </div>
-                        </div>
-                    <div id="container-grupoevaluacion">
-                    </div>
-                    </div>
-                </div>
-            
-                <div class="col-lg-4">
-                    <div class="panel">
-                        <div class="panel-heading panel-primary">
-                        <div class="row-fluid">
-                            <span class="col-lg-4"><h4>Evaluadores</h4></span>
-                            <span class="right">
-                      
-                                <ul class="list-group-item-text">
-                                  <button id="btnNewEvaluador" class="btn btn-success btn-mini" > <i class="glyphicon glyphicon-file"></i> Nuevo</button>
-                                </ul>
-                             </span>
-                        </div>
-                        </div>
-                    <div id="container-evaluadores">
-                    </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="panel">
-                        <div class="panel-heading panel-primary">
-                        <div class="row-fluid">
-                            <span class="col-lg-4"><h4>Postulantes</h4></span>
-                            <span class="right">
-                      
-                                <ul class="list-group-item-text">
-                                  <button id="btnNewPostulante" class="btn btn-success btn-mini" > <i class="glyphicon glyphicon-file"></i> Nuevo</button>
-                                </ul>
-                             </span>
-                        </div>
-                        </div>
-                    <div id="container-postulantes">
-                    </div>
-                    </div>
-                </div>
-        </div>
-        </div>
-        </div>-->
+
 </div>
 
 {% block ScriptHead %}

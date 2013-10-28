@@ -197,10 +197,9 @@ class Evaluador
     private $fechaActualizacion;
 
    
-    /**
-     * @ORM\ManyToMany(targetEntity="GrupoEvaluacion", inversedBy="Evaluador")
-     * @ORM\JoinTable(name="evaluadorgrupo")
-     */
+   /**
+    * @ORM\OneToMany(targetEntity="GrupoEvaluacionEvaluador", mappedBy="evaluador")
+    */
     private $grupos;
     
     /**

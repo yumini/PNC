@@ -57,8 +57,8 @@ class GrupoEvaluacion
     private $fechaActualizacion;
 
     /**
-     * @ORM\ManyToMany(targetEntity="GrupoEvaluacion", mappedBy="Evaluador", cascade={"persist"})
-     */
+    * @ORM\OneToMany(targetEntity="GrupoEvaluacionEvaluador", mappedBy="grupo")
+    */
     private $evaluadores;
     
     /**

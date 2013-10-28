@@ -197,10 +197,9 @@ class Evaluador
     private $fechaActualizacion;
 
    
-    /**
-     * @ORM\ManyToMany(targetEntity="GrupoEvaluacion", inversedBy="Evaluador")
-     * @ORM\JoinTable(name="evaluadorgrupo")
-     */
+   /**
+    * @ORM\OneToMany(targetEntity="GrupoEvaluacionEvaluador", mappedBy="evaluador")
+    */
     private $grupos;
     
     /**
@@ -971,5 +970,38 @@ class Evaluador
     public function getDiasdisponibles()
     {
         return $this->diasdisponibles;
+    }
+
+    /**
+     * Add inscripciones
+     *
+     * @param \App\WebBundle\Entity\InscripcionEvaluador $inscripciones
+     * @return Evaluador
+     */
+    public function addInscripcione(\App\WebBundle\Entity\InscripcionEvaluador $inscripciones)
+    {
+        $this->inscripciones[] = $inscripciones;
+    
+        return $this;
+    }
+
+    /**
+     * Remove inscripciones
+     *
+     * @param \App\WebBundle\Entity\InscripcionEvaluador $inscripciones
+     */
+    public function removeInscripcione(\App\WebBundle\Entity\InscripcionEvaluador $inscripciones)
+    {
+        $this->inscripciones->removeElement($inscripciones);
+    }
+
+    /**
+     * Get inscripciones
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getInscripciones()
+    {
+        return $this->inscripciones;
     }
 }

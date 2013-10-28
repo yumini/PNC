@@ -14,8 +14,7 @@ class InscripcionEvaluadorRepository extends EntityRepository
 {
     public function IsRegister($idEvaluador,$idConcurso){
         $em=$this->getEntityManager();
-        $dql= "
-        SELECT count(i.id) FROM AppWebBundle:InscripcionEvaluador i
+        $dql= "SELECT count(i.id) as total FROM AppWebBundle:InscripcionEvaluador i
         JOIN i.concurso c 
         JOIN i.evaluador p
         WHERE c.id=:codConcurso and p.id=:codEvaluador";
@@ -23,9 +22,11 @@ class InscripcionEvaluadorRepository extends EntityRepository
                 ->setParameter('codConcurso', $idConcurso)
                 ->setParameter('codEvaluador', $idEvaluador);
         try {
-                return ($query->getSingleResult()==0)?false:true;
+                $result=$query->getResult();
+                return ($result[0]['total']==0)?false:true;
+            
         } catch (\Doctrine\ORM\NoResultException $e) {
-                return null;
+                return false;
         }
     }
     public function GetConcursos($idEvaluador){

@@ -1,0 +1,8 @@
+<form id="myform">
+    
+    <select class="form-control" id="evaluadorId" name="evaluadorId">
+{% for entity in evaluadores%}
+        <option value="{{entity.id}}">{{entity.nombres}} {{entity.apellidos}}</option>
+{% endfor%}
+</select>
+</form>

@@ -5,12 +5,12 @@ namespace App\WebBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo; 
 /**
- * InscripcionEvaluador
+ * GrupoEvaluacionEvaluador
  *
- * @ORM\Table(name="inscripcionevaluador")
- * @ORM\Entity(repositoryClass="App\WebBundle\Entity\InscripcionEvaluadorRepository")
+ * @ORM\Table(name="grupoevaluacionevaluador")
+ * @ORM\Entity(repositoryClass="App\WebBundle\Entity\GrupoEvaluacionEvaluadorRepository")
  */
-class InscripcionEvaluador
+class GrupoEvaluacionEvaluador
 {
     /**
      * @var integer
@@ -21,6 +21,18 @@ class InscripcionEvaluador
      */
     private $id;
 
+    /**
+    * @ORM\ManyToOne(targetEntity="GrupoEvaluacion", inversedBy="evaluadores")
+    * @ORM\JoinColumn(name="grupoevaluacion_id", referencedColumnName="id")
+    */
+    private $grupo;
+    
+    /**
+    * @ORM\ManyToOne(targetEntity="Evaluador", inversedBy="grupos")
+    * @ORM\JoinColumn(name="evaluador_id", referencedColumnName="id")
+    */
+    private $evaluador;
+    
     /**
      * @var \DateTime
      * @Gedmo\Timestampable(on="create")
@@ -35,17 +47,12 @@ class InscripcionEvaluador
      */
     private $fechaActualizacion;
 
-    /**
-    * @ORM\ManyToOne(targetEntity="Concurso", inversedBy="inscripcionesEvaluador")
-    * @ORM\JoinColumn(name="concurso_id", referencedColumnName="id")
-    */
-    private $concurso;
-    
-    /**
-    * @ORM\ManyToOne(targetEntity="Evaluador", inversedBy="inscripciones")
-    * @ORM\JoinColumn(name="evaluador_id", referencedColumnName="id")
-    */
-    private $evaluador;
+     /**
+     * @var string
+     *
+     * @ORM\Column(name="lider", type="boolean")
+     */
+    private $lider;
     /**
      * Get id
      *
@@ -57,35 +64,35 @@ class InscripcionEvaluador
     }
 
     /**
-     * Set fechaCreacion
+     * Set fechaRegistro
      *
-     * @param \DateTime $fechaCreacion
-     * @return InscripcionEvaluador
+     * @param \DateTime $fechaRegistro
+     * @return GrupoEvaluacionEvaluador
      */
-    public function setFechaCreacion($fechaCreacion)
+    public function setFechaRegistro($fechaRegistro)
     {
-        $this->fechaCreacion = $fechaCreacion;
+        $this->fechaRegistro = $fechaRegistro;
     
         return $this;
     }
 
     /**
-     * Get fechaCreacion
+     * Get fechaRegistro
      *
      * @return \DateTime 
      */
-    public function getFechaCreacion()
+    public function getFechaRegistro()
     {
-        return $this->fechaCreacion;
+        return $this->fechaRegistro;
     }
 
     /**
      * Set fechaActualizacion
      *
-     * @param \Date $fechaActualizacion
-     * @return InscripcionEvaluador
+     * @param \DateTime $fechaActualizacion
+     * @return GrupoEvaluacionEvaluador
      */
-    public function setFechaActualizacion(\Date $fechaActualizacion)
+    public function setFechaActualizacion($fechaActualizacion)
     {
         $this->fechaActualizacion = $fechaActualizacion;
     
@@ -95,7 +102,7 @@ class InscripcionEvaluador
     /**
      * Get fechaActualizacion
      *
-     * @return \Date 
+     * @return \DateTime 
      */
     public function getFechaActualizacion()
     {
@@ -103,33 +110,33 @@ class InscripcionEvaluador
     }
 
     /**
-     * Set concurso
+     * Set grupo
      *
-     * @param \App\WebBundle\Entity\Concurso $concurso
-     * @return InscripcionEvaluador
+     * @param \App\WebBundle\Entity\GrupoEvaluacion $grupo
+     * @return GrupoEvaluacionEvaluador
      */
-    public function setConcurso(\App\WebBundle\Entity\Concurso $concurso = null)
+    public function setGrupo(\App\WebBundle\Entity\GrupoEvaluacion $grupo = null)
     {
-        $this->concurso = $concurso;
+        $this->grupo = $grupo;
     
         return $this;
     }
 
     /**
-     * Get concurso
+     * Get grupo
      *
-     * @return \App\WebBundle\Entity\Concurso 
+     * @return \App\WebBundle\Entity\GrupoEvaluacion 
      */
-    public function getConcurso()
+    public function getGrupo()
     {
-        return $this->concurso;
+        return $this->grupo;
     }
 
     /**
      * Set evaluador
      *
      * @param \App\WebBundle\Entity\Evaluador $evaluador
-     * @return InscripcionEvaluador
+     * @return GrupoEvaluacionEvaluador
      */
     public function setEvaluador(\App\WebBundle\Entity\Evaluador $evaluador = null)
     {

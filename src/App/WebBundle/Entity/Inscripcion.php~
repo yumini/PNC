@@ -3,7 +3,7 @@
 namespace App\WebBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Gedmo\Mapping\Annotation as Gedmo; 
 /**
  * Inscripcion
  *
@@ -31,63 +31,63 @@ class Inscripcion
     /**
      * @var string
      *
-     * @ORM\Column(name="nombrecorto", type="string", length=30)
+     * @ORM\Column(name="nombrecorto", type="string", length=30, nullable=true)
      */
     private $nombrecorto;
 
      /**
      * @var string
      *
-     * @ORM\Column(name="nombreequipo", type="string", length=100)
+     * @ORM\Column(name="nombreequipo", type="string", length=100, nullable=true)
      */
     private $nombreEquipo;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="integrantes", type="string", length=500)
+     * @ORM\Column(name="integrantes", type="string", length=500, nullable=true)
      */
     private $integrantes;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="objetivoproyecto", type="string", length=50)
+     * @ORM\Column(name="objetivoproyecto", type="string", length=50, nullable=true)
      */
     private $objetivoproyecto;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fechainiciopy", type="date")
+     * @ORM\Column(name="fechainiciopy", type="date", nullable=true)
      */
     private $fechainiciopy;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fechafinpy", type="date")
+     * @ORM\Column(name="fechafinpy", type="date", nullable=true)
      */
     private $fechafinpy;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="informepostulacionc", type="string", length=50)
+     * @ORM\Column(name="informepostulacionc", type="string", length=50, nullable=true)
      */
     private $informepostulacionc;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="informepostulacionsic", type="string", length=50)
+     * @ORM\Column(name="informepostulacionsic", type="string", length=50, nullable=true)
      */
     private $informepostulacionsic;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="terminoaceptacion", type="integer")
+     * @ORM\Column(name="terminoaceptacion", type="integer", nullable=true)
      */
     private $terminoaceptacion;
 
@@ -103,6 +103,20 @@ class Inscripcion
     * @ORM\JoinColumn(name="postulante_id", referencedColumnName="id")
     */
     private $postulante;
+    
+    /**
+     * @var \DateTime
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(name="fechaRegistro", type="datetime")
+     */
+    private $fechaRegistro;
+
+    /**
+     * @var \DateTime
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(name="fechaActualizacion", type="datetime")
+     */
+    private $fechaActualizacion;
     
     /**
      * Get id
@@ -365,5 +379,28 @@ class Inscripcion
     public function getNombreEquipo()
     {
         return $this->nombreEquipo;
+    }
+
+    /**
+     * Set postulante
+     *
+     * @param \App\WebBundle\Entity\Postulante $postulante
+     * @return Inscripcion
+     */
+    public function setPostulante(\App\WebBundle\Entity\Postulante $postulante = null)
+    {
+        $this->postulante = $postulante;
+    
+        return $this;
+    }
+
+    /**
+     * Get postulante
+     *
+     * @return \App\WebBundle\Entity\Postulante 
+     */
+    public function getPostulante()
+    {
+        return $this->postulante;
     }
 }

@@ -15,7 +15,7 @@ class InscripcionRepository extends EntityRepository
 	public function IsRegister($idPostulante,$idConcurso){
         $em=$this->getEntityManager();
         $dql= "
-        SELECT count(i.id) FROM AppWebBundle:Inscripcion i
+        SELECT count(i.id) as total FROM AppWebBundle:Inscripcion i
         JOIN i.concurso c 
         JOIN i.postulante p
         WHERE c.id=:codConcurso and p.id=:codPostulante";
@@ -23,7 +23,8 @@ class InscripcionRepository extends EntityRepository
                 ->setParameter('codConcurso', $idConcurso)
                 ->setParameter('codPostulante', $idPostulante);
         try {
-                return ($query->getSingleResult()==0)?false:true;
+                 $result=$query->getResult();
+                return ($result[0]['total']==0)?false:true;
         } catch (\Doctrine\ORM\NoResultException $e) {
                 return null;
         }
