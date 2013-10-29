@@ -19,4 +19,14 @@ class ConcursoRepository extends EntityRepository
         $pagination = $paginator->paginate($query,$page,$limit);
         return $pagination;
     }
+    public function FindAllActivos(){
+        $em=$this->getEntityManager();
+        $dql   = "SELECT p FROM AppWebBundle:Concurso p";
+        $query = $em->createQuery($dql);
+        try {
+                return $query->getResult();
+        } catch (\Doctrine\ORM\NoResultException $e) {
+                return null;
+        }
+    }
 }

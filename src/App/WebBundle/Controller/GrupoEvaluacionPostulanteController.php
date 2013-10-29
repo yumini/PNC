@@ -7,21 +7,21 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use App\WebBundle\Entity\GrupoEvaluacionEvaluador;
-use App\WebBundle\Form\GrupoEvaluacionEvaluadorType;
+use App\WebBundle\Entity\GrupoEvaluacionPostulante;
+use App\WebBundle\Form\GrupoEvaluacionPostulanteType;
 
 /**
- * GrupoEvaluacionEvaluador controller.
+ * GrupoEvaluacionPostulante controller.
  *
- * @Route("/admin/grupoevaluacionevaluador")
+ * @Route("/admin/grupoevaluacionpostulante")
  */
-class GrupoEvaluacionEvaluadorController extends Controller
+class GrupoEvaluacionPostulanteController extends Controller
 {
 
     /**
-     * Lists all GrupoEvaluacionEvaluador entities.
+     * Lists all GrupoEvaluacionPostulante entities.
      *
-     * @Route("/{id}", name="_admin_grupoevaluacionevaluador", options={"expose"=true})
+     * @Route("/{id}", name="_admin_grupoevaluacionpostulante", options={"expose"=true})
      * @Method("GET")
      * @Template()
      */
@@ -29,20 +29,20 @@ class GrupoEvaluacionEvaluadorController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('AppWebBundle:GrupoEvaluacionEvaluador')->FindByGrupo($id);
+        $entities = $em->getRepository('AppWebBundle:GrupoEvaluacionPostulante')->FindByGrupo($id);
 
         return array(
             'entities' => $entities,
         );
     }
     /**
-     * Creates a new GrupoEvaluacionEvaluador entity.
+     * Creates a new GrupoEvaluacionPostulante entity.
      *
-     * @Route("/{id}/save", name="_admin_grupoevaluacionevaluador_save",options={"expose"=true})
+     * @Route("/{id}/save", name="_admin_grupoevaluacionpostulante_save", options={"expose"=true})
      * @Method("POST")
-     * @Template("AppWebBundle:Default:result.json.twig")
+     * @Template("AppWebBundle:GrupoEvaluacionPostulante:new.html.twig")
      */
-    public function createAction(Request $request,$id)
+    public function createAction(Request $request)
     {
         $result='';
         $msg='';
@@ -73,9 +73,9 @@ class GrupoEvaluacionEvaluadorController extends Controller
     }
 
     /**
-     * Displays a form to create a new GrupoEvaluacionEvaluador entity.
+     * Displays a form to create a new GrupoEvaluacionPostulante entity.
      *
-     * @Route("/{id}/new", name="_admin_grupoevaluacionevaluador_new", options={"expose"=true})
+     * @Route("/{id}/new", name="admin_grupoevaluacionpostulante_new",options={"expose"=true})
      * @Method("GET")
      * @Template()
      */
@@ -90,15 +90,17 @@ class GrupoEvaluacionEvaluadorController extends Controller
         );
     }
 
+   
+
     
     /**
      * Deletes a GrupoEvaluacionEvaluador entity.
      *
-     * @Route("/{id}/delete", name="_admin_grupoevaluacionevaluador_delete",options={"expose"=true})
+     * @Route("/{id}/delete", name="_admin_grupoevaluacionpostulante_delete",options={"expose"=true})
      * @Method("POST")
      * @Template("AppWebBundle:Default:result.json.twig")
      */
-    public function deleteAction(Request $request, $id)
+    public function deleteAction( $id)
     {
        $msg='';
        $result='';
@@ -118,32 +120,19 @@ class GrupoEvaluacionEvaluadorController extends Controller
 
         );
     }
+
     /**
-     * Deletes a GrupoEvaluacionEvaluador entity.
+     * Creates a form to delete a GrupoEvaluacionPostulante entity by id.
      *
-     * @Route("/{id}/activelider", name="_admin_grupoevaluacionevaluador_activelider",options={"expose"=true})
-     * @Method("POST")
-     * @Template("AppWebBundle:Default:result.json.twig")
+     * @param mixed $id The entity id
+     *
+     * @return \Symfony\Component\Form\Form The form
      */
-    public function activeLiderAction(Request $request, $id)
+    private function createDeleteForm($id)
     {
-       $msg='';
-       $result='';
-       $em = $this->getDoctrine()->getManager();
-       $entity = $em->getRepository('AppWebBundle:GrupoEvaluacionEvaluador')->find($id);
-       
-        if ($entity) {
-            $em->getRepository('AppWebBundle:GrupoEvaluacionEvaluador')->ActiveLider($entity);
-            $result='true';
-        }else{
-            $msg="No se encontro el registro";
-            $result='false';
-        }
-        return array(
-            'result' => "{\"success\":\"$result\",\"message\":\"$msg\"}"
-
-        );
+        return $this->createFormBuilder(array('id' => $id))
+            ->add('id', 'hidden')
+            ->getForm()
+        ;
     }
-
-    
 }

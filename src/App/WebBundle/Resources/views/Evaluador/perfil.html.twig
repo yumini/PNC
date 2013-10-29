@@ -8,7 +8,7 @@
 </ol>
 <div class="row">
     <div class="col-lg-3">
-        <h3 style="margin-top:4px;">Ficha del Evaluador</h3>
+        <h3 style="margin-top:4px;">{{ entity.nombres|default('-') }} {{ entity.apellidos|default('-') }}</h3>
 <div class="panel-group" id="accordion">
   <div class="panel panel-default">
     <div class="panel-heading2">
@@ -25,12 +25,7 @@
     <div id="collapseOne" class="panel-collapse collapse in">
       <div class="panel-body">
         
-          <div class="row">
-          	<div class="col-md-5"><label>Evaluador:</label></div>
-          	<div class="col-md-7">{{ entity.nombres|default('-') }}</div>
-               
-                 
-          </div>
+         
           <div class="row">
           	<div class="col-md-5"><label>DNI:</label></div>
           	<div class="col-md-7">{{ entity.numdoc|default('-') }}</div>

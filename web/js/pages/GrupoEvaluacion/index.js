@@ -131,6 +131,7 @@ OptionButton.GrupoEvaluacion.prototype={
 	$(".list-group-item").removeClass("active")
         $(obj).addClass("active");
             new OptionButton.Evaluador().Refresh(id);
+            new OptionButton.Postulante().Refresh(id);
     }
 }
 
@@ -138,6 +139,7 @@ OptionButton.Evaluador=function(){
     this.routeNew="_admin_grupoevaluacionevaluador_new";
     this.routeSave="_admin_grupoevaluacionevaluador_save";
     this.routeDelete="_admin_grupoevaluacionevaluador_delete";
+    this.routeActive="_admin_grupoevaluacionevaluador_activelider";
 }
 OptionButton.Evaluador.prototype={
     Refresh:function(id){
@@ -208,9 +210,108 @@ OptionButton.Evaluador.prototype={
                         }
                 }); 
             }
+        },
+        ActiveLider:function(id){
+            this.IdEntity=id;
+            if(confirm("Desea seleccionar al evluador lider?")){
+                var url=Routing.generate(this.routeActive,{id:this.IdEntity});
+                $.ajax({
+                        type:'POST',
+                        url:url,
+                        dataType:"html",
+                        success:function(datos){
+
+                                new OptionButton.Evaluador().Refresh(grupoId);
+                        },
+                        error:function(objeto, quepaso, otroobj){
+
+                        }
+                }); 
+            }
         }
     
 }
+
+OptionButton.Postulante=function(){
+    this.routeList="_admin_grupoevaluacionpostulante";
+    this.routeNew="_admin_grupoevaluacionpostulante_new";
+    this.routeSave="_admin_grupoevaluacionpostulante_save";
+    this.routeDelete="_admin_grupoevaluacionpostulante_delete";
+   
+}
+OptionButton.Postulante.prototype={
+    Refresh:function(id){
+        var url=Routing.generate(this.routeList,{id:id});
+        new jAjax().Load(url,"container-postulantes","GET","","")
+        
+    },
+    New:function(id){
+        this.GrupoId=id;
+    	 console.log(this.routeNewGrupo);
+        this.Window=new BootstrapWindow({id:"winForm",title:"Nuevo Postulante"});
+        var url=Routing.generate(this.routeNew,{id:id});
+
+        this.Window.Load(url,"");
+        this.Window.Show();
+        var parent=this;
+        this.Window.AddButton('btn-postulante-cancel',{
+            label:'Cancelar',
+            'class':'btn-default',
+            fn:function(){
+                parent.Window.Hide();
+            }
+            
+        })
+       
+        this.Window.AddButton('btn-postulante-save',{
+            label:'Grabar',
+            'class':'btn-success',
+            fn:function(){
+                parent.Save();               
+                parent.Window.Hide();
+            }
+        });
+    },
+    Save:function(){
+	var parent=this;
+        var url=Routing.generate(this.routeSave,{id:this.GrupoId});
+        params = $('#myform').serializeObject();
+                 
+            $.ajax({
+                    type:'POST',
+                    url:url,
+                    data:params,
+                    dataType:"html",
+                    success:function(datos){
+                            //parent.Window.AddHTML(datos);
+                            parent.Refresh(parent.GrupoId);
+                    },
+                    error:function(objeto, quepaso, otroobj){
+
+                    }
+            });
+	},
+        Delete:function(id){
+            this.IdEntity=id;
+            if(confirm("Desea eliminar el postulante seleccionado?")){
+                var url=Routing.generate(this.routeDelete,{id:this.IdEntity});
+                $.ajax({
+                        type:'POST',
+                        url:url,
+                        dataType:"html",
+                        success:function(datos){
+
+                                new OptionButton.Postulante().Refresh(grupoId);
+                        },
+                        error:function(objeto, quepaso, otroobj){
+
+                        }
+                }); 
+            }
+        }
+    
+}
+
 //al leer el documento
 $(document).ready(function() {
   

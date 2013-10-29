@@ -84,11 +84,12 @@ class GrupoEvaluacionController extends Controller
         $page=$this->get('request')->query->get('page', 1);
         $paginator=$this->get('knp_paginator');
         $pagination = $em->getRepository('AppWebBundle:GrupoEvaluacion')->FindAllPaginator($paginator,$page,5);
-
+        $concursos = $em->getRepository('AppWebBundle:Concurso')->FindAllActivos();
         return array(
             'pagination' => $pagination,
             'title_list'=> "Grupos de Evaluación",
-            'action'=> "grupoevaluacion"
+            'action'=> "grupoevaluacion",
+            'concursos'=>$concursos
         );
     }
     /**

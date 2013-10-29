@@ -37,4 +37,17 @@ INNER JOIN grupoevaluacion g ON g.id=ge.grupoevaluacion_id where g.concurso_id=$
         
         return $result=$stmt->fetchAll(); 
     }
+    public function ActiveLider(GrupoEvaluacionEvaluador $obj){
+        $conn = $this->getEntityManager()->getConnection('database_connection');//create a connection with your DB
+
+        $sql="UPDATE grupoevaluacionevaluador set lider=0 where grupoevaluacion_id='".$obj->getGrupo()->getId()."'";                   
+        $stmt = $conn->prepare($sql);  
+        $stmt->execute(); 
+        
+        $sql="UPDATE grupoevaluacionevaluador set lider=1 where id='".$obj->getId()."'";                   
+        $stmt = $conn->prepare($sql);  
+        $stmt->execute(); 
+    }
+    
+    
 }

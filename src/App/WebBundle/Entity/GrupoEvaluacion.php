@@ -62,6 +62,11 @@ class GrupoEvaluacion
     private $evaluadores;
     
     /**
+    * @ORM\OneToMany(targetEntity="GrupoEvaluacionPostulante", mappedBy="grupo")
+    */
+    private $postulantes;
+    
+    /**
     * @ORM\ManyToOne(targetEntity="Concurso", inversedBy="gruposEvaluacion")
     * @ORM\JoinColumn(name="concurso_id", referencedColumnName="id")
     */
@@ -69,6 +74,7 @@ class GrupoEvaluacion
 
     public function __construct() {
         $this->evaluadores = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->postulantes = new \Doctrine\Common\Collections\ArrayCollection();
     }
     /**
      * Get id
@@ -249,5 +255,38 @@ class GrupoEvaluacion
     public function getConcurso()
     {
         return $this->concurso;
+    }
+
+    /**
+     * Add postulantes
+     *
+     * @param \App\WebBundle\Entity\GrupoEvaluacionPostulante $postulantes
+     * @return GrupoEvaluacion
+     */
+    public function addPostulante(\App\WebBundle\Entity\GrupoEvaluacionPostulante $postulantes)
+    {
+        $this->postulantes[] = $postulantes;
+    
+        return $this;
+    }
+
+    /**
+     * Remove postulantes
+     *
+     * @param \App\WebBundle\Entity\GrupoEvaluacionPostulante $postulantes
+     */
+    public function removePostulante(\App\WebBundle\Entity\GrupoEvaluacionPostulante $postulantes)
+    {
+        $this->postulantes->removeElement($postulantes);
+    }
+
+    /**
+     * Get postulantes
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPostulantes()
+    {
+        return $this->postulantes;
     }
 }

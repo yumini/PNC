@@ -247,7 +247,7 @@ class ConcursoController extends Controller
      * @Method("DELETE")
      * @Template("AppWebBundle:Perfil:result.json.twig")
      */
-    public function deleteAction(Request $request, $id)
+    public function deleteAction($id)
     {
             $msg="Se elimino el registro satisfactoriamente";
             $result=true;

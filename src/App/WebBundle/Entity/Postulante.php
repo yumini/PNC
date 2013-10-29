@@ -82,11 +82,7 @@ class Postulante
     * @ORM\JoinColumn(name="usuario_id", referencedColumnName="id")
     */
     private $usuario;
-    /**
-     * @ORM\ManyToMany(targetEntity="GrupoEvaluacion", inversedBy="Postulante")
-     * @ORM\JoinTable(name="postulantegrupo")
-     */
-    private $grupos;
+    
    
     /**
     * @ORM\OneToMany(targetEntity="Postulante", mappedBy="postulantecontacto")
@@ -103,6 +99,11 @@ class Postulante
      * @ORM\JoinTable(name="postulantecategoria")
      */
     private $categorias;
+    
+    /**
+    * @ORM\OneToMany(targetEntity="GrupoEvaluacionEvaluador", mappedBy="evaluador")
+    */
+    private $grupos;
     
     public function __construct() {
         $this->grupos = new \Doctrine\Common\Collections\ArrayCollection();

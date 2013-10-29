@@ -20,8 +20,10 @@
             <div  class="well"  style="margin:0px;">
    
          <select class="form-control">
-            <option value="0">Todos los concursos</option>
-
+              <option value="0">Todos los concursos</option>
+             {% for entity in concursos %}
+            <option value="{{entity.id}}">{{entity.nombre}}</option>
+             {%endfor%}
         </select>
 
         </div>
@@ -54,16 +56,24 @@
     </div>
     <div class="col-lg-8">
        <ul class="nav nav-tabs" id="myTab">
-              <li class="active">
-                <a href="#TabEvaluadores" data-toggle="tab">Evaluadores</a>
-              </li>
-              <li>
+           <li class="active">
                 <a href="#TabPostulantes" data-toggle="tab">Postulantes</a>
               </li>
+              <li >
+                <a href="#TabEvaluadores" data-toggle="tab">Evaluadores</a>
+              </li>
+              
              </ul>
 
         <div class="tab-content">
-          <div class="tab-pane active" id="TabEvaluadores">
+             <div class="tab-pane active" id="TabPostulantes">
+                    <h4>Listado de Postulantes
+                    <button id="btnNewPostulante" type="button" class="btn btn-success navbar-btn pull-right btn-xs"> <span class="glyphicon glyphicon-plus"> </span></button>
+                    </h4>
+                    <div id="container-postulantes">
+                    </div>
+          </div>
+          <div class="tab-pane" id="TabEvaluadores">
                 <h4>
                     Listado de Evaluadores
                 <button id="btnNewEvaluador" type="button" class="btn btn-success navbar-btn pull-right btn-xs"> <span class="glyphicon glyphicon-plus"> </span></button>
@@ -71,11 +81,7 @@
                 <div id="container-evaluadores">
                 </div>
             </div>
-          <div class="tab-pane" id="TabPostulantes">
-                    <h4>Listado de Postulantes</h4>
-                    <div id="container-postulantes">
-                    </div>
-          </div>
+         
          
         </div>
     </div>
