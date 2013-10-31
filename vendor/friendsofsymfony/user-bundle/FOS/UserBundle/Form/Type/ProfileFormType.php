@@ -72,6 +72,21 @@ class ProfileFormType extends AbstractType
         $builder
             ->add('username', null, array('label' => 'form.username', 'translation_domain' => 'FOSUserBundle'))
             ->add('email', 'email', array('label' => 'form.email', 'translation_domain' => 'FOSUserBundle'))
+            ->add('perfil','entity', array('class'=>'App\WebBundle\Entity\Perfil', 'property'=>'nombre' ))
+            ->add('tipoDocumento','entity', array('class'=>'App\WebBundle\Entity\Catalogo', 'property'=>'nombre', 
+                                                   'attr' => array('class'=>'form-control input-small'),
+                                                   'query_builder' => function(\App\WebBundle\Entity\CatalogoRepository $er){return $er->getTipoDocumentoIdentidadQueryBuilder();},
+                                                  ))
+            ->add('nroDocumento')
+            ->add('nombres')
+            ->add('apellidos')
+            ->add('plainPassword', 'repeated', array(
+                'type' => 'password',
+                'options' => array('translation_domain' => 'FOSUserBundle','attr' => array('class'=>'form-control input-small')),
+                'first_options' => array('label' => 'form.password'),
+                'second_options' => array('label' => 'form.password_confirmation'),
+                'invalid_message' => 'fos_user.password.mismatch',
+            ))
         ;
     }
 }

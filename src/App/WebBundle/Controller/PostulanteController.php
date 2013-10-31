@@ -21,18 +21,21 @@ class PostulanteController extends Controller
     /**
      * Lists all Postulante entities.
      *
-     * @Route("/", name="postulante")
+     * @Route("/", name="_admin_postulante", options={"expose"=true})
      * @Method("GET")
      * @Template()
      */
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
-
-        $entities = $em->getRepository('AppWebBundle:Postulante')->findAll();
+        $page=$this->get('request')->query->get('page', 1);
+        $paginator=$this->get('knp_paginator');
+        $pagination = $em->getRepository('AppWebBundle:Postulante')->FindAllPaginator($paginator,$page,10);
 
         return array(
-            'entities' => $entities,
+            'pagination' => $pagination,
+            'title_list'=> "Listado de Postulantes",
+            'action'=> "postulante"
         );
     }
     /**
@@ -83,15 +86,15 @@ class PostulanteController extends Controller
     /**
      * Finds and displays a Postulante entity.
      *
-     * @Route("/perfil", name="_admin_postulante_perfil", options={"expose"=true})
+     * @Route("{id}/perfil", name="_admin_postulante_perfil", options={"expose"=true})
      * @Method("GET")
      * @Template()
      */
-    public function perfilAction()
+    public function perfilAction($id)
     {
         $em = $this->getDoctrine()->getManager();
-        $user = $this->container->get("security.context")->getToken()->getUser();
-        $entity = $em->getRepository('AppWebBundle:Postulante')->findByUser($user->getId());
+        //$user = $this->container->get("security.context")->getToken()->getUser();
+        $entity = $em->getRepository('AppWebBundle:Postulante')->find($id);
         /*
         $entity=new Postulante();
         $entity->setRazonsocial("Coca Cola");
@@ -264,18 +267,18 @@ class PostulanteController extends Controller
     /**
      * Displays a form to create a new Postulante entity.
      *
-     * @Route("/categoria/save", name="_admin_postulantecategoria_save", options={"expose"=true})
+     * @Route("{id}/categoria/save", name="_admin_postulantecategoria_save", options={"expose"=true})
      * @Method("POST")
      * @Template("AppWebBundle:Default:result.json.twig")
      */
-    public function saveCategoriaAction(Request $request)
+    public function saveCategoriaAction(Request $request,$id)
     {
         $msg="";
         $success="true";
         $categoriaId=$request->request->get('categoriaId');
         $em = $this->getDoctrine()->getManager();
-        $user = $this->container->get("security.context")->getToken()->getUser();
-        $entity = $em->getRepository('AppWebBundle:Postulante')->findByUser($user->getId());
+        
+        $entity = $em->getRepository('AppWebBundle:Postulante')->find($id);
         
         $categoria=$em->getRepository('AppWebBundle:Catalogo')->find($categoriaId);
         
@@ -305,19 +308,18 @@ class PostulanteController extends Controller
     /**
      * Displays a form to create a new Postulante entity.
      *
-     * @Route("/categoria/delete", name="_admin_postulantecategoria_delete", options={"expose"=true})
+     * @Route("/{id}/categoria/delete", name="_admin_postulantecategoria_delete", options={"expose"=true})
      * @Method("POST")
      * @Template("AppWebBundle:Default:result.json.twig")
      */
-    public function deleteCategoriaAction(Request $request)
+    public function deleteCategoriaAction(Request $request,$id)
     {
         $msg="";
         $success="true";
-        $id=$request->query->get('id');
+        $idCategoria=$request->query->get('idCategoria');
         $em = $this->getDoctrine()->getManager();
-        $user = $this->container->get("security.context")->getToken()->getUser();
-        $entity = $em->getRepository('AppWebBundle:Postulante')->findByUser($user->getId());
-        $categoria=$em->getRepository('AppWebBundle:Catalogo')->find($id);
+        $entity = $em->getRepository('AppWebBundle:Postulante')->find($id);
+        $categoria=$em->getRepository('AppWebBundle:Catalogo')->find($idCategoria);
         $entity->removeCategoria($categoria);
         $em->persist($entity);
         $em->flush();

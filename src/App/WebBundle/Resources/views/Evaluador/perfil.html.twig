@@ -7,7 +7,7 @@
   <li class="active">Mis Datos Personales</li>
 </ol>
 <div class="row">
-    <div class="col-lg-3">
+    <div class="col-lg-4">
         <h3 style="margin-top:4px;">{{ entity.nombres|default('-') }} {{ entity.apellidos|default('-') }}</h3>
 <div class="panel-group" id="accordion">
   <div class="panel panel-default">
@@ -72,7 +72,7 @@
                     
                 </div>
           	<div class="col-md-7">
-                    <a id="lnkCVDownload" target="_blank" href="{{ asset('docs/evaluador/cv/')}}{{entity.curriculum}}" data-path="{{ asset('docs/evaluador/cv/')}}">Ver Curriculum</a>
+                    <a id="lnkCVDownload" target="_blank" href="{{ asset('docs/evaluador/cv/')}}{{entity.curriculum|default('#')}}" data-path="{{ asset('docs/evaluador/cv/')}}">Ver Curriculum</a>
                     
                 </div>
           </div>
@@ -142,7 +142,7 @@
      
 
   </div>
-  <div class="col-lg-9"  >
+  <div class="col-lg-8"  >
   	<h3 style="margin-top:4px;">Conflictos de Interes
   		<span style="float:right;"><a id="btnConflictoNew" href="#" class="btn btn-info" style="font-size:12px;"><span class="glyphicon glyphicon-plus"></span></a></span>
   	</h3>

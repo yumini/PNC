@@ -21,18 +21,21 @@ class EvaluadorController extends Controller
     /**
      * Lists all Evaluador entities.
      *
-     * @Route("/", name="evaluador")
+     * @Route("/", name="_admin_evaluador", options={"expose"=true})
      * @Method("GET")
      * @Template()
      */
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
-
-        $entities = $em->getRepository('AppWebBundle:Evaluador')->findAll();
+        $page=$this->get('request')->query->get('page', 1);
+        $paginator=$this->get('knp_paginator');
+        $pagination = $em->getRepository('AppWebBundle:Evaluador')->FindAllPaginator($paginator,$page,10);
 
         return array(
-            'entities' => $entities,
+            'pagination' => $pagination,
+            'title_list'=> "Listado de Evaluadores",
+            'action'=> "evaluador"
         );
     }
     /**
@@ -84,15 +87,14 @@ class EvaluadorController extends Controller
     /**
      * Finds and displays a Postulante entity.
      *
-     * @Route("/perfil", name="_admin_evaluador_perfil", options={"expose"=true})
+     * @Route("/{id}/perfil", name="_admin_evaluador_perfil", options={"expose"=true})
      * @Method("GET")
      * @Template()
      */
-    public function perfilAction()
+    public function perfilAction($id)
     {
         $em = $this->getDoctrine()->getManager();
-        $user = $this->container->get("security.context")->getToken()->getUser();
-        $entity = $em->getRepository('AppWebBundle:Evaluador')->findByUser($user->getId());
+        $entity = $em->getRepository('AppWebBundle:Evaluador')->find($id);
        
         return array(
             'entity'      => $entity

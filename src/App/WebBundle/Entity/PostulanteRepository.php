@@ -38,5 +38,12 @@ class PostulanteRepository extends EntityRepository
                return null;
         }
     }
+    public function FindAllPaginator($paginator,$page,$limit){
+        $em=$this->getEntityManager();
+        $dql   = "SELECT p FROM AppWebBundle:Postulante p";
+        $query = $em->createQuery($dql);
+        $pagination = $paginator->paginate($query,$page,$limit);
+        return $pagination;
+    }
    
 }

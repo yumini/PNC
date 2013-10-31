@@ -41,18 +41,18 @@ class ConflictoInteresEvaluadorController extends Controller
     /**
      * Creates a new PostulanteContacto entity.
      *
-     * @Route("/save", name="_admin_conflictodeinteres_save", options={"expose"=true})
+     * @Route("/{id}/save", name="_admin_conflictodeinteres_save", options={"expose"=true})
      * @Method("POST")
      * @Template("AppWebBundle:Default:result.json.twig")
      */
-    public function createAction(Request $request)
+    public function createAction(Request $request,$id)
     {
         $entity  = new ConflictoInteresEvaluador();
         $form = $this->createForm(new ConflictoInteresEvaluadorType(), $entity);
         $form->bind($request);
         $em = $this->getDoctrine()->getManager();
-        $user = $this->container->get("security.context")->getToken()->getUser();
-        $evaluador = $em->getRepository('AppWebBundle:Evaluador')->findByUser($user->getId());
+       
+        $evaluador = $em->getRepository('AppWebBundle:Evaluador')->find($id);
        
         $entity->setEvaluador($evaluador);
         

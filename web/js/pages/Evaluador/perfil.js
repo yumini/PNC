@@ -60,7 +60,8 @@ OptionButton.Perfil.prototype={
     },
    
     Refresh:function(){
-        var url=Routing.generate(this.routeList);
+        var id=$('#hdnEntity_id').val();
+        var url=Routing.generate(this.routeList,{id:id});
         new jAjax().Load(url,'main-body','get','','');
     }
 
@@ -111,7 +112,8 @@ OptionButton.Conflictos.prototype={
     },
     Save:function(){
             var parent=this;
-            var url=Routing.generate(this.routeSave);
+            var id=$("#hdnEntity_id").val();
+            var url=Routing.generate(this.routeSave,{id:id});
             params = $('#myform').serializeObject();
             console.log(params);
             
@@ -240,8 +242,9 @@ OptionButton.Disponibilidad.prototype={
         });
     },
     Save:function(){
+            var id=$('#hdnEntity_id').val();
             var parent=this;
-            var url=Routing.generate(this.routeSave);
+            var url=Routing.generate(this.routeSave,{id:id});
             params = $('#myDisponibilidadform').serializeObject();
             console.log(params);
             

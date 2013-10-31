@@ -11,7 +11,12 @@ use App\WebBundle\Entity\Usuario;
 use App\WebBundle\Entity\Postulante;
 use App\WebBundle\Entity\Evaluador;
 use App\WebBundle\Form\UsuarioType;
-
+use FOS\UserBundle\FOSUserEvents;
+use FOS\UserBundle\Event\UserEvent;
+use FOS\UserBundle\Event\FormEvent;
+use FOS\UserBundle\Event\GetResponseUserEvent;
+use FOS\UserBundle\Event\FilterUserResponseEvent;
+use FOS\UserBundle\Model\UserInterface;
 /**
  * Usuario controller.
  *
@@ -43,45 +48,68 @@ class UsuarioController extends Controller
     /**
      * Creates a new Usuario entity.
      *
-     * @Route("/", name="usuario_create")
+     * @Route("/save", name="_admin_usuario_save", options={"expose"=true})
      * @Method("POST")
-     * @Template("AppWebBundle:Usuario:new.html.twig")
+     * @Template("AppWebBundle:Default:result.json.twig")
      */
     public function createAction(Request $request)
     {
-        $entity  = new Usuario();
-        $form = $this->createForm(new UsuarioType(), $entity);
+        /** @var $formFactory \FOS\UserBundle\Form\Factory\FactoryInterface */
+        $formFactory = $this->container->get('fos_user.registration.form.factory');
+        /** @var $userManager \FOS\UserBundle\Model\UserManagerInterface */
+        $userManager = $this->container->get('fos_user.user_manager');
+        /** @var $dispatcher \Symfony\Component\EventDispatcher\EventDispatcherInterface */
+        $dispatcher = $this->container->get('event_dispatcher');
+        
+        $user = $userManager->createUser();
+        $user->setEnabled(true);
+        
+        $dispatcher->dispatch(FOSUserEvents::REGISTRATION_INITIALIZE, new UserEvent($user, $request));
+
+        $form = $formFactory->createForm();
+        $form->setData($user);
+
         $form->bind($request);
 
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
-            $em->flush();
+        $event = new FormEvent($form, $request);
+        $dispatcher->dispatch(FOSUserEvents::REGISTRATION_SUCCESS, $event);
+        $userManager->updateUser($user);
+        
+        $response = $this->forward('AppWebBundle:Usuario:Active', array('id'  => $user->getId()  ));
 
-            return $this->redirect($this->generateUrl('usuario_show', array('id' => $entity->getId())));
-        }
+        return $response;
 
-        return array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
-        );
+      
+
     }
 
     /**
      * Displays a form to create a new Usuario entity.
      *
-     * @Route("/new", name="usuario_new")
+     * @Route("/new", name="_admin_usuario_new", options={"expose"=true})
      * @Method("GET")
      * @Template()
      */
-    public function newAction()
+    public function newAction(Request $request)
     {
-        $entity = new Usuario();
-        $form   = $this->createForm(new UsuarioType(), $entity);
+        
+        /** @var $formFactory \FOS\UserBundle\Form\Factory\FactoryInterface */
+        $formFactory = $this->container->get('fos_user.registration.form.factory');
+        /** @var $userManager \FOS\UserBundle\Model\UserManagerInterface */
+        $userManager = $this->container->get('fos_user.user_manager');
+        /** @var $dispatcher \Symfony\Component\EventDispatcher\EventDispatcherInterface */
+        $dispatcher = $this->container->get('event_dispatcher');
+        
+        $user = $userManager->createUser();
+        $user->setEnabled(true);
+
+        $dispatcher->dispatch(FOSUserEvents::REGISTRATION_INITIALIZE, new UserEvent($user, $request));
+
+        $form = $formFactory->createForm();
+        $form->setData($user);
 
         return array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
+            'form'   => $form->createView()
         );
     }
 
@@ -113,27 +141,33 @@ class UsuarioController extends Controller
     /**
      * Displays a form to edit an existing Usuario entity.
      *
-     * @Route("/{id}/edit", name="usuario_edit")
+     * @Route("/{id}/edit", name="_admin_usuario_edit", options={"expose"=true})
      * @Method("GET")
      * @Template()
      */
-    public function editAction($id)
+    public function editAction(Request $request,$id)
     {
         $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository('AppWebBundle:Usuario')->find($id);
 
-        $entity = $em->getRepository('AppWebBundle:Usuario')->find($id);
+        /** @var $dispatcher \Symfony\Component\EventDispatcher\EventDispatcherInterface */
+        $dispatcher = $this->container->get('event_dispatcher');
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Usuario entity.');
+        $event = new GetResponseUserEvent($user, $request);
+        $dispatcher->dispatch(FOSUserEvents::PROFILE_EDIT_INITIALIZE, $event);
+
+        if (null !== $event->getResponse()) {
+            return $event->getResponse();
         }
 
-        $editForm = $this->createForm(new UsuarioType(), $entity);
-        $deleteForm = $this->createDeleteForm($id);
+        /** @var $formFactory \FOS\UserBundle\Form\Factory\FactoryInterface */
+        $formFactory = $this->container->get('fos_user.profile.form.factory');
+
+        $form = $formFactory->createForm();
+        $form->setData($user);
 
         return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+            'form'   => $form->createView()
         );
     }
 
@@ -201,61 +235,88 @@ class UsuarioController extends Controller
     /**
      * Edits an existing Usuario entity.
      *
-     * @Route("/{id}", name="usuario_update")
+     * @Route("/{id}/update", name="_admin_usuario_update", options={"expose"=true})
      * @Method("POST")
-     * @Template("AppWebBundle:Usuario:edit.html.twig")
+     * @Template("AppWebBundle:Default:result.json.twig")
      */
     public function updateAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository('AppWebBundle:Usuario')->find($id);
+        
+       
+        /** @var $dispatcher \Symfony\Component\EventDispatcher\EventDispatcherInterface */
+        $dispatcher = $this->container->get('event_dispatcher');
 
-        $entity = $em->getRepository('AppWebBundle:Usuario')->find($id);
+        $event = new GetResponseUserEvent($user, $request);
+        $dispatcher->dispatch(FOSUserEvents::PROFILE_EDIT_INITIALIZE, $event);
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Usuario entity.');
+        if (null !== $event->getResponse()) {
+            return $event->getResponse();
         }
 
-        $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createForm(new UsuarioType(), $entity);
-        $editForm->bind($request);
+        /** @var $formFactory \FOS\UserBundle\Form\Factory\FactoryInterface */
+        $formFactory = $this->container->get('fos_user.profile.form.factory');
 
-        if ($editForm->isValid()) {
-            $em->persist($entity);
-            $em->flush();
+        $form = $formFactory->createForm();
+        $form->setData($user);
 
-            return $this->redirect($this->generateUrl('usuario_edit', array('id' => $id)));
-        }
+       
+            $form->bind($request);
 
+            
+                /** @var $userManager \FOS\UserBundle\Model\UserManagerInterface */
+                $userManager = $this->container->get('fos_user.user_manager');
+
+                $event = new FormEvent($form, $request);
+                $dispatcher->dispatch(FOSUserEvents::PROFILE_EDIT_SUCCESS, $event);
+
+                $userManager->updateUser($user);
+
+               
+
+               
+        
+        
+       $result='true';
+       $msg='';
         return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+            'result' => "{success:'$result',message:'$msg'}"
+
         );
     }
     /**
      * Deletes a Usuario entity.
      *
-     * @Route("/{id}", name="usuario_delete")
+     * @Route("/{id}/delete", name="_admin_usuario_delete", options={"expose"=true})
      * @Method("DELETE")
+     * @Template("AppWebBundle:Default:result.json.twig")
      */
     public function deleteAction(Request $request, $id)
     {
-        $form = $this->createDeleteForm($id);
-        $form->bind($request);
-
-        if ($form->isValid()) {
+       $msg="Se desabilito el registro satisfactoriamente";
+            $result=true;
             $em = $this->getDoctrine()->getManager();
+            
             $entity = $em->getRepository('AppWebBundle:Usuario')->find($id);
-
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Usuario entity.');
-            }
-
-            $em->remove($entity);
+            if($entity)
+            {
+               
+                if($entity->isEnabled())
+                    $entity->setEnabled(false);
+                else
+                     $entity->setEnabled(true);
+                $em->persist($entity);
             $em->flush();
-        }
+            
+            }else{
+                $msg="No se encontro el registro"; 
+                $result=false;
+            }
+            return array(
+            'result' => "{success:'$result',message:'$msg'}"
 
-        return $this->redirect($this->generateUrl('usuario'));
+            );
     }
 
     /**

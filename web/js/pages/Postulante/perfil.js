@@ -59,9 +59,10 @@ OptionButton.Perfil.prototype={
     },
    
     Refresh:function(){
-        var url=Routing.generate(this.routeList);
+        var id=$('#hdnEntity_id').val();
+        var url=Routing.generate(this.routeList,{id:id});
         new jAjax().Load(url,'main-body','get','','');
-    },
+    }
 
    
 
@@ -210,7 +211,8 @@ OptionButton.Categoria=function(){
 }
 OptionButton.Categoria.prototype={
     Refresh:function(){
-       var url=Routing.generate(this.routeList);
+       var id=$('#hdnEntity_id').val();
+       var url=Routing.generate(this.routeList,{id:id});
         new jAjax().Load(url,'main-body','get','','');
     },
     New:function(){
@@ -241,7 +243,8 @@ OptionButton.Categoria.prototype={
     },
     Save:function(){
             var parent=this;
-            var url=Routing.generate(this.routeSave);
+            var id=$('#hdnEntity_id').val();
+            var url=Routing.generate(this.routeSave,{id:id});
             params = $('#myform').serializeObject();
             console.log(params);
             
@@ -274,11 +277,13 @@ OptionButton.Categoria.prototype={
    
     Delete:function(id){
         this.IdEntity=id;
+         var idPostulante=$('#hdnEntity_id').val();
         if(confirm("Desea eliminar la categoria seleccionada?")){
-             var url=Routing.generate(this.routeDelete,{id:this.IdEntity});
+             var url=Routing.generate(this.routeDelete,{id:idPostulante,idCategoria:id});
              $.ajax({
                     type:'POST',
                     url:url,
+                   
                     dataType:"html",
                     success:function(datos){
                             bootbox.alert("Categoria eliminada satisfactoriamente", function() {

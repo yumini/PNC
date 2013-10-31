@@ -38,18 +38,19 @@ class EvaluadorDisponibilidadController extends Controller
     /**
      * Creates a new EvaluadorDisponibilidad entity.
      *
-     * @Route("/", name="_admin_evaluadordisponibilidad_save", options={"expose"=true})
+     * @Route("/{id}/save", name="_admin_evaluadordisponibilidad_save", options={"expose"=true})
      * @Method("POST")
      * @Template("AppWebBundle:Default:result.json.twig")
      */
-    public function createAction(Request $request)
+    public function createAction(Request $request,$id)
     {
         $entity  = new EvaluadorDisponibilidad();
         $form = $this->createForm(new EvaluadorDisponibilidadType(), $entity);
         $form->bind($request);
         $em = $this->getDoctrine()->getManager();
-        $user = $this->container->get("security.context")->getToken()->getUser();
-        $evaluador = $em->getRepository('AppWebBundle:Evaluador')->findByUser($user->getId());
+        
+        $evaluador = $em->getRepository('AppWebBundle:Evaluador')->find($id);
+        
        
         $entity->setEvaluador($evaluador);
         

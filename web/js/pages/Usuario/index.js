@@ -2,10 +2,115 @@ var myWindow=null;
 
 var OptionButton=function(){
     this.routeList='_admin_usuario';
+    this.routeNew='_admin_usuario_new';
+    this.routeSave='_admin_usuario_save';
+    this.routeEdit='_admin_usuario_edit';
+    this.routeUpdate='_admin_usuario_update';
     this.routeActive='_admin_usuario_active';
     this.routeDelete='_admin_usuario_delete';
 }
 OptionButton.prototype={
+     New:function(){
+
+        this.Window=new BootstrapWindow({id:"winForm",title:"Nuevo Usuario"});
+        this.Window.setWidth(1000);
+        //this.Window.setHeight(300);
+        var url=Routing.generate(this.routeNew);
+        this.Window.Load(url,"");
+        this.Window.Show();
+         var parent=this;
+        this.Window.AddButton('btn-usuario-cancel',{
+            label:'Cancelar',
+            'class':'btn-default',
+            fn:function(){
+                parent.Window.Hide();
+            }
+            
+        })
+       
+        this.Window.AddButton('btn-usuario-save',{
+            label:'Grabar',
+            'class':'btn-success',
+            fn:function(){
+                parent.Save();               
+                parent.Window.Hide();
+            }
+        });
+    },
+    Save:function(){
+            var parent=this;
+            var url=Routing.generate(this.routeSave);
+            params = $('#myForm').serializeObject();
+            console.log(params);
+            
+            $.ajax({
+                    type:'POST',
+                    url:url,
+                    data:params,
+                    dataType:"html",
+                    success:function(datos){
+                            //parent.Window.AddHTML(datos);
+                            new OptionButton().Refresh();
+                    },
+                    error:function(objeto, quepaso, otroobj){
+
+                    }
+            });
+        
+    },
+    Edit:function(id){
+        this.IdEntity=id;
+        this.Window=new BootstrapWindow({id:"winForm",title:"Editar Usuario"});
+        this.Window.setWidth(1000);
+        //this.Window.setHeight(300);
+        var url=Routing.generate(this.routeEdit,{id:id});
+        this.Window.Load(url,"");
+        this.Window.Show();
+        var parent=this;
+        this.Window.AddButton('btn-usuario-cancel',{
+            label:'Cancelar',
+            'class':'btn-default',
+            fn:function(){
+                parent.Window.Hide();
+            }
+            
+        })
+       
+        this.Window.AddButton('btn-usuario-save',{
+            label:'Grabar',
+            'class':'btn-success',
+            fn:function(){
+                parent.Update();               
+                parent.Window.Hide();
+            }
+        });
+    },
+    Update:function(){
+            console.log("actualizando perfil con id:"+this.IdEntity);
+            var parent=this;
+            var url=Routing.generate(this.routeUpdate,{id:this.IdEntity});
+            params = $('#myForm').serializeObject();
+            var nodes = $('#tree').tree('getChecked');
+            var s = '';
+            for(var i=0; i<nodes.length; i++){
+                if (s != '') s += ',';
+                s += nodes[i].id;
+            }
+            params.perfil=s;           
+            $.ajax({
+                    type:'POST',
+                    url:url,
+                    data:params,
+                    dataType:"html",
+                    success:function(datos){
+                            
+                            new OptionButton().Refresh();
+                    },
+                    error:function(objeto, quepaso, otroobj){
+
+                    }
+            });           
+    },
     Active:function(id){
         this.IdEntity=id;
         if(confirm("Desea Valdiar el Registro del usuario?")){
@@ -55,9 +160,21 @@ OptionButton.prototype={
 
 $(document).ready(function() {
 
-  $(".row-edit").click(function(){
+  $("#btnNew").click(function(){
+    console.log("nuevo concurso");
+      new OptionButton().New();   
+  });
+  $(".row-active").click(function(){
       var id=$(this).attr("data-id"); 
       new OptionButton().Active(id);  
+  });
+  $(".row-edit").click(function(){
+      var id=$(this).attr("data-id"); 
+      new OptionButton().Edit(id);  
+  });
+   $(".row-delete").click(function(){
+      var id=$(this).attr("data-id"); 
+      new OptionButton().Delete(id);  
   });
 
 });
