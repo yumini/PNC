@@ -13,7 +13,7 @@ class PerfilType extends AbstractType
         $builder
             
             ->add('nombre','text',array('required' => true,'attr' => array('class'=>'form-control input-small')))
-            ->add('descripcion','text',array('attr' => array('class'=>'form-control input-small')))
+            ->add('descripcion','text',array('required'  => false ,'attr' => array('class'=>'form-control input-small')))
            // ->add('estado','checkbox', array('label' => 'Activo','required'  => false ,'attr' => array('class'=>'checkbox')))
            
         ;

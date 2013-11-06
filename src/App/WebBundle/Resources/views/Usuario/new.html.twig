@@ -1,5 +1,6 @@
 <form id="myForm" {{ form_enctype(form) }} method="POST" class="form-register">
 		<div class="form-group">
+                    {{form_row(form.perfil, { 'attr': {'class': 'form-control'} })}}
 			<div class="row">
 		  	<div class="col-lg-6">
 		    	<label class="control-label">Tipo Documento</label>
@@ -29,7 +30,7 @@
 			</div>
 			{{form_row(form.username, { 'attr': {'class': 'form-control'} })}}
 			{{form_row(form.plainPassword, { 'attr': {'class': 'form-control'} })}}
-			{{form_row(form.perfil, { 'attr': {'class': 'form-control'} })}}
+			
 	  	</div>
 	
     {{form_widget(form._token)}}

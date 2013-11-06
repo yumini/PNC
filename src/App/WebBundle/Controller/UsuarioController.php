@@ -68,19 +68,29 @@ class UsuarioController extends Controller
 
         $form = $formFactory->createForm();
         $form->setData($user);
-
+        $msg = '';
         $form->bind($request);
+        if ($form->isValid()) {
+            $event = new FormEvent($form, $request);
+            $dispatcher->dispatch(FOSUserEvents::REGISTRATION_SUCCESS, $event);
+            $userManager->updateUser($user);
 
-        $event = new FormEvent($form, $request);
-        $dispatcher->dispatch(FOSUserEvents::REGISTRATION_SUCCESS, $event);
-        $userManager->updateUser($user);
-        
-        $response = $this->forward('AppWebBundle:Usuario:Active', array('id'  => $user->getId()  ));
+            $response = $this->forward('AppWebBundle:Usuario:Active', array('id'  => $user->getId()  ));
 
-        return $response;
-
+            return $response;
+        }else{
+            $errors = $this->get('validator')->validate( $form );
+            $msgError=new \App\WebBundle\Util\MensajeError();
+            $msgError->AddErrors($errors);
+            $msg=$msgError->getErrorsHTML();
+            
+           
+            return array(
+            'result' => "{\"success\":\"false\",\"message\":\"$msg\"}"
+             );
+        }
       
-
+        
     }
 
     /**

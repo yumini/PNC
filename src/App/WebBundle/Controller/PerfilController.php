@@ -65,29 +65,41 @@ class PerfilController extends Controller
      */
     public function createAction(Request $request)
     {
+        $msg='';
         $strIds=$request->request->get('perfil');
         $ids=  explode(",", $strIds);
         $entity  = new Perfil();
         $form = $this->createForm(new PerfilType(), $entity);
         $form->bind($request);
-
-        $em = $this->getDoctrine()->getManager();
-        $entity->setEstado(1);
-        for($i=0;$i<count($ids);$i++){
-            $menu=new Menu();
-            $menu=$em->getRepository('AppWebBundle:Menu')->find($ids[$i]);
-            if($menu){
-                $entity->addMenu($menu);
-                $menu->addPerfile($entity);
-                $em->persist($menu);
-                
+ 
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $entity->setEstado(1);
+            for($i=0;$i<count($ids);$i++){
+                $menu=new Menu();
+                $menu=$em->getRepository('AppWebBundle:Menu')->find($ids[$i]);
+                if($menu){
+                    $entity->addMenu($menu);
+                    $menu->addPerfile($entity);
+                    $em->persist($menu);
+                    
+                }
             }
-        }
-        $em->persist($entity);
-        $em->flush();
-
+            $em->persist($entity);
+            $em->flush();
+            $msg='registro realizado satisfactoriamente';
+            $success='true';
+        }else{
+            $errors = $this->get('validator')->validate($form);
+            $msgError=new \App\WebBundle\Util\MensajeError();
+            $msgError->AddErrors($errors);
+            $msg=$msgError->getErrorsHTML();
+            
+           $success='false';
+           
+        }   
         return array(
-            'result' => "{success:true}"
+            'result' => "{\"success\":\"$success\",\"message\":\"$msg\"}"
         );
     }
 

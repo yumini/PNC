@@ -13,8 +13,8 @@ OptionButton.prototype={
      New:function(){
 
         this.Window=new BootstrapWindow({id:"winForm",title:"Nuevo Usuario"});
-        this.Window.setWidth(1000);
-        //this.Window.setHeight(300);
+        this.Window.setWidth(800);
+        this.Window.setHeight(450);
         var url=Routing.generate(this.routeNew);
         this.Window.Load(url,"");
         this.Window.Show();
@@ -33,7 +33,7 @@ OptionButton.prototype={
             'class':'btn-success',
             fn:function(){
                 parent.Save();               
-                parent.Window.Hide();
+                
             }
         });
     },
@@ -48,9 +48,31 @@ OptionButton.prototype={
                     url:url,
                     data:params,
                     dataType:"html",
-                    success:function(datos){
-                            //parent.Window.AddHTML(datos);
-                            new OptionButton().Refresh();
+                    success:function(request){
+                        
+                            var obj = jQuery.parseJSON(request);
+                            if(obj.success=='false'){
+                                //var n = noty({text: obj.message});
+                                var n = noty({
+                                    text: obj.message,
+                                    type: 'warning',
+                                    dismissQueue: true,
+                                    layout: 'bottomRight',
+                                    theme: 'defaultTheme'
+                                });
+                            }else{
+                                var n = noty({
+                                    text: 'Usuario registrado satisfactoriamente',
+                                    type: 'success',
+                                    dismissQueue: true,
+                                    layout: 'bottomRight',
+                                    theme: 'defaultTheme'
+                                });
+                                parent.Window.Hide();
+                                new OptionButton().Refresh();
+                            }
+                            
+                            
                     },
                     error:function(objeto, quepaso, otroobj){
 

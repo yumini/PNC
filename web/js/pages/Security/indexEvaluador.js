@@ -62,7 +62,7 @@ $(document).ready(function() {
 	        $('#filePerfil').click();
 	});
 	$('#btnPerfil').click(function(){
-             var id=$(this).attr("data-id");
+            var id=$(this).attr("data-id");
             var url=Routing.generate("_admin_evaluador_perfil",{id:id});
 	    new jAjax().Load(url,"main-body","GET","","");
 	});

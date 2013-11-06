@@ -254,7 +254,13 @@ OptionButton.Disponibilidad.prototype={
                     data:params,
                     dataType:"html",
                     success:function(datos){
-                            //parent.Window.AddHTML(datos);
+                            var n = noty({
+                                    text: 'Operación realizada satisfactoriamente',
+                                    type: 'success',
+                                    dismissQueue: true,
+                                    layout: 'bottomRight',
+                                    theme: 'defaultTheme'
+                                });
                            new OptionButton.Disponibilidad().Refresh(); 
                     },
                     error:function(objeto, quepaso, otroobj){
@@ -311,21 +317,41 @@ OptionButton.Disponibilidad.prototype={
     },
     Delete:function(id){
         this.IdEntity=id;
-        if(confirm("Desea eliminar el dia seleccionado?")){
-             var url=Routing.generate(this.routeDelete,{id:this.IdEntity});
-             $.ajax({
-                    type:'DELETE',
-                    url:url,
-                    dataType:"html",
-                    success:function(datos){
-                            
-                            new OptionButton.Disponibilidad().Refresh(); 
-                    },
-                    error:function(objeto, quepaso, otroobj){
+        var url=Routing.generate(this.routeDelete,{id:this.IdEntity});
+         var n = noty({
+            text: 'Desea eliminar el dia seleccionado?',
+            type: 'alert',
+            dismissQueue: true,
+            layout: 'center',
+            modal: true,
+            theme: 'defaultTheme',
+            buttons: [
+                {addClass: 'btn btn-primary', text: 'Si', onClick: function($noty) {
+                    
+                    $.ajax({
+                            type:'DELETE',
+                            url:url,
+                            dataType:"html",
+                            success:function(datos){
 
-                    }
-            }); 
-        }
+                                    new OptionButton.Disponibilidad().Refresh(); 
+                            },
+                            error:function(objeto, quepaso, otroobj){
+
+                            }
+                    }); 
+                    $noty.close();
+                    noty({dismissQueue: true, force: true, layout: layout, theme: 'defaultTheme', text: 'Se Elimino satisfactoriamente', type: 'success'});
+                }
+                },
+                {addClass: 'btn btn-danger', text: 'No', onClick: function($noty) {
+                    $noty.close();
+                   // noty({dismissQueue: true, force: true, layout: layout, theme: 'defaultTheme', text: 'You clicked "Cancel" button', type: 'error'});
+                }
+                }
+            ]
+          });
+       
     },
     DisponibilidadViaje:function(id,value){
         this.IdEntity=id;
