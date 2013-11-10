@@ -81,8 +81,8 @@ class UsuarioController extends Controller
         }else{
             $errors = $this->get('validator')->validate( $form );
             $msgError=new \App\WebBundle\Util\MensajeError();
-            $msgError->AddErrors($errors);
-            $msg=$msgError->getErrorsHTML();
+             $msgError->AddErrors($form);
+             $msg=$msgError->getErrorsHTML();
             
            
             return array(

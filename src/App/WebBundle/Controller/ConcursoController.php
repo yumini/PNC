@@ -65,7 +65,7 @@ class ConcursoController extends Controller
      *
      * @Route("/create", name="_admin_concurso_save", options={"expose"=true})
      * @Method("POST")
-     * @Template("AppWebBundle:Perfil:result.json.twig")
+     * @Template("AppWebBundle:Default:result.json.twig")
      */
     public function createAction(Request $request)
     {
@@ -73,13 +73,26 @@ class ConcursoController extends Controller
         $entity  = new Concurso();
         $form = $this->createForm(new ConcursoType(), $entity);
         $form->bind($request);
-        $em = $this->getDoctrine()->getManager();
-        $entity->setEstado(1);
-        $em->persist($entity);
-        $em->flush();
-
+        $errors = $this->get('validator')->validate($form);
+        $logger = $this->get('logger');
+        $logger->info('grabando concurso');
+        $logger->info(count($errors));
+        if (count($errors)==0 && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $entity->setEstado(1);
+            $em->persist($entity);
+            $em->flush();
+            $msg="registro realizado satisfactoriamente";
+            $success='true';        
+            
+        }else{
+             $msgError=new \App\WebBundle\Util\MensajeError();
+             $msgError->AddErrors($form);
+             $msg=$msgError->getErrorsHTML();
+             $success='false';
+        }
         return array(
-            'result' => "{success:true}"
+            'result' => "{\"success\":\"$success\",\"message\":\"$msg\"}"
         );
       
     }

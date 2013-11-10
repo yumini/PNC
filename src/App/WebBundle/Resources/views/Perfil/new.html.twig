@@ -1,4 +1,5 @@
-<form id="myform"  method="post" {{ form_enctype(form) }}>
+<form id="myform"  method="post" {{ form_enctype(form) }} >
+ {{form_widget(form._token)}}
 {{form_row(form.nombre)}}
 {{form_row(form.descripcion)}}
 <div class="form-group">

@@ -3,7 +3,7 @@
 namespace App\WebBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Concurso
  *
@@ -23,28 +23,28 @@ class Concurso
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank
      * @ORM\Column(name="nombreconcurso", type="string", length=100)
      */
     private $nombre;
 
     /**
      * @var \Date
-     *
+     * @Assert\NotBlank
      * @ORM\Column(name="fechainicio", type="date")
      */
     private $fechaInicio;
 
     /**
      * @var \Date
-     *
+     * @Assert\NotBlank
      * @ORM\Column(name="fechafin", type="date")
      */
     private $fechaFin;
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank
      * @ORM\Column(name="presentacion", type="text", nullable=true)
      */
     private $presentacion;
@@ -142,7 +142,7 @@ class Concurso
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank
      * @ORM\Column(name="termino_aceptacion", type="text", nullable=true)
      */
     private $terminoacepta;
@@ -156,7 +156,7 @@ class Concurso
 
     /**
      * @var integer
-     *
+     * @Assert\NotBlank
      * @ORM\Column(name="evalua_criterio", type="string", length=1)
      */
     private $evaluacriterio;

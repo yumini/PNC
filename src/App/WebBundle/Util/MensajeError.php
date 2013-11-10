@@ -12,7 +12,7 @@ namespace App\WebBundle\Util;
  */
 class MensajeError {
     private $errors;
-    
+    private $msg;
     public function addError($message)
     {
         $this->errors[] = $message;
@@ -24,21 +24,30 @@ class MensajeError {
         $this->errors = new \Doctrine\Common\Collections\ArrayCollection();
        
     }
-    public function AddErrors($arrayErrors){
-         foreach( $arrayErrors as $error )
-            {
-                $msg=$error->getMessage() ;
-                $this->addError($msg);
-            }
+    public function AddErrors(\Symfony\Component\Form\Form $form){
+         $this->errors=$this->getErrorMessages($form);
     }
+    
     public function getErrorsHTML(){
-        $msg='';
-        foreach( $this->errors as $error )
-        {
-            $msg.='- '.$error.'<br/>' ;
+        
+        return $this->msg;
+    }
+   public function getErrorMessages(\Symfony\Component\Form\Form $form) {
+        $errors = array();
 
+        foreach ($form->getErrors() as $key => $error) {
+                $errors[] = $error->getMessage();
+                $this->msg.='<br/>'.$error->getMessage().'<br/>';
         }
-        return $msg;
+
+        foreach ($form->all() as $child) {
+            if (!$child->isValid()) {
+                 $this->msg.='<b>'.$child->getName().':</b>';
+                $errors[$child->getName()] = $this->getErrorMessages($child);
+            }
+        }
+
+        return $errors;
     }
 }
 

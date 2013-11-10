@@ -52,25 +52,24 @@ OptionButton.prototype={
                         
                             var obj = jQuery.parseJSON(request);
                             if(obj.success=='false'){
-                                //var n = noty({text: obj.message});
-                                var n = noty({
-                                    text: obj.message,
-                                    type: 'warning',
-                                    dismissQueue: true,
-                                    layout: 'bottomRight',
-                                    theme: 'defaultTheme'
-                                });
+                                tipo='warning';
                             }else{
-                                var n = noty({
-                                    text: 'Usuario registrado satisfactoriamente',
-                                    type: 'success',
-                                    dismissQueue: true,
-                                    layout: 'bottomRight',
-                                    theme: 'defaultTheme'
-                                });
+                                tipo='success';
                                 parent.Window.Hide();
                                 new OptionButton().Refresh();
                             }
+                            var n = noty({
+                                    text: obj.message,
+                                    type: tipo,
+                                    dismissQueue: true,
+                                    layout: 'bottomRight',
+                                    theme: 'defaultTheme'
+                                    
+                                    
+                            });
+                            setTimeout(function() {
+                                $.noty.close(n.options.id);
+                            }, 5000);
                             
                             
                     },

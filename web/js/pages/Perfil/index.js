@@ -36,6 +36,7 @@ OptionButton.prototype={
         });
     },
     Save:function(){
+       
             var parent=this;
             var url=Routing.generate(this.routeSave);
             params = $('#myform').serializeObject();
@@ -70,6 +71,9 @@ OptionButton.prototype={
                                     layout: 'bottomRight',
                                     theme: 'defaultTheme'
                             });
+                            setTimeout(function() {
+                                $.noty.close(n.options.id);
+                            }, 5000);
                     },
                     error:function(objeto, quepaso, otroobj){
 

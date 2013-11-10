@@ -25,7 +25,7 @@ OptionButton.prototype={
             label:'Cancelar',
             'class':'btn-default',
             fn:function(){
-                parent.Window.Hide();
+               parent.Window.Hide();
             }
             
         })
@@ -35,7 +35,7 @@ OptionButton.prototype={
             'class':'btn-success',
             fn:function(){
                 parent.Save();               
-                parent.Window.Hide();
+                
             }
         });
     },
@@ -50,9 +50,28 @@ OptionButton.prototype={
                     url:url,
                     data:params,
                     dataType:"html",
-                    success:function(datos){
-                            //parent.Window.AddHTML(datos);
-                            new OptionButton().Refresh();
+                    success:function(request){
+                            var obj = jQuery.parseJSON(request);
+                            if(obj.success=='false'){
+                                tipo='warning';
+                            }else{
+                                tipo='success';
+                                parent.Window.Hide();
+                                new OptionButton().Refresh();
+                            }
+                            var n = noty({
+                                    text: obj.message,
+                                    type: tipo,
+                                    dismissQueue: true,
+                                    layout: 'bottomRight',
+                                    theme: 'defaultTheme'
+                                    
+                                    
+                            });
+                            setTimeout(function() {
+                                $.noty.close(n.options.id);
+                            }, 5000);
+                            //new OptionButton().Refresh();
                     },
                     error:function(objeto, quepaso, otroobj){
 
