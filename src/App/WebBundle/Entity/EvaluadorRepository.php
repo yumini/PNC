@@ -47,4 +47,15 @@ class EvaluadorRepository extends EntityRepository
         $pagination = $paginator->paginate($query,$page,$limit);
         return $pagination;
     }
+    public function getPostulantesConflictosInteres($idgrupo,$idevaluador){
+        $conn = $this->getEntityManager()->getConnection('database_connection');//create a connection with your DB
+        $sql="select p.* from grupoevaluacionpostulante  ge join postulante p on p.id=ge.postulante_id 
+where grupoevaluacion_id=$idgrupo
+AND p.ruc in(select c.ruc from conflictointeresevaluador c where c.evaluador_id=$idevaluador);";                  
+    
+        $stmt = $conn->prepare($sql);  
+        $stmt->execute(); 
+        return $result=$stmt->fetchAll(); 
+        
+    }
 }

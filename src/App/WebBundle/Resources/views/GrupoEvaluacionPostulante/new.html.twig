@@ -1,20 +1,8 @@
-{% extends '::base.html.twig' %}
-
-{% block body -%}
-    <h1>GrupoEvaluacionPostulante creation</h1>
-
-    <form action="{{ path('admin_grupoevaluacionpostulante_create') }}" method="post" {{ form_enctype(form) }}>
-        {{ form_widget(form) }}
-        <p>
-            <button type="submit">Create</button>
-        </p>
-    </form>
-
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('admin_grupoevaluacionpostulante') }}">
-            Back to the list
-        </a>
-    </li>
-</ul>
-{% endblock %}
+<form id="myform">
+    
+    <select class="form-control" id="evaluadorId" name="evaluadorId">
+{% for entity in postulantes%}
+        <option value="{{entity.id}}">{{entity.razonsocial}} (RUC:{{entity.ruc}} )</option>
+{% endfor%}
+</select>
+</form>

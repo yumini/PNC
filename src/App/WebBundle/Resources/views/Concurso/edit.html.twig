@@ -1,4 +1,5 @@
 <form id="myform"  method="post" {{ form_enctype(form) }}>
+     {{form_widget(form._token)}}
 <ul class="nav nav-tabs" style="font-size:11px;">
   <li class="active"><a href="#conc-tab-1" data-toggle="tab">Datos Principales</a></li>
   <li><a href="#conc-tab-2" data-toggle="tab">Config. Formul.</a></li>

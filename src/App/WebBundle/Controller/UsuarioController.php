@@ -193,7 +193,7 @@ class UsuarioController extends Controller
         
        /*tu codigo debe devolver {result:true,ms:""}*/
         $msg="Se realizó la activación de registro correctamente.";
-            $result=true;
+            $result='true';
             $em = $this->getDoctrine()->getManager();
             
             $entity = $em->getRepository('AppWebBundle:Usuario')->find($id);
@@ -251,6 +251,8 @@ class UsuarioController extends Controller
      */
     public function updateAction(Request $request, $id)
     {
+        $result='true';
+        $msg='';
         $em = $this->getDoctrine()->getManager();
         $user = $em->getRepository('AppWebBundle:Usuario')->find($id);
         
@@ -267,13 +269,13 @@ class UsuarioController extends Controller
 
         /** @var $formFactory \FOS\UserBundle\Form\Factory\FactoryInterface */
         $formFactory = $this->container->get('fos_user.profile.form.factory');
-
-        $form = $formFactory->createForm();
-        $form->setData($user);
-
        
-            $form->bind($request);
-
+        $form = $formFactory->createForm();
+        
+        $form->setData($user);
+        $form->bind($request);
+        
+        if ($form->isValid()) {
             
                 /** @var $userManager \FOS\UserBundle\Model\UserManagerInterface */
                 $userManager = $this->container->get('fos_user.user_manager');
@@ -282,18 +284,25 @@ class UsuarioController extends Controller
                 $dispatcher->dispatch(FOSUserEvents::PROFILE_EDIT_SUCCESS, $event);
 
                 $userManager->updateUser($user);
+                $result='true';
+                $msg='registro actualizado satisfactoriamente';
 
-               
+        }else{
+                $errors = $this->get('validator')->validate( $form );
+                $msgError=new \App\WebBundle\Util\MensajeError();
+                $msgError->AddErrors($form);
+                $msg=$msgError->getErrorsHTML();
+                $result='false';
+              
+        }     
 
                
         
         
-       $result='true';
-       $msg='';
+       
         return array(
-            'result' => "{success:'$result',message:'$msg'}"
-
-        );
+            'result' => "{\"success\":\"$result\",\"message\":\"$msg\"}"
+             );
     }
     /**
      * Deletes a Usuario entity.
@@ -345,7 +354,8 @@ class UsuarioController extends Controller
     }
     
     public function SendEmailConfirmedActivation(Usuario $entity){
-        $message = \Swift_Message::newInstance()
+        try {
+            $message = \Swift_Message::newInstance()
                     ->setSubject('Bienvenido a PNC')
                     ->setFrom('nmedinson@gmail.com')
                     ->setTo($entity->getEmail())
@@ -355,7 +365,11 @@ class UsuarioController extends Controller
                                 array('user' => $entity)
                                 ) 
                      );
-         $this->get('mailer')->send($message);
+            $this->get('mailer')->send($message);
+        } catch (Exception $e) {
+           
+        } 
+        
         
     }
 }

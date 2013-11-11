@@ -149,7 +149,7 @@ class Concurso
 
     /**
      * @var integer
-     *
+     * @Assert\NotBlank
      * @ORM\Column(name="incrementopuntaje", type="integer")
      */
     private $incpuntaje;

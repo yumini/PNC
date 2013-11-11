@@ -40,8 +40,8 @@
                 <td>{% if entity.enabled==1 %}{{ "Activo" }}{% endif %} {% if entity.enabled==0 %}{{ "Inactivo" }}{% endif %}</td>
                 <td>{% if entity.validaregistro==1 %}{{ "Registro Valido" }}{% endif %} {% if entity.validaregistro==0 %}{{ "Registro no Valido" }}{% endif %}</td>
                 <td style="text-align: center;font-size: 12px;">
-                    <a href="#" class="row-edit" data-id="{{ entity.id }}"><i class="glyphicon glyphicon-edit green"> </i></a>
-                    <a href="#" class="row-active" data-id="{{ entity.id }}"><i class="glyphicon glyphicon-check"> </i></a>
+                    <a href="#" class="row-edit" data-id="{{ entity.id }}" title="Editar"><i class="glyphicon glyphicon-edit green"> </i></a>
+                    <a href="#" class="row-active" data-id="{{ entity.id }}" title="Habilitar Usuario"><i class="glyphicon glyphicon-check"> </i></a>
                     <a href="#" class="row-delete" data-id="{{ entity.id }}" title="Activar/Desactivar"><i class="glyphicon glyphicon-ok-sign red"> </i></a>
                 
                 </td>

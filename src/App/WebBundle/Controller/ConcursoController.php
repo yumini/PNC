@@ -238,19 +238,29 @@ class ConcursoController extends Controller
         $entity = $em->getRepository('AppWebBundle:Concurso')->find($id);
         $editForm = $this->createForm(new ConcursoType(), $entity);
         $editForm->bind($request);
+        $errors = $this->get('validator')->validate($editForm);
         
-        if ($entity) {
-           
-            $em->persist($entity);
-            $em->flush();
+        if (count($errors)==0) {
+            if ($entity) {
+
+                $em->persist($entity);
+                $em->flush();
+                $msg='Registro actualizado satisfactoriamente';
+                $success='true';
+            }else{
+                $result='false';
+                $msg="perfil no encontrado";
+                
+                $success='false';
+            }
         }else{
-            $result=false;
-            $msg="perfil no encontrado";
-
+             $msgError=new \App\WebBundle\Util\MensajeError();
+             $msgError->AddErrors($editForm);
+             $msg=$msgError->getErrorsHTML();
+             $success='false';
         }
-        return array(
-            'result' => "{success:'$result',message:'$msg'}"
-
+         return array(
+            'result' => "{\"success\":\"$success\",\"message\":\"$msg\"}"
         );
     }
     /**

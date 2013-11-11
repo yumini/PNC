@@ -1,4 +1,5 @@
 <form id="myform"  method="post" {{ form_enctype(form) }}>
+ {{form_widget(form._token)}}
 <input type="hidden" id="perfil_id" value='{{entity.id}}'/>
 {{form_row(form.nombre)}}
 {{form_row(form.descripcion)}}

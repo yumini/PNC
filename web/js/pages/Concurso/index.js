@@ -34,6 +34,8 @@ OptionButton.prototype={
             label:'Grabar',
             'class':'btn-success',
             fn:function(){
+                $('#btn-concurso-save').attr('disabled',true);
+                $('#btn-concurso-cancel').attr('disabled',true);
                 parent.Save();               
                 
             }
@@ -51,13 +53,17 @@ OptionButton.prototype={
                     data:params,
                     dataType:"html",
                     success:function(request){
+                            $('#btn-concurso-save').attr('disabled',false);
+                            $('#btn-concurso-cancel').attr('disabled',false);
+                            time=5000;        
                             var obj = jQuery.parseJSON(request);
                             if(obj.success=='false'){
                                 tipo='warning';
                             }else{
                                 tipo='success';
                                 parent.Window.Hide();
-                                new OptionButton().Refresh();
+                                time=3000;
+                                
                             }
                             var n = noty({
                                     text: obj.message,
@@ -65,13 +71,12 @@ OptionButton.prototype={
                                     dismissQueue: true,
                                     layout: 'bottomRight',
                                     theme: 'defaultTheme'
-                                    
-                                    
                             });
                             setTimeout(function() {
                                 $.noty.close(n.options.id);
-                            }, 5000);
-                            //new OptionButton().Refresh();
+                                if(obj.success=='true')
+                                    new OptionButton().Refresh();
+                            }, time);
                     },
                     error:function(objeto, quepaso, otroobj){
 
@@ -101,8 +106,10 @@ OptionButton.prototype={
             label:'Grabar',
             'class':'btn-success',
             fn:function(){
+                $('#btn-concurso-save').attr('disabled',true);
+                $('#btn-concurso-cancel').attr('disabled',true);
                 parent.Update();               
-                parent.Window.Hide();
+               
             }
         });
     },
@@ -123,9 +130,31 @@ OptionButton.prototype={
                     url:url,
                     data:params,
                     dataType:"html",
-                    success:function(datos){
-                            
-                            new OptionButton().Refresh();
+                    success:function(request){
+                            $('#btn-concurso-save').attr('disabled',false);
+                            $('#btn-concurso-cancel').attr('disabled',false);
+                            time=5000;        
+                            var obj = jQuery.parseJSON(request);
+                            if(obj.success=='false'){
+                                tipo='warning';
+                            }else{
+                                tipo='success';
+                                parent.Window.Hide();
+                                time=3000;
+                                
+                            }
+                            var n = noty({
+                                    text: obj.message,
+                                    type: tipo,
+                                    dismissQueue: true,
+                                    layout: 'bottomRight',
+                                    theme: 'defaultTheme'
+                            });
+                            setTimeout(function() {
+                                $.noty.close(n.options.id);
+                                if(obj.success=='true')
+                                    new OptionButton().Refresh();
+                            }, time);
                     },
                     error:function(objeto, quepaso, otroobj){
 

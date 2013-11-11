@@ -45,5 +45,18 @@ class PostulanteRepository extends EntityRepository
         $pagination = $paginator->paginate($query,$page,$limit);
         return $pagination;
     }
+     public function getEvaluadoresConflictosInteres($idgrupo,$ruc){
+        $conn = $this->getEntityManager()->getConnection('database_connection');//create a connection with your DB
+        $sql="select e.* from grupoevaluacionevaluador  ge 
+join evaluador e on e.id=ge.evaluador_id 
+JOIN conflictointeresevaluador ci ON ci.evaluador_id=e.id
+where ge.grupoevaluacion_id=$idgrupo
+AND ci.ruc='$ruc'";                  
+    
+        $stmt = $conn->prepare($sql);  
+        $stmt->execute(); 
+        return $result=$stmt->fetchAll(); 
+        
+    }
    
 }

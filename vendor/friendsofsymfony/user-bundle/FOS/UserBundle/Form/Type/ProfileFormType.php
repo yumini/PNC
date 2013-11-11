@@ -44,7 +44,7 @@ class ProfileFormType extends AbstractType
             'label' => 'form.current_password',
             'translation_domain' => 'FOSUserBundle',
             'mapped' => false,
-            'constraints' => $constraint,
+           
         ));
     }
 

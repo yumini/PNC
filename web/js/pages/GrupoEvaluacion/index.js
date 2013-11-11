@@ -127,6 +127,8 @@ OptionButton.GrupoEvaluacion.prototype={
         new jAjax().Load(url,'main-body','get','','');
     },
     Select:function(obj,id){
+         $("#btnNewPostulante").attr('disabled',false);
+          $("#btnNewEvaluador").attr('disabled',false);
         grupoId=id;
 	$(".list-group-item").removeClass("active")
         $(obj).addClass("active");
@@ -184,9 +186,32 @@ OptionButton.Evaluador.prototype={
                     url:url,
                     data:params,
                     dataType:"html",
-                    success:function(datos){
-                            //parent.Window.AddHTML(datos);
-                            parent.Refresh(parent.GrupoId);
+                    success:function(request){
+                            //$('#btn-concurso-save').attr('disabled',false);
+                            //$('#btn-concurso-cancel').attr('disabled',false);
+                            time=5000;        
+                            var obj = jQuery.parseJSON(request);
+                            if(obj.success=='false'){
+                                tipo='warning';
+                            }else{
+                                tipo='success';
+                                parent.Window.Hide();
+                                time=3000;
+                                
+                            }
+                            var n = noty({
+                                    text: obj.message,
+                                    type: tipo,
+                                    dismissQueue: true,
+                                    layout: 'bottomRight',
+                                    theme: 'defaultTheme'
+                            });
+                            setTimeout(function() {
+                                $.noty.close(n.options.id);
+                                if(obj.success=='true')
+                                    parent.Refresh(parent.GrupoId);
+                            }, time);
+                            
                     },
                     error:function(objeto, quepaso, otroobj){
 
@@ -282,9 +307,30 @@ OptionButton.Postulante.prototype={
                     url:url,
                     data:params,
                     dataType:"html",
-                    success:function(datos){
-                            //parent.Window.AddHTML(datos);
-                            parent.Refresh(parent.GrupoId);
+                    success:function(request){
+                             time=5000;        
+                            var obj = jQuery.parseJSON(request);
+                            if(obj.success=='false'){
+                                tipo='warning';
+                            }else{
+                                tipo='success';
+                                parent.Window.Hide();
+                                time=3000;
+                                
+                            }
+                            var n = noty({
+                                    text: obj.message,
+                                    type: tipo,
+                                    dismissQueue: true,
+                                    layout: 'bottomRight',
+                                    theme: 'defaultTheme'
+                            });
+                            setTimeout(function() {
+                                $.noty.close(n.options.id);
+                                if(obj.success=='true')
+                                    parent.Refresh(parent.GrupoId);
+                            }, time);
+                           // parent.Refresh(parent.GrupoId);
                     },
                     error:function(objeto, quepaso, otroobj){
 
@@ -335,6 +381,10 @@ $(document).ready(function() {
     $("#btnNewEvaluador").click(function(event) {
       //var id=$(this).attr("data-id");
       new OptionButton.Evaluador().New(grupoId);
+    });
+    $("#btnNewPostulante").click(function(event) {
+      //var id=$(this).attr("data-id");
+      new OptionButton.Postulante().New(grupoId);
     });
 });
 

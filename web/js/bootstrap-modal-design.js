@@ -25,7 +25,7 @@ var BootstrapWindow= Backbone.Model.extend({
        this.Window.modal('show');
     },
     Hide:function(){
-       this.Window.modal('hide')  
+       this.Window.modal('hide');  
     },
     Load:function(url,js){
         var idDomHTML;

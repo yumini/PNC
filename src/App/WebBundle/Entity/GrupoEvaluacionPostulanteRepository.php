@@ -24,4 +24,18 @@ class GrupoEvaluacionPostulanteRepository extends EntityRepository
                 return null;
         }
     }
+    public function FindPostulantesDisponibles($id){       
+        $conn = $this->getEntityManager()->getConnection('database_connection');//create a connection with your DB
+        $sql="select p.* from postulante p inner JOIN inscripcion i on i.postulante_id=p.id
+where i.concurso_id=$id and 
+p.id not in(
+select p.id from grupoevaluacionpostulante ge INNER JOIN postulante p on p.id=ge.postulante_id 
+INNER JOIN grupoevaluacion g ON g.id=ge.grupoevaluacion_id where g.concurso_id=$id) ";                  
+    
+        $stmt = $conn->prepare($sql);  
+        $stmt->execute(); 
+        
+        return $result=$stmt->fetchAll(); 
+    }
+    
 }

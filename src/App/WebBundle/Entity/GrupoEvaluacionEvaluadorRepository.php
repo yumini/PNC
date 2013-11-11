@@ -49,5 +49,5 @@ INNER JOIN grupoevaluacion g ON g.id=ge.grupoevaluacion_id where g.concurso_id=$
         $stmt->execute(); 
     }
     
-    
+   
 }

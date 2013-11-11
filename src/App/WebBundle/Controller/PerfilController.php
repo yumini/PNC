@@ -209,28 +209,36 @@ class PerfilController extends Controller
         $entity = $em->getRepository('AppWebBundle:Perfil')->find($id);
         $editForm = $this->createForm(new PerfilType(), $entity);
         $editForm->bind($request);
-        
-        if ($entity) {
-           for($i=0;$i<count($ids);$i++){
-                $menu=new Menu();
-                $menu=$em->getRepository('AppWebBundle:Menu')->find($ids[$i]);
-                if($menu){
-                    $entity->addMenu($menu);
-                    $menu->addPerfile($entity);
-                    $em->persist($menu);
-                    
+        $errors = $this->get('validator')->validate($editForm);
+        if (count($errors)==0) {
+            if ($entity) {
+            for($i=0;$i<count($ids);$i++){
+                    $menu=new Menu();
+                    $menu=$em->getRepository('AppWebBundle:Menu')->find($ids[$i]);
+                    if($menu){
+                        $entity->addMenu($menu);
+                        $menu->addPerfile($entity);
+                        $em->persist($menu);
+
+                    }
                 }
+                $em->persist($entity);
+                $em->flush();
+                $success='true';
+                $msg='Registro actualizado satisfactoriamente';
+            }else{
+               $msg='no se encontro el elemento';       
+               $success='false'; 
             }
-            $em->persist($entity);
-            $em->flush();
         }else{
-            $result=false;
-            $msg="perfil no encontrado";
+            $msgError=new \App\WebBundle\Util\MensajeError();
+            $msgError->AddErrors($editForm);
+            $msg=$msgError->getErrorsHTML();       
+            $success='false';
 
         }
         return array(
-            'result' => "{success:'$result',message:'$msg'}"
-
+            'result' => "{\"success\":\"$success\",\"message\":\"$msg\"}"
         );
     }
     /**

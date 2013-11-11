@@ -8,6 +8,7 @@ var OptionButton=function(){
     this.routeUpdate='_admin_usuario_update';
     this.routeActive='_admin_usuario_active';
     this.routeDelete='_admin_usuario_delete';
+    this.Window=null;
 }
 OptionButton.prototype={
      New:function(){
@@ -32,16 +33,18 @@ OptionButton.prototype={
             label:'Grabar',
             'class':'btn-success',
             fn:function(){
-                parent.Save();               
+               $('#btn-usuario-save').attr('disabled',true);
+               $('#btn-usuario-cancel').attr('disabled',true);
+               parent.Save();               
                 
             }
         });
     },
     Save:function(){
+            myWindow=this.Window;
             var parent=this;
             var url=Routing.generate(this.routeSave);
             params = $('#myForm').serializeObject();
-            console.log(params);
             
             $.ajax({
                     type:'POST',
@@ -49,26 +52,25 @@ OptionButton.prototype={
                     data:params,
                     dataType:"html",
                     success:function(request){
-                        
+                           $('#btn-usuario-save').attr('disabled',false);
+                            $('#btn-usuario-cancel').attr('disabled',false);
                             var obj = jQuery.parseJSON(request);
-                            if(obj.success=='false'){
-                                tipo='warning';
-                            }else{
-                                tipo='success';
-                                parent.Window.Hide();
-                                new OptionButton().Refresh();
+                            tipo=(obj.success=='false')?'warning':'success';
+                            if(obj.success=='true'){
+                                     parent.Window.Hide();
                             }
                             var n = noty({
                                     text: obj.message,
                                     type: tipo,
-                                    dismissQueue: true,
+                                    modal:false,
+                                    timeout:5000,
                                     layout: 'bottomRight',
-                                    theme: 'defaultTheme'
-                                    
-                                    
+                                    theme: 'defaultTheme'                                  
                             });
                             setTimeout(function() {
-                                $.noty.close(n.options.id);
+                                n.close();
+                                if(obj.success=='true')
+                                    new OptionButton().Refresh();
                             }, 5000);
                             
                             
@@ -82,8 +84,8 @@ OptionButton.prototype={
     Edit:function(id){
         this.IdEntity=id;
         this.Window=new BootstrapWindow({id:"winForm",title:"Editar Usuario"});
-        this.Window.setWidth(1000);
-        //this.Window.setHeight(300);
+        this.Window.setWidth(800);
+        this.Window.setHeight(450);
         var url=Routing.generate(this.routeEdit,{id:id});
         this.Window.Load(url,"");
         this.Window.Show();
@@ -101,13 +103,15 @@ OptionButton.prototype={
             label:'Grabar',
             'class':'btn-success',
             fn:function(){
+                $('#btn-usuario-save').attr('disabled',true);
+                $('#btn-usuario-cancel').attr('disabled',true);
                 parent.Update();               
-                parent.Window.Hide();
+                
             }
         });
     },
     Update:function(){
-            console.log("actualizando perfil con id:"+this.IdEntity);
+            //console.log("actualizando perfil con id:"+this.IdEntity);
             var parent=this;
             var url=Routing.generate(this.routeUpdate,{id:this.IdEntity});
             params = $('#myForm').serializeObject();
@@ -123,9 +127,29 @@ OptionButton.prototype={
                     url:url,
                     data:params,
                     dataType:"html",
-                    success:function(datos){
-                            
-                            new OptionButton().Refresh();
+                    success:function(request){
+                            time=5000;
+                            $('#btn-usuario-save').attr('disabled',false);
+                            $('#btn-usuario-cancel').attr('disabled',false);
+                            var obj = jQuery.parseJSON(request);
+                            tipo=(obj.success=='false')?'warning':'success';
+                            if(obj.success=='true'){
+                                     parent.Window.Hide();
+                                     time=3000;
+                            }
+                            var n = noty({
+                                    text: obj.message,
+                                    type: tipo,
+                                    modal:false,
+                                    timeout:5000,
+                                    layout: 'bottomRight',
+                                    theme: 'defaultTheme'                                  
+                            });
+                            setTimeout(function() {
+                                n.close();
+                                if(obj.success=='true')
+                                    new OptionButton().Refresh();
+                            }, time);
                     },
                     error:function(objeto, quepaso, otroobj){
 

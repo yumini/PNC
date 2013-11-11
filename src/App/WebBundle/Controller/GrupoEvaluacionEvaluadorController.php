@@ -52,12 +52,25 @@ class GrupoEvaluacionEvaluadorController extends Controller
         $grupo=$em->getRepository('AppWebBundle:GrupoEvaluacion')->find($id);
         if($evaluador){
             if($grupo){
-                $entity  = new GrupoEvaluacionEvaluador();
-                $entity->setEvaluador($evaluador);
-                $entity->setGrupo($grupo);
-                $em->persist($entity);
-                $em->flush();
-                $result='true';
+                $postulantes=$em->getRepository('AppWebBundle:Evaluador')->getPostulantesConflictosInteres($grupo->getId(),$evaluadorId);
+                if(count($postulantes)==0){
+                   
+                
+                    $entity  = new GrupoEvaluacionEvaluador();
+                    $entity->setEvaluador($evaluador);
+                    $entity->setGrupo($grupo);
+                    $em->persist($entity);
+                    $em->flush();
+                    $result='true';
+                    $msg='Evaluador asignado satisfactoriamente';
+                }else{
+                    $result="false";
+                    $msg="<h4 style='margin:2px;'><b>No se pudo agregar evaluador</b></h4><br/>";
+                    $msg.='Evaluador presenta conflictos de interes con:<br/>';
+                    foreach ($postulantes as $p) {
+                        $msg.='- '.$p['razonsocial'].'<br/>';
+                    }
+                }
             }else{
                 $result="false";
                 $msg='No se encontro el grupo de evluación';

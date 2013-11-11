@@ -40,24 +40,35 @@ class GrupoEvaluacionPostulanteController extends Controller
      *
      * @Route("/{id}/save", name="_admin_grupoevaluacionpostulante_save", options={"expose"=true})
      * @Method("POST")
-     * @Template("AppWebBundle:GrupoEvaluacionPostulante:new.html.twig")
+     * @Template("AppWebBundle:Default:result.json.twig")
      */
-    public function createAction(Request $request)
+    public function createAction(Request $request,$id)
     {
         $result='';
         $msg='';
         $evaluadorId=$request->request->get('evaluadorId');
         $em = $this->getDoctrine()->getManager();
-        $evaluador=$em->getRepository('AppWebBundle:Evaluador')->find($evaluadorId);
+        $postulante=$em->getRepository('AppWebBundle:Postulante')->find($evaluadorId);
         $grupo=$em->getRepository('AppWebBundle:GrupoEvaluacion')->find($id);
-        if($evaluador){
+        if($postulante){
             if($grupo){
-                $entity  = new GrupoEvaluacionEvaluador();
-                $entity->setEvaluador($evaluador);
-                $entity->setGrupo($grupo);
-                $em->persist($entity);
-                $em->flush();
-                $result='true';
+                $evaluadores=$em->getRepository('AppWebBundle:Postulante')->getEvaluadoresConflictosInteres($id,$postulante->getRuc());
+                if(count($evaluadores)==0){
+                    $entity  = new GrupoEvaluacionPostulante();
+                    $entity->setPostulante($postulante);
+                    $entity->setGrupo($grupo);
+                    $em->persist($entity);
+                    $em->flush();
+                    $msg="Postulante agregado satisfactoriamente";
+                    $result='true';
+                }else{
+                    $result="false";
+                    $msg="<h4 style='margin:2px;'><b>No se pudo agregar postulante</b></h4><br/>";
+                    $msg.='Postulante presenta conflictos de interes con:<br/>';
+                    foreach ($evaluadores as $p) {
+                        $msg.='- '.$p['nombres'].' '.$p['apellidos'].'<br/>';
+                    }
+                }
             }else{
                 $result="false";
                 $msg='No se encontro el grupo de evluación';
@@ -75,7 +86,7 @@ class GrupoEvaluacionPostulanteController extends Controller
     /**
      * Displays a form to create a new GrupoEvaluacionPostulante entity.
      *
-     * @Route("/{id}/new", name="admin_grupoevaluacionpostulante_new",options={"expose"=true})
+     * @Route("/{id}/new", name="_admin_grupoevaluacionpostulante_new",options={"expose"=true})
      * @Method("GET")
      * @Template()
      */
@@ -84,9 +95,9 @@ class GrupoEvaluacionPostulanteController extends Controller
         $em = $this->getDoctrine()->getManager();
         $grupo = $em->getRepository('AppWebBundle:GrupoEvaluacion')->find($id);
         $concursoId=$grupo->getConcurso()->getId();
-        $evaluadores = $em->getRepository('AppWebBundle:GrupoEvaluacionEvaluador')->FindEvaluadoresDisponibles($concursoId);
+        $postulantes = $em->getRepository('AppWebBundle:GrupoEvaluacionPostulante')->FindPostulantesDisponibles($concursoId);
         return array(
-            'evaluadores' => $evaluadores
+            'postulantes' => $postulantes
         );
     }
 
@@ -105,7 +116,7 @@ class GrupoEvaluacionPostulanteController extends Controller
        $msg='';
        $result='';
        $em = $this->getDoctrine()->getManager();
-       $entity = $em->getRepository('AppWebBundle:GrupoEvaluacionEvaluador')->find($id);
+       $entity = $em->getRepository('AppWebBundle:GrupoEvaluacionPostulante')->find($id);
 
         if ($entity) {
             $em->remove($entity);
