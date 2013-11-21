@@ -9,7 +9,7 @@ var OptionButton=function(){
     this.routeUpdate='_admin_concurso_update';
     this.routeDelete='_admin_concurso_delete';
     this.routeCriterios="_admin_concurso_criterio";
-    
+    this.routeEtapas="_admin_etapaconcurso";
 }
 OptionButton.prototype={
     New:function(){
@@ -196,6 +196,20 @@ OptionButton.prototype={
 
                     }
             }); 
+    },
+    Etapas:function(id){
+         var url=Routing.generate(this.routeEtapas,{id:id});
+         $.ajax({
+                    type:'GET',
+                    url:url,
+                    dataType:"html",
+                    success:function(datos){
+                           $("#main-body").html(datos);
+                    },
+                    error:function(objeto, quepaso, otroobj){
+
+                    }
+            }); 
     }
 }
 
@@ -220,5 +234,9 @@ $(document).ready(function() {
     $(".row-criterios").click(function(){
       var id=$(this).attr("data-id"); 
       new OptionButton().Criterios(id);  
+    });
+     $(".row-etapas").click(function(){
+      var id=$(this).attr("data-id"); 
+      new OptionButton().Etapas(id);  
     });
 });

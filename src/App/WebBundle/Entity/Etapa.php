@@ -61,7 +61,23 @@ class Etapa
     */
     protected $tipoConcurso;
 
-
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="orden", type="integer")
+     */
+    private $orden;
+    
+    /**
+    * @ORM\OneToMany(targetEntity="EtapaConcurso", mappedBy="etapa")
+    */
+    protected $etapasconcurso;
+    
+    public function __construct()
+    {
+        $this->etapasconcurso= new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
     /**
      * Get id
      *
@@ -208,5 +224,61 @@ class Etapa
     public function getTipoConcurso()
     {
         return $this->tipoConcurso;
+    }
+
+    /**
+     * Set orden
+     *
+     * @param integer $orden
+     * @return Etapa
+     */
+    public function setOrden($orden)
+    {
+        $this->orden = $orden;
+    
+        return $this;
+    }
+
+    /**
+     * Get orden
+     *
+     * @return integer 
+     */
+    public function getOrden()
+    {
+        return $this->orden;
+    }
+
+    /**
+     * Add etapasconcurso
+     *
+     * @param \App\WebBundle\Entity\EtapaConcurso $etapasconcurso
+     * @return Etapa
+     */
+    public function addEtapasconcurso(\App\WebBundle\Entity\EtapaConcurso $etapasconcurso)
+    {
+        $this->etapasconcurso[] = $etapasconcurso;
+    
+        return $this;
+    }
+
+    /**
+     * Remove etapasconcurso
+     *
+     * @param \App\WebBundle\Entity\EtapaConcurso $etapasconcurso
+     */
+    public function removeEtapasconcurso(\App\WebBundle\Entity\EtapaConcurso $etapasconcurso)
+    {
+        $this->etapasconcurso->removeElement($etapasconcurso);
+    }
+
+    /**
+     * Get etapasconcurso
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getEtapasconcurso()
+    {
+        return $this->etapasconcurso;
     }
 }

@@ -25,6 +25,7 @@ class EtapaType extends AbstractType
                         
                     }
             ))
+            ->add('orden','text',array('required' => true,'attr' => array('class'=>'form-control input-small')))
         ;
     }
 

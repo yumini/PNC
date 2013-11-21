@@ -208,12 +208,17 @@ class Concurso
     */
     protected $inscripciones;
     
+    /**
+    * @ORM\OneToMany(targetEntity="EtapaConcurso", mappedBy="concurso")
+    */
+    protected $etapasconcurso;
+    
     public function __construct()
     {
         $this->criterios = new \Doctrine\Common\Collections\ArrayCollection();
         $this->inscripcionesConcurso = new \Doctrine\Common\Collections\ArrayCollection();
         $this->inscripciones = new \Doctrine\Common\Collections\ArrayCollection();
-       
+        $this->etapasconcurso= new \Doctrine\Common\Collections\ArrayCollection();
     }
     /**
      * Get id
@@ -907,5 +912,38 @@ class Concurso
     public function getInscripciones()
     {
         return $this->inscripciones;
+    }
+
+    /**
+     * Add etapasconcurso
+     *
+     * @param \App\WebBundle\Entity\EtapaConcurso $etapasconcurso
+     * @return Concurso
+     */
+    public function addEtapasconcurso(\App\WebBundle\Entity\EtapaConcurso $etapasconcurso)
+    {
+        $this->etapasconcurso[] = $etapasconcurso;
+    
+        return $this;
+    }
+
+    /**
+     * Remove etapasconcurso
+     *
+     * @param \App\WebBundle\Entity\EtapaConcurso $etapasconcurso
+     */
+    public function removeEtapasconcurso(\App\WebBundle\Entity\EtapaConcurso $etapasconcurso)
+    {
+        $this->etapasconcurso->removeElement($etapasconcurso);
+    }
+
+    /**
+     * Get etapasconcurso
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getEtapasconcurso()
+    {
+        return $this->etapasconcurso;
     }
 }

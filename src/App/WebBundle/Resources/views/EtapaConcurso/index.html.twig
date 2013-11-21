@@ -1,0 +1,92 @@
+{% block ScriptHead %}
+    <script src="{{ asset('js/pages/EtapaConcurso/index.js') }}"></script> 
+{% endblock %}
+<input id="idConcurso" type="hidden" value="{{concurso.id}}" />
+
+<div class="panel panel-default">
+  <div class="panel-heading panel-primary ">
+    <nav class="navbar navbar-default" role="navigation" style="z-index:0">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex2-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">
+             
+        {{concurso.nombre}}
+        <small>
+        [{% if concurso.fechaInicio %}{{ concurso.fechaInicio|date('d/m/Y') }}{% endif %} - {% if concurso.fechaFin %}{{ concurso.fechaFin|date('d/m/Y') }}{% endif %}]
+        </small>     
+         </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex2-collapse">
+          <button id="btnNewCriterio" type="button" class="btn btn-success navbar-btn pull-right"> <span class="glyphicon glyphicon-disk"> </span> Guardar</button>
+        </div>
+    </nav>
+  </div>
+  <div class="panel-body">
+      <h4>{{ title_list }}</h4>
+  
+  <table class="table table-bordered table-hover table-condensed table-striped" style="width:100%">
+        <thead>
+            <tr >
+                <th class="grid-header" style="text-align: center;">Etapa</th>
+                <th class="grid-header" style="text-align: center;width: 120px;">Activa</th>
+                <th class="grid-header" style="text-align: center;width: 100px;">Fecha Inicio</th>
+                <th class="grid-header" style="text-align: center;width: 100px;">Fecha Fin</th>
+                <th class="grid-header" style="text-align: center;width: 50px;">Extendido</th>
+                <th class="grid-header" style="width: 150px;text-align: center;">Fecha Extensión</th>
+            </tr>
+        </thead>
+        <tbody>
+         
+        {% for entity in entities %}
+            <tr>
+                <td>{{ entity.nombre }}</td>
+                <td>
+                    <div class="btn-group" data-toggle="buttons">
+                    <label class="btn btn-default btn-xs {% if entity.id %}active{% else %}{% endif %}">
+                        <input type="radio" name="active" id="optActive" data-id="{{entity.etapaId}}" > Activo
+                    </label>
+                    <label class="btn btn-default btn-xs {% if entity.id %} {% else %}active{% endif %}">
+                        <input type="radio" name="active" id="optInactive" data-id="{{entity.etapaId}}"  > Inactivo
+                    </label>
+                   
+                    </div>
+
+ 
+                
+                </td>
+                <td>
+                    
+                    <input type="date" id="fechaInicioEtapa-{{entity.etapaId}}" class="form-control input-small" value="{% if entity.fechaInicio %}{{ entity.fechaInicio|date('Y-m-d H:i:s') }}{% endif %}" {% if entity.id %}{% else %}disabled="disabled"{% endif %} data-id="{{entity.etapaId}}" >
+                </td>
+                <td>
+                <input type="date" id="fechaFinEtapa-{{entity.etapaId}}" class="form-control input-small" value="{% if entity.fechaFin %}{{ entity.fechaFin|date('Y-m-d H:i:s') }}{% endif %}"  {% if entity.id %}{% else %}disabled="disabled"{% endif %} data-id="{{entity.etapaId}}" >
+
+                </td>
+                <td>
+               <input type="checkbox" id="chkExtendido-{{entity.etapaId}}" data-id="{{entity.etapaId}}"  {% if entity.id %}{% else %}disabled="disabled"{% endif %}> 
+                </td>
+                <td>
+<input type="date" id="fechaExtensionEtapa-{{entity.etapaId}}" class="form-control input-small" value="{% if entity.fechaExtension %}{{ entity.fechaExtension|date('Y-m-d H:i:s') }}{% endif %}"  {% if entity.id %}{% else %}disabled="disabled"{% endif %} data-id="{{entity.etapaId}}" >
+                </td>
+                 
+
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+  </div>
+
+
+
+</div>
+  
+
+{% block windows %}
+    <div id="winForm"></div>
+{% endblock %}
+
+   

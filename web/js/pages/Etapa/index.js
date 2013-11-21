@@ -16,7 +16,7 @@ OptionButton.prototype={
 
         this.Window=new BootstrapWindow({id:"winForm",title:"Nueva Etapa"});
         this.Window.setWidth(500);
-        this.Window.setHeight(250);
+        //this.Window.setHeight(250);
         var url=Routing.generate(this.routeNew);
         this.Window.Load(url,"");
         this.Window.Show();
@@ -64,7 +64,7 @@ OptionButton.prototype={
         this.IdEntity=id;
         this.Window=new BootstrapWindow({id:"winForm",title:"Editar Concurso"});
         this.Window.setWidth(1000);
-        this.Window.setHeight(300);
+        //this.Window.setHeight(300);
         var url=Routing.generate(this.routeEdit,{id:id});
         this.Window.Load(url,"");
         this.Window.Show();
