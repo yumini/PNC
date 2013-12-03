@@ -40,27 +40,53 @@ class EtapaConcursoController extends Controller
     /**
      * Creates a new EtapaConcurso entity.
      *
-     * @Route("/", name="admin_etapaconcurso_create")
+     * @Route("/{id}/save", name="admin_etapaconcurso_save", options={"expose"=true})
      * @Method("POST")
-     * @Template("AppWebBundle:EtapaConcurso:new.html.twig")
+     * @Template("AppWebBundle:Default:result.json.twig")
      */
-    public function createAction(Request $request)
+    public function createAction(Request $request,$id)
     {
-        $entity  = new EtapaConcurso();
-        $form = $this->createForm(new EtapaConcursoType(), $entity);
-        $form->bind($request);
-
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
-            $em->flush();
-
-            return $this->redirect($this->generateUrl('admin_etapaconcurso_show', array('id' => $entity->getId())));
+        $active=($request->request->get('active')=='on')?'1':'0';
+        $etapaid=$request->request->get('etapaId');
+        $fechaInicio=$request->request->get('fechaInicio');
+        $fechaFin=$request->request->get('fechaFin');
+        $fechaExtension=$request->request->get('fechaExtension');
+        $extendido=($request->request->get('extendido')=='on')?'1':'0';
+        
+        $em = $this->getDoctrine()->getManager();
+       
+         $entity = $em->getRepository('AppWebBundle:EtapaConcurso')->findByEtapa($id,$etapaid);
+         $etapa = $em->getRepository('AppWebBundle:Etapa')->find($etapaid);
+         $concurso = $em->getRepository('AppWebBundle:Concurso')->find($id);
+        $success='false';
+        if($active=='1'){
+            if(!$entity){
+                $entity  = new EtapaConcurso();
+                $msg="Se habilito la etapa satisfactoriamente";
+            }else{
+                $msg="Se actualizó la etapa satisfactoriamente";
+            }
+             $entity->setConcurso($concurso);
+             $entity->setEtapa($etapa);
+             $entity->setFechaInicio(new \DateTime($fechaInicio));
+             $entity->setFechaFin(new \DateTime($fechaFin));
+             $entity->setExtendido($extendido);
+             $entity->setFechaExtension(new \DateTime($fechaExtension));
+             $em->persist($entity);
+             
+             $success='true';
+        }else{
+            if($entity){
+                $em->remove($entity);
+                $msg="Se deshabilito la etapa satisfactoriamente";
+                $success='true';
+            }else{
+                $msg="";
+            }
         }
-
+        $em->flush();
         return array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
+            'result' => "{\"success\":\"$success\",\"message\":\"$msg\"}"
         );
     }
 

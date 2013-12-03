@@ -92,18 +92,31 @@ class ConversacionController extends Controller
     /**
      * Displays a form to create a new Conversacion entity.
      *
-     * @Route("/new", name="conversacion_new")
+     * @Route("/new", name="_admin_conversacion_new")
      * @Method("GET")
      * @Template()
      */
     public function newAction()
     {
-        $entity = new Conversacion();
-        $form   = $this->createForm(new ConversacionType(), $entity);
+        
+        $em = $this->getDoctrine()->getManager();
+        $user = $this->container->get("security.context")->getToken()->getUser();
+        switch($entity->getPerfil()->getNombre()){
+            case "Postulante":
+            case "Evaluador":
+                 $evaluador = $em->getRepository('AppWebBundle:Evaluador')->find($id);
+                 $grupos = $em->getRepository('AppWebBundle:Conversacion')->findGroupsForChat($evaluador->getId());
+                 break;
+            case "Administrador":
+                $grupos = $em->getRepository('AppWebBundle:GrupoEvaluacion')->findAll();
+                break;
+        }
+        
+       
+       
 
         return array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
+            'grupos' => $grupos
         );
     }
 

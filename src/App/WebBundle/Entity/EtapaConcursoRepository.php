@@ -28,4 +28,20 @@ class EtapaConcursoRepository extends EntityRepository
         }
     }
     
+     public function findByEtapa($idconsurso,$idetapa){
+        $em=$this->getEntityManager();
+        $dql= "SELECT ec FROM AppWebBundle:EtapaConcurso ec 
+                JOIN ec.concurso c
+                JOIN ec.etapa e
+                WHERE c.id=:idconcurso and e.id=:idetapa";
+        $query=$em->createQuery($dql)
+                ->setParameter('idconcurso', $idconsurso)
+                ->setParameter('idetapa', $idetapa);
+        try {
+                return $query->getSingleResult();
+        } catch (\Doctrine\ORM\NoResultException $e) {
+                return null;
+        }
+    }
+    
 }

@@ -21,13 +21,13 @@
          </a>
         </div>
         <div class="collapse navbar-collapse navbar-ex2-collapse">
-          <button id="btnNewCriterio" type="button" class="btn btn-success navbar-btn pull-right"> <span class="glyphicon glyphicon-disk"> </span> Guardar</button>
+          
         </div>
     </nav>
   </div>
   <div class="panel-body">
       <h4>{{ title_list }}</h4>
-  
+      <form id="myFormEtapas" method="post">
   <table class="table table-bordered table-hover table-condensed table-striped" style="width:100%">
         <thead>
             <tr >
@@ -37,47 +37,117 @@
                 <th class="grid-header" style="text-align: center;width: 100px;">Fecha Fin</th>
                 <th class="grid-header" style="text-align: center;width: 50px;">Extendido</th>
                 <th class="grid-header" style="width: 150px;text-align: center;">Fecha Extensión</th>
+                <th class="grid-header" style="width: 30px;text-align: center;"></th>
             </tr>
         </thead>
         <tbody>
-         
+        {% set index = 0 %} 
         {% for entity in entities %}
+            {% if entity.id %}
+                {% set estiloActive = 'active' %}
+                {% set estiloInactive = '' %}
+                {% set estado = "" %}
+            {% else %}
+                {% set estiloActive = '' %}
+                {% set estiloInactive = 'active' %}
+                {% set estado = "disabled=disabled" %}
+            {% endif %}
             <tr>
-                <td>{{ entity.nombre }}</td>
+                <td>
+                    <input type="hidden" 
+                           id="etapaid-{{index}}"
+                           value="{{ entity.etapaId }}"
+                    />
+                {{ entity.nombre }}
+                </td>
                 <td>
                     <div class="btn-group" data-toggle="buttons">
-                    <label class="btn btn-default btn-xs {% if entity.id %}active{% else %}{% endif %}">
-                        <input type="radio" name="active" id="optActive" data-id="{{entity.etapaId}}" > Activo
-                    </label>
-                    <label class="btn btn-default btn-xs {% if entity.id %} {% else %}active{% endif %}">
-                        <input type="radio" name="active" id="optInactive" data-id="{{entity.etapaId}}"  > Inactivo
-                    </label>
-                   
+                        <label class="btn btn-default btn-xs {{estiloActive}}">
+                            <input type="radio" 
+                                   name="active-{{index}}" 
+                                   id="optActive-{{index}}" 
+                                   data-index="{{index}}" 
+                                   data-etapaid="{{entity.etapaId}}" 
+                                   data-id="{{entity.id}}"
+                                   data-type='active'
+                                   value='on'
+                            /> Activo
+                        </label>
+                        <label class="btn btn-default btn-xs {{estiloInactive}}">
+                            <input type="radio" 
+                                   name="active-{{index}}" 
+                                   id="optInactive-{{index}}" 
+                                   data-index="{{index}}" 
+                                   data-etapaid="{{entity.etapaId}}" 
+                                   data-id="{{entity.id}}"
+                                   data-type='active'
+                                   value='off'
+                             /> Inactivo
+                        </label>
                     </div>
-
- 
-                
                 </td>
                 <td>
-                    
-                    <input type="date" id="fechaInicioEtapa-{{entity.etapaId}}" class="form-control input-small" value="{% if entity.fechaInicio %}{{ entity.fechaInicio|date('Y-m-d H:i:s') }}{% endif %}" {% if entity.id %}{% else %}disabled="disabled"{% endif %} data-id="{{entity.etapaId}}" >
+                    <input type="date" 
+                           id="fechaInicioEtapa-{{index}}" 
+                           name="fechaInicioEtapa-{{index}}" 
+                           class="form-control input-small" 
+                           value="{% if entity.fechaInicio %}{{ entity.fechaInicio|date('Y-m-d') }}{% endif %}" 
+                           data-index="{{index}}" 
+                           data-etapaid="{{entity.etapaId}}" 
+                           data-id="{{entity.id}}"
+                           {{estado}}
+                     />
                 </td>
                 <td>
-                <input type="date" id="fechaFinEtapa-{{entity.etapaId}}" class="form-control input-small" value="{% if entity.fechaFin %}{{ entity.fechaFin|date('Y-m-d H:i:s') }}{% endif %}"  {% if entity.id %}{% else %}disabled="disabled"{% endif %} data-id="{{entity.etapaId}}" >
-
+                    <input type="date" 
+                           id="fechaFinEtapa-{{index}}" 
+                           name="fechaFinEtapa-{{index}}" 
+                           class="form-control input-small" 
+                           value="{% if entity.fechaFin %}{{ entity.fechaFin|date('Y-m-d') }}{% endif %}"   
+                           data-index="{{index}}" 
+                           data-etapaid="{{entity.etapaId}}" 
+                           data-id="{{entity.id}}"
+                           {{estado}}
+                     />
                 </td>
                 <td>
-               <input type="checkbox" id="chkExtendido-{{entity.etapaId}}" data-id="{{entity.etapaId}}"  {% if entity.id %}{% else %}disabled="disabled"{% endif %}> 
+                    <input type="checkbox" 
+                           id="chkExtendido-{{index}}" 
+                           name="chkExtendido-{{index}}" 
+                           data-index="{{index}}" 
+                           data-etapaid="{{entity.etapaId}}" 
+                           data-id="{{entity.id}}"
+                           {{estado}}
+                     />
                 </td>
                 <td>
-<input type="date" id="fechaExtensionEtapa-{{entity.etapaId}}" class="form-control input-small" value="{% if entity.fechaExtension %}{{ entity.fechaExtension|date('Y-m-d H:i:s') }}{% endif %}"  {% if entity.id %}{% else %}disabled="disabled"{% endif %} data-id="{{entity.etapaId}}" >
+                    <input type="date" 
+                           id="fechaExtensionEtapa-{{index}}" 
+                           name="fechaExtensionEtapa-{{index}}" 
+                           class="form-control input-small" 
+                           value="{% if entity.fechaExtension %}{{ entity.fechaExtension|date('Y-m-d') }}{% endif %}"   
+                           data-index="{{index}}" 
+                           data-etapaid="{{entity.etapaId}}" 
+                           data-id="{{entity.id}}"
+                           {{estado}}
+                     />
                 </td>
-                 
+                <td>
+                    <a href="#" class="btn btn-info btn-xs"
+                        accesskey=""data-index="{{index}}" 
+                        data-etapaid="{{entity.etapaId}}" 
+                        data-id="{{entity.id}}"
+                        data-type="save">
+                        <span class="glyphicon glyphicon-floppy-disk"></span>
+                    </a>
+                </td>
 
             </tr>
+            {% set index = index+1 %}
         {% endfor %}
         </tbody>
     </table>
+  </form>
   </div>
 
 
