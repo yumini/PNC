@@ -3,6 +3,16 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/1"/>
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/D:/xampp/htdocs/PNC/src/App/WebBundle/Controller/ConcursoController.php</file>
+            <file>file:/D:/xampp/htdocs/PNC/src/App/WebBundle/Controller/ConversacionController.php</file>
+            <file>file:/D:/xampp/htdocs/PNC/src/App/WebBundle/Resources/views/EtapaConcurso/index.html.twig</file>
+            <file>file:/D:/xampp/htdocs/PNC/src/App/WebBundle/Entity/GrupoEvaluacionEvaluadorRepository.php</file>
+            <file>file:/D:/xampp/htdocs/PNC/web/js/pages/EtapaConcurso/index.js</file>
+            <file>file:/D:/xampp/htdocs/PNC/src/App/WebBundle/Entity/ConversacionRepository.php</file>
+            <file>file:/D:/xampp/htdocs/PNC/src/App/WebBundle/Resources/views/Conversacion/new.html.twig</file>
+            <file>file:/D:/xampp/htdocs/PNC/src/App/WebBundle/Controller/UsuarioController.php</file>
+            <file>file:/D:/xampp/htdocs/PNC/src/App/WebBundle/Controller/EtapaConcursoController.php</file>
+        </group>
     </open-files>
 </project-private>

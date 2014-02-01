@@ -211,7 +211,7 @@ class NotaController extends Controller
     /**
      * Deletes a Nota entity.
      *
-     * @Route("/{id}/delete", name="_admin_nota_delete",options={"expose"=true})
+     * @Route("/{id}", name="_admin_nota_delete",options={"expose"=true})
      * @Method("DELETE")
      * @Template("AppWebBundle:Default:result.json.twig")
      */
@@ -219,6 +219,7 @@ class NotaController extends Controller
     {
             $msg="";
             $result=true;
+            $em = $this->getDoctrine()->getManager();
             $entity = $em->getRepository('AppWebBundle:Nota')->find($id);
 
             if ($entity) {

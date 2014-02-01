@@ -1,49 +1,12 @@
 {% block ScriptFooter %}
-  <script src="{{ asset('js/pages/Security/models.js') }}"></script> 
-  <script src="{{ asset('js/pages/Security/collections.js') }}"></script>  
-  <script src="{{ asset('js/chat.js') }}"></script> 
-
-  <script src="{{ asset('js/pages/Security/index.js') }}"></script> 
- <script src="{{ asset('js/pages/Security/viewNotas.js') }}"></script>
+  <script src="{{ asset('js/pages/Security/index.js') }}"></script>
+  
+  <script src="{{ asset('js/pages/Security/viewNotas.js') }}"></script> 
+ 
 {% endblock %}
 <div class="row">
-    <div class="col-lg-8" style="padding: 5px 5px 0px 35px;margin: 0px 0px;">
-      <div class="panel panel-default">
-          <div class="panel-heading"> 
-            <nav class="navbar navbar-default" role="navigation" style="z-index:0">
-            <div class="navbar-header">
-              
-              <a class="navbar-brand" href="#"> <span class="glyphicon glyphicon-th-large"> </span> Hangout</a>
-            </div>
-            <div class="collapse navbar-collapse navbar-ex2-collapse">
-              <button id="btnNew" type="button" class="btn btn-success navbar-btn pull-right"> <span class="glyphicon glyphicon-plus"> </span> Nueva Conversación</button>
-            </div>
-        </nav>
-
-          </div>
-          <div id="content-mensajeria" >
-              <div class="row">
-                  <div id="container-conversaciones" class="col-lg-4">
-                      <!--contenedor de conversaciones-->                     
-                  </div>
-                  <div class="col-lg-8" >
-                        <div  id="container-mensajes">
-                          <div class="panel" style="height:300px">
-                          <p class="text-muted">
-                            <small>Seleccione una conversacion para visualizars sus mensajes</small>
-                          </p>
-                          </div>
-                            <!--contenedor de mensajes-->  
-                      </div>
-                      
-                     <div id="container-mensaje-new">
-                     
-                      </div>
-                         
-                  </div>
-              </div>
-          </div>
-        </div>
+  <div class="col-lg-8" style="padding: 5px 5px 0px 35px;margin: 0px 0px;">
+      
   </div>
   <div class="col-lg-4"  style="padding: 5px 35px;margin: 0px 0px;">
 <ul class="nav nav-tabs" style="font-size:11px;">
@@ -57,10 +20,8 @@
   <div class="tab-pane active" id="ini-tab-1">
      <div id="container-notas" style="height:300px;">
             <!--contenedor de notas--> 
-          </div>
-          <div id="container-nota-new">
-          
-          </div>
+    </div>
+  
   </div>
   <div class="tab-pane" id="ini-tab-2">
   </div>
@@ -72,48 +33,20 @@
 </div>
 
 
-<!--plantilla conversaciones-->
-<textarea id="app-template" style="display:none">
-<div  id="list-conversaciones" class="list-group">renderizando contenedor</div>
-</textarea>
-
-<!--plantilla conversacion-->
-<textarea id="template-conversacion" style="display:none">
-
-    <p class="list-group-item-text" data-id=<%= conversacion.id %>>
-        <b><%= conversacion.nombre %></b> - 
-        <small><%= conversacion.descripcion %></small>
-
-    </p>
-   
-</textarea>                        
-            
-<!--plantilla conversacion-->
-<textarea id="app-mensaje-template" style="display:none">
-    <p>
-        <b>juan: </b><small><%= mensaje.mensaje %></small>
-
-    </p>
-   
-</textarea>    
-<!--plantilla mensajes-->
-<textarea id="app-mensajes-template" style="display:none">
-<div  id="list-mensajes" class="panel" style="height: 300px;overflow-y:scroll;">
-
-</div>
-<div class="input-group">
-  <input id="txtmensaje" name="txtmensaje" type="text" class="form-control">
-  <span class="input-group-btn">
-  <button class="btn btn-default" type="button">Enviar</button>
-  </span>
-</div>
-</textarea>                    
-
-
-
 <!--plantilla notas-->
 <textarea id="template-notas" style="display:none">
+  <p>
+    <div class="input-group">
+            <input id="txtNota" name="txtNota" type="text" class="form-control">
+            <span class="input-group-btn">
+            <button class="btn btn-default" type="button">Agregar</button>
+            </span>
+    </div>
+  </p>
+   
   <ul id="list-notas" class="list-group"></ul>
+
+ 
 </textarea>                        
             
 <!--plantilla nota-->
@@ -125,12 +58,3 @@
     <input type="checkbox" name="" value=""/> <%= entity.descripcion %>
 
 </textarea> 
-
-<textarea id="template-notas-item-new" style="display:none">
-<div class="input-group">
-            <input id="txtNota" name="txtNota" type="text" class="form-control">
-            <span class="input-group-btn">
-            <button class="btn btn-default" type="button">Agregar</button>
-            </span>
-          </div>
-</textarea>

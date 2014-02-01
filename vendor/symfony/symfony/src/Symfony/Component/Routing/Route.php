@@ -57,7 +57,7 @@ class Route implements \Serializable
     private $options = array();
 
     /**
-     * @var null|RouteCompiler
+     * @var null|CompiledRoute
      */
     private $compiled;
 
@@ -239,6 +239,25 @@ class Route implements \Serializable
         $this->compiled = null;
 
         return $this;
+    }
+
+    /**
+     * Checks if a scheme requirement has been set.
+     *
+     * @param string $scheme
+     *
+     * @return Boolean true if the scheme requirement exists, otherwise false
+     */
+    public function hasScheme($scheme)
+    {
+        $scheme = strtolower($scheme);
+        foreach ($this->schemes as $requiredScheme) {
+            if ($scheme === $requiredScheme) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

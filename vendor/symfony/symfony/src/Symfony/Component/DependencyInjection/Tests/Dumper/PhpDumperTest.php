@@ -81,7 +81,7 @@ class PhpDumperTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException InvalidArgumentException
+     * @expectedException \InvalidArgumentException
      */
     public function testExportParameters()
     {
@@ -118,6 +118,18 @@ class PhpDumperTest extends \PHPUnit_Framework_TestCase
             $this->assertInstanceOf('\Symfony\Component\DependencyInjection\Exception\RuntimeException', $e, '->dump() throws a RuntimeException if the container to be dumped has reference to objects or resources');
             $this->assertEquals('Unable to dump a service container if a parameter is an object or a resource.', $e->getMessage(), '->dump() throws a RuntimeException if the container to be dumped has reference to objects or resources');
         }
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Service id "bar$" cannot be converted to a valid PHP method name.
+     */
+    public function testAddServiceInvalidServiceId()
+    {
+        $container = new ContainerBuilder();
+        $container->register('bar$', 'FooClass');
+        $dumper = new PhpDumper($container);
+        $dumper->dump();
     }
 
     public function testAliases()
@@ -168,5 +180,20 @@ class PhpDumperTest extends \PHPUnit_Framework_TestCase
         $container->set('bar', $bar = new \stdClass());
 
         $this->assertSame($bar, $container->get('foo')->bar, '->set() overrides an already defined service');
+    }
+
+    /**
+     * @expectedException \Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException
+     */
+    public function testCircularReference()
+    {
+        $container = new ContainerBuilder();
+        $container->register('foo', 'stdClass')->addArgument(new Reference('bar'));
+        $container->register('bar', 'stdClass')->setPublic(false)->addMethodCall('setA', array(new Reference('baz')));
+        $container->register('baz', 'stdClass')->addMethodCall('setA', array(new Reference('foo')));
+        $container->compile();
+
+        $dumper = new PhpDumper($container);
+        $dumper->dump();
     }
 }

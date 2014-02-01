@@ -71,7 +71,7 @@ fos_user:
    db_driver: orm
    firewall_name: main
    user_class: App\WebBundle\Entity\Usuario
-   
+
    #registration:
     #    confirmation:
     #        enabled:    true
@@ -84,3 +84,4 @@ stof_doctrine_extensions:
             sluggable: true
             timestampable: true
             loggable: true
+

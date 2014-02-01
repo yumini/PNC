@@ -36,7 +36,7 @@ class MensajeController extends Controller
     /**
      * @Route("/",name="_admin_mensaje_conversacion_new", options={"expose"=true})
      * @Method("PUT")
-     * @Template()
+     * @Template("AppWebBundle:Default:result.json.twig")
      */
     public function AddMensajeAction(Request $request)
     {
@@ -51,7 +51,7 @@ class MensajeController extends Controller
         $em->persist($entity);
         $em->flush();
         return array(
-            'respuesta' => "{success:true}"
+            'result' => "{\"success\":\"true\"}"
         );       
     }
 

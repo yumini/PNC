@@ -27,7 +27,10 @@
         "friendsofsymfony/jsrouting-bundle": "~1.1",
         "friendsofsymfony/user-bundle": "2.0.*@dev",
         "gedmo/doctrine-extensions":      "dev-master",
-        "stof/doctrine-extensions-bundle": "1.1.*@dev"
+        "stof/doctrine-extensions-bundle": "1.1.*@dev",
+        "symfony/serializer": "2.5.*@dev",
+        "jms/serializer-bundle": "0.13.*@dev",
+        "jms/serializer": "0.14"
     },
     "scripts": {
         "post-install-cmd": [

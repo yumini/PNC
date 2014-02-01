@@ -1,8 +1,10 @@
-
 var ViewsNotas={
 	NotasContainer: Backbone.View.extend({
 		events: {
- 			"click .nota-delete": "Delete"
+ 			"click .nota-delete": "Delete",
+ 			"keyup #txtNota"	: "NewNota",
+ 			"click .btn"		: "New",
+ 			"change .note-state": "UpdateState"
         },
 		initialize: function(){
 			_.bindAll(this);
@@ -29,23 +31,66 @@ var ViewsNotas={
 			evdata = evdata || {};			
 			this.collection.fetch({reset:true});
 			console.log('se cargo la collecion notas de BD');
+			
 		},
-		Delete:function(id){
-                        this.IdEntity=id;
-                        alert("hola"+id);
+		Delete:function(evt){
 			console.log("eliminando nota en BD");
-			var url=Routing.generate('_admin_nota_delete',{id:this.IdEntity})
+			var parent=this;
+			var idNota=$(evt.currentTarget).attr('data-id');
+			console.log(idNota);
+			var nota=this.collection.get(idNota);
+			var url=Routing.generate('_admin_nota_delete',{id:idNota});
+			
 			$.ajax({
 				type:'DELETE',
 	            url:url,
 	            dataType:"html",
 	            success:function (data) {
-	                parent.viewContainer.render();
+	                parent.render();
 	            }
         	});
+        	this.collection.remove(nota);
 		},
+		NewNota:function(evt){
+			if(evt.keyCode==13){
+				this.New();
+			}
+		},
+		New:function(){
+			
+				var descripcionNota=this.$el.find('input[name=txtNota]').val();
+				console.log("evento nuevo nota: "+descripcionNota);
+
+				var nota=new Models.Nota({
+			        descripcion: descripcionNota,
+			        id: Math.floor(Math.random() * 100) + 1
+			    });
+				
+				this.collection.add(nota);
+				this.Save(nota);
+				this.render();	
+		},
+		Save:function(nota){
+			console.log("registrando nota en BD");
+			var parent=this;
+			var url=Routing.generate('_admin_nota_new');
+			$.ajax({
+				type:'PUT',
+				data:nota.toJSON(),
+	            url:url,
+	            dataType:"html",
+	            success:function (data) {
+	                parent.render();
+	            }
+        	});
+        	this.$el.find('input[name=txtNota]').focus();
+		},
+		UpdateState:function(evt){
+			console.log($(evt.currentTarget).val())
+		}
 
 	}),
+
 	NotaItem: Backbone.View.extend({
 		className: 'list-group-item',
         tagName:"li",
@@ -54,100 +99,19 @@ var ViewsNotas={
 			
 		},
 		render: function() {
-			console.log(this.model)
+			
 			this.$el.attr('id', 'nota-'+this.model.id);
 			this.$el.attr('data-id',this.model.id);
 			this.$el.html(this.template({entity:this.model.toJSON()}));
 			return this;
-		},
-	}),
-	NotaNew: Backbone.View.extend({
-		className: 'input-group',
-		events: {
-                    "click .btn": "AddNota",
-                    'keyup #txtNota': 'KeyAddNota',
-                    'click .nota-delete':'Delete',
-        },
-		initialize: function() {
-			this.template = _.template($('#template-notas-item-new').val());
-			
-		},
-		render: function() {
-			console.log(this.model)
-			//this.$el.attr('id', 'nota-'+this.model.id);
-			//this.$el.attr('data-id',this.model.id);
-			this.$el.html(this.template());
-			return this;
-		},
-		AddNota:function(){
-			console.log("evento nuevo nota")
-			var descripcionNota=this.$el.find('input[name=txtNota]').val();
-			if(descripcionNota!=""){
-				var nota=new Models.Nota({
-			        descripcion: descripcionNota,
-			        id: Math.floor(Math.random() * 100) + 1
-			     });
-				console.log("agregando nuevo nota")
-				this.viewContainer.collection.add(nota);
-				this.Save(nota);
-				this.render();
-			}
-			
-			this.$el.find('input[name=txtNota]').focus();
-			
-			
-		},
-		SetViewContainer:function(v){
-			this.viewContainer=v;
-		},
-		Save:function(nota){
-			console.log("registrando nota en BD")
-			var parent=this;
-			var url=Routing.generate('_admin_nota_new')
-			$.ajax({
-				type:'PUT',
-				data:nota.toJSON(),
-	            url:url,
-	            dataType:"html",
-	            success:function (data) {
-	                parent.viewContainer.render();
-	            }
-        	});
-		},
-		 Delete:function(id){
-                        this.IdEntity=id;
-                       
-                        console.log(id);
-			console.log("eliminando nota en BD");
-			var url=Routing.generate('_admin_nota_delete',{id:this.IdEntity})
-			$.ajax({
-				type:'DELETE',
-	            url:url,
-	            dataType:"html",
-	            success:function (data) {
-	                parent.viewContainer.render();
-	            }
-        	});
-		},
-		KeyAddNota:function(e){
-			if(e.keyCode==13){
-				this.AddNota();
-			}
 		}
 	})
-}
+
+};
 
 $(document).ready(function() {
 	
 	var vs = new ViewsNotas.NotasContainer();
 	vs.setElement($('#container-notas')).render();
 
-	var viewNotaNew = new ViewsNotas.NotaNew();
-	viewNotaNew.SetViewContainer(vs);
-	viewNotaNew.setElement($('#container-nota-new')).render();
-	
-      $(".nota-delete").click(function(){
-      var id=$(this).attr("data-id"); 
-      new OptionButton().Delete(id);  
-  });
 });

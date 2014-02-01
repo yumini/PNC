@@ -10,6 +10,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use App\WebBundle\Entity\Conversacion;
 use App\WebBundle\Form\ConversacionType;
 use App\WebBundle\Entity\Mensaje;
+
+
 /**
  * Conversacion controller.
  *
@@ -19,20 +21,21 @@ class ConversacionController extends Controller
 {
 
     /**
-     * @Route("/listUserForChat.json",name="_admin_conversacion_users_chat",  defaults={"_format"="json"}, options={"expose"=true})
+     * @Route("/list/UserForChat.json",name="_admin_conversacion_users_chat",  defaults={"_format"="json"}, options={"expose"=true})
      * @Template()
      */
     public function listUsersForChatAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $entities = $em->getRepository('AppWebBundle:Conversacion')->findAll();
+        $entities = $em->getRepository('AppWebBundle:Usuario')->findAll();
         return array(
             'entities' => $entities,
         );       
     }
 
     /**
-     * @Route("/list.json",name="_admin_conversacion_format",  defaults={"_format"="json"}, options={"expose"=true})
+     * @Route("/",name="_admin_conversacion",  defaults={"_format"="json"}, options={"expose"=true})
+     * @Method("GET")
      * @Template()
      */
     public function listAction()
@@ -46,46 +49,27 @@ class ConversacionController extends Controller
     
    
     /**
-     * Lists all Conversacion entities.
-     *
-     * @Route("/", name="conversacion")
-     * @Method("GET")
-     * @Template()
-     */
-    public function indexAction()
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $entities = $em->getRepository('AppWebBundle:Conversacion')->findAll();
-
-        return array(
-            'entities' => $entities,
-        );
-    }
-    /**
      * Creates a new Conversacion entity.
      *
-     * @Route("/", name="conversacion_create")
+     * @Route("/", name="_admin_conversacion_create", options={"expose"=true})
      * @Method("POST")
-     * @Template("AppWebBundle:Conversacion:new.html.twig")
+     * @Template("AppWebBundle:Default:result.json.twig")
      */
     public function createAction(Request $request)
     {
+        
+        $data = json_decode($request->getContent(), true);
+        
         $entity  = new Conversacion();
-        $form = $this->createForm(new ConversacionType(), $entity);
-        $form->bind($request);
-
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
-            $em->flush();
-
-            return $this->redirect($this->generateUrl('conversacion_show', array('id' => $entity->getId())));
-        }
-
+        $entity->setNombre($data['nombre']);
+        $entity->setDescripcion($data['descripcion']);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($entity);
+        $em->flush();
+        
+        
         return array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
+            'result' => "200"
         );
     }
 

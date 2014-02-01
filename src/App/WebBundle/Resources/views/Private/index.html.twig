@@ -13,7 +13,114 @@
       </div>
 </div>
 
+  
+{% block footer %}
+   <div id="Hangout" class="Hangout"></div>  
 {% endblock %}
+
+
+<!--plantilla conversaciones-->
+<textarea id="app-template" style="display:none">
+  <div class="panel panel-green">
+          <div class="panel-heading" > 
+            <nav class="navbar" role="navigation" style="z-index:0">
+            <div class="navbar-header">
+              
+              <a class="navbar-brand" href="javascript:void(0);" id="HangoutHeading"> <span class="glyphicon glyphicon-th-large"> </span> Hangout PNC</a>
+            </div>
+          <div class="collapse navbar-collapse navbar-ex2-collapse">
+          <button id="btnNewConversacion" type="button" class="btn btn-success navbar-btn pull-right"> <span class="glyphicon glyphicon-plus"> </span> </button>
+        </div>
+        </nav>
+
+          </div>
+          <div id="content-mensajeria" >
+              <div class="row">
+                <div class="col-lg-12">
+                    <ul id="tabHangout" class="nav nav-tabs" style="font-size:11px;margin:1px;">
+                      <li class="active">
+                        <a href="#ini-tabHangout-1" data-toggle="tab">Conversaciones</a>
+                      </li>
+                      <li><a href="#ini-tabHangout-2" data-toggle="tab">Chat Hangout</a></li>
+                      <li><a href="#ini-tabHangout-3" data-toggle="tab">Nueva Conversación</a></li>
+                     
+                    </ul>
+                    <div class="tab-content">
+                      <div class="tab-pane active" id="ini-tabHangout-1" style="padding:5px;">
+                         <!--contenedor de conversaciones--> 
+                        <div  id="list-conversaciones" class="list-group" style="height:320px;overflow-y:scroll">renderizando contenedor</div>   
+                      </div>
+                      <div class="tab-pane" id="ini-tabHangout-2"  style="padding:5px;">
+                        <div  id="container-mensajes">
+                          <div class="panel">
+                          <p class="text-muted">
+                            <small>Seleccione una conversacion para visualizars sus mensajes</small>
+                          </p>
+                          </div>
+                            <!--contenedor de mensajes-->  
+                        </div>
+                         <div id="container-mensaje-new">
+                     
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="ini-tabHangout-3">
+
+                    </div>
+                </div>
+              </div>
+          </div>
+        </div>
+</div>
+</textarea>
+
+<!--plantilla conversacion-->
+<textarea id="template-conversacion" style="display:none">
+
+    <p class="list-group-item-text" data-id="<%= conversacion.id %>">
+        <b><%= conversacion.nombre %></b> - 
+        <small><%= conversacion.descripcion %></small>
+ <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    </p>
+   
+</textarea>                        
+            
+<!--plantilla conversacion-->
+<textarea id="app-mensaje-template" style="display:none">
+    <p>
+        <b>juan: </b><small><%= mensaje.mensaje %></small>
+
+    </p>
+   
+</textarea>    
+<!--plantilla mensajes-->
+<textarea id="app-mensajes-template" style="display:none">
+<div  id="list-mensajes" class="panel"  style="height:280px;overflow-y:scroll">
+
+</div>
+<div class="input-group">
+  <input id="txtmensaje" name="txtmensaje" type="text" class="form-control">
+  <span class="input-group-btn">
+  <button class="btn btn-default" type="button">Enviar</button>
+  </span>
+</div>
+</textarea>  
+
+<!--plantilla usuarios-->
+<textarea id="template-usuariosChat" style="display:none">
+  <ul id="list-usuariosChat" class="list-group" style="height:320px;overflow-y:scroll"></ul> 
+</textarea>                        
+            
+<!--plantilla usuario chat-->
+<textarea id="template-usuariosChat-item" style="display:none;font-size:11px;">
+
+    <input type="checkbox" name="" value="" data-nombreCompleto="<%= entity.nombreCompleto %>
+"/> <%= entity.nombreCompleto %>
+
+</textarea> 
+
+{% endblock %}
+
+
 {% block ScriptFooter %}
 <script type="text/javascript">
     var ajax=new jAjax();
