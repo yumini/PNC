@@ -87,7 +87,7 @@
 <!--plantilla conversacion-->
 <textarea id="app-mensaje-template" style="display:none">
     <p>
-        <b>juan: </b><small><%= mensaje.mensaje %></small>
+        <b><%=mensaje.usuario %>: </b><small><%= mensaje.mensaje %></small>
 
     </p>
    
@@ -98,7 +98,7 @@
 
 </div>
 <div class="input-group">
-  <input id="txtmensaje" name="txtmensaje" type="text" class="form-control">
+  <input id="txtmensaje" name="txtmensaje" type="text" class="form-control" data-user="{{ user.username }}">
   <span class="input-group-btn">
   <button class="btn btn-default" type="button">Enviar</button>
   </span>

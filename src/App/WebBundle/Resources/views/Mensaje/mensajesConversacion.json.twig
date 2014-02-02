@@ -5,6 +5,7 @@
     {
         "id":"{{ elemento.id }}",
         "mensaje": "{{ elemento.mensaje }}",
+        "usuario": "{{ elemento.usuario.username}}",
         "fechaRegistro": {% if elemento.fechaRegistro %}"{{ elemento.fechaRegistro|date('d-m-Y') }}"{% endif %}
     }
    {% if contador<entities|length %}

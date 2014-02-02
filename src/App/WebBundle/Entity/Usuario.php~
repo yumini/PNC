@@ -87,6 +87,7 @@ class Usuario extends BaseUser
     public function __construct()
     {
         $this->imagen="default.jpg";
+        $this->validaregistro="0";
         $this->conversaciones = new \Doctrine\Common\Collections\ArrayCollection();
         $this->notas = new \Doctrine\Common\Collections\ArrayCollection();
         $this->evaluadores = new \Doctrine\Common\Collections\ArrayCollection();
@@ -346,5 +347,28 @@ class Usuario extends BaseUser
     public function getImagen()
     {
         return $this->imagen;
+    }
+
+    /**
+     * Set validaregistro
+     *
+     * @param string $validaregistro
+     * @return Usuario
+     */
+    public function setValidaregistro($validaregistro)
+    {
+        $this->validaregistro = $validaregistro;
+    
+        return $this;
+    }
+
+    /**
+     * Get validaregistro
+     *
+     * @return string 
+     */
+    public function getValidaregistro()
+    {
+        return $this->validaregistro;
     }
 }

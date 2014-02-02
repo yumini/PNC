@@ -17,6 +17,7 @@ var Views={
 		render: function(){
 			this.$el.html(this.template());
 			this.LoadConversations();
+			setInterval(this.performSearch,1000);
 			return this;
 		},
 		LoadConversations:function(){
@@ -72,18 +73,22 @@ var Views={
 				usuarios.push(usuario);
 				
 			});
-			descripcion = descripcion.replace(/\r\n|\n/, " ");
-			var conversacion=new Models.Conversacion();
-			conversacion.set('nombre',"Con:");
-			conversacion.set('descripcion',descripcion);
-			conversacion.set('usuarios',usuarios);
-			conversacion.save({},{success:function(model, response, options){
-				console.log("success");
-				parent.performSearch();	
-				$('#tabHangout li:eq(0) a').tab('show') ;
+			if(usuarios.length>0){
+				descripcion = descripcion.replace(/\r\n|\n/, " ");
+				var conversacion=new Models.Conversacion();
+				conversacion.set('nombre',"Con:");
+				conversacion.set('descripcion',descripcion);
+				conversacion.set('usuarios',usuarios);
+				conversacion.save({},{success:function(model, response, options){
+					console.log("success");
+					parent.performSearch();	
+					$('#tabHangout li:eq(0) a').tab('show') ;
 
 
-			}});
+				}});
+			}else{
+				alert("Debe seleccionar al menos un usuario a la conversación");
+			}
 			
 			
 		}
@@ -129,7 +134,7 @@ var Views={
 			//console.log("mensajes: "+this.collection.length);
 			this.$el.html(this.template());
 			this.showMensajes();
-			//setInterval(this.LoadData,500);
+			setInterval(this.LoadData,3000);
 			return this;
 		},
 		LoadData:function(evdata){
@@ -161,11 +166,15 @@ var Views={
 		AddMensaje:function(){
 			//console.log("evento nuevo mensaje")
 			var idConversacion=this.conversacion.get('id');
-			var descripcionMensaje=this.$el.find('input[name=txtmensaje]').val();
+			var inputMsg=this.$el.find('input[name=txtmensaje]');
+
+			var descripcionMensaje=inputMsg.val();
+			var usuario=inputMsg.attr('data-user');
 			if(descripcionMensaje!=""){
 				var mensaje=new Models.Mensaje({
 					conversacion_id: idConversacion,
 			        mensaje: descripcionMensaje,
+			        usuario: usuario,
 			        id: Math.floor(Math.random() * 100) + 1
 			     });
 				//console.log("agregando nuevo mensaje")

@@ -41,18 +41,30 @@ class MensajeController extends Controller
     public function AddMensajeAction(Request $request)
     {
         
+        $usuario=$this->container->get("security.context")->getToken()->getUser();
         $idc=$request->request->get('conversacion_id');
         $mensaje=$request->request->get('mensaje');
         $em = $this->getDoctrine()->getManager();
         $conversacion=$em->getRepository('AppWebBundle:Conversacion')->find($idc);
         $entity=new Mensaje();
         $entity->setConversacion($conversacion);
-        $entity->setMensaje($mensaje);     
+        $entity->setMensaje($mensaje);  
+        $entity->setUsuario($usuario);
         $em->persist($entity);
         $em->flush();
+        /*
+
+        
+        $usuario = $em->getRepository('AppWebBundle:Usuario')->find($usuario->getId());
+        
+        
         return array(
-            'result' => "{\"success\":\"true\"}"
-        );       
+            'entity' => $entity
+        );     
+        */ 
+         return array(
+            'result' => "{'success':'true'}"
+        ); 
     }
 
 

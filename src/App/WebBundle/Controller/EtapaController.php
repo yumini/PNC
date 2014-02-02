@@ -133,9 +133,9 @@ class EtapaController extends Controller
     /**
      * Edits an existing Etapa entity.
      *
-     * @Route("/{id}/update", name="_admin_etapa_update")
-     * @Method("PUT")
-     * @Template("AppWebBundle:Etapa:edit.html.twig")
+     * @Route("/{id}/update", name="_admin_etapa_update", options={"expose"=true})
+     * @Method("POST")
+     * @Template("AppWebBundle:Default:result.json.twig")
      */
     public function updateAction(Request $request, $id)
     {
@@ -152,7 +152,7 @@ class EtapaController extends Controller
             $em->flush();
         }else{
             $result=false;
-            $msg="perfil no encontrado";
+            $msg="etapa no encontrado";
 
         }
         return array(
@@ -164,41 +164,31 @@ class EtapaController extends Controller
     /**
      * Deletes a Etapa entity.
      *
-     * @Route("/{id}", name="admin_etapa_delete")
+     * @Route("/{id}", name="_admin_etapa_delete", options={"expose"=true})
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id)
     {
-        $form = $this->createDeleteForm($id);
-        $form->bind($request);
-
-        if ($form->isValid()) {
+            $msg="Se elimino el registro satisfactoriamente";
+            $result=true;
             $em = $this->getDoctrine()->getManager();
+            
             $entity = $em->getRepository('AppWebBundle:Etapa')->find($id);
-
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Etapa entity.');
+            if($entity)
+            {
+                $em->remove($entity);
+                $em->flush();
+            
+            }else{
+                $msg="No se encontro el registro"; 
+                $result=false;
             }
+            return array(
+            'result' => "{success:'$result',message:'$msg'}"
 
-            $em->remove($entity);
-            $em->flush();
-        }
+            );
 
-        return $this->redirect($this->generateUrl('admin_etapa'));
     }
 
-    /**
-     * Creates a form to delete a Etapa entity by id.
-     *
-     * @param mixed $id The entity id
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createDeleteForm($id)
-    {
-        return $this->createFormBuilder(array('id' => $id))
-            ->add('id', 'hidden')
-            ->getForm()
-        ;
-    }
+    
 }
