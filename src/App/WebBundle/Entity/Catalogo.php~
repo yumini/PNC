@@ -63,37 +63,37 @@ class Catalogo
     private $estado;
 
     /**
-    * @ORM\OneToMany(targetEntity="PostulanteContacto", mappedBy="catalogo")
+    * @ORM\OneToMany(targetEntity="PostulanteContacto", mappedBy="postulantecontacto")
     */
     protected $postulantecatalogos;
     
     /**
-    * @ORM\OneToMany(targetEntity="Usuario", mappedBy="catalogo")
+    * @ORM\OneToMany(targetEntity="Usuario", mappedBy="tipoDocumento")
     */
     protected $tdicatalogos;
     
     /**
-    * @ORM\OneToMany(targetEntity="ConflictoInteresEvaluador", mappedBy="catalogo")
+    * @ORM\OneToMany(targetEntity="ConflictoInteresEvaluador", mappedBy="tipoVinculo")
     */
     protected $tvicatalogos;
     
     /**
-    * @ORM\OneToMany(targetEntity="ConcursoCriterio", mappedBy="catalogo")
+    * @ORM\OneToMany(targetEntity="ConcursoCriterio", mappedBy="tipoCriterio")
     */
     protected $tcccatalogos;
     
     /**
-    * @ORM\OneToMany(targetEntity="ConcursoCriterio", mappedBy="catalogo")
+    * @ORM\OneToMany(targetEntity="ConcursoCriterio", mappedBy="tipoArbolCriterio")
     */
     protected $tcacatalogos;
     
     /**
-    * @ORM\OneToMany(targetEntity="Evaluador", mappedBy="catalogo")
+    * @ORM\OneToMany(targetEntity="Evaluador", mappedBy="evaluadorsexo")
     */
     protected $tsxcatalogos;
 
     /**
-    * @ORM\OneToMany(targetEntity="Concurso", mappedBy="catalogo")
+    * @ORM\OneToMany(targetEntity="Concurso", mappedBy="tipoConcurso")
     */
     protected $concursos;
     
@@ -118,7 +118,7 @@ class Catalogo
     private $postulanteCategorias;
     
     /**
-    * @ORM\OneToMany(targetEntity="EvaluadorDisponibilidad", mappedBy="dias")
+    * @ORM\OneToMany(targetEntity="EvaluadorDisponibilidad", mappedBy="dia")
     */
     private $diasdisponiblesEvaluador;
     

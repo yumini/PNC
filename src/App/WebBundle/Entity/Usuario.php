@@ -79,7 +79,12 @@ class Usuario extends BaseUser
     protected $evaluadores;
 
      /**
-     * @ORM\ManyToMany(targetEntity="Conversacion", inversedBy="Usuario")
+    * @ORM\OneToMany(targetEntity="Postulante", mappedBy="usuario")
+    */
+    protected $postulantes;
+
+     /**
+     * @ORM\ManyToMany(targetEntity="Conversacion")
      * @ORM\JoinTable(name="participante")
      */
     private $conversaciones;
@@ -91,6 +96,7 @@ class Usuario extends BaseUser
         $this->conversaciones = new \Doctrine\Common\Collections\ArrayCollection();
         $this->notas = new \Doctrine\Common\Collections\ArrayCollection();
         $this->evaluadores = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->postulantes = new \Doctrine\Common\Collections\ArrayCollection();
         parent::__construct();
     }
     
@@ -370,5 +376,72 @@ class Usuario extends BaseUser
     public function getValidaregistro()
     {
         return $this->validaregistro;
+    }
+
+
+    /**
+     * Add evaluadores
+     *
+     * @param \App\WebBundle\Entity\Evaluador $evaluadores
+     * @return Usuario
+     */
+    public function addPostulantes(\App\WebBundle\Entity\Evaluador $evaluadores)
+    {
+        $this->evaluadores[] = $evaluadores;
+    
+        return $this;
+    }
+
+    /**
+     * Remove evaluadores
+     *
+     * @param \App\WebBundle\Entity\Evaluador $evaluadores
+     */
+    public function removePostulantes(\App\WebBundle\Entity\Evaluador $evaluadores)
+    {
+        $this->evaluadores->removeElement($evaluadores);
+    }
+
+    /**
+     * Get evaluadores
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPostulantess()
+    {
+        return $this->evaluadores;
+    }
+
+    /**
+     * Add postulantes
+     *
+     * @param \App\WebBundle\Entity\Postulante $postulantes
+     * @return Usuario
+     */
+    public function addPostulante(\App\WebBundle\Entity\Postulante $postulantes)
+    {
+        $this->postulantes[] = $postulantes;
+    
+        return $this;
+    }
+
+    /**
+     * Remove postulantes
+     *
+     * @param \App\WebBundle\Entity\Postulante $postulantes
+     */
+    public function removePostulante(\App\WebBundle\Entity\Postulante $postulantes)
+    {
+        $this->postulantes->removeElement($postulantes);
+    }
+
+    /**
+     * Get postulantes
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPostulantes()
+    {
+        return $this->postulantes;
     }
 }

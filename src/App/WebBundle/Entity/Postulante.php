@@ -85,7 +85,7 @@ class Postulante
     
    
     /**
-    * @ORM\OneToMany(targetEntity="Postulante", mappedBy="postulantecontacto")
+    * @ORM\OneToMany(targetEntity="PostulanteContacto", mappedBy="postulante")
     */
     protected $postulantes;
     
@@ -95,7 +95,7 @@ class Postulante
     protected $inscripciones;
     
     /**
-     * @ORM\ManyToMany(targetEntity="Catalogo", inversedBy="categoriasPostulante")
+     * @ORM\ManyToMany(targetEntity="Catalogo")
      * @ORM\JoinTable(name="postulantecategoria")
      */
     private $categorias;

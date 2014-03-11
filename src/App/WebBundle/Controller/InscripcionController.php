@@ -9,6 +9,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use App\WebBundle\Entity\Inscripcion;
 use App\WebBundle\Form\InscripcionType;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Inscripcion controller.
@@ -35,6 +37,26 @@ class InscripcionController extends Controller
             'entities' => $entities,
         );
     }
+
+    /**
+     * Lists all GrupoEvaluacionPostulante entities.
+     *
+     * @Route("/json/rest", name="_admin_json_inscripcion", options={"expose"=true})
+     * @Method("GET")
+     */
+    public function json_indexAction(Request $request)
+    {
+        
+        $em = $this->getDoctrine()->getManager();
+        $concurso_id=$request->query->get('concurso_id');
+        $postulante_id=$request->query->get('postulante_id');
+
+        $entities = $em->getRepository('AppWebBundle:Inscripcion')
+            ->findByConcursoAndPostulante($concurso_id,$postulante_id,true);
+        
+        return new JsonResponse($entities);
+    }
+
     /**
      * Creates a new Inscripcion entity.
      *

@@ -13,7 +13,7 @@ use App\WebBundle\Form\ConcursoSubcriterioType;
 use App\WebBundle\Form\ConcursoAreaAnalisisType;
 use App\WebBundle\Form\ConcursoPreguntaType;
 use App\WebBundle\Services\ConcursoCriterioService;
-
+use Symfony\Component\HttpFoundation\JsonResponse;
 /**
  * ConcursoCriterio controller.
  *
@@ -23,20 +23,50 @@ class ConcursoCriterioController extends Controller
 {
 
      /**
-     * @Route("/json/{id}", name="_admin_concurso_criterio_json", options={"expose"=true})
+     * @Route("/tree/{id}", name="_admin_concurso_criterio_json", options={"expose"=true})
      * @Method("GET")
      * @Template("AppWebBundle:Default:result.json.twig")
      */
-    public function treeAction($id)
+    public function treeAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
-        
+        $nivel=$request->query->get('nivel');
         $service=new ConcursoCriterioService($em);
-        $json=$service->GetTreeJSON($id);
+        $json=$service->GetTreeJSON($id,$nivel);
 
         return array(
             'result' => $json
             );
+    }
+
+    /**
+     * @Route("/json/rest", name="_admin_json_concurso_criterio", options={"expose"=true})
+     * @Method("GET")
+     * @Template("AppWebBundle:Default:result.json.twig")
+     */
+    public function json_indexAction(Request $request)
+    {
+        $id=$request->query->get('concurso_id');
+        $em = $this->getDoctrine()->getManager();
+        
+        $entities=$em->getRepository('AppWebBundle:ConcursoCriterio')->FindByConcurso($id,true);
+        return new JsonResponse($entities);
+    }
+
+    /**
+     * @Route("/json/rest/{id}", name="_admin_json_concursocriterio_show", options={"expose"=true})
+     * @Method("GET")
+     * @Template("AppWebBundle:Default:result.json.twig")
+     */
+    public function json_showAction(Request $request,$id)
+    {
+        
+        $em = $this->getDoctrine()->getManager();
+        $entity=$em->getRepository("AppWebBundle:ConcursoCriterio")->find($id);
+        $entityArray=$em->getRepository("AppWebBundle:ConcursoCriterio")->findArray($id);
+        $entities=$em->getRepository('AppWebBundle:ConcursoCriterio')->FindByParentId($entity->getConcurso()->getId(),$id,true);
+        $entityArray[0]['children']=$entities;
+        return new JsonResponse($entityArray[0]);
     }
     /**
      * Lists all ConcursoCriterio entities.

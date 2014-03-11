@@ -103,6 +103,29 @@ class ConcursoCriterio
     protected $concurso;
     
     /**
+    * @ORM\OneToMany(targetEntity="AspectoClave", mappedBy="criterio")
+    */
+    protected $aspectosclaves;
+
+    /**
+    * @ORM\OneToMany(targetEntity="CriterioAspectoClave", mappedBy="criterio")
+    */
+    protected $criteriosaspectosclaves;
+    /**
+    * @ORM\OneToMany(targetEntity="Respuesta", mappedBy="criterio")
+    */
+    protected $respuestas;
+    
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->aspectosclaves = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    /**
      * Get id
      *
      * @return integer 
@@ -118,7 +141,7 @@ class ConcursoCriterio
      * @param integer $idpadre
      * @return ConcursoCriterio
      */
-    public function setidpadre($idpadre)
+    public function setIdpadre($idpadre)
     {
         $this->idpadre = $idpadre;
     
@@ -130,7 +153,7 @@ class ConcursoCriterio
      *
      * @return integer 
      */
-    public function getidpadre()
+    public function getIdpadre()
     {
         return $this->idpadre;
     }
@@ -386,5 +409,104 @@ class ConcursoCriterio
     public function getConcurso()
     {
         return $this->concurso;
+    }
+
+    /**
+     * Add aspectosclaves
+     *
+     * @param \App\WebBundle\Entity\AspectoClave $aspectosclaves
+     * @return ConcursoCriterio
+     */
+    public function addAspectosclave(\App\WebBundle\Entity\AspectoClave $aspectosclaves)
+    {
+        $this->aspectosclaves[] = $aspectosclaves;
+    
+        return $this;
+    }
+
+    /**
+     * Remove aspectosclaves
+     *
+     * @param \App\WebBundle\Entity\AspectoClave $aspectosclaves
+     */
+    public function removeAspectosclave(\App\WebBundle\Entity\AspectoClave $aspectosclaves)
+    {
+        $this->aspectosclaves->removeElement($aspectosclaves);
+    }
+
+    /**
+     * Get aspectosclaves
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getAspectosclaves()
+    {
+        return $this->aspectosclaves;
+    }
+
+    /**
+     * Add respuestas
+     *
+     * @param \App\WebBundle\Entity\Respuesta $respuestas
+     * @return ConcursoCriterio
+     */
+    public function addRespuesta(\App\WebBundle\Entity\Respuesta $respuestas)
+    {
+        $this->respuestas[] = $respuestas;
+    
+        return $this;
+    }
+
+    /**
+     * Remove respuestas
+     *
+     * @param \App\WebBundle\Entity\Respuesta $respuestas
+     */
+    public function removeRespuesta(\App\WebBundle\Entity\Respuesta $respuestas)
+    {
+        $this->respuestas->removeElement($respuestas);
+    }
+
+    /**
+     * Get respuestas
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getRespuestas()
+    {
+        return $this->respuestas;
+    }
+
+    /**
+     * Add criteriosaspectosclaves
+     *
+     * @param \App\WebBundle\Entity\CriterioAspectoClave $criteriosaspectosclaves
+     * @return ConcursoCriterio
+     */
+    public function addCriteriosaspectosclave(\App\WebBundle\Entity\CriterioAspectoClave $criteriosaspectosclaves)
+    {
+        $this->criteriosaspectosclaves[] = $criteriosaspectosclaves;
+    
+        return $this;
+    }
+
+    /**
+     * Remove criteriosaspectosclaves
+     *
+     * @param \App\WebBundle\Entity\CriterioAspectoClave $criteriosaspectosclaves
+     */
+    public function removeCriteriosaspectosclave(\App\WebBundle\Entity\CriterioAspectoClave $criteriosaspectosclaves)
+    {
+        $this->criteriosaspectosclaves->removeElement($criteriosaspectosclaves);
+    }
+
+    /**
+     * Get criteriosaspectosclaves
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getCriteriosaspectosclaves()
+    {
+        return $this->criteriosaspectosclaves;
     }
 }

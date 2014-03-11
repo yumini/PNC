@@ -22,6 +22,25 @@ jAjax.prototype={
                     $("#"+contentId).html("Ocurrio un error intentelo nuevamente.");
             }
         });
+    },
+    LoadWithFnSuccess:function(url,contentId,method,params,fnSuccess){
+        
+        $("#"+contentId).html("<div class='home-loading'>Cargando...</div>") ;
+        $.ajax({
+            type:method,
+            url:url,
+            data:params,
+            dataType:"html",
+
+            success:function(datos){
+                    $("#"+contentId).empty();
+                    $("#"+contentId).append(datos);
+                    setTimeout(fnSuccess(),2000);
+            },
+            error:function(objeto, quepaso, otroobj){
+                    $("#"+contentId).html("Ocurrio un error intentelo nuevamente.");
+            }
+        });
     }
 		
 }

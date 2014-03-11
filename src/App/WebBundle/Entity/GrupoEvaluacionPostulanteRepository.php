@@ -12,18 +12,24 @@ use Doctrine\ORM\EntityRepository;
  */
 class GrupoEvaluacionPostulanteRepository extends EntityRepository
 {
-    public function FindByGrupo($id){
+    public function FindByGrupo($id,$isarray=false){
         $em=$this->getEntityManager();
-        $dql= "SELECT gee FROM AppWebBundle:GrupoEvaluacionPostulante gee 
+        $dql= "SELECT gee,g,c,p FROM AppWebBundle:GrupoEvaluacionPostulante gee 
+                JOIN gee.postulante p
                 JOIN gee.grupo g
-                WHERE g.id=:id ";
+                JOIN g.concurso c
+                WHERE g.id=:id or 0=:id ";
         $query=$em->createQuery($dql)->setParameter('id', $id);
         try {
-                return $query->getResult();
+                if($isarray)
+                    return $query->getArrayResult();
+                else
+                    return $query->getResult();
         } catch (\Doctrine\ORM\NoResultException $e) {
                 return null;
         }
     }
+    
     public function FindPostulantesDisponibles($id){       
         $conn = $this->getEntityManager()->getConnection('database_connection');//create a connection with your DB
         $sql="select p.* from postulante p inner JOIN inscripcion i on i.postulante_id=p.id

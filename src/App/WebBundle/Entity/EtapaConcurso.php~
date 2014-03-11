@@ -222,4 +222,50 @@ class EtapaConcurso
     {
         return $this->fechaActualizacion;
     }
+
+    /**
+     * Set etapa
+     *
+     * @param \App\WebBundle\Entity\Etapa $etapa
+     * @return EtapaConcurso
+     */
+    public function setEtapa(\App\WebBundle\Entity\Etapa $etapa = null)
+    {
+        $this->etapa = $etapa;
+    
+        return $this;
+    }
+
+    /**
+     * Get etapa
+     *
+     * @return \App\WebBundle\Entity\Etapa 
+     */
+    public function getEtapa()
+    {
+        return $this->etapa;
+    }
+
+    /**
+     * Set concurso
+     *
+     * @param \App\WebBundle\Entity\Concurso $concurso
+     * @return EtapaConcurso
+     */
+    public function setConcurso(\App\WebBundle\Entity\Concurso $concurso = null)
+    {
+        $this->concurso = $concurso;
+    
+        return $this;
+    }
+
+    /**
+     * Get concurso
+     *
+     * @return \App\WebBundle\Entity\Concurso 
+     */
+    public function getConcurso()
+    {
+        return $this->concurso;
+    }
 }

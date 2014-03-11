@@ -44,4 +44,24 @@ class InscripcionRepository extends EntityRepository
                 return null;
         }
     }
+    public function findByConcursoAndPostulante($idConcurso,$idPostulante,$isArray=false){
+        $em=$this->getEntityManager();
+        $dql= "
+        SELECT i FROM AppWebBundle:Inscripcion i
+        JOIN i.concurso c 
+        JOIN i.postulante p
+        WHERE   p.id=:codPostulante
+        AND     c.id=:codConcurso";
+        $query=$em->createQuery($dql)
+                  ->setParameter('codPostulante', $idPostulante)
+                  ->setParameter('codConcurso', $idConcurso);
+        try {
+                if($isArray)
+                    return $query->getArrayResult();
+                else
+                    return $query->getResult();
+        } catch (\Doctrine\ORM\NoResultException $e) {
+                return null;
+        }
+    }
 }

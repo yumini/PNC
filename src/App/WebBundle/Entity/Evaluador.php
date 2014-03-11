@@ -203,7 +203,7 @@ class Evaluador
     private $grupos;
     
     /**
-    * @ORM\OneToMany(targetEntity="Evaluador", mappedBy="conflictointeresevaluador")
+    * @ORM\OneToMany(targetEntity="ConflictoInteresEvaluador", mappedBy="evaluador")
     */
     protected $evaluadores;
 
@@ -225,7 +225,7 @@ class Evaluador
     private $diasdisponibles;
     
     /**
-    * @ORM\OneToMany(targetEntity="InscripcionEvaluador", mappedBy="postulante")
+    * @ORM\OneToMany(targetEntity="InscripcionEvaluador", mappedBy="evaluador")
     */
     protected $inscripciones;
     

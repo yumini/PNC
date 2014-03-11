@@ -82,14 +82,10 @@ class Postulante
     * @ORM\JoinColumn(name="usuario_id", referencedColumnName="id")
     */
     private $usuario;
-    /**
-     * @ORM\ManyToMany(targetEntity="GrupoEvaluacion", inversedBy="Postulante")
-     * @ORM\JoinTable(name="postulantegrupo")
-     */
-    private $grupos;
+    
    
     /**
-    * @ORM\OneToMany(targetEntity="Postulante", mappedBy="postulantecontacto")
+    * @ORM\OneToMany(targetEntity="Postulante", mappedBy="postulantes")
     */
     protected $postulantes;
     
@@ -99,10 +95,15 @@ class Postulante
     protected $inscripciones;
     
     /**
-     * @ORM\ManyToMany(targetEntity="Catalogo", inversedBy="categoriasPostulante")
+     * @ORM\ManyToMany(targetEntity="Catalogo")
      * @ORM\JoinTable(name="postulantecategoria")
      */
     private $categorias;
+    
+    /**
+    * @ORM\OneToMany(targetEntity="GrupoEvaluacionEvaluador", mappedBy="evaluador")
+    */
+    private $grupos;
     
     public function __construct() {
         $this->grupos = new \Doctrine\Common\Collections\ArrayCollection();
@@ -433,5 +434,38 @@ class Postulante
             return 1;
                 
         return 0;
+    }
+
+    /**
+     * Add categorias
+     *
+     * @param \App\WebBundle\Entity\Catalogo $categorias
+     * @return Postulante
+     */
+    public function addCategoria(\App\WebBundle\Entity\Catalogo $categorias)
+    {
+        $this->categorias[] = $categorias;
+    
+        return $this;
+    }
+
+    /**
+     * Remove categorias
+     *
+     * @param \App\WebBundle\Entity\Catalogo $categorias
+     */
+    public function removeCategoria(\App\WebBundle\Entity\Catalogo $categorias)
+    {
+        $this->categorias->removeElement($categorias);
+    }
+
+    /**
+     * Get categorias
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getCategorias()
+    {
+        return $this->categorias;
     }
 }

@@ -9,7 +9,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use App\WebBundle\Entity\Concurso;
 use App\WebBundle\Form\ConcursoType;
-
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 /**
  * Concurso controller.
  *
@@ -59,6 +60,37 @@ class ConcursoController extends Controller
             'title_list'=> "Listado de Concursos",
             'action'=> "concurso"
         );
+    }
+
+    
+    /**
+     * Lists all Concurso entities.
+     *
+     * @Route("/json/rest", name="_admin_json_concurso", options={"expose"=true})
+     * @Method("GET")
+     * @Template("AppWebBundle:Default:entity.json.twig")
+     */
+    public function json_indexAction(Request $request)
+    {
+        set_time_limit(300);
+        ini_set("memory_limit","512M");
+        $em = $this->getDoctrine()->getManager();
+        $entities = $em->getRepository('AppWebBundle:Concurso')->FindAllToArray();
+        
+        $result=json_encode($entities); 
+        
+        //$response = new Response(json_encode((array)$entities));
+        //$response->headers->set('Content-Type', 'application/json');
+        //return $response;
+        //$serializedEntity = $this->container->get('serializer')->serialize($entities, 'json');
+        //return new Response($serializedEntity);
+        return array("entity"=>$entities);
+        //$serializer = $this->get('serializer');
+        //$json = $serializer->serialize($entities, 'json');
+        
+        //$response = new Response($json);
+        //$response->headers->set('Content-Type', 'application/json');
+        //return $response;
     }
     /**
      * Creates a new Concurso entity.

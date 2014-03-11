@@ -260,10 +260,10 @@ class GrupoEvaluacion
     /**
      * Add postulantes
      *
-     * @param \App\WebBundle\Entity\GrupoEvaluacionEPostulante $postulantes
+     * @param \App\WebBundle\Entity\GrupoEvaluacionPostulante $postulantes
      * @return GrupoEvaluacion
      */
-    public function addPostulante(\App\WebBundle\Entity\GrupoEvaluacionEPostulante $postulantes)
+    public function addPostulante(\App\WebBundle\Entity\GrupoEvaluacionPostulante $postulantes)
     {
         $this->postulantes[] = $postulantes;
     
@@ -273,9 +273,9 @@ class GrupoEvaluacion
     /**
      * Remove postulantes
      *
-     * @param \App\WebBundle\Entity\GrupoEvaluacionEPostulante $postulantes
+     * @param \App\WebBundle\Entity\GrupoEvaluacionPostulante $postulantes
      */
-    public function removePostulante(\App\WebBundle\Entity\GrupoEvaluacionEPostulante $postulantes)
+    public function removePostulante(\App\WebBundle\Entity\GrupoEvaluacionPostulante $postulantes)
     {
         $this->postulantes->removeElement($postulantes);
     }

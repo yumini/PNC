@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * EvaluadorDisponibilidad
  *
- * @ORM\Table()
+ * @ORM\Table(name="evaluadordisponibilidad")
  * @ORM\Entity(repositoryClass="App\WebBundle\Entity\EvaluadorDisponibilidadRepository")
  */
 class EvaluadorDisponibilidad
@@ -24,21 +24,21 @@ class EvaluadorDisponibilidad
     /**
      * @var string
      *
-     * @ORM\Column(name="manana", type="string", length=1)
+     * @ORM\Column(name="manana",type="boolean")
      */
     private $manana;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="tarde", type="string", length=1)
+     * @ORM\Column(name="tarde",type="boolean")
      */
     private $tarde;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="noche", type="string", length=1)
+     * @ORM\Column(name="noche",type="boolean")
      */
     private $noche;
 
@@ -53,6 +53,14 @@ class EvaluadorDisponibilidad
     * @ORM\JoinColumn(name="evaluador_id", referencedColumnName="id")
     */
     protected $evaluador;
+    
+    public function __construct()
+    {
+       $this->manana = false;
+       $this->tarde = false;
+       $this->noche = false;
+    }
+    
     /**
      * Get id
      *
@@ -153,5 +161,51 @@ class EvaluadorDisponibilidad
     public function getDias()
     {
         return $this->dias;
+    }
+
+    /**
+     * Set dia
+     *
+     * @param \App\WebBundle\Entity\Catalogo $dia
+     * @return EvaluadorDisponibilidad
+     */
+    public function setDia(\App\WebBundle\Entity\Catalogo $dia = null)
+    {
+        $this->dia = $dia;
+    
+        return $this;
+    }
+
+    /**
+     * Get dia
+     *
+     * @return \App\WebBundle\Entity\Catalogo 
+     */
+    public function getDia()
+    {
+        return $this->dia;
+    }
+
+    /**
+     * Set evaluador
+     *
+     * @param \App\WebBundle\Entity\Evaluador $evaluador
+     * @return EvaluadorDisponibilidad
+     */
+    public function setEvaluador(\App\WebBundle\Entity\Evaluador $evaluador = null)
+    {
+        $this->evaluador = $evaluador;
+    
+        return $this;
+    }
+
+    /**
+     * Get evaluador
+     *
+     * @return \App\WebBundle\Entity\Evaluador 
+     */
+    public function getEvaluador()
+    {
+        return $this->evaluador;
     }
 }

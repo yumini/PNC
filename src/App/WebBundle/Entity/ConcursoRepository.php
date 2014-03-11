@@ -29,4 +29,14 @@ class ConcursoRepository extends EntityRepository
                 return null;
         }
     }
+    public function FindAllToArray(){
+        $em=$this->getEntityManager();
+        $dql   = "SELECT p FROM AppWebBundle:Concurso p";
+        $query = $em->createQuery($dql);
+        try {
+                return $query->getArrayResult();
+        } catch (\Doctrine\ORM\NoResultException $e) {
+                return null;
+        }
+    }
 }

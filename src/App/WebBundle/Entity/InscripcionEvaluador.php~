@@ -3,11 +3,11 @@
 namespace App\WebBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Gedmo\Mapping\Annotation as Gedmo; 
 /**
  * InscripcionEvaluador
  *
- * @ORM\Table()
+ * @ORM\Table(name="inscripcionevaluador")
  * @ORM\Entity(repositoryClass="App\WebBundle\Entity\InscripcionEvaluadorRepository")
  */
 class InscripcionEvaluador
@@ -23,15 +23,15 @@ class InscripcionEvaluador
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(name="fechaCreacion", type="date")
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(name="fechaRegistro", type="datetime")
      */
-    private $fechaCreacion;
+    private $fechaRegistro;
 
     /**
-     * @var Date
-     *
-     * @ORM\Column(name="fechaActualizacion", type="Date")
+     * @var \DateTime
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(name="fechaActualizacion", type="datetime")
      */
     private $fechaActualizacion;
 
@@ -43,7 +43,7 @@ class InscripcionEvaluador
     
     /**
     * @ORM\ManyToOne(targetEntity="Evaluador", inversedBy="inscripciones")
-    * @ORM\JoinColumn(name="postulante_id", referencedColumnName="id")
+    * @ORM\JoinColumn(name="evaluador_id", referencedColumnName="id")
     */
     private $evaluador;
     /**
@@ -100,5 +100,51 @@ class InscripcionEvaluador
     public function getFechaActualizacion()
     {
         return $this->fechaActualizacion;
+    }
+
+    /**
+     * Set concurso
+     *
+     * @param \App\WebBundle\Entity\Concurso $concurso
+     * @return InscripcionEvaluador
+     */
+    public function setConcurso(\App\WebBundle\Entity\Concurso $concurso = null)
+    {
+        $this->concurso = $concurso;
+    
+        return $this;
+    }
+
+    /**
+     * Get concurso
+     *
+     * @return \App\WebBundle\Entity\Concurso 
+     */
+    public function getConcurso()
+    {
+        return $this->concurso;
+    }
+
+    /**
+     * Set evaluador
+     *
+     * @param \App\WebBundle\Entity\Evaluador $evaluador
+     * @return InscripcionEvaluador
+     */
+    public function setEvaluador(\App\WebBundle\Entity\Evaluador $evaluador = null)
+    {
+        $this->evaluador = $evaluador;
+    
+        return $this;
+    }
+
+    /**
+     * Get evaluador
+     *
+     * @return \App\WebBundle\Entity\Evaluador 
+     */
+    public function getEvaluador()
+    {
+        return $this->evaluador;
     }
 }

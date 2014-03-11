@@ -24,6 +24,20 @@ class GrupoEvaluacionEvaluadorRepository extends EntityRepository
                 return null;
         }
     }
+
+    public function AllGroupByEvaluador($id){
+        $em=$this->getEntityManager();
+        $dql= "SELECT ge FROM AppWebBundle:GrupoEvaluacion ge 
+                JOIN ge.evaluadores gee
+                JOIN gee.evaluador e
+                WHERE e.id=:id ";
+        $query=$em->createQuery($dql)->setParameter('id', $id);
+        try {
+                return $query->getResult();
+        } catch (\Doctrine\ORM\NoResultException $e) {
+                return null;
+        }
+    }
     public function FindEvaluadoresDisponibles($id){       
         $conn = $this->getEntityManager()->getConnection('database_connection');//create a connection with your DB
         $sql="select e.* from evaluador e inner JOIN inscripcionevaluador ie on ie.evaluador_id=e.id

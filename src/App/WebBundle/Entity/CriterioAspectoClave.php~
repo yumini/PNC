@@ -1,0 +1,44 @@
+<?php
+
+namespace App\WebBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * CriterioAspectoClave
+ *
+ * @ORM\Table()
+ * @ORM\Entity(repositoryClass="App\WebBundle\Entity\CriterioAspectoClaveRepository")
+ */
+class CriterioAspectoClave
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+    * @ORM\ManyToOne(targetEntity="ConcursoCriterio", inversedBy="criteriosaspectosclaves")
+    * @ORM\JoinColumn(name="concursocriterio_id", referencedColumnName="id")
+    */
+    protected $criterio;
+
+    /**
+    * @ORM\ManyToOne(targetEntity="AspectoClave", inversedBy="criteriosaspectosclaves")
+    * @ORM\JoinColumn(name="concursocriterio_id", referencedColumnName="id")
+    */
+    protected $aspectoclave;
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+}

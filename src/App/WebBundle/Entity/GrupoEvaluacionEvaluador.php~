@@ -58,6 +58,11 @@ class GrupoEvaluacionEvaluador
      *
      * @return integer 
      */
+    public function __construct()
+    {
+        $this->lider ='0';
+       
+    }
     public function getId()
     {
         return $this->id;
@@ -153,5 +158,28 @@ class GrupoEvaluacionEvaluador
     public function getEvaluador()
     {
         return $this->evaluador;
+    }
+
+    /**
+     * Set lider
+     *
+     * @param boolean $lider
+     * @return GrupoEvaluacionEvaluador
+     */
+    public function setLider($lider)
+    {
+        $this->lider = $lider;
+    
+        return $this;
+    }
+
+    /**
+     * Get lider
+     *
+     * @return boolean 
+     */
+    public function getLider()
+    {
+        return $this->lider;
     }
 }

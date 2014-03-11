@@ -1,7 +1,7 @@
 <?php
 
 namespace App\WebBundle\Entity;
-
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -23,17 +23,17 @@ class Perfil
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="nombre", type="string", length=50)
+     * @Assert\NotBlank
+     * @ORM\Column(name="nombre", type="string", length=50,nullable=false)
      */
     private $nombre;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="descripcion", type="string", length=300)
+     * @ORM\Column(name="descripcion", type="string", length=300, nullable=true)
      */
-    private $descripcion="";
+    private $descripcion;
 
     /**
      * @var string
@@ -53,6 +53,8 @@ class Perfil
     protected $usuarios;
 
     public function __construct(){
+        $this->estado=1;
+        $this->descripcion='';
         $this->usuarios=new \Doctrine\Common\Collections\ArrayCollection();
         $this->menus=new \Doctrine\Common\Collections\ArrayCollection();
     }

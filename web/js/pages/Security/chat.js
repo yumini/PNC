@@ -17,7 +17,7 @@ var Views={
 		render: function(){
 			this.$el.html(this.template());
 			this.LoadConversations();
-			setInterval(this.performSearch,1000);
+			//setInterval(this.performSearch,1000);
 			return this;
 		},
 		LoadConversations:function(){
@@ -134,7 +134,7 @@ var Views={
 			//console.log("mensajes: "+this.collection.length);
 			this.$el.html(this.template());
 			this.showMensajes();
-			setInterval(this.LoadData,3000);
+			//setInterval(this.LoadData,3000);
 			return this;
 		},
 		LoadData:function(evdata){
@@ -282,14 +282,8 @@ $(document).ready(function() {
 	var usuariosChat = new Views.UsuariosChat();
 	usuariosChat.setElement($('#ini-tabHangout-3')).render();
 
-	$('#HangoutHeading').click(function() {
-	    if($("#Hangout").hasClass("showHangout")) {
-        	$("#Hangout").animate({bottom:-405});
-        	$("#Hangout").removeClass("showHangout");
-	    } else {
-	        $("#Hangout").animate({bottom:0});
-	        $("#Hangout").addClass("showHangout");
-	    }
+	$('#HangoutButton').click(function() {
+		$("#Hangout").toggle();
 	    return false;
 	 });
 

@@ -248,4 +248,37 @@ class Etapa
     {
         return $this->orden;
     }
+
+    /**
+     * Add etapasconcurso
+     *
+     * @param \App\WebBundle\Entity\EtapaConcurso $etapasconcurso
+     * @return Etapa
+     */
+    public function addEtapasconcurso(\App\WebBundle\Entity\EtapaConcurso $etapasconcurso)
+    {
+        $this->etapasconcurso[] = $etapasconcurso;
+    
+        return $this;
+    }
+
+    /**
+     * Remove etapasconcurso
+     *
+     * @param \App\WebBundle\Entity\EtapaConcurso $etapasconcurso
+     */
+    public function removeEtapasconcurso(\App\WebBundle\Entity\EtapaConcurso $etapasconcurso)
+    {
+        $this->etapasconcurso->removeElement($etapasconcurso);
+    }
+
+    /**
+     * Get etapasconcurso
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getEtapasconcurso()
+    {
+        return $this->etapasconcurso;
+    }
 }

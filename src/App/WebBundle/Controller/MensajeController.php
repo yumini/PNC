@@ -20,7 +20,7 @@ class MensajeController extends Controller
 
      /**
      * @Route("/conversacion",defaults={"_format"="json"},name="_admin_mensajes_conversacion", options={"expose"=true})
-     * @Template()
+     * @Template("AppWebBundle:Mensaje:mensajesConversacion.json.twig")
      */
     public function MensajesConversacionAction(Request $request)
     {

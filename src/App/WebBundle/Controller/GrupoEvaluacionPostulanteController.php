@@ -9,7 +9,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use App\WebBundle\Entity\GrupoEvaluacionPostulante;
 use App\WebBundle\Form\GrupoEvaluacionPostulanteType;
-
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 /**
  * GrupoEvaluacionPostulante controller.
  *
@@ -35,6 +36,27 @@ class GrupoEvaluacionPostulanteController extends Controller
             'entities' => $entities,
         );
     }
+
+    /**
+     * Lists all GrupoEvaluacionPostulante entities.
+     *
+     * @Route("/json/rest", name="_admin_json_grupoevaluacionpostulante", options={"expose"=true})
+     * @Method("GET")
+     */
+    public function json_indexAction(Request $request)
+    {
+        
+        $em = $this->getDoctrine()->getManager();
+        $grupo_id=$request->query->get('grupo_id');
+        //$grupo_id=2;
+        $entities = $em->getRepository('AppWebBundle:GrupoEvaluacionPostulante')->FindByGrupo($grupo_id,true);
+        $response = new Response(json_encode($entities));
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+
+        
+    }
+
     /**
      * Creates a new GrupoEvaluacionPostulante entity.
      *

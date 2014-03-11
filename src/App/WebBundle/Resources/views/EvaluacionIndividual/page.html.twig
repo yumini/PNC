@@ -1,0 +1,205 @@
+<div id="containerEtapaIndividual" class="container-fluid">
+	<div class="row">
+		<div class="col-md-4">
+			<label>Grupo:</label>
+			<select id="cmbGrupo" name="cmbGrupo" class="form-control">
+				
+				{% for entity in groups %}
+					<option value="{{entity.id}}">{{entity.nombre}}</option>
+				{% endfor %}
+			</select>
+		</div>
+		<div class="col-md-4">
+			<label>Postulante:</label>
+			<select id="cmbPostulante" class="form-control">
+				
+			</select>
+			<script type="text/template" id="itemOption_template">
+				  
+			</script>
+		</div>
+		<div class="col-md-4">
+			<label>Proyecto:</label>
+			 <select id="cmbProyecto" class="form-control">
+			</select>
+			
+		</div>
+		
+	</div>
+	<br/>
+	<div class="row">
+		<div class="col-md-4">
+			<div class="panel panel-default">
+				 
+			    <nav class="navbar navbar-default" role="navigation" style="z-index:0">
+			        <div class="navbar-header">
+			          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex2-collapse">
+			            <span class="icon-bar"></span>
+			            <span class="icon-bar"></span>
+			            <span class="icon-bar"></span>
+			          </button>
+			          <a class="navbar-brand" href="#">
+			             ARBOL de CRITERIOS
+			         
+			         </a>
+			        </div>
+			        
+			    </nav>
+			  
+				<div class="panel-body">
+					<div id="treeCriterios"  >
+				        
+				    </div>
+				</div>
+		     
+			</div>
+		</div>
+		<div class="col-md-8">
+			<div class="panel panel-default">
+				 
+			    <nav class="navbar navbar-default" role="navigation" style="z-index:0">
+			       <div class="navbar-header">
+			          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex2-collapse">
+			            <span class="icon-bar"></span>
+			            <span class="icon-bar"></span>
+			            <span class="icon-bar"></span>
+			          </button>
+			          <a id="titleCriterio" class="navbar-brand" href="#">
+			             Seleccione un criterio...			         
+			          </a>
+			        </div>
+			        <div class="collapse navbar-collapse navbar-ex2-collapse">
+			          <button id="btnNew" type="button" class="btn btn-success navbar-btn pull-right"> <span class="glyphicon glyphicon-plus"> </span> Nuevo</button>
+			        </div>
+			    </nav>
+			  
+				<div class="panel-body">
+					<div id="body-etapa">
+						Seleccione un criterio...
+					</div>
+				</div>
+		     
+			</div>
+		</div>
+	</div>
+<script type="text/template" id="FactoresClave_template">
+
+<table id="gridFactoresClave" class="table table-bordered table-condensed table-hover">
+	<thead>
+		<tr>
+		<th>Criterio</th>
+		<th>Descripcion</th>
+		<th style="width:80px">Opciones</th>
+		</tr>
+	</thead>
+	<tbody>
+	
+	</tbody>
+</table> 
+</script>
+<script type="text/template" id="itemFactoresClave_template">
+		<td><%= model.criterio.descripcion %></td>
+		<td><%= model.descripcion %></td>
+		<td>
+			<a href="#" class="btn btn-warning btn-xs">
+				<span class="glyphicon glyphicon-pencil"></span>
+			</a>
+			<a href="#" class="btn btn-danger btn-xs">
+				<span class="glyphicon glyphicon-remove"></span>
+			</a>
+		</td>
+</script>
+
+<script type="text/template" id="respuestas_template">
+<div id="RespuestaAspectosClave">
+
+<a class="btn btn-success btn-xs pull-right">Agregar Aspectos Claves</a>
+<br/>
+<br/>
+<table id="gridAspectosClave" class="table table-bordered table-condensed table-hover">
+	<thead>
+		<tr>
+		<th>Criterio</th>
+		<th>Descripcion</th>
+
+		</tr>
+	</thead>
+	<tbody>
+		
+	</tbody>
+</table> 
+</div>
+<ul id="myTab" class="nav nav-tabs">
+	<li class="active"><a href="#tab-fortalezas" data-toggle="tab">Fortalezas</a></li>
+    <li><a href="#tab-areasmejora" data-toggle="tab">Areas de Mejora</a></li>
+    <li id="lnkVisita"><a href="#tab-visita" data-toggle="tab">Visita</a></li>  
+</ul>
+<div id="myTabContent" class="tab-content">
+      <div class="tab-pane fade in active" id="tab-fortalezas">
+        <p>
+			<table id="gridFortalezas" class="table table-bordered table-condensed table-hover">
+				<thead>
+					<tr>
+					<th style="width:50px">(+/++)</th>
+					<th>Respuesta</th>
+					<th style="width:80px">Opciones</th>
+					</tr>
+				</thead>
+				<tbody>
+				
+				</tbody>
+			</table> 
+        </p>
+      </div>
+      <div class="tab-pane fade" id="tab-areasmejora">
+        <p>
+			<table id="gridAreasMejora" class="table table-bordered table-condensed table-hover">
+				<thead>
+					<tr>
+					<th style="width:50px">(-/--)</th>
+					<th>Respuesta</th>
+					<th style="width:80px">Opciones</th>
+					</tr>
+				</thead>
+				<tbody>
+				
+				</tbody>
+			</table> 
+        </p>
+      </div>
+      <div class="tab-pane fade" id="tab-visita">
+        <p>
+        <br/>
+        <textarea id="txtVisita" class="form-control" rows="6"></textarea>
+        <br/>
+        <a class="btn btn-success pull-right">Grabar</a>
+        </p>
+       </div>
+      
+    </div>
+</script>
+
+<script type="text/template" id="itemRespuesta_template">
+		<td><%= model.puntaje %></td>
+		<td><%= model.respuesta %></td>
+		<td>
+			<a href="#" class="btn btn-warning btn-xs">
+				<span class="glyphicon glyphicon-pencil"></span>
+			</a>
+			<a href="#" class="btn btn-danger btn-xs">
+				<span class="glyphicon glyphicon-remove"></span>
+			</a>
+		</td>
+</script>
+</div>
+
+
+
+{% block ScriptHead %}
+    <script src="{{ asset('js/pages/EvaluacionIndividual/index.js') }}"></script> 
+{% endblock %}
+<input id="idConcurso" type="hidden" value="10" />
+
+{% block windows %}
+    <div id="winForm"></div>
+{% endblock %}

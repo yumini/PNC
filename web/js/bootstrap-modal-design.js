@@ -33,6 +33,12 @@ var BootstrapWindow= Backbone.Model.extend({
         new jAjax().Load(url,idDomHTML,this.get("method"),this.get("params"),js);
 
     },
+    LoadWithFnSuccess:function(url,fnSuccess){
+        var idDomHTML;
+        idDomHTML=this.get("id")+"-body";
+        new jAjax().LoadWithFnSuccess(url,idDomHTML,this.get("method"),this.get("params"),fnSuccess);
+
+    },
     CreateWindow:function(){
         this.Window=$("#"+this.get("id"));
         this.Window.html("");

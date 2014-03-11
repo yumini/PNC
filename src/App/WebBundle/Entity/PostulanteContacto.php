@@ -57,7 +57,7 @@ class PostulanteContacto
     private $email;
 
      /**
-    * @ORM\ManyToOne(targetEntity="Catalogo", inversedBy="postulantecontactos")
+    * @ORM\ManyToOne(targetEntity="Catalogo", inversedBy="postulantecatalogos")
     * @ORM\JoinColumn(name="catalogo_tc_id", referencedColumnName="id")
     */
     private $postulantecontacto;
