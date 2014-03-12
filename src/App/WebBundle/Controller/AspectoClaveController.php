@@ -78,25 +78,25 @@ class AspectoClaveController extends Controller
         
         return new JsonResponse(array('success' => true));
     }
+
     /**
-     * Finds and displays a AspectoClave entity.
+     * Displays a form to create a new Concurso entity.
      *
-     * @Route("/{id}", name="aspectoclave_show")
-     * @Method("GET")
+     * @Route("/json/rest/{id}", name="_admin_aspectoclave_delete", options={"expose"=true})
+     * @Method("DELETE")
      * @Template()
      */
-    public function showAction($id)
+    public function deleteAction(Request $request,$id)
     {
         $em = $this->getDoctrine()->getManager();
-
         $entity = $em->getRepository('AppWebBundle:AspectoClave')->find($id);
+        if($entity)
+        {                
+            $em->remove($entity);
+            $em->flush();
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find AspectoClave entity.');
         }
-
-        return array(
-            'entity'      => $entity,
-        );
+        return new JsonResponse(array('success' => true));
     }
+    
 }

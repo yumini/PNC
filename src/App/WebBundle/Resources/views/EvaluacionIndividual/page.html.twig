@@ -39,7 +39,7 @@
 			            <span class="icon-bar"></span>
 			          </button>
 			          <a class="navbar-brand" href="#">
-			             ARBOL de CRITERIOS
+			             EVALUACION INDIVIDUAL
 			         
 			         </a>
 			        </div>
@@ -100,10 +100,10 @@
 		<td><%= model.criterio.descripcion %></td>
 		<td><%= model.descripcion %></td>
 		<td>
-			<a href="#" class="btn btn-warning btn-xs">
+			<a href="#" class="btn btn-warning btn-xs" data-id="<%= model.id %>" data-type="edit">
 				<span class="glyphicon glyphicon-pencil"></span>
 			</a>
-			<a href="#" class="btn btn-danger btn-xs">
+			<a href="#" class="btn btn-danger btn-xs" data-id="<%= model.id %>" data-type="delete">
 				<span class="glyphicon glyphicon-remove"></span>
 			</a>
 		</td>
@@ -120,7 +120,7 @@
 		<td><%= model.criterio.descripcion %></td>
 		<td><%= model.aspectoclave.descripcion %></td>
 		<td>
-			<a href="#" class="btn btn-danger btn-xs">
+			<a href="#" class="btn btn-danger btn-xs" data-id="<%= model.id %>" data-type="delete">
 				<span class="glyphicon glyphicon-remove"></span>
 			</a>
 		</td>
@@ -203,10 +203,10 @@
 		<td style="<% if(!model.isParent){ %>display:none;<% } %>"><%= model.criterio.codigo %></td>
 		<td><%= model.respuesta %></td>
 		<td>
-			<a href="#" class="btn btn-warning btn-xs">
+			<a href="#" class="btn btn-warning btn-xs"  data-id="<%= model.id %>" data-type="edit">
 				<span class="glyphicon glyphicon-pencil"></span>
 			</a>
-			<a href="#" class="btn btn-danger btn-xs">
+			<a href="#" class="btn btn-danger btn-xs"  data-id="<%= model.id %>" data-type="delete">
 				<span class="glyphicon glyphicon-remove"></span>
 			</a>
 		</td>

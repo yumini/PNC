@@ -88,4 +88,24 @@ class RespuestaController extends Controller
         
         return new JsonResponse(array('success' => true));
     }
+
+    /**
+     * Displays a form to create a new Concurso entity.
+     *
+     * @Route("/json/rest/{id}", name="_admin_respuesta_delete", options={"expose"=true})
+     * @Method("DELETE")
+     * @Template()
+     */
+    public function deleteAction(Request $request,$id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $entity = $em->getRepository('AppWebBundle:Respuesta')->find($id);
+        if($entity)
+        {                
+            $em->remove($entity);
+            $em->flush();
+
+        }
+        return new JsonResponse(array('success' => true));
+    }
 }

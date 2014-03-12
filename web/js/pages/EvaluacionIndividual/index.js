@@ -8,7 +8,7 @@ var ViewsEvalIndividual={
         },
 		initialize: function(){
 				_.bindAll(this);
-				//console.log("inicializando...");
+				
 				this.ConcursosCollection=new Collections.GrupoEvaluacionPostulante();
 				this.ConcursosCollection.on('reset', this.RenderConcursantes, this);
 
@@ -29,7 +29,7 @@ var ViewsEvalIndividual={
 			this.ConcursosCollection.fetch({reset:true,data:params});
 		},
 		RenderConcursantes:function(){
-			//console.log("render...")
+			
 			this.$el.find('#cmbPostulante').empty();
 			var v = null;
 			                     
@@ -45,7 +45,7 @@ var ViewsEvalIndividual={
 			var item=this.ConcursosCollection.get(value);
 			var objJSON=item.toJSON();
 			this.concurso=objJSON.grupo.concurso;
-			//console.log(objJSON);
+			
 			var params={ concurso_id:objJSON.grupo.concurso.id,postulante_id:objJSON.postulante.id};
 			this.ProyectosCollection.fetch({reset:true,data:params});
 			this.LoadCriterios();
@@ -67,7 +67,7 @@ var ViewsEvalIndividual={
 			var value=$("#cmbProyecto").val();
 			var item=this.ProyectosCollection.get(value);
 			this.proyecto=item.toJSON();
-			//console.log(this.proyecto);
+			
 		},
 		LoadCriterios:function(){
 			var parent=this;
@@ -86,23 +86,23 @@ var ViewsEvalIndividual={
 			this.isCriterio=false;
 			this.isAspectoClave=false;
 			this.$el.find('#btnNew').attr('disabled',false);
-			//console.log("node..")
-			console.log(node);
+			
+			
 			this.nodeSelected=node;
 			this.$el.find('#titleCriterio').html(node.text);
-			//console.log(node.tipoArbol_id);
+			
 			switch(node.tipoArbol_id){
 				case "1":
 					this.ParentNode=node;
-					//console.log("tipoCriterio_id:"+node.tipoCriterio_id);
+					
 					switch(node.tipoCriterio_id){
 						case "1"://criterio
-							//console.log("criterio");
+							
 							this.LoadRespuestas(node.id,false);
 							this.isCriterio=true;
 							break;
 						case "2"://aspecto clave
-							//console.log("factor clave");
+							
 							this.LoadAspectosClaves(node.id,true);
 							this.isAspectoClave=true;
 							break;
@@ -112,12 +112,12 @@ var ViewsEvalIndividual={
 					this.ParentNode=$('#treeCriterios').tree('getParent', node.target);
 					switch(this.ParentNode.tipoCriterio_id){
 						case "1"://subcriterio de criterio
-							//console.log("subcriterio de criterio");
+							
 							this.LoadRespuestas(node.id,true);
 							this.isCriterio=true;
 							break;
 						case "2"://subcriterio de aspecto clave
-							//console.log("subcriterio de factor clave");
+							
 							this.LoadAspectosClaves(node.id,false);
 							this.isAspectoClave=true;
 							break;
@@ -127,11 +127,12 @@ var ViewsEvalIndividual={
 			}
 		},
 		LoadAspectosClaves:function(idCriterio,isParent){
-			//console.log(idCriterio);
-			//console.log(isParent);
+			
+			
 			var v=new ViewsEvalIndividual.AspectosClaves({
 				el:$("#body-etapa") ,
 				attributes:{
+					app:this,
 					idCriterio:idCriterio,
 					isParent:isParent
 				}
@@ -285,14 +286,14 @@ var ViewsEvalIndividual={
 			this.Subcriterio=new Models.Criterio({id:this.nodeSelected.id});
 			this.Subcriterio.bind("sync", this.renderAreaAnalisis)
 			this.Subcriterio.fetch();
-			//console.log(this.Subcriterio);
+			
 		},
 		renderAreaAnalisis:function(){
-			//console.log('render area analisis,...');
+			
 			var collection = new Backbone.Collection(this.Subcriterio.toJSON().children);
 			$('#cmbAreaAnalisis').empty();
 			collection.each(function(item,idx) {
-				//console.log(item.toJSON());
+				
 				v = new ViewsEvalIndividual.ItemCriterio({model:item.toJSON()});
 				$('#cmbAreaAnalisis').append(v.render().el);
 			},this);  
@@ -306,11 +307,11 @@ var ViewsEvalIndividual={
 
 		},
 		renderPreguntas:function(){
-			//console.log('render preguntas,...');
+			
 			var collection = new Backbone.Collection(this.AreaAnalisis.toJSON().children);
 			$('#cmbPregunta').empty();
 			collection.each(function(item,idx) {
-				//console.log(item.toJSON());
+				
 				v = new ViewsEvalIndividual.ItemCriterio({model:item.toJSON()});
 				$('#cmbPregunta').append(v.render().el);
 			},this); 
@@ -323,9 +324,9 @@ var ViewsEvalIndividual={
 			
 		},
 		render: function() {
-			//console.log(this.model)
-			////console.log(JSON.stringify(this.model));
-			//console.log(this.model);
+			
+			
+			
 			var text=this.model.postulante.razonsocial+' - '+this.model.grupo.concurso.nombre;
 			this.$el.attr('value',this.model.id);
 			this.$el.html(text);
@@ -371,7 +372,7 @@ var ViewsEvalIndividual={
 		initialize: function() {
 			_.bindAll(this);
 			this.template = _.template($('#respuestas_template').html());
-			//console.log("init respuestass...");
+			
 			this.RespuestasCollection=new Collections.RespuestaCriterio();
 			this.FortalezasCollection=new Collections.RespuestaCriterio();
 			this.AreasMejoraCollection=new Collections.RespuestaCriterio();
@@ -387,27 +388,29 @@ var ViewsEvalIndividual={
 			this.load();
 		},
 		LoadVisita:function(){
-			console.log("LOAD VISITAS.....");
+			
 			var params={concursocriterio_id:this.attributes.idCriterio};
 			this.VisitasCollection.fetch({reset:true,data:params});
 		},
 		LoadAspectosClaves:function(){
 
-			console.log("LOAD ASPECTOS CLAVE DE CRITERIOS.....");
+			
 			var params={idcriterio:this.attributes.idCriterio};
 			this.AspectosClavesCollection.fetch({reset:true,data:params});
 		},
 		renderAspectosClave:function(){
-			console.log("RENDER ASPECTOS CLAVE DE CRITERIOS.....")
+			
 			$('#gridCriterioAspectosClaves tbody').empty();
 			this.AspectosClavesCollection.each(function(item,idx) {
-				console.log(item.toJSON());
+				
 				v = new ViewsEvalIndividual.ItemAspectoClave({
 					model:item.toJSON(),
 					attributes:{type:3}
 				});
 				$('#gridCriterioAspectosClaves tbody').append(v.render().el);
 			},this); 
+			$("#gridCriterioAspectosClaves tbody a").click(this.EventCriterioAspectoClave); 
+			return this;
 		},
 		render: function() {
 			this.$el.html(this.template({isParent:this.attributes.isParent}));
@@ -431,20 +434,20 @@ var ViewsEvalIndividual={
 			return this;
 		},
 		renderVisita:function(){
-			console.log("render visita...");
-			console.log(this.VisitasCollection.size());
+			
+			
 			this.Visita=new Models.CriterioVisita({id:0});
 			if(this.VisitasCollection.size()>0){
 
 				this.Visita=this.VisitasCollection.at(0).toJSON();
-				//console.log(this.Visita)
+				
 				$("#txtVisita").text(this.Visita.descripcion);
 			}
 			
 			//this.$el.find("#txtVisita").val(this.Visita.toJSON().descripcion);
 		},
 		renderRespuestas:function(){
-			//console.log("render respuestas...")
+			
 			this.FortalezasCollection=this.RespuestasCollection.fortalezas();
 			this.AreasMejoraCollection=this.RespuestasCollection.areasmejora();
 			this.$el.find('#gridFortalezas tbody').empty();
@@ -456,18 +459,20 @@ var ViewsEvalIndividual={
 				v = new ViewsEvalIndividual.ItemRespuesta({model:obj});
 				this.$el.find('#gridFortalezas tbody').append(v.render().el);
 			},this); 
-
+			this.$el.find('#gridAreasMejora tbody').empty();
 			this.AreasMejoraCollection.each(function(item,idx) {
-				////console.log(item.toJSON())
+				
 				obj=item.toJSON();
 				obj.isParent=this.attributes.isParent;
 				v = new ViewsEvalIndividual.ItemRespuesta({model:obj});
 				this.$el.find('#gridAreasMejora tbody').append(v.render().el);
 			},this);  
+			$("#gridFortalezas tbody a").click(this.EventRespuestas);   
+			$("#gridAreasMejora tbody a").click(this.EventRespuestas);   
 			return this;
 		},
 		SaveVisita:function(){
-			//console.log("grabando visita");
+			
 			if(this.Visita.id==0){
 				var item=new Models.CriterioVisita({
 					concursocriterio_id:this.attributes.idCriterio,
@@ -482,7 +487,14 @@ var ViewsEvalIndividual={
 			}
 
 			//this.Visita.set({})
-			item.save();
+			item.save({},{success:function(){
+						noty({
+		                    text: 'Se ha actualizado el registro satisfactoriamente', 
+		                    type: 'success',
+		                    layout:'bottomRight',
+		                    timeout:5000,
+		                });
+			}});
 		},
 		NewAspectoClave:function(){
 			var url=Routing.generate('_admin_criterioaspectoclave_new');
@@ -526,7 +538,7 @@ var ViewsEvalIndividual={
 		renderAddAspectosClave:function(){
 			$('#gridAddAspectosClave tbody').empty();
 			this.AddAspectosClavesCollection.each(function(item,idx) {
-				console.log(item.toJSON());
+				
 				v = new ViewsEvalIndividual.ItemAspectoClave({
 					model:item.toJSON(),
 					attributes:{type:2}
@@ -546,7 +558,103 @@ var ViewsEvalIndividual={
 			    }});
 			});
 			
-		}
+		},
+		EventRespuestas:function(evt){
+			
+        	var element=$(evt.currentTarget);
+        	var type=element.attr('data-type');
+        	switch(type){
+        		case "edit":
+	        		this.EditRespuesta(element.attr('data-id'));
+	        		break;
+        		case "delete":
+        			this.DeleteRespuesta(element.attr('data-id'));
+	        		break;
+        	}
+        },
+        EditRespuesta:function(id){
+			alert("edit..:D: "+id);
+        },
+        DeleteRespuesta:function(id){
+        	var parent=this;
+			var n=noty({
+	          text: 'Desea eliminar el registro seleccionado?',
+	          layout: 'center',
+	          theme: 'defaultTheme',
+	          modal:true,
+	          buttons: [
+	            {addClass: 'btn btn-success', text: 'Si', onClick: function($noty) {
+
+	                var model=new Models.RespuestaCriterio({id:id})
+	                model.destroy({success:function(){
+	                	parent.attributes.app.SelectCriterio(parent.attributes.app.nodeSelected);
+	                	noty({
+		                    text: 'Se ha eliminado el registro satisfactoriamente', 
+		                    type: 'success',
+		                    layout:'bottomRight',
+		                    timeout:5000,
+		                });
+	                }})
+	                $noty.close();
+	                
+	              }
+	            },
+	            {addClass: 'btn btn-danger', text: 'No', onClick: function($noty) {
+	                $noty.close();
+	                
+	            }
+	            }
+	          ]
+	        });
+        },
+        EventCriterioAspectoClave:function(evt){
+			
+        	var element=$(evt.currentTarget);
+        	var type=element.attr('data-type');
+        	switch(type){
+        		case "edit":
+	        		this.EditCriterioAspectoClave(element.attr('data-id'));
+	        		break;
+        		case "delete":
+        			this.DeleteCriterioAspectoClave(element.attr('data-id'));
+	        		break;
+        	}
+        },
+        EditCriterioAspectoClave:function(id){
+			alert("edit..:D: "+id);
+        },
+        DeleteCriterioAspectoClave:function(id){
+        	var parent=this;
+			var n=noty({
+	          text: 'Desea eliminar el registro seleccionado?',
+	          layout: 'center',
+	          theme: 'defaultTheme',
+	          modal:true,
+	          buttons: [
+	            {addClass: 'btn btn-success', text: 'Si', onClick: function($noty) {
+
+	                var model=new Models.CriterioAspectoClave({id:id})
+	                model.destroy({success:function(){
+	                	parent.attributes.app.SelectCriterio(parent.attributes.app.nodeSelected);
+	                	noty({
+		                    text: 'Se ha eliminado el registro satisfactoriamente', 
+		                    type: 'success',
+		                    layout:'bottomRight',
+		                    timeout:5000,
+		                });
+	                }})
+	                $noty.close();
+	                
+	              }
+	            },
+	            {addClass: 'btn btn-danger', text: 'No', onClick: function($noty) {
+	                $noty.close();
+	                
+	            }
+	            }
+	          ]
+	        });
+        }
 	}),
 	ItemRespuesta: Backbone.View.extend({
         tagName:"tr",
@@ -555,28 +663,32 @@ var ViewsEvalIndividual={
 			
 		},
 		render: function() {
-			console.log(this.model)
+			
 			this.$el.html(this.template({model:this.model}));
 			return this;
 		}
 	}),
 	AspectosClaves: Backbone.View.extend({
         tagName:"div",
+        
         attributes :{
+        	app:null,
         	isParent:false,
         	idCriterio:0
 
         },
+        
 		initialize: function() {
 			_.bindAll(this);
 			this.template = _.template($('#FactoresClave_template').html());
-			//console.log("se cargaron aspectos claves...");
+			
 			this.AspectosClaveCollection=new Collections.AspectoClave();
 			this.AspectosClaveCollection.on('reset', this.renderAspectosClave, this);
 			this.loadAspectosClave();
 		},
 		render: function() {
 			this.$el.html(this.template());
+
 			return this;
 		},
 		loadAspectosClave:function(){
@@ -585,7 +697,7 @@ var ViewsEvalIndividual={
 			this.AspectosClaveCollection.fetch({reset:true,data:params});
 		},
 		renderAspectosClave:function(){
-			//console.log("render...")
+			
 			this.$el.find('#gridFactoresClave tbody').empty();
 			var v = null;
 			                     
@@ -596,9 +708,57 @@ var ViewsEvalIndividual={
 				});
 				this.$el.find('#gridFactoresClave tbody').append(v.render().el);
 			},this);
-                      
+            $("#gridFactoresClave tbody a").click(this.EventAspectos);          
 			return this;
-		}
+		},
+		EventAspectos:function(evt){
+			
+        	var element=$(evt.currentTarget);
+        	var type=element.attr('data-type');
+        	switch(type){
+        		case "edit":
+	        		this.Edit(element.attr('data-id'));
+	        		break;
+        		case "delete":
+        			this.Delete(element.attr('data-id'));
+	        		break;
+        	}
+        },
+        Edit:function(id){
+			alert("edit..:D: "+id);
+        },
+        Delete:function(id){
+        	var parent=this;
+			var n=noty({
+	          text: 'Desea eliminar el registro seleccionado?',
+	          layout: 'center',
+	          theme: 'defaultTheme',
+	          modal:true,
+	          buttons: [
+	            {addClass: 'btn btn-success', text: 'Si', onClick: function($noty) {
+
+	                var model=new Models.AspectoClave({id:id})
+	                model.destroy({success:function(){
+	                	parent.attributes.app.SelectCriterio(parent.attributes.app.nodeSelected);
+	                	noty({
+		                    text: 'Se ha eliminado el registro satisfactoriamente', 
+		                    type: 'success',
+		                    layout:'bottomRight',
+		                    timeout:5000,
+		                });
+	                }})
+	                $noty.close();
+	                
+	              }
+	            },
+	            {addClass: 'btn btn-danger', text: 'No', onClick: function($noty) {
+	                $noty.close();
+	                
+	            }
+	            }
+	          ]
+	        });
+        }
 	}),
 	ItemAspectoClave: Backbone.View.extend({
         tagName:"tr",
@@ -618,7 +778,7 @@ var ViewsEvalIndividual={
 			
 		},
 		render: function() {
-			//console.log(this.model)
+			
 			this.$el.html(this.template({model:this.model}));
 			return this;
 		}
