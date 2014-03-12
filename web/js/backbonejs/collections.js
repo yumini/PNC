@@ -84,5 +84,17 @@ var Collections={
 		     });
 		    return new Collections.RespuestaCriterio(filtered);
 		}
-	})
+	}),
+	CriterioVisita: Backbone.Collection.extend({
+		model: Models.CriterioVisita,
+		url: Routing.generate("_admin_json_criteriovisita")
+	}),
+	CriterioAspectoClave: Backbone.Collection.extend({
+		model: Models.CriterioAspectoClave,
+		url: Routing.generate("_admin_json_criterioaspectoclave"),
+		parse: function(response) {
+				
+                return response;
+        }
+    })
 };

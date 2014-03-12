@@ -26,13 +26,19 @@ class AspectoClaveController extends Controller
      */
     public function indexAction(Request $request)
     {
+        $em = $this->getDoctrine()->getManager();
         $isparent=($request->query->get('isparent')=='true')?true:false;
         $idcriterio=$request->query->get('idcriterio');
-        $em = $this->getDoctrine()->getManager();
-        $logger = $this->get('logger');
-        $logger->info('isparent'.$isparent);
-        $logger->info('idcriterio'.$idcriterio);
-        $entities = $em->getRepository('AppWebBundle:AspectoClave')->findAllById($idcriterio,$isparent,true);
+        $idconcurso=$request->query->get('idconcurso');
+        if(isset($idcriterio)){
+            
+            $entities = $em->getRepository('AppWebBundle:AspectoClave')->findAllById($idcriterio,$isparent,true);
+        }
+        if(isset($idconcurso)){
+            
+            $entities = $em->getRepository('AppWebBundle:AspectoClave')->findAllByConcursoId($idconcurso,true);
+        }
+        
         return new JsonResponse($entities);
     }
 

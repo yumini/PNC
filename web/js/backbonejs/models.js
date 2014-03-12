@@ -19,5 +19,11 @@ var Models={
     }),
     RespuestaCriterio: Backbone.Model.extend({
         urlRoot : Routing.generate("_admin_json_respuesta")
-    })
+    }),
+    CriterioVisita: Backbone.Model.extend({
+        urlRoot : Routing.generate("_admin_json_criteriovisita")
+    }),
+    CriterioAspectoClave: Backbone.Model.extend({
+        urlRoot : Routing.generate("_admin_json_criterioaspectoclave")
+    }),
 };

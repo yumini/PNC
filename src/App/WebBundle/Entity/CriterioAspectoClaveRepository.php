@@ -12,4 +12,20 @@ use Doctrine\ORM\EntityRepository;
  */
 class CriterioAspectoClaveRepository extends EntityRepository
 {
+	public function findAllByCriterio($idCriterio,$isArray=false){
+		$em=$this->getEntityManager();
+        $dql   = "SELECT ac,c,a FROM AppWebBundle:CriterioAspectoClave ac
+	        		JOIN ac.criterio c
+                                JOIN ac.aspectoclave a
+	        		where c.id=:id";
+        $query = $em->createQuery($dql)->setParameter('id', $idCriterio);
+        try {
+                if($isArray)
+                	return $query->getArrayResult();
+                else
+                	return $query->getResult();
+        } catch (\Doctrine\ORM\NoResultException $e) {
+                return null;
+        }
+	}
 }

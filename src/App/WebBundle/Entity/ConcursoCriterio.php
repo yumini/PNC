@@ -115,6 +115,11 @@ class ConcursoCriterio
     * @ORM\OneToMany(targetEntity="Respuesta", mappedBy="criterio")
     */
     protected $respuestas;
+
+    /**
+    * @ORM\OneToMany(targetEntity="CriterioVisita", mappedBy="criterio")
+    */
+    protected $visitas;
     
 
     /**

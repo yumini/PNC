@@ -51,6 +51,7 @@ class ConcursoCriterioService {
            $cadena.="\"codigo\":\"".$entity->getCodigo()."\",";
            $cadena.="\"text\":\"".$entity->getDescripcion()."\",";
            $cadena.="\"descripcion\":\"".$entity->getDescripcion()."\",";
+           $cadena.="\"concurso_id\":\"".$entity->getConcurso()->getId()."\",";
            $cadena.="\"tipoArbol\":\"".$entity->getTipoArbolCriterio()->getNombre()."\",";
            $cadena.="\"tipoArbol_id\":\"".$entity->getTipoArbolCriterio()->getCodigo()."\",";
            if($this->countnivel==1){
@@ -77,6 +78,7 @@ class ConcursoCriterioService {
         }else{
            $cadena.="{\"id\":\"".$entity->getId()."\",";
            $cadena.="\"codigo\":\"".$entity->getCodigo()."\",";
+           $cadena.="\"concurso_id\":\"".$entity->getConcurso()->getId()."\",";
            $cadena.="\"tipoArbol\":\"".$entity->getTipoArbolCriterio()->getNombre()."\",";
            $cadena.="\"tipoArbol_id\":\"".$entity->getTipoArbolCriterio()->getCodigo()."\",";
            if($this->countnivel==1){

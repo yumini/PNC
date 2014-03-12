@@ -83,7 +83,6 @@
 		</div>
 	</div>
 <script type="text/template" id="FactoresClave_template">
-
 <table id="gridFactoresClave" class="table table-bordered table-condensed table-hover">
 	<thead>
 		<tr>
@@ -97,7 +96,7 @@
 	</tbody>
 </table> 
 </script>
-<script type="text/template" id="itemFactoresClave_template">
+<script type="text/template" id="itemFactoresClave1_template">
 		<td><%= model.criterio.descripcion %></td>
 		<td><%= model.descripcion %></td>
 		<td>
@@ -110,18 +109,35 @@
 		</td>
 </script>
 
+<script type="text/template" id="itemFactoresClave2_template">
+		<td><input type="checkbox" data-id="<%=model.id %>"/></td>
+		<td><%= model.criterio.descripcion %></td>
+		<td><%= model.descripcion %></td>
+</script>
+
+<script type="text/template" id="itemFactoresClave3_template">
+		
+		<td><%= model.criterio.descripcion %></td>
+		<td><%= model.aspectoclave.descripcion %></td>
+		<td>
+			<a href="#" class="btn btn-danger btn-xs">
+				<span class="glyphicon glyphicon-remove"></span>
+			</a>
+		</td>
+</script>
+
 <script type="text/template" id="respuestas_template">
 <div id="RespuestaAspectosClave">
 
-<a class="btn btn-success btn-xs pull-right">Agregar Aspectos Claves</a>
+<a id="btnNewAspectoClave" class="btn btn-success btn-xs pull-right">Agregar Aspectos Claves</a>
 <br/>
 <br/>
-<table id="gridAspectosClave" class="table table-bordered table-condensed table-hover">
+<table id="gridCriterioAspectosClaves" class="table table-bordered table-condensed table-hover">
 	<thead>
 		<tr>
 		<th>Criterio</th>
 		<th>Descripcion</th>
-
+		<th></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -141,6 +157,7 @@
 				<thead>
 					<tr>
 					<th style="width:50px">(+/++)</th>
+					<th style="width:50px;<% if(!isParent){ %>display:none;<% } %>">Area de Analisis</th>
 					<th>Respuesta</th>
 					<th style="width:80px">Opciones</th>
 					</tr>
@@ -153,10 +170,12 @@
       </div>
       <div class="tab-pane fade" id="tab-areasmejora">
         <p>
+			
 			<table id="gridAreasMejora" class="table table-bordered table-condensed table-hover">
 				<thead>
 					<tr>
-					<th style="width:50px">(-/--)</th>
+					<th style="width:50px;">(-/--)</th>
+					<th style="width:50px;<% if(!isParent){ %>display:none;<% } %>">Area de Analisis</th>
 					<th>Respuesta</th>
 					<th style="width:80px">Opciones</th>
 					</tr>
@@ -172,7 +191,7 @@
         <br/>
         <textarea id="txtVisita" class="form-control" rows="6"></textarea>
         <br/>
-        <a class="btn btn-success pull-right">Grabar</a>
+        <a id="btnSaveVisita" class="btn btn-success pull-right">Grabar</a>
         </p>
        </div>
       
@@ -181,6 +200,7 @@
 
 <script type="text/template" id="itemRespuesta_template">
 		<td><%= model.puntaje %></td>
+		<td style="<% if(!model.isParent){ %>display:none;<% } %>"><%= model.criterio.codigo %></td>
 		<td><%= model.respuesta %></td>
 		<td>
 			<a href="#" class="btn btn-warning btn-xs">

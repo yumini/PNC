@@ -33,4 +33,21 @@ class AspectoClaveRepository extends EntityRepository
                 return null;
         }
 	}
+	public function findAllByConcursoId($idconcurso,$isArray=false){
+		$em=$this->getEntityManager();
+	    $dql   = "SELECT ac,cr FROM AppWebBundle:AspectoClave ac
+	        		JOIN ac.criterio cr
+	        		JOIN cr.concurso c
+	        		WHERE c.id=:id";
+	    
+        $query = $em->createQuery($dql)->setParameter('id', $idconcurso);
+        try {
+                if($isArray)
+                	return $query->getArrayResult();
+                else
+                	return $query->getResult();
+        } catch (\Doctrine\ORM\NoResultException $e) {
+                return null;
+        }
+	}
 }

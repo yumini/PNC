@@ -5,12 +5,12 @@ namespace App\WebBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Respuesta
+ * CriterioVisita
  *
- * @ORM\Table(name="respuesta")
- * @ORM\Entity(repositoryClass="App\WebBundle\Entity\RespuestaRepository")
+ * @ORM\Table(name="criteriovisita")
+ * @ORM\Entity(repositoryClass="App\WebBundle\Entity\CriterioVisitaRepository")
  */
-class Respuesta
+class CriterioVisita
 {
     /**
      * @var integer
@@ -24,19 +24,12 @@ class Respuesta
     /**
      * @var string
      *
-     * @ORM\Column(name="respuesta", type="text")
+     * @ORM\Column(name="descripcion", type="text")
      */
-    private $respuesta;
+    private $descripcion;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="puntaje", type="string", length=2)
-     */
-    private $puntaje;
-
-    /**
-    * @ORM\ManyToOne(targetEntity="ConcursoCriterio", inversedBy="respuestas")
+    * @ORM\ManyToOne(targetEntity="ConcursoCriterio", inversedBy="visitas")
     * @ORM\JoinColumn(name="concursocriterio_id", referencedColumnName="id")
     */
     protected $criterio;
@@ -51,56 +44,33 @@ class Respuesta
     }
 
     /**
-     * Set respuesta
+     * Set descripcion
      *
-     * @param string $respuesta
-     * @return Respuesta
+     * @param string $descripcion
+     * @return CriterioVisita
      */
-    public function setRespuesta($respuesta)
+    public function setDescripcion($descripcion)
     {
-        $this->respuesta = $respuesta;
+        $this->descripcion = $descripcion;
     
         return $this;
     }
 
     /**
-     * Get respuesta
+     * Get descripcion
      *
      * @return string 
      */
-    public function getRespuesta()
+    public function getDescripcion()
     {
-        return $this->respuesta;
-    }
-
-    /**
-     * Set puntaje
-     *
-     * @param string $puntaje
-     * @return Respuesta
-     */
-    public function setPuntaje($puntaje)
-    {
-        $this->puntaje = $puntaje;
-    
-        return $this;
-    }
-
-    /**
-     * Get puntaje
-     *
-     * @return string 
-     */
-    public function getPuntaje()
-    {
-        return $this->puntaje;
+        return $this->descripcion;
     }
 
     /**
      * Set criterio
      *
      * @param \App\WebBundle\Entity\ConcursoCriterio $criterio
-     * @return Respuesta
+     * @return CriterioVisita
      */
     public function setCriterio(\App\WebBundle\Entity\ConcursoCriterio $criterio = null)
     {

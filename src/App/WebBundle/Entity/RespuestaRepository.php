@@ -16,6 +16,8 @@ class RespuestaRepository extends EntityRepository
 		$em=$this->getEntityManager();
 		if($isParent){
 			$ids=$this->getAllRespuestasSubcriterios($idCriterio);
+			if($ids==null)
+				$ids='0';
 	        $dql   = "SELECT r,c FROM AppWebBundle:Respuesta r
 	        		JOIN r.criterio c
 	        		where c.id in($ids)";
@@ -48,7 +50,12 @@ class RespuestaRepository extends EntityRepository
         $stmt = $conn->prepare($sql);  
         $stmt->execute(); 
         $result=$stmt->fetchAll();
-       
-        return $result[0]['ids']; 
+
+        if($result)
+          	return $result[0]['ids'];
+        else
+          	return null;
+
+         
 	}
 }
