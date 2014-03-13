@@ -223,6 +223,16 @@ class Evaluador
     * @ORM\OneToMany(targetEntity="EvaluadorDisponibilidad", mappedBy="evaluador")
     */
     private $diasdisponibles;
+
+    /**
+    * @ORM\OneToMany(targetEntity="AspectoClave", mappedBy="evaluador")
+    */
+    private $aspectosclaves;
+
+    /**
+    * @ORM\OneToMany(targetEntity="Respuesta", mappedBy="evaluador")
+    */
+    private $respuestas;
     
     /**
     * @ORM\OneToMany(targetEntity="InscripcionEvaluador", mappedBy="evaluador")
@@ -1003,5 +1013,71 @@ class Evaluador
     public function getInscripciones()
     {
         return $this->inscripciones;
+    }
+
+    /**
+     * Add aspectosclaves
+     *
+     * @param \App\WebBundle\Entity\AspectoClave $aspectosclaves
+     * @return Evaluador
+     */
+    public function addAspectosclave(\App\WebBundle\Entity\AspectoClave $aspectosclaves)
+    {
+        $this->aspectosclaves[] = $aspectosclaves;
+    
+        return $this;
+    }
+
+    /**
+     * Remove aspectosclaves
+     *
+     * @param \App\WebBundle\Entity\AspectoClave $aspectosclaves
+     */
+    public function removeAspectosclave(\App\WebBundle\Entity\AspectoClave $aspectosclaves)
+    {
+        $this->aspectosclaves->removeElement($aspectosclaves);
+    }
+
+    /**
+     * Get aspectosclaves
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getAspectosclaves()
+    {
+        return $this->aspectosclaves;
+    }
+
+    /**
+     * Add respuestas
+     *
+     * @param \App\WebBundle\Entity\Respuesta $respuestas
+     * @return Evaluador
+     */
+    public function addRespuesta(\App\WebBundle\Entity\Respuesta $respuestas)
+    {
+        $this->respuestas[] = $respuestas;
+    
+        return $this;
+    }
+
+    /**
+     * Remove respuestas
+     *
+     * @param \App\WebBundle\Entity\Respuesta $respuestas
+     */
+    public function removeRespuesta(\App\WebBundle\Entity\Respuesta $respuestas)
+    {
+        $this->respuestas->removeElement($respuestas);
+    }
+
+    /**
+     * Get respuestas
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getRespuestas()
+    {
+        return $this->respuestas;
     }
 }

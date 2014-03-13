@@ -30,13 +30,14 @@ class AspectoClaveController extends Controller
         $isparent=($request->query->get('isparent')=='true')?true:false;
         $idcriterio=$request->query->get('idcriterio');
         $idconcurso=$request->query->get('idconcurso');
+        $idevaluador=$request->query->get('evaluador_id');
         if(isset($idcriterio)){
             
-            $entities = $em->getRepository('AppWebBundle:AspectoClave')->findAllById($idcriterio,$isparent,true);
+            $entities = $em->getRepository('AppWebBundle:AspectoClave')->findAllById($idcriterio,$idevaluador,$isparent,true);
         }
         if(isset($idconcurso)){
             
-            $entities = $em->getRepository('AppWebBundle:AspectoClave')->findAllByConcursoId($idconcurso,true);
+            $entities = $em->getRepository('AppWebBundle:AspectoClave')->findAllByConcursoId($idconcurso,$idevaluador,true);
         }
         
         return new JsonResponse($entities);
@@ -69,9 +70,11 @@ class AspectoClaveController extends Controller
         $em = $this->getDoctrine()->getManager();
         $data = json_decode($request->getContent(), true);
         $criterio = $em->getRepository('AppWebBundle:ConcursoCriterio')->find($data['criterio_id']);
+        $evaluador = $em->getRepository('AppWebBundle:Evaluador')->find($data['evaluador_id']);
         $entity  = new AspectoClave();
 
         $entity->setCriterio($criterio);
+        $entity->setEvaluador($evaluador);
         $entity->setDescripcion($data['descripcion']);
         $em->persist($entity);
         $em->flush();

@@ -12,22 +12,28 @@ use Doctrine\ORM\EntityRepository;
  */
 class RespuestaRepository extends EntityRepository
 {
-	public function findAllById($idCriterio,$isParent,$isArray){
+	public function findAllById($idCriterio,$idEvaluador,$isParent,$isArray){
 		$em=$this->getEntityManager();
 		if($isParent){
 			$ids=$this->getAllRespuestasSubcriterios($idCriterio);
 			if($ids==null)
 				$ids='0';
-	        $dql   = "SELECT r,c FROM AppWebBundle:Respuesta r
+	        $dql   = "SELECT r,c,e FROM AppWebBundle:Respuesta r
 	        		JOIN r.criterio c
-	        		where c.id in($ids)";
-	        $query = $em->createQuery($dql);
+	        		JOIN r.evaluador e
+	        		where c.id in($ids)
+	        		AND (e.id=:idevaluador or :idevaluador=0)";
+	        $query = $em->createQuery($dql)->setParameter('idevaluador', $idEvaluador);
 	    }else{
 
-	    	$dql   = "SELECT r,c FROM AppWebBundle:Respuesta r
+	    	$dql   = "SELECT r,c,e FROM AppWebBundle:Respuesta r
 	        		JOIN r.criterio c
-	        		where c.id=:id";
-	        $query = $em->createQuery($dql)->setParameter('id', $idCriterio);
+	        		JOIN r.evaluador e
+	        		where c.id=:id
+	        		AND (e.id=:idevaluador or :idevaluador=0)";
+	        $query = $em->createQuery($dql)
+	        	->setParameter('id', $idCriterio)
+	        	->setParameter('idevaluador', $idEvaluador);
 	    }
         
         try {

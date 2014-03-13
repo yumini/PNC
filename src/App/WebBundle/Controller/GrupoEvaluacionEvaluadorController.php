@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use App\WebBundle\Entity\GrupoEvaluacionEvaluador;
 use App\WebBundle\Form\GrupoEvaluacionEvaluadorType;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 /**
  * GrupoEvaluacionEvaluador controller.
  *
@@ -35,6 +36,23 @@ class GrupoEvaluacionEvaluadorController extends Controller
             'entities' => $entities,
         );
     }
+
+    /**
+     * Lists all GrupoEvaluacionEvaluador entities.
+     *
+     * @Route("/json/rest", name="_admin_json_grupoevaluacionevaluador", options={"expose"=true})
+     * @Method("GET")
+     * @Template()
+     */
+    public function index_jsonAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $evaluador_id=$request->query->get('evaluador_id');
+        $groups = $em->getRepository('AppWebBundle:GrupoEvaluacionEvaluador')->AllGroupByEvaluador($evaluador_id,true);
+        return new JsonResponse($groups);
+    }
+
+    
     /**
      * Creates a new GrupoEvaluacionEvaluador entity.
      *

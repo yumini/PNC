@@ -47,7 +47,7 @@ class InscripcionRepository extends EntityRepository
     public function findByConcursoAndPostulante($idConcurso,$idPostulante,$isArray=false){
         $em=$this->getEntityManager();
         $dql= "
-        SELECT i FROM AppWebBundle:Inscripcion i
+        SELECT i,c FROM AppWebBundle:Inscripcion i
         JOIN i.concurso c 
         JOIN i.postulante p
         WHERE   p.id=:codPostulante

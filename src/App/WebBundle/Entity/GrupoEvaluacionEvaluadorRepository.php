@@ -25,7 +25,7 @@ class GrupoEvaluacionEvaluadorRepository extends EntityRepository
         }
     }
 
-    public function AllGroupByEvaluador($id){
+    public function AllGroupByEvaluador($id,$isArray=false){
         $em=$this->getEntityManager();
         $dql= "SELECT ge FROM AppWebBundle:GrupoEvaluacion ge 
                 JOIN ge.evaluadores gee
@@ -33,7 +33,10 @@ class GrupoEvaluacionEvaluadorRepository extends EntityRepository
                 WHERE e.id=:id ";
         $query=$em->createQuery($dql)->setParameter('id', $id);
         try {
-                return $query->getResult();
+                if($isArray)
+                    return $query->getArrayResult();
+                else
+                    return $query->getResult();
         } catch (\Doctrine\ORM\NoResultException $e) {
                 return null;
         }

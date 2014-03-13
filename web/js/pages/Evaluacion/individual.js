@@ -1,6 +1,7 @@
 var ViewsEvalIndividual={
 	App: Backbone.View.extend({
 		events: {
+                    "change #cmbEvaluador": "LoadGrupos",
                     "change #cmbGrupo": "LoadConcursantes",
                     "change #cmbPostulante": "LoadProyectos",
                     "change #cmbProyecto": "SelectProyecto",
@@ -9,6 +10,9 @@ var ViewsEvalIndividual={
 		initialize: function(){
 				_.bindAll(this);
 				
+				this.GrupoEvaluadorCollection=new Collections.GrupoEvaluacionEvaluador();
+				this.GrupoEvaluadorCollection.on('reset', this.RenderGrupos, this);
+
 				this.ConcursosCollection=new Collections.GrupoEvaluacionPostulante();
 				this.ConcursosCollection.on('reset', this.RenderConcursantes, this);
 
@@ -17,11 +21,31 @@ var ViewsEvalIndividual={
 
 				
 
-				this.LoadConcursantes();
+				this.LoadGrupos();
 				this.grupo=-1;
 				this.concurso=-1;
 				this.proyecto=-1;
 				this.$el.find('#btnNew').attr('disabled',true);
+		},
+		LoadGrupos: function(evt){
+			this.evaluador=$("#cmbEvaluador").val();
+			var params={ evaluador_id:this.evaluador};
+			this.GrupoEvaluadorCollection.fetch({reset:true,data:params});
+		},
+		RenderGrupos:function(){
+			
+			this.$el.find('#body-etapa').empty();
+			this.$el.find('#cmbGrupo').empty();
+			var v = null;
+			                     
+			this.GrupoEvaluadorCollection.each(function(item,idx) {
+				var obj=item.toJSON();
+				var model={value:obj.id,text:obj.nombre}
+				v = new ViewsEvalIndividual.ItemSelect({model:model});
+				this.$el.find('#cmbGrupo').append(v.render().el);
+			},this);
+			this.LoadConcursantes();
+			return this;
 		},
 		LoadConcursantes: function(evt){
 			this.grupo=$("#cmbGrupo").val();
@@ -34,7 +58,9 @@ var ViewsEvalIndividual={
 			var v = null;
 			                     
 			this.ConcursosCollection.each(function(item,idx) {
-				v = new ViewsEvalIndividual.ItemConcursante({model:item.toJSON()});
+				var obj=item.toJSON();
+				var model={value:obj.id,text:obj.postulante.razonsocial}
+				v = new ViewsEvalIndividual.ItemSelect({model:model});
 				this.$el.find('#cmbPostulante').append(v.render().el);
 			},this);
             this.LoadProyectos();           
@@ -57,7 +83,12 @@ var ViewsEvalIndividual={
 			var v = null;
 			                     
 			this.ProyectosCollection.each(function(item,idx) {
-				v = new ViewsEvalIndividual.ItemProyecto({model:item.toJSON()});
+				var obj=item.toJSON();
+				var model={
+					value:obj.id,
+					text:obj.nombreproyecto+' - '+obj.concurso.nombre
+				};
+				v = new ViewsEvalIndividual.ItemSelect({model:model});
 				this.$el.find('#cmbProyecto').append(v.render().el);
 			},this);    
 			this.SelectProyecto();   
@@ -191,6 +222,7 @@ var ViewsEvalIndividual={
 		SaveAspectoClave:function(){
 			var parent=this;
 			var obj=new Models.AspectoClave({
+				evaluador_id:$("#cmbEvaluador").val(),
 				criterio_id:$('#cmbAspectoCLave').val(),
 				descripcion:$('#txtDescripcionAspectoClave').val()
 			});
@@ -206,11 +238,18 @@ var ViewsEvalIndividual={
 			var collection = new Backbone.Collection(this.ParentNode.children);
         	$('#cmbAspectoCLave').empty();
         	collection.each(function(item,idx) {
-				v = new ViewsEvalIndividual.ItemCriterio({model:item.toJSON()});
+				
+				var obj=item.toJSON();
+				var model={
+					value:obj.id,
+					text:obj.descripcion
+				};
+				v = new ViewsEvalIndividual.ItemSelect({model:model});
 				$('#cmbAspectoCLave').append(v.render().el);
 			},this); 
 			$('#cmbAspectoCLave option[value='+this.nodeSelected.id+']').attr('selected','selected');
 		},
+
 		NuevaRespuesta:function(){
 			var parent=this;
 			this.Window=new BootstrapWindow({id:"winForm",title:"Nueva Respuesta"});
@@ -253,6 +292,7 @@ var ViewsEvalIndividual={
 			switch(this.nodeSelected.tipoArbol_id){
 	        	case "1":
 	        		var obj=new Models.RespuestaCriterio({
+	        			evaluador_id:$("#cmbEvaluador").val(),
 						criterio_id:this.nodeSelected.id,
 						puntaje:$('#cmbPuntaje').val(),
 						respuesta:$('#txtRespuesta').val()
@@ -260,6 +300,7 @@ var ViewsEvalIndividual={
 	        		break;
 	        	case "2":
 	        		var obj=new Models.RespuestaCriterio({
+	        			evaluador_id:$("#cmbEvaluador").val(),
 						criterio_id:$("#cmbPregunta").val(),
 						puntaje:$('#cmbPuntaje').val(),
 						respuesta:$('#txtRespuesta').val()
@@ -281,6 +322,9 @@ var ViewsEvalIndividual={
 		InitFormRespuestaSubcriterio:function(){
 			$('#cmbAreaAnalisis').change(this.LoadPreguntas);
 			this.LoadAreaAnalisis();
+			this.comboAspectoClave=new Collections.AspectoClave();
+			this.comboAspectoClave.on('reset',this.renderComboAspectosClave,true);
+			this.loadComboAspectosClave();
 		},
 		LoadAreaAnalisis:function(){
 			this.Subcriterio=new Models.Criterio({id:this.nodeSelected.id});
@@ -288,13 +332,39 @@ var ViewsEvalIndividual={
 			this.Subcriterio.fetch();
 			
 		},
+		loadComboAspectosClave:function(){
+			var params={
+				evaluador_id: $("#cmbEvaluador").val(),
+				idconcurso:this.concurso.id
+			};
+			this.comboAspectoClave.fetch({reset:true,data:params})
+		},
+		renderComboAspectosClave:function(){
+			$('#cmbRespuestaAspectoClave').empty();
+			this.comboAspectoClave.each(function(item,idx) {
+				
+				var obj=item.toJSON();
+				var model={
+					value:obj.id,
+					text:obj.descripcion
+				};
+				v = new ViewsEvalIndividual.ItemSelect({model:model});
+				$('#cmbRespuestaAspectoClave').append(v.render().el);
+			},this); 
+
+
+		},
 		renderAreaAnalisis:function(){
 			
 			var collection = new Backbone.Collection(this.Subcriterio.toJSON().children);
 			$('#cmbAreaAnalisis').empty();
 			collection.each(function(item,idx) {
-				
-				v = new ViewsEvalIndividual.ItemCriterio({model:item.toJSON()});
+				var obj=item.toJSON();
+				var model={
+					value:obj.id,
+					text:obj.descripcion
+				};
+				v = new ViewsEvalIndividual.ItemSelect({model:model});
 				$('#cmbAreaAnalisis').append(v.render().el);
 			},this);  
 			this.LoadPreguntas();  
@@ -312,53 +382,35 @@ var ViewsEvalIndividual={
 			$('#cmbPregunta').empty();
 			collection.each(function(item,idx) {
 				
-				v = new ViewsEvalIndividual.ItemCriterio({model:item.toJSON()});
+				var obj=item.toJSON();
+				var model={
+					value:obj.id,
+					text:obj.descripcion
+				};
+				v = new ViewsEvalIndividual.ItemSelect({model:model});
 				$('#cmbPregunta').append(v.render().el);
 			},this); 
 		}
 	}),
-	ItemConcursante: Backbone.View.extend({
+	
+	ItemSelect: Backbone.View.extend({
         tagName:"option",
+        value:0,
+        text:'',
 		initialize: function() {
-			this.template = _.template($('#itemOption_template').html());
-			
+			this.template = _.template($('#itemOption_template').html());	
 		},
 		render: function() {
-			
-			
-			
-			var text=this.model.postulante.razonsocial+' - '+this.model.grupo.concurso.nombre;
-			this.$el.attr('value',this.model.id);
-			this.$el.html(text);
+			console.log(this.model.value);
+			console.log(this.model.text);
+			this.$el.attr('value',this.model.value);
+			this.$el.html(this.model.text);
 			return this;
 		}
 	}),
-	ItemCriterio: Backbone.View.extend({
-        tagName:"option",
-		initialize: function() {
-			this.template = _.template($('#itemOption_template').html());
-			
-		},
-		render: function() {
-			var text=this.model.descripcion;
-			this.$el.attr('value',this.model.id);
-			this.$el.html(text);
-			return this;
-		}
-	}),
-	ItemProyecto: Backbone.View.extend({
-        tagName:"option",
-		initialize: function() {
-			this.template = _.template($('#itemOption_template').html());
-			
-		},
-		render: function() {
-			var text=this.model.nombreproyecto;
-			this.$el.attr('value',this.model.id);
-			this.$el.html(text);
-			return this;
-		}
-	}),
+	
+
+//////////APLICACION RESPUESTAS////////////////////////////////////////////////
 	AppRespuestas: Backbone.View.extend({
         tagName:"div",
         
@@ -429,7 +481,11 @@ var ViewsEvalIndividual={
 			return this;
 		},
 		load:function(){
-			var params={ isparent:this.attributes.isParent,idcriterio:this.attributes.idCriterio};
+			var params={ 
+				evaluador_id:$("#cmbEvaluador").val(),
+				isparent:this.attributes.isParent,
+				idcriterio:this.attributes.idCriterio
+			};
 			this.RespuestasCollection.fetch({reset:true,data:params});
 			return this;
 		},
@@ -532,7 +588,10 @@ var ViewsEvalIndividual={
 			this.loadAddAspectosClave();
 		},
 		loadAddAspectosClave:function(){
-			var params={idconcurso:this.attributes.idConcurso};
+			var params={
+				evaluador_id: $("#cmbEvaluador").val(),
+				idconcurso:this.attributes.idConcurso
+			};
 			this.AddAspectosClavesCollection.fetch({reset:true,data:params})
 		},
 		renderAddAspectosClave:function(){
@@ -550,6 +609,7 @@ var ViewsEvalIndividual={
 			var parent=this;
 			$('#gridAddAspectosClave tbody input:checked').each(function() {
 				var model=new Models.CriterioAspectoClave({
+					evaluador_id: $("#cmbEvaluador").val(),
 					criterio_id:parent.attributes.idCriterio,
 					aspectoclave_id:$(this).attr('data-id')
 				})
@@ -668,6 +728,8 @@ var ViewsEvalIndividual={
 			return this;
 		}
 	}),
+
+//////////APLICACION ASPECTOS CLAVES////////////////////////////////////////////////
 	AspectosClaves: Backbone.View.extend({
         tagName:"div",
         
@@ -693,7 +755,11 @@ var ViewsEvalIndividual={
 		},
 		loadAspectosClave:function(){
 			
-			var params={ isparent:this.attributes.isParent,idcriterio:this.attributes.idCriterio};
+			var params={ 
+				evaluador_id: $("#cmbEvaluador").val(),
+				isparent:this.attributes.isParent,
+				idcriterio:this.attributes.idCriterio
+			};
 			this.AspectosClaveCollection.fetch({reset:true,data:params});
 		},
 		renderAspectosClave:function(){

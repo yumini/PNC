@@ -1,0 +1,255 @@
+<div id="containerEtapaIndividual" class="container-fluid">
+	<nav class="navbar navbar-default" role="navigation" style="z-index:0">
+			        <div class="navbar-header">
+			          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex2-collapse">
+			            <span class="icon-bar"></span>
+			            <span class="icon-bar"></span>
+			            <span class="icon-bar"></span>
+			          </button>
+			          <a class="navbar-brand" href="#">
+			             {{title}}
+			         
+			         </a>
+			        </div>
+
+			        <form class="navbar-form navbar-right">
+			        <select id="cmbGrupo" name="cmbGrupo" class="form-control col-sm-3">
+				
+					
+					</select>
+			        </form>
+			        <p class="navbar-text navbar-right">Grupo:</p>
+
+			        <form class="navbar-form navbar-right">
+			        <select id="cmbEvaluador" class="form-control">
+			        	{% if user.perfil.id == 1 %}
+					        {% for entity in evaluador %}
+								<option value="{{entity.id}}">{{entity.nombres ~' '~ entity.apellidos}}</option>
+							{% endfor %}
+					    {% endif %}
+					    {% if user.perfil.id == 2 %}
+					        <option value="{{evaluador.id}}">{{evaluador.nombres ~' '~ evaluador.apellidos}}</option>
+					    {% endif %}
+			        </select>
+			        </form>
+			        <p class="navbar-text navbar-right">Evaluador:</p>
+
+			        
+
+
+	</nav>
+	<br/>
+	<div class="row">
+		<div class="col-md-1">
+			<label class="control-label" style="padding-top:5px;">Postulante:</label>
+		</div>
+		<div class="col-md-4">
+			<select id="cmbPostulante" class="form-control"></select>
+		</div>
+		<div class="col-md-1">
+			<label class="control-label" style="padding-top:5px;">Proyecto:</label>
+		</div>
+		<div class="col-md-6">
+			<select id="cmbProyecto" class="form-control"></select>
+		</div>
+	</div>
+	<br/>
+	<div class="row">
+		<div class="col-md-4">
+			<div class="panel panel-default">
+				 
+			    <nav class="navbar navbar-default" role="navigation" style="z-index:0">
+			        <div class="navbar-header">
+			          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex2-collapse">
+			            <span class="icon-bar"></span>
+			            <span class="icon-bar"></span>
+			            <span class="icon-bar"></span>
+			          </button>
+			          <a class="navbar-brand" href="#">
+			             Listado de Criterios
+			         
+			         </a>
+			        </div>
+			        
+			    </nav>
+			  
+				<div class="panel-body">
+					<div id="treeCriterios"  >
+				        
+				    </div>
+				</div>
+		     
+			</div>
+		</div>
+		<div class="col-md-8">
+			<div class="panel panel-default">
+				 
+			    <nav class="navbar navbar-default" role="navigation" style="z-index:0">
+			       <div class="navbar-header">
+			          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex2-collapse">
+			            <span class="icon-bar"></span>
+			            <span class="icon-bar"></span>
+			            <span class="icon-bar"></span>
+			          </button>
+			          <a id="titleCriterio" class="navbar-brand" href="#">
+			             Seleccione un criterio...			         
+			          </a>
+			        </div>
+			        <div class="collapse navbar-collapse navbar-ex2-collapse">
+			          <button id="btnNew" type="button" class="btn btn-success navbar-btn pull-right"> <span class="glyphicon glyphicon-plus"> </span> Nuevo</button>
+			        </div>
+			    </nav>
+			  
+				<div class="panel-body">
+					<div id="body-etapa">
+						Seleccione un criterio...
+					</div>
+				</div>
+		     
+			</div>
+		</div>
+	</div>
+<script type="text/template" id="itemOption_template">
+				  
+</script>
+<script type="text/template" id="FactoresClave_template">
+<table id="gridFactoresClave" class="table table-bordered table-condensed table-hover">
+	<thead>
+		<tr>
+		<th>Criterio</th>
+		<th>Descripcion</th>
+		<th style="width:80px">Opciones</th>
+		</tr>
+	</thead>
+	<tbody>
+	
+	</tbody>
+</table> 
+</script>
+<script type="text/template" id="itemFactoresClave1_template">
+		<td><%= model.criterio.descripcion %></td>
+		<td><%= model.descripcion %></td>
+		<td>
+			<a href="#" class="btn btn-warning btn-xs" data-id="<%= model.id %>" data-type="edit">
+				<span class="glyphicon glyphicon-pencil"></span>
+			</a>
+			<a href="#" class="btn btn-danger btn-xs" data-id="<%= model.id %>" data-type="delete">
+				<span class="glyphicon glyphicon-remove"></span>
+			</a>
+		</td>
+</script>
+
+<script type="text/template" id="itemFactoresClave2_template">
+		<td><input type="checkbox" data-id="<%=model.id %>"/></td>
+		<td><%= model.criterio.descripcion %></td>
+		<td><%= model.descripcion %></td>
+</script>
+
+<script type="text/template" id="itemFactoresClave3_template">
+		
+		<td><%= model.criterio.descripcion %></td>
+		<td><%= model.aspectoclave.descripcion %></td>
+		<td>
+			<a href="#" class="btn btn-danger btn-xs" data-id="<%= model.id %>" data-type="delete">
+				<span class="glyphicon glyphicon-remove"></span>
+			</a>
+		</td>
+</script>
+
+<script type="text/template" id="respuestas_template">
+<div id="RespuestaAspectosClave">
+
+<a id="btnNewAspectoClave" class="btn btn-success btn-xs pull-right">Agregar Aspectos Claves</a>
+<br/>
+<br/>
+<table id="gridCriterioAspectosClaves" class="table table-bordered table-condensed table-hover">
+	<thead>
+		<tr>
+		<th>Criterio</th>
+		<th>Descripcion</th>
+		<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		
+	</tbody>
+</table> 
+</div>
+<ul id="myTab" class="nav nav-tabs">
+	<li class="active"><a href="#tab-fortalezas" data-toggle="tab">Fortalezas</a></li>
+    <li><a href="#tab-areasmejora" data-toggle="tab">Areas de Mejora</a></li>
+    <li id="lnkVisita"><a href="#tab-visita" data-toggle="tab">Visita</a></li>  
+</ul>
+<div id="myTabContent" class="tab-content">
+      <div class="tab-pane fade in active" id="tab-fortalezas">
+        <p>
+			<table id="gridFortalezas" class="table table-bordered table-condensed table-hover">
+				<thead>
+					<tr>
+					<th style="width:50px">(+/++)</th>
+					<th style="width:50px;<% if(!isParent){ %>display:none;<% } %>">Area de Analisis</th>
+					<th>Respuesta</th>
+					<th style="width:80px">Opciones</th>
+					</tr>
+				</thead>
+				<tbody>
+				
+				</tbody>
+			</table> 
+        </p>
+      </div>
+      <div class="tab-pane fade" id="tab-areasmejora">
+        <p>
+			
+			<table id="gridAreasMejora" class="table table-bordered table-condensed table-hover">
+				<thead>
+					<tr>
+					<th style="width:50px;">(-/--)</th>
+					<th style="width:50px;<% if(!isParent){ %>display:none;<% } %>">Area de Analisis</th>
+					<th>Respuesta</th>
+					<th style="width:80px">Opciones</th>
+					</tr>
+				</thead>
+				<tbody>
+				
+				</tbody>
+			</table> 
+        </p>
+      </div>
+      <div class="tab-pane fade" id="tab-visita">
+        <p>
+        <br/>
+        <textarea id="txtVisita" class="form-control" rows="6"></textarea>
+        <br/>
+        <a id="btnSaveVisita" class="btn btn-success pull-right">Grabar</a>
+        </p>
+       </div>
+      
+    </div>
+</script>
+
+<script type="text/template" id="itemRespuesta_template">
+		<td><%= model.puntaje %></td>
+		<td style="<% if(!model.isParent){ %>display:none;<% } %>"><%= model.criterio.codigo %></td>
+		<td><%= model.respuesta %></td>
+		<td>
+			<a href="#" class="btn btn-warning btn-xs"  data-id="<%= model.id %>" data-type="edit">
+				<span class="glyphicon glyphicon-pencil"></span>
+			</a>
+			<a href="#" class="btn btn-danger btn-xs"  data-id="<%= model.id %>" data-type="delete">
+				<span class="glyphicon glyphicon-remove"></span>
+			</a>
+		</td>
+</script>
+</div>
+
+
+
+{% block ScriptHead %}
+    <script src="{{ asset('js/pages/Evaluacion/individual.js') }}"></script> 
+{% endblock %}
+<input id="idConcurso" type="hidden" value="10" />
+
+{% block windows %}
+    <div id="winForm"></div>
+{% endblock %}

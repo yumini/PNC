@@ -41,6 +41,14 @@ var Collections={
                 return response;
         }
 	}),
+	GrupoEvaluacionEvaluador: Backbone.Collection.extend({
+		model: Models.GrupoEvaluacionEvaluador,
+		url: Routing.generate("_admin_json_grupoevaluacionevaluador"),
+		parse: function(response) {
+				
+                return response;
+        }
+	}),
 	Inscripcion: Backbone.Collection.extend({
 		model: Models.GrupoEvaluacionPostulante,
 		url: Routing.generate("_admin_json_inscripcion"),

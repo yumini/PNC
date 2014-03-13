@@ -11,6 +11,9 @@ var Models={
 	GrupoEvaluacionPostulante: Backbone.Model.extend({
     	urlRoot : Routing.generate("_admin_json_grupoevaluacionpostulante")
     }),
+    GrupoEvaluacionEvaluador: Backbone.Model.extend({
+        urlRoot : Routing.generate("_admin_json_grupoevaluacionevaluador")
+    }),
     Criterio: Backbone.Model.extend({
     	urlRoot : Routing.generate("_admin_json_concurso_criterio")
     }),

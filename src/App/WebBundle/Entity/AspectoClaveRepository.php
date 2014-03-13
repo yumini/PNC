@@ -12,18 +12,24 @@ use Doctrine\ORM\EntityRepository;
  */
 class AspectoClaveRepository extends EntityRepository
 {
-	public function findAllById($idCriterio,$isParent,$isArray){
+	public function findAllById($idCriterio,$idevaluador,$isParent,$isArray){
 		$em=$this->getEntityManager();
 		if($isParent){
 	        $dql   = "SELECT ac,c FROM AppWebBundle:AspectoClave ac
 	        		JOIN ac.criterio c
-	        		where c.idpadre=:id";
+	        		JOIN ac.evaluador e
+	        		where c.idpadre=:id
+	        		AND (e.id=:idevaluador or :idevaluador=0)";
 	    }else{
-	    	$dql   = "SELECT ac,c FROM AppWebBundle:AspectoClave ac
+	    	$dql   = "SELECT ac,c,e FROM AppWebBundle:AspectoClave ac
 	        		JOIN ac.criterio c
-	        		where c.id=:id";
+	        		JOIN ac.evaluador e
+	        		where c.id=:id
+	        		AND (e.id=:idevaluador or :idevaluador=0)";
 	    }
-        $query = $em->createQuery($dql)->setParameter('id', $idCriterio);
+        $query = $em->createQuery($dql)
+        	->setParameter('id', $idCriterio)
+        	->setParameter('idevaluador', $idevaluador);
         try {
                 if($isArray)
                 	return $query->getArrayResult();
@@ -33,14 +39,18 @@ class AspectoClaveRepository extends EntityRepository
                 return null;
         }
 	}
-	public function findAllByConcursoId($idconcurso,$isArray=false){
+	public function findAllByConcursoId($idconcurso,$idevaluador,$isArray=false){
 		$em=$this->getEntityManager();
-	    $dql   = "SELECT ac,cr FROM AppWebBundle:AspectoClave ac
+	    $dql   = "SELECT ac,cr,e FROM AppWebBundle:AspectoClave ac
 	        		JOIN ac.criterio cr
 	        		JOIN cr.concurso c
-	        		WHERE c.id=:id";
+	        		JOIN ac.evaluador e
+	        		WHERE c.id=:id
+	        		AND (e.id=:idevaluador or :idevaluador=0)";
 	    
-        $query = $em->createQuery($dql)->setParameter('id', $idconcurso);
+        $query = $em->createQuery($dql)
+        	->setParameter('id', $idconcurso)
+        	->setParameter('idevaluador', $idevaluador);
         try {
                 if($isArray)
                 	return $query->getArrayResult();

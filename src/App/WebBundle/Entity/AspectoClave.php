@@ -3,7 +3,7 @@
 namespace App\WebBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Gedmo\Mapping\Annotation as Gedmo; 
 /**
  * AspectoClave
  *
@@ -36,9 +36,29 @@ class AspectoClave
     protected $criterio;
 
     /**
+    * @ORM\ManyToOne(targetEntity="Evaluador", inversedBy="aspectosclaves")
+    * @ORM\JoinColumn(name="evaluador_id", referencedColumnName="id")
+    */
+    protected $evaluador;
+
+    /**
     * @ORM\OneToMany(targetEntity="CriterioAspectoClave", mappedBy="aspectoclave")
     */
     protected $criteriosaspectosclaves;
+
+    /**
+     * @var \DateTime
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(name="fechaCreacion", type="datetime", nullable=true)
+     */
+    private $fechaCreacion;
+
+    /**
+     * @var \DateTime
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(name="fechaActualizacion", type="datetime", nullable=true)
+     */
+    private $fechaActualizacion;
 
     /**
      * Get id
@@ -134,5 +154,74 @@ class AspectoClave
     public function getCriteriosaspectosclaves()
     {
         return $this->criteriosaspectosclaves;
+    }
+
+    /**
+     * Set fechaCreacion
+     *
+     * @param \DateTime $fechaCreacion
+     * @return AspectoClave
+     */
+    public function setFechaCreacion($fechaCreacion)
+    {
+        $this->fechaCreacion = $fechaCreacion;
+    
+        return $this;
+    }
+
+    /**
+     * Get fechaCreacion
+     *
+     * @return \DateTime 
+     */
+    public function getFechaCreacion()
+    {
+        return $this->fechaCreacion;
+    }
+
+    /**
+     * Set fechaActualizacion
+     *
+     * @param \DateTime $fechaActualizacion
+     * @return AspectoClave
+     */
+    public function setFechaActualizacion($fechaActualizacion)
+    {
+        $this->fechaActualizacion = $fechaActualizacion;
+    
+        return $this;
+    }
+
+    /**
+     * Get fechaActualizacion
+     *
+     * @return \DateTime 
+     */
+    public function getFechaActualizacion()
+    {
+        return $this->fechaActualizacion;
+    }
+
+    /**
+     * Set evaluador
+     *
+     * @param \App\WebBundle\Entity\Evaluador $evaluador
+     * @return AspectoClave
+     */
+    public function setEvaluador(\App\WebBundle\Entity\Evaluador $evaluador = null)
+    {
+        $this->evaluador = $evaluador;
+    
+        return $this;
+    }
+
+    /**
+     * Get evaluador
+     *
+     * @return \App\WebBundle\Entity\Evaluador 
+     */
+    public function getEvaluador()
+    {
+        return $this->evaluador;
     }
 }

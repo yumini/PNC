@@ -31,8 +31,9 @@ class RespuestaController extends Controller
         //si es parent devuelve las respuesta asociadas a sus preguntas, sino devuelve las respuestas directas al criterio
         $isparent=($request->query->get('isparent')=='true')?true:false;
         $idcriterio=$request->query->get('idcriterio');
+        $idevaluador=$request->query->get('evaluador_id');
         $em = $this->getDoctrine()->getManager();
-        $entities = $em->getRepository('AppWebBundle:Respuesta')->findAllById($idcriterio,$isparent,true);
+        $entities = $em->getRepository('AppWebBundle:Respuesta')->findAllById($idcriterio,$idevaluador,$isparent,true);
         return new JsonResponse($entities);
     }
 
@@ -78,8 +79,10 @@ class RespuestaController extends Controller
         $em = $this->getDoctrine()->getManager();
         $data = json_decode($request->getContent(), true);
         $criterio = $em->getRepository('AppWebBundle:ConcursoCriterio')->find($data['criterio_id']);
+        $evaluador = $em->getRepository('AppWebBundle:Evaluador')->find($data['evaluador_id']);
         $entity  = new Respuesta();
 
+        $entity->setEvaluador($evaluador);
         $entity->setCriterio($criterio);
         $entity->setRespuesta($data['respuesta']);
         $entity->setPuntaje($data['puntaje']);
