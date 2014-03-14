@@ -32,9 +32,13 @@ var ViewsEvalIndividual={
 			var params={ evaluador_id:this.evaluador};
 			this.GrupoEvaluadorCollection.fetch({reset:true,data:params});
 		},
-		RenderGrupos:function(){
-			
+		ResetApp:function(){
 			this.$el.find('#body-etapa').empty();
+			this.$el.find('#btnNew').attr('disabled',true);
+		},
+		RenderGrupos:function(){
+			this.ResetApp();
+			
 			this.$el.find('#cmbGrupo').empty();
 			var v = null;
 			                     
@@ -222,6 +226,7 @@ var ViewsEvalIndividual={
 		SaveAspectoClave:function(){
 			var parent=this;
 			var obj=new Models.AspectoClave({
+				inscripcion_id:$('#cmbProyecto').val(),
 				evaluador_id:$("#cmbEvaluador").val(),
 				criterio_id:$('#cmbAspectoCLave').val(),
 				descripcion:$('#txtDescripcionAspectoClave').val()
@@ -292,18 +297,23 @@ var ViewsEvalIndividual={
 			switch(this.nodeSelected.tipoArbol_id){
 	        	case "1":
 	        		var obj=new Models.RespuestaCriterio({
+	        			inscripcion_id:$('#cmbProyecto').val(),
 	        			evaluador_id:$("#cmbEvaluador").val(),
 						criterio_id:this.nodeSelected.id,
 						puntaje:$('#cmbPuntaje').val(),
-						respuesta:$('#txtRespuesta').val()
+						respuesta:$('#txtRespuesta').val(),
+						aspectoclave_id:0
 					});
 	        		break;
 	        	case "2":
 	        		var obj=new Models.RespuestaCriterio({
+	        			inscripcion_id:$('#cmbProyecto').val(),
 	        			evaluador_id:$("#cmbEvaluador").val(),
 						criterio_id:$("#cmbPregunta").val(),
+						criterio_padreid:this.nodeSelected.id,
 						puntaje:$('#cmbPuntaje').val(),
-						respuesta:$('#txtRespuesta').val()
+						respuesta:$('#txtRespuesta').val(),
+						aspectoclave_id:$('#cmbRespuestaAspectoClave').val()
 					});
 	        		break;
 	        }
@@ -334,6 +344,7 @@ var ViewsEvalIndividual={
 		},
 		loadComboAspectosClave:function(){
 			var params={
+				inscripcion_id:$('#cmbProyecto').val(),
 				evaluador_id: $("#cmbEvaluador").val(),
 				idconcurso:this.concurso.id
 			};
@@ -441,13 +452,21 @@ var ViewsEvalIndividual={
 		},
 		LoadVisita:function(){
 			
-			var params={concursocriterio_id:this.attributes.idCriterio};
+			var params={
+				inscripcion_id:$('#cmbProyecto').val(),
+				evaluador_id: $("#cmbEvaluador").val(),
+				concursocriterio_id:this.attributes.idCriterio
+			};
 			this.VisitasCollection.fetch({reset:true,data:params});
 		},
 		LoadAspectosClaves:function(){
 
 			
-			var params={idcriterio:this.attributes.idCriterio};
+			var params={
+				inscripcion_id:$('#cmbProyecto').val(),
+				evaluador_id:$("#cmbEvaluador").val(),
+				idcriterio:this.attributes.idCriterio
+			};
 			this.AspectosClavesCollection.fetch({reset:true,data:params});
 		},
 		renderAspectosClave:function(){
@@ -482,6 +501,7 @@ var ViewsEvalIndividual={
 		},
 		load:function(){
 			var params={ 
+				inscripcion_id:$('#cmbProyecto').val(),
 				evaluador_id:$("#cmbEvaluador").val(),
 				isparent:this.attributes.isParent,
 				idcriterio:this.attributes.idCriterio
@@ -531,11 +551,15 @@ var ViewsEvalIndividual={
 			
 			if(this.Visita.id==0){
 				var item=new Models.CriterioVisita({
+					inscripcion_id:$('#cmbProyecto').val(),
+					evaluador_id:$("#cmbEvaluador").val(),
 					concursocriterio_id:this.attributes.idCriterio,
 					descripcion:$("#txtVisita").val()
 				});
 			}else{
 				var item=new Models.CriterioVisita({
+					inscripcion_id:$('#cmbProyecto').val(),
+					evaluador_id:$("#cmbEvaluador").val(),
 					id:this.Visita.id,
 					concursocriterio_id:this.attributes.idCriterio,
 					descripcion:$("#txtVisita").val()
@@ -589,6 +613,7 @@ var ViewsEvalIndividual={
 		},
 		loadAddAspectosClave:function(){
 			var params={
+				inscripcion_id:$('#cmbProyecto').val(),
 				evaluador_id: $("#cmbEvaluador").val(),
 				idconcurso:this.attributes.idConcurso
 			};
@@ -609,6 +634,7 @@ var ViewsEvalIndividual={
 			var parent=this;
 			$('#gridAddAspectosClave tbody input:checked').each(function() {
 				var model=new Models.CriterioAspectoClave({
+					inscripcion_id:$('#cmbProyecto').val(),
 					evaluador_id: $("#cmbEvaluador").val(),
 					criterio_id:parent.attributes.idCriterio,
 					aspectoclave_id:$(this).attr('data-id')
@@ -756,6 +782,7 @@ var ViewsEvalIndividual={
 		loadAspectosClave:function(){
 			
 			var params={ 
+				inscripcion_id:$('#cmbProyecto').val(),
 				evaluador_id: $("#cmbEvaluador").val(),
 				isparent:this.attributes.isParent,
 				idcriterio:this.attributes.idCriterio

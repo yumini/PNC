@@ -117,6 +117,26 @@ class Inscripcion
      * @ORM\Column(name="fechaActualizacion", type="datetime")
      */
     private $fechaActualizacion;
+
+    /**
+    * @ORM\OneToMany(targetEntity="Inscripcion", mappedBy="inscripcion")
+    */
+    private $aspectosclaves;
+
+    /**
+    * @ORM\OneToMany(targetEntity="Respuesta", mappedBy="inscripcion")
+    */
+    private $respuestas;
+
+    /**
+    * @ORM\OneToMany(targetEntity="CriterioVisita", mappedBy="inscripcion")
+    */
+    private $visitas;
+
+    /**
+    * @ORM\OneToMany(targetEntity="CriterioAspectoClave", mappedBy="inscripcion")
+    */
+    private $criteriosaspectosclaves;
     
     /**
      * Get id
@@ -448,5 +468,144 @@ class Inscripcion
     public function getFechaActualizacion()
     {
         return $this->fechaActualizacion;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->aspectosclaves = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    /**
+     * Add aspectosclaves
+     *
+     * @param \App\WebBundle\Entity\Inscripcion $aspectosclaves
+     * @return Inscripcion
+     */
+    public function addAspectosclave(\App\WebBundle\Entity\Inscripcion $aspectosclaves)
+    {
+        $this->aspectosclaves[] = $aspectosclaves;
+    
+        return $this;
+    }
+
+    /**
+     * Remove aspectosclaves
+     *
+     * @param \App\WebBundle\Entity\Inscripcion $aspectosclaves
+     */
+    public function removeAspectosclave(\App\WebBundle\Entity\Inscripcion $aspectosclaves)
+    {
+        $this->aspectosclaves->removeElement($aspectosclaves);
+    }
+
+    /**
+     * Get aspectosclaves
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getAspectosclaves()
+    {
+        return $this->aspectosclaves;
+    }
+
+    /**
+     * Add respuestas
+     *
+     * @param \App\WebBundle\Entity\Respuesta $respuestas
+     * @return Inscripcion
+     */
+    public function addRespuesta(\App\WebBundle\Entity\Respuesta $respuestas)
+    {
+        $this->respuestas[] = $respuestas;
+    
+        return $this;
+    }
+
+    /**
+     * Remove respuestas
+     *
+     * @param \App\WebBundle\Entity\Respuesta $respuestas
+     */
+    public function removeRespuesta(\App\WebBundle\Entity\Respuesta $respuestas)
+    {
+        $this->respuestas->removeElement($respuestas);
+    }
+
+    /**
+     * Get respuestas
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getRespuestas()
+    {
+        return $this->respuestas;
+    }
+
+    /**
+     * Add visitas
+     *
+     * @param \App\WebBundle\Entity\CriterioVisita $visitas
+     * @return Inscripcion
+     */
+    public function addVisita(\App\WebBundle\Entity\CriterioVisita $visitas)
+    {
+        $this->visitas[] = $visitas;
+    
+        return $this;
+    }
+
+    /**
+     * Remove visitas
+     *
+     * @param \App\WebBundle\Entity\CriterioVisita $visitas
+     */
+    public function removeVisita(\App\WebBundle\Entity\CriterioVisita $visitas)
+    {
+        $this->visitas->removeElement($visitas);
+    }
+
+    /**
+     * Get visitas
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getVisitas()
+    {
+        return $this->visitas;
+    }
+
+    /**
+     * Add criteriosaspectosclaves
+     *
+     * @param \App\WebBundle\Entity\CriterioAspectoClave $criteriosaspectosclaves
+     * @return Inscripcion
+     */
+    public function addCriteriosaspectosclave(\App\WebBundle\Entity\CriterioAspectoClave $criteriosaspectosclaves)
+    {
+        $this->criteriosaspectosclaves[] = $criteriosaspectosclaves;
+    
+        return $this;
+    }
+
+    /**
+     * Remove criteriosaspectosclaves
+     *
+     * @param \App\WebBundle\Entity\CriterioAspectoClave $criteriosaspectosclaves
+     */
+    public function removeCriteriosaspectosclave(\App\WebBundle\Entity\CriterioAspectoClave $criteriosaspectosclaves)
+    {
+        $this->criteriosaspectosclaves->removeElement($criteriosaspectosclaves);
+    }
+
+    /**
+     * Get criteriosaspectosclaves
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getCriteriosaspectosclaves()
+    {
+        return $this->criteriosaspectosclaves;
     }
 }

@@ -117,6 +117,26 @@ class Inscripcion
      * @ORM\Column(name="fechaActualizacion", type="datetime")
      */
     private $fechaActualizacion;
+
+    /**
+    * @ORM\OneToMany(targetEntity="Inscripcion", mappedBy="inscripcion")
+    */
+    private $aspectosclaves;
+
+    /**
+    * @ORM\OneToMany(targetEntity="Respuesta", mappedBy="inscripcion")
+    */
+    private $respuestas;
+
+    /**
+    * @ORM\OneToMany(targetEntity="CriterioVisita", mappedBy="inscripcion")
+    */
+    private $visitas;
+
+    /**
+    * @ORM\OneToMany(targetEntity="CriterioAspectoClave", mappedBy="inscripcion")
+    */
+    private $criteriosaspectosclaves;
     
     /**
      * Get id
@@ -448,5 +468,45 @@ class Inscripcion
     public function getFechaActualizacion()
     {
         return $this->fechaActualizacion;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->aspectosclaves = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    /**
+     * Add aspectosclaves
+     *
+     * @param \App\WebBundle\Entity\Inscripcion $aspectosclaves
+     * @return Inscripcion
+     */
+    public function addAspectosclave(\App\WebBundle\Entity\Inscripcion $aspectosclaves)
+    {
+        $this->aspectosclaves[] = $aspectosclaves;
+    
+        return $this;
+    }
+
+    /**
+     * Remove aspectosclaves
+     *
+     * @param \App\WebBundle\Entity\Inscripcion $aspectosclaves
+     */
+    public function removeAspectosclave(\App\WebBundle\Entity\Inscripcion $aspectosclaves)
+    {
+        $this->aspectosclaves->removeElement($aspectosclaves);
+    }
+
+    /**
+     * Get aspectosclaves
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getAspectosclaves()
+    {
+        return $this->aspectosclaves;
     }
 }

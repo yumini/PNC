@@ -12,24 +12,29 @@ use Doctrine\ORM\EntityRepository;
  */
 class AspectoClaveRepository extends EntityRepository
 {
-	public function findAllById($idCriterio,$idevaluador,$isParent,$isArray){
+	public function findAllById($idCriterio,$idevaluador,$idinscripcion,$isParent,$isArray){
 		$em=$this->getEntityManager();
 		if($isParent){
-	        $dql   = "SELECT ac,c FROM AppWebBundle:AspectoClave ac
+	        $dql   = "SELECT ac,c,e,i FROM AppWebBundle:AspectoClave ac
 	        		JOIN ac.criterio c
 	        		JOIN ac.evaluador e
+	        		JOIN ac.inscripcion i
 	        		where c.idpadre=:id
-	        		AND (e.id=:idevaluador or :idevaluador=0)";
+	        		AND (e.id=:idevaluador or :idevaluador=0)
+	        		AND i.id=:idinscripcion";
 	    }else{
-	    	$dql   = "SELECT ac,c,e FROM AppWebBundle:AspectoClave ac
+	    	$dql   = "SELECT ac,c,e,i FROM AppWebBundle:AspectoClave ac
 	        		JOIN ac.criterio c
 	        		JOIN ac.evaluador e
+	        		JOIN ac.inscripcion i
 	        		where c.id=:id
-	        		AND (e.id=:idevaluador or :idevaluador=0)";
+	        		AND (e.id=:idevaluador or :idevaluador=0)
+	        		AND i.id=:idinscripcion";
 	    }
         $query = $em->createQuery($dql)
         	->setParameter('id', $idCriterio)
-        	->setParameter('idevaluador', $idevaluador);
+        	->setParameter('idevaluador', $idevaluador)
+        	->setParameter('idinscripcion', $idinscripcion);
         try {
                 if($isArray)
                 	return $query->getArrayResult();
@@ -39,18 +44,21 @@ class AspectoClaveRepository extends EntityRepository
                 return null;
         }
 	}
-	public function findAllByConcursoId($idconcurso,$idevaluador,$isArray=false){
+	public function findAllByConcursoId($idconcurso,$idevaluador,$idinscripcion,$isArray=false){
 		$em=$this->getEntityManager();
-	    $dql   = "SELECT ac,cr,e FROM AppWebBundle:AspectoClave ac
+	    $dql   = "SELECT ac,cr,e,i FROM AppWebBundle:AspectoClave ac
 	        		JOIN ac.criterio cr
 	        		JOIN cr.concurso c
 	        		JOIN ac.evaluador e
+	        		JOIN ac.inscripcion i
 	        		WHERE c.id=:id
-	        		AND (e.id=:idevaluador or :idevaluador=0)";
+	        		AND (e.id=:idevaluador or :idevaluador=0)
+	        		AND i.id=:idinscripcion";
 	    
         $query = $em->createQuery($dql)
         	->setParameter('id', $idconcurso)
-        	->setParameter('idevaluador', $idevaluador);
+        	->setParameter('idevaluador', $idevaluador)
+        	->setParameter('idinscripcion', $idinscripcion);
         try {
                 if($isArray)
                 	return $query->getArrayResult();

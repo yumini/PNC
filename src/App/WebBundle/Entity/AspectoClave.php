@@ -42,9 +42,20 @@ class AspectoClave
     protected $evaluador;
 
     /**
+    * @ORM\ManyToOne(targetEntity="Inscripcion", inversedBy="aspectosclaves")
+    * @ORM\JoinColumn(name="inscripcion_id", referencedColumnName="id")
+    */
+    protected $inscripcion;
+
+    /**
     * @ORM\OneToMany(targetEntity="CriterioAspectoClave", mappedBy="aspectoclave")
     */
     protected $criteriosaspectosclaves;
+
+     /**
+    * @ORM\OneToMany(targetEntity="Respuesta", mappedBy="aspectoclave")
+    */
+    protected $respuestas;
 
     /**
      * @var \DateTime
@@ -223,5 +234,61 @@ class AspectoClave
     public function getEvaluador()
     {
         return $this->evaluador;
+    }
+
+    /**
+     * Add respuestas
+     *
+     * @param \App\WebBundle\Entity\Respuesta $respuestas
+     * @return AspectoClave
+     */
+    public function addRespuesta(\App\WebBundle\Entity\Respuesta $respuestas)
+    {
+        $this->respuestas[] = $respuestas;
+    
+        return $this;
+    }
+
+    /**
+     * Remove respuestas
+     *
+     * @param \App\WebBundle\Entity\Respuesta $respuestas
+     */
+    public function removeRespuesta(\App\WebBundle\Entity\Respuesta $respuestas)
+    {
+        $this->respuestas->removeElement($respuestas);
+    }
+
+    /**
+     * Get respuestas
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getRespuestas()
+    {
+        return $this->respuestas;
+    }
+
+    /**
+     * Set inscripcion
+     *
+     * @param \App\WebBundle\Entity\Inscripcion $inscripcion
+     * @return AspectoClave
+     */
+    public function setInscripcion(\App\WebBundle\Entity\Inscripcion $inscripcion = null)
+    {
+        $this->inscripcion = $inscripcion;
+    
+        return $this;
+    }
+
+    /**
+     * Get inscripcion
+     *
+     * @return \App\WebBundle\Entity\Inscripcion 
+     */
+    public function getInscripcion()
+    {
+        return $this->inscripcion;
     }
 }

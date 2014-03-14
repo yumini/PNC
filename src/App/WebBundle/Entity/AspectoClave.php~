@@ -42,9 +42,20 @@ class AspectoClave
     protected $evaluador;
 
     /**
+    * @ORM\ManyToOne(targetEntity="Inscripcion", inversedBy="aspectosclaves")
+    * @ORM\JoinColumn(name="inscripcion_id", referencedColumnName="id")
+    */
+    protected $inscripcion;
+
+    /**
     * @ORM\OneToMany(targetEntity="CriterioAspectoClave", mappedBy="aspectoclave")
     */
     protected $criteriosaspectosclaves;
+
+     /**
+    * @ORM\OneToMany(targetEntity="Respuesta", mappedBy="aspectoclave")
+    */
+    protected $respuestas;
 
     /**
      * @var \DateTime
@@ -154,5 +165,107 @@ class AspectoClave
     public function getCriteriosaspectosclaves()
     {
         return $this->criteriosaspectosclaves;
+    }
+
+    /**
+     * Set fechaCreacion
+     *
+     * @param \DateTime $fechaCreacion
+     * @return AspectoClave
+     */
+    public function setFechaCreacion($fechaCreacion)
+    {
+        $this->fechaCreacion = $fechaCreacion;
+    
+        return $this;
+    }
+
+    /**
+     * Get fechaCreacion
+     *
+     * @return \DateTime 
+     */
+    public function getFechaCreacion()
+    {
+        return $this->fechaCreacion;
+    }
+
+    /**
+     * Set fechaActualizacion
+     *
+     * @param \DateTime $fechaActualizacion
+     * @return AspectoClave
+     */
+    public function setFechaActualizacion($fechaActualizacion)
+    {
+        $this->fechaActualizacion = $fechaActualizacion;
+    
+        return $this;
+    }
+
+    /**
+     * Get fechaActualizacion
+     *
+     * @return \DateTime 
+     */
+    public function getFechaActualizacion()
+    {
+        return $this->fechaActualizacion;
+    }
+
+    /**
+     * Set evaluador
+     *
+     * @param \App\WebBundle\Entity\Evaluador $evaluador
+     * @return AspectoClave
+     */
+    public function setEvaluador(\App\WebBundle\Entity\Evaluador $evaluador = null)
+    {
+        $this->evaluador = $evaluador;
+    
+        return $this;
+    }
+
+    /**
+     * Get evaluador
+     *
+     * @return \App\WebBundle\Entity\Evaluador 
+     */
+    public function getEvaluador()
+    {
+        return $this->evaluador;
+    }
+
+    /**
+     * Add respuestas
+     *
+     * @param \App\WebBundle\Entity\Respuesta $respuestas
+     * @return AspectoClave
+     */
+    public function addRespuesta(\App\WebBundle\Entity\Respuesta $respuestas)
+    {
+        $this->respuestas[] = $respuestas;
+    
+        return $this;
+    }
+
+    /**
+     * Remove respuestas
+     *
+     * @param \App\WebBundle\Entity\Respuesta $respuestas
+     */
+    public function removeRespuesta(\App\WebBundle\Entity\Respuesta $respuestas)
+    {
+        $this->respuestas->removeElement($respuestas);
+    }
+
+    /**
+     * Get respuestas
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getRespuestas()
+    {
+        return $this->respuestas;
     }
 }

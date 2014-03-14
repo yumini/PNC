@@ -230,9 +230,19 @@ class Evaluador
     private $aspectosclaves;
 
     /**
+    * @ORM\OneToMany(targetEntity="CriterioAspectoClave", mappedBy="evaluador")
+    */
+    private $criteriosaspectosclaves;
+
+    /**
     * @ORM\OneToMany(targetEntity="Respuesta", mappedBy="evaluador")
     */
     private $respuestas;
+
+    /**
+    * @ORM\OneToMany(targetEntity="CriterioVisita", mappedBy="evaluador")
+    */
+    private $visitas;
     
     /**
     * @ORM\OneToMany(targetEntity="InscripcionEvaluador", mappedBy="evaluador")
@@ -1046,5 +1056,71 @@ class Evaluador
     public function getAspectosclaves()
     {
         return $this->aspectosclaves;
+    }
+
+    /**
+     * Add respuestas
+     *
+     * @param \App\WebBundle\Entity\Respuesta $respuestas
+     * @return Evaluador
+     */
+    public function addRespuesta(\App\WebBundle\Entity\Respuesta $respuestas)
+    {
+        $this->respuestas[] = $respuestas;
+    
+        return $this;
+    }
+
+    /**
+     * Remove respuestas
+     *
+     * @param \App\WebBundle\Entity\Respuesta $respuestas
+     */
+    public function removeRespuesta(\App\WebBundle\Entity\Respuesta $respuestas)
+    {
+        $this->respuestas->removeElement($respuestas);
+    }
+
+    /**
+     * Get respuestas
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getRespuestas()
+    {
+        return $this->respuestas;
+    }
+
+    /**
+     * Add criteriosaspectosclaves
+     *
+     * @param \App\WebBundle\Entity\CriterioAspectoClave $criteriosaspectosclaves
+     * @return Evaluador
+     */
+    public function addCriteriosaspectosclave(\App\WebBundle\Entity\CriterioAspectoClave $criteriosaspectosclaves)
+    {
+        $this->criteriosaspectosclaves[] = $criteriosaspectosclaves;
+    
+        return $this;
+    }
+
+    /**
+     * Remove criteriosaspectosclaves
+     *
+     * @param \App\WebBundle\Entity\CriterioAspectoClave $criteriosaspectosclaves
+     */
+    public function removeCriteriosaspectosclave(\App\WebBundle\Entity\CriterioAspectoClave $criteriosaspectosclaves)
+    {
+        $this->criteriosaspectosclaves->removeElement($criteriosaspectosclaves);
+    }
+
+    /**
+     * Get criteriosaspectosclaves
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getCriteriosaspectosclaves()
+    {
+        return $this->criteriosaspectosclaves;
     }
 }

@@ -26,7 +26,7 @@
                 <th class="grid-header" style="text-align: center;">Tipo</th>
                 <th class="grid-header" style="text-align: center;">Fecha Inicio</th>
                 <th class="grid-header" style="text-align: center;">Fecha Fin</th>
-                <th class="grid-header" style="width: 100px;text-align: center;">Opciones</th>
+                <th class="grid-header" style="width: 170px;text-align: center;">Opciones</th>
             </tr>
         </thead>
         <tbody>
@@ -40,11 +40,13 @@
                 <td>{% if entity.fechaInicio %}{{ entity.fechaInicio|date('Y-m-d H:i:s') }}{% endif %}</td>
                 <td>{% if entity.fechaFin %}{{ entity.fechaFin|date('Y-m-d H:i:s') }}{% endif %}</td>
                 <td style="text-align: center;font-size: 12px;">
-                    <a href="#" class="row-show" data-id="{{ entity.id }}" title="Ver Detalle"><i class="glyphicon glyphicon-search"> </i></a>
-                    <a href="#" class="row-edit" data-id="{{ entity.id }}" title="Editar"><i class="glyphicon glyphicon-pencil"> </i></a>
-                    <a href="#" class="row-etapas" data-id="{{ entity.id }}"><span class="glyphicon glyphicon-calendar red" title="Etapas"> </span></a>
-                    <a href="#" class="row-criterios" data-id="{{ entity.id }}"><i class="glyphicon glyphicon-tasks" title="Criterios"> </i></a>
-                    <a href="#" class="row-delete" data-id="{{ entity.id }}" title="Eliminar"><i class="glyphicon glyphicon-trash"> </i></a>
+                    <a href="#" class="row-show btn btn-default btn-xs" data-id="{{ entity.id }}" title="Ver Detalle"><span class="glyphicon glyphicon-search"> </span></a>
+                    
+                    <a href="#" class="row-etapas  btn btn-info btn-xs" data-id="{{ entity.id }}"><span class="glyphicon glyphicon-calendar red" title="Etapas"> </span></a>
+                    <a href="#" class="row-criterios btn btn-info btn-xs" data-id="{{ entity.id }}">
+                        <span class="glyphicon glyphicon-list-alt" title="Criterios"> </span></a>
+                    <a href="#" class="row-edit btn btn-warning btn-xs" data-id="{{ entity.id }}" title="Editar"><span class="glyphicon glyphicon-pencil "> </span></a>
+                    <a href="#" class="row-delete  btn btn-danger btn-xs" data-id="{{ entity.id }}" title="Eliminar"><span class="glyphicon glyphicon-trash"> </span></a>
                 
                 </td>
             </tr>

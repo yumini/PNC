@@ -12,28 +12,35 @@ use Doctrine\ORM\EntityRepository;
  */
 class RespuestaRepository extends EntityRepository
 {
-	public function findAllById($idCriterio,$idEvaluador,$isParent,$isArray){
+	public function findAllById($idCriterio,$idEvaluador,$idinscripcion,$isParent,$isArray){
 		$em=$this->getEntityManager();
 		if($isParent){
 			$ids=$this->getAllRespuestasSubcriterios($idCriterio);
 			if($ids==null)
 				$ids='0';
-	        $dql   = "SELECT r,c,e FROM AppWebBundle:Respuesta r
+	        $dql   = "SELECT r,c,e,i FROM AppWebBundle:Respuesta r
 	        		JOIN r.criterio c
 	        		JOIN r.evaluador e
+	        		JOIN r.inscripcion i
 	        		where c.id in($ids)
-	        		AND (e.id=:idevaluador or :idevaluador=0)";
-	        $query = $em->createQuery($dql)->setParameter('idevaluador', $idEvaluador);
+	        		AND (e.id=:idevaluador or :idevaluador=0)
+	        		AND i.id=:idinscripcion";
+	        $query = $em->createQuery($dql)
+	        	->setParameter('idevaluador', $idEvaluador)
+	        	->setParameter('idinscripcion', $idinscripcion);
 	    }else{
 
-	    	$dql   = "SELECT r,c,e FROM AppWebBundle:Respuesta r
+	    	$dql   = "SELECT r,c,e,i FROM AppWebBundle:Respuesta r
 	        		JOIN r.criterio c
 	        		JOIN r.evaluador e
+	        		JOIN r.inscripcion i
 	        		where c.id=:id
-	        		AND (e.id=:idevaluador or :idevaluador=0)";
+	        		AND (e.id=:idevaluador or :idevaluador=0)
+	        		AND i.id=:idinscripcion";
 	        $query = $em->createQuery($dql)
 	        	->setParameter('id', $idCriterio)
-	        	->setParameter('idevaluador', $idEvaluador);
+	        	->setParameter('idevaluador', $idEvaluador)
+	        	->setParameter('idinscripcion', $idinscripcion);
 	    }
         
         try {

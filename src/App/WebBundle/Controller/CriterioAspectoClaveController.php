@@ -44,7 +44,9 @@ class CriterioAspectoClaveController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $idcriterio=$request->query->get('idcriterio');
-        $entities = $em->getRepository('AppWebBundle:CriterioAspectoClave')->findAllByCriterio($idcriterio,true);
+        $idevaluador=$request->query->get('evaluador_id');
+        $idinscripcion=$request->query->get('inscripcion_id');
+        $entities = $em->getRepository('AppWebBundle:CriterioAspectoClave')->findAllByCriterio($idcriterio,$idevaluador,$idinscripcion,true);
         
         return new JsonResponse($entities);
     }
@@ -63,9 +65,12 @@ class CriterioAspectoClaveController extends Controller
         $entity=new CriterioAspectoClave();
         $criterio = $em->getRepository('AppWebBundle:ConcursoCriterio')->find($data['criterio_id']);
         $aspectoclave = $em->getRepository('AppWebBundle:AspectoClave')->find($data['aspectoclave_id']);
-       
+        $evaluador = $em->getRepository('AppWebBundle:Evaluador')->find($data['evaluador_id']);
+        $inscripcion=$em->getRepository('AppWebBundle:Inscripcion')->find($data['inscripcion_id']);
+        $entity->setEvaluador($evaluador);
         $entity->setCriterio($criterio);
         $entity->setAspectoclave($aspectoclave);
+        $entity->setInscripcion($inscripcion);
         $em->persist($entity);
         $em->flush();
         

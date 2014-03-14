@@ -7,6 +7,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use App\WebBundle\Entity\AspectoClave;
+use App\WebBundle\Entity\CriterioAspectoClave;
 use App\WebBundle\Entity\Respuesta;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -32,8 +34,9 @@ class RespuestaController extends Controller
         $isparent=($request->query->get('isparent')=='true')?true:false;
         $idcriterio=$request->query->get('idcriterio');
         $idevaluador=$request->query->get('evaluador_id');
+        $idinscripcion=$request->query->get('inscripcion_id');
         $em = $this->getDoctrine()->getManager();
-        $entities = $em->getRepository('AppWebBundle:Respuesta')->findAllById($idcriterio,$idevaluador,$isparent,true);
+        $entities = $em->getRepository('AppWebBundle:Respuesta')->findAllById($idcriterio,$idevaluador,$idinscripcion,$isparent,true);
         return new JsonResponse($entities);
     }
 
@@ -80,10 +83,28 @@ class RespuestaController extends Controller
         $data = json_decode($request->getContent(), true);
         $criterio = $em->getRepository('AppWebBundle:ConcursoCriterio')->find($data['criterio_id']);
         $evaluador = $em->getRepository('AppWebBundle:Evaluador')->find($data['evaluador_id']);
-        $entity  = new Respuesta();
+        $aspectoclave = $em->getRepository('AppWebBundle:AspectoClave')->find($data['aspectoclave_id']);
+        $inscripcion = $em->getRepository('AppWebBundle:Inscripcion')->find($data['inscripcion_id']);
+        if($data['aspectoclave_id']!='0'){
 
+            $criterioaspectoclave = $em->getRepository('AppWebBundle:CriterioAspectoClave')
+                ->findByCriterioAndAspectoClave($data['criterio_padreid'],$data['aspectoclave_id'],true);
+            if(!count($criterioaspectoclave)>0){
+                $criterioaspecto = $em->getRepository('AppWebBundle:ConcursoCriterio')->find($data['criterio_padreid']);
+                $criterioaspectoclave=new CriterioAspectoClave();
+                $criterioaspectoclave->setCriterio($criterioaspecto);
+                $criterioaspectoclave->setAspectoclave($aspectoclave);
+                $criterioaspectoclave->setEvaluador($evaluador);
+                $criterioaspectoclave->setInscripcion($inscripcion);
+                $em->persist($criterioaspectoclave);
+            }
+        }
+        $entity  = new Respuesta();
+        $entity->setInscripcion($inscripcion);
         $entity->setEvaluador($evaluador);
         $entity->setCriterio($criterio);
+        if($data['aspectoclave_id']!='0')
+            $entity->setAspectoclave($aspectoclave);
         $entity->setRespuesta($data['respuesta']);
         $entity->setPuntaje($data['puntaje']);
         $em->persist($entity);

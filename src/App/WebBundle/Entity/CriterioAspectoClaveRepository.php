@@ -12,13 +12,18 @@ use Doctrine\ORM\EntityRepository;
  */
 class CriterioAspectoClaveRepository extends EntityRepository
 {
-	public function findAllByCriterio($idCriterio,$isArray=false){
+	public function findAllByCriterio($idCriterio,$idevaluador,$idinscripcion,$isArray=false){
 		$em=$this->getEntityManager();
-        $dql   = "SELECT ac,c,a FROM AppWebBundle:CriterioAspectoClave ac
+        $dql   = "SELECT ac,c,a,i FROM AppWebBundle:CriterioAspectoClave ac
 	        		JOIN ac.criterio c
+                                JOIN ac.evaluador e
                                 JOIN ac.aspectoclave a
-	        		where c.id=:id";
-        $query = $em->createQuery($dql)->setParameter('id', $idCriterio);
+                                JOIN ac.inscripcion i
+	        		where c.id=:idcriterio AND e.id=:idevaluador AND i.id=:idinscripcion";
+        $query = $em->createQuery($dql)
+                ->setParameter('idcriterio', $idCriterio)
+                ->setParameter('idevaluador', $idevaluador)
+                ->setParameter('idinscripcion', $idinscripcion);
         try {
                 if($isArray)
                 	return $query->getArrayResult();
@@ -28,4 +33,27 @@ class CriterioAspectoClaveRepository extends EntityRepository
                 return null;
         }
 	}
+
+        public function findByCriterioAndAspectoClave($idCriterio,$idaspectoclave,$idinscripcion,$isArray=false){
+                $em=$this->getEntityManager();
+                $dql   = "SELECT ac,c,a,i FROM AppWebBundle:CriterioAspectoClave ac
+                                        JOIN ac.criterio c
+                                        JOIN ac.aspectoclave a
+                                        JOIN ac.inscripcion i
+                                        where c.id=:criterioid 
+                                        AND a.id=:aspectoclaveid
+                                        AND i.id=:idinscripcion";
+                $query = $em->createQuery($dql)
+                        ->setParameter('criterioid', $idCriterio)
+                        ->setParameter('aspectoclaveid', $idaspectoclave)
+                        ->setParameter('idinscripcion', $idinscripcion);
+                try {
+                        if($isArray)
+                                return $query->getArrayResult();
+                        else
+                                return $query->getResult();
+                } catch (\Doctrine\ORM\NoResultException $e) {
+                        return null;
+                }
+        }
 }

@@ -11,7 +11,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 /**
  * Etapa Individual controller.
  *
- * @Route("/evaluacion")
+ * @Route("/admin/evaluacion")
  */
 class EvaluacionController extends Controller
 {

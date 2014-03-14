@@ -230,9 +230,19 @@ class Evaluador
     private $aspectosclaves;
 
     /**
+    * @ORM\OneToMany(targetEntity="CriterioAspectoClave", mappedBy="evaluador")
+    */
+    private $criteriosaspectosclaves;
+
+    /**
     * @ORM\OneToMany(targetEntity="Respuesta", mappedBy="evaluador")
     */
     private $respuestas;
+
+    /**
+    * @ORM\OneToMany(targetEntity="CriterioVisita", mappedBy="evaluador")
+    */
+    private $visitas;
     
     /**
     * @ORM\OneToMany(targetEntity="InscripcionEvaluador", mappedBy="evaluador")
@@ -1079,5 +1089,71 @@ class Evaluador
     public function getRespuestas()
     {
         return $this->respuestas;
+    }
+
+    /**
+     * Add criteriosaspectosclaves
+     *
+     * @param \App\WebBundle\Entity\CriterioAspectoClave $criteriosaspectosclaves
+     * @return Evaluador
+     */
+    public function addCriteriosaspectosclave(\App\WebBundle\Entity\CriterioAspectoClave $criteriosaspectosclaves)
+    {
+        $this->criteriosaspectosclaves[] = $criteriosaspectosclaves;
+    
+        return $this;
+    }
+
+    /**
+     * Remove criteriosaspectosclaves
+     *
+     * @param \App\WebBundle\Entity\CriterioAspectoClave $criteriosaspectosclaves
+     */
+    public function removeCriteriosaspectosclave(\App\WebBundle\Entity\CriterioAspectoClave $criteriosaspectosclaves)
+    {
+        $this->criteriosaspectosclaves->removeElement($criteriosaspectosclaves);
+    }
+
+    /**
+     * Get criteriosaspectosclaves
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getCriteriosaspectosclaves()
+    {
+        return $this->criteriosaspectosclaves;
+    }
+
+    /**
+     * Add visitas
+     *
+     * @param \App\WebBundle\Entity\CriterioVisita $visitas
+     * @return Evaluador
+     */
+    public function addVisita(\App\WebBundle\Entity\CriterioVisita $visitas)
+    {
+        $this->visitas[] = $visitas;
+    
+        return $this;
+    }
+
+    /**
+     * Remove visitas
+     *
+     * @param \App\WebBundle\Entity\CriterioVisita $visitas
+     */
+    public function removeVisita(\App\WebBundle\Entity\CriterioVisita $visitas)
+    {
+        $this->visitas->removeElement($visitas);
+    }
+
+    /**
+     * Get visitas
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getVisitas()
+    {
+        return $this->visitas;
     }
 }

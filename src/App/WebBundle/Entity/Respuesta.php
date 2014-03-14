@@ -43,10 +43,22 @@ class Respuesta
     protected $criterio;
 
     /**
+    * @ORM\ManyToOne(targetEntity="AspectoClave", inversedBy="respuestas")
+    * @ORM\JoinColumn(name="aspectoclave_id", referencedColumnName="id")
+    */
+    protected $aspectoclave;
+
+    /**
     * @ORM\ManyToOne(targetEntity="Evaluador", inversedBy="aspectosclaves")
     * @ORM\JoinColumn(name="evaluador_id", referencedColumnName="id")
     */
     protected $evaluador;
+
+    /**
+    * @ORM\ManyToOne(targetEntity="Inscripcion", inversedBy="respuestas")
+    * @ORM\JoinColumn(name="inscripcion_id", referencedColumnName="id")
+    */
+    protected $inscripcion;
 
     /**
      * @var \DateTime
@@ -208,5 +220,51 @@ class Respuesta
     public function getEvaluador()
     {
         return $this->evaluador;
+    }
+
+    /**
+     * Set aspectoclave
+     *
+     * @param \App\WebBundle\Entity\AspectoClave $aspectoclave
+     * @return Respuesta
+     */
+    public function setAspectoclave(\App\WebBundle\Entity\AspectoClave $aspectoclave = null)
+    {
+        $this->aspectoclave = $aspectoclave;
+    
+        return $this;
+    }
+
+    /**
+     * Get aspectoclave
+     *
+     * @return \App\WebBundle\Entity\AspectoClave 
+     */
+    public function getAspectoclave()
+    {
+        return $this->aspectoclave;
+    }
+
+    /**
+     * Set inscripcion
+     *
+     * @param \App\WebBundle\Entity\Inscripcion $inscripcion
+     * @return Respuesta
+     */
+    public function setInscripcion(\App\WebBundle\Entity\Inscripcion $inscripcion = null)
+    {
+        $this->inscripcion = $inscripcion;
+    
+        return $this;
+    }
+
+    /**
+     * Get inscripcion
+     *
+     * @return \App\WebBundle\Entity\Inscripcion 
+     */
+    public function getInscripcion()
+    {
+        return $this->inscripcion;
     }
 }

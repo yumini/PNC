@@ -43,10 +43,22 @@ class Respuesta
     protected $criterio;
 
     /**
+    * @ORM\ManyToOne(targetEntity="AspectoClave", inversedBy="respuestas")
+    * @ORM\JoinColumn(name="aspectoclave_id", referencedColumnName="id")
+    */
+    protected $aspectoclave;
+
+    /**
     * @ORM\ManyToOne(targetEntity="Evaluador", inversedBy="aspectosclaves")
     * @ORM\JoinColumn(name="evaluador_id", referencedColumnName="id")
     */
     protected $evaluador;
+
+    /**
+    * @ORM\ManyToOne(targetEntity="Inscripcion", inversedBy="respuestas")
+    * @ORM\JoinColumn(name="inscripcion_id", referencedColumnName="id")
+    */
+    protected $inscripcion;
 
     /**
      * @var \DateTime
@@ -139,5 +151,97 @@ class Respuesta
     public function getCriterio()
     {
         return $this->criterio;
+    }
+
+    /**
+     * Set fechaCreacion
+     *
+     * @param \DateTime $fechaCreacion
+     * @return Respuesta
+     */
+    public function setFechaCreacion($fechaCreacion)
+    {
+        $this->fechaCreacion = $fechaCreacion;
+    
+        return $this;
+    }
+
+    /**
+     * Get fechaCreacion
+     *
+     * @return \DateTime 
+     */
+    public function getFechaCreacion()
+    {
+        return $this->fechaCreacion;
+    }
+
+    /**
+     * Set fechaActualizacion
+     *
+     * @param \DateTime $fechaActualizacion
+     * @return Respuesta
+     */
+    public function setFechaActualizacion($fechaActualizacion)
+    {
+        $this->fechaActualizacion = $fechaActualizacion;
+    
+        return $this;
+    }
+
+    /**
+     * Get fechaActualizacion
+     *
+     * @return \DateTime 
+     */
+    public function getFechaActualizacion()
+    {
+        return $this->fechaActualizacion;
+    }
+
+    /**
+     * Set evaluador
+     *
+     * @param \App\WebBundle\Entity\Evaluador $evaluador
+     * @return Respuesta
+     */
+    public function setEvaluador(\App\WebBundle\Entity\Evaluador $evaluador = null)
+    {
+        $this->evaluador = $evaluador;
+    
+        return $this;
+    }
+
+    /**
+     * Get evaluador
+     *
+     * @return \App\WebBundle\Entity\Evaluador 
+     */
+    public function getEvaluador()
+    {
+        return $this->evaluador;
+    }
+
+    /**
+     * Set aspectoclave
+     *
+     * @param \App\WebBundle\Entity\AspectoClave $aspectoclave
+     * @return Respuesta
+     */
+    public function setAspectoclave(\App\WebBundle\Entity\AspectoClave $aspectoclave = null)
+    {
+        $this->aspectoclave = $aspectoclave;
+    
+        return $this;
+    }
+
+    /**
+     * Get aspectoclave
+     *
+     * @return \App\WebBundle\Entity\AspectoClave 
+     */
+    public function getAspectoclave()
+    {
+        return $this->aspectoclave;
     }
 }

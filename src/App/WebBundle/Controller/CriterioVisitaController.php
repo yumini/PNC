@@ -29,7 +29,9 @@ class CriterioVisitaController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $criterio=$request->query->get('concursocriterio_id');
-        $entities = $em->getRepository('AppWebBundle:CriterioVisita')->findByCriterio($criterio,true);
+        $idevaluador=$request->query->get('evaluador_id');
+        $idinscripcion=$request->query->get('inscripcion_id');
+        $entities = $em->getRepository('AppWebBundle:CriterioVisita')->findByCriterio($criterio,$idevaluador,$idinscripcion,true);
         return new JsonResponse($entities);
     }
 
@@ -60,7 +62,9 @@ class CriterioVisitaController extends Controller
         $em = $this->getDoctrine()->getManager();
         $data = json_decode($request->getContent(), true);
         $criterio = $em->getRepository('AppWebBundle:ConcursoCriterio')->find($data['concursocriterio_id']);
+        $evaluador = $em->getRepository('AppWebBundle:Evaluador')->find($data['evaluador_id']);
         $entity  = new CriterioVisita();
+        $entity->setEvaluador($evaluador);
         $entity->setCriterio($criterio);
         $entity->setDescripcion($data['descripcion']);
         $em->persist($entity);

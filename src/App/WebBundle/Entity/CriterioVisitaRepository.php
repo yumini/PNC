@@ -12,12 +12,19 @@ use Doctrine\ORM\EntityRepository;
  */
 class CriterioVisitaRepository extends EntityRepository
 {
-	public function findByCriterio($id,$isArray=false){
+	public function findByCriterio($id,$idevaluador,$idinscripcion,$isArray=false){
 		$em=$this->getEntityManager();
-	        $dql   = "SELECT v FROM AppWebBundle:CriterioVisita v 
+	        $dql   = "SELECT v,c,e,i FROM AppWebBundle:CriterioVisita v 
                         JOIN v.criterio c
-                        where c.id=:id";
-                $query = $em->createQuery($dql)->setParameter('id', $id);
+                        JOIN v.evaluador e
+                        JOIN v.inscripcion i
+                        where c.id=:id
+                        AND e.id=:idevaluador
+                        AND i.id=:idinscripcion";
+                $query = $em->createQuery($dql)
+                        ->setParameter('id', $id)
+                        ->setParameter('idevaluador', $idevaluador)
+                        ->setParameter('idinscripcion', $idinscripcion);
                 try {               	
                 	return $query->getArrayResult();
                 } catch (\Doctrine\ORM\NoResultException $e) {
