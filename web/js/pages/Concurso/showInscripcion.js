@@ -45,6 +45,7 @@ OptionButton.prototype={
                     break;
                 case 3:
                     this.Window.Hide();
+                    setTimeout(this.Refresh,2000,this.idConcurso);
                     break;
             }
         }
@@ -64,7 +65,9 @@ OptionButton.prototype={
             label:'Cancelar',
             'class':'btn-default',
             fn:function(){
+                
                 parent.Window.Hide();
+                setTimeout(parent.Refresh,2000,parent.idConcurso);
             }
             
         })
@@ -92,6 +95,7 @@ OptionButton.prototype={
                     data:params,
                     dataType:"html",
                     success:function(datos){
+                            //parent.Refresh();
                             //parent.Window.AddHTML(datos);
                             //new OptionButton().Refresh();
                     },
@@ -100,6 +104,9 @@ OptionButton.prototype={
                     }
             });
         
+    },
+    Refresh:function(idConcurso){
+        new Concurso().Detail(idConcurso);
     }
 }
 

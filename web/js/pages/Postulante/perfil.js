@@ -257,13 +257,25 @@ OptionButton.Categoria.prototype={
                         var obj = jQuery.parseJSON(request);
                         if(obj.success=="true"){
                             new OptionButton.Categoria().Refresh();
-                            bootbox.alert(obj.msg, function() {
-                                console.log("Alert Callback");
+                            var n = noty({
+                                    text: obj.msg,
+                                    type: 'success',
+                                    dismissQueue: true,
+                                    layout: 'bottomRight',
+                                    theme: 'defaultTheme',
+                                    timeout:5000
                             });
+                           
                         }else{
                            
-                            bootbox.alert(obj.msg, function() {
-                                console.log("Alert Callback");
+                            var n = noty({
+                                    text: obj.msg,
+                                    type: 'warning',
+                                    dismissQueue: true,
+                                    layout: 'bottomRight',
+                                    theme: 'defaultTheme',
+                                    timeout:5000
+
                             });
                         }
                          
@@ -286,9 +298,15 @@ OptionButton.Categoria.prototype={
                    
                     dataType:"html",
                     success:function(datos){
-                            bootbox.alert("Categoria eliminada satisfactoriamente", function() {
-                                console.log("Alert Callback");
+                            var n = noty({
+                                    text: "Categoria eliminada satisfactoriamente",
+                                    type: 'warning',
+                                    dismissQueue: true,
+                                    layout: 'bottomRight',
+                                    theme: 'defaultTheme',
+                                    timeout:5000
                             });
+                            
                             new OptionButton.Categoria().Refresh(); 
                     },
                     error:function(objeto, quepaso, otroobj){

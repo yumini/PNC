@@ -204,10 +204,11 @@ OptionButton.Evaluador.prototype={
                                     type: tipo,
                                     dismissQueue: true,
                                     layout: 'bottomRight',
-                                    theme: 'defaultTheme'
+                                    theme: 'defaultTheme',
+                                    timeout:5000
                             });
                             setTimeout(function() {
-                                $.noty.close(n.options.id);
+                                //$.noty.close(n.options.id);
                                 if(obj.success=='true')
                                     parent.Refresh(parent.GrupoId);
                             }, time);
