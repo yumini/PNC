@@ -67,7 +67,8 @@ OptionButton.prototype={
             fn:function(){
                 
                 parent.Window.Hide();
-                setTimeout(parent.Refresh,2000,parent.idConcurso);
+                if(parent.WizardIndex>0)
+                    setTimeout(parent.Refresh,2000,parent.idConcurso);
             }
             
         })
