@@ -790,7 +790,54 @@ var ViewsEvalIndividual={
 			this.AspectosClaveCollection.fetch({reset:true,data:params});
 		},
 		renderAspectosClave:function(){
+			if(this.attributes.isParent)
+				this.renderAspectosClavesParent();
+			else
+				this.renderAspectosClavesNode();
+			return this;
 			
+		},
+		renderAspectosClavesParent:function(){
+			$('#AspectosClaveParent').show();
+			$('#gridFactoresClave').hide();
+
+			var collection = new Backbone.Collection(this.attributes.app.ParentNode.children);
+        	$('#tabAspectos').empty();
+        	$('#tabAspectosContent').empty();
+        	collection.each(function(item,idx) {
+				
+				var obj=item.toJSON();
+				var model={
+					value:obj.id,
+					text:obj.descripcion
+				};
+				v = new ViewsEvalIndividual.ItemTabAspectoClave({model:model});
+				$('#tabAspectos').append(v.render().el);
+
+				v = new ViewsEvalIndividual.ItemTabContentAspectoClave({model:model});
+				$('#tabAspectosContent').append(v.render().el);
+			},this); 
+
+			this.AspectosClaveCollection.each(function(item,idx) {
+				var obj=item.toJSON();
+				v = new ViewsEvalIndividual.ItemAspectoClave({
+					model:item.toJSON(),
+					attributes:{type:1}
+				});
+				var content='#gridFactoresClave-'+obj.criterio.id+' tbody';
+				this.$el.find(content).append(v.render().el);
+			},this);
+
+			collection.each(function(item,idx) {
+				var obj=item.toJSON();
+				var content='#gridFactoresClave-'+obj.id+' tbody a';
+				$(content).click(this.EventAspectos);
+			},this); 
+			$('#tabAspectos a:first').tab('show')
+		},
+		renderAspectosClavesNode:function(){
+			$('#gridFactoresClave').show();
+			$('#AspectosClaveParent').hide();
 			this.$el.find('#gridFactoresClave tbody').empty();
 			var v = null;
 			                     
@@ -818,8 +865,78 @@ var ViewsEvalIndividual={
         	}
         },
         Edit:function(id){
-			alert("edit..:D: "+id);
+			var parent=this;
+			this.Window=new BootstrapWindow({id:"winForm",title:"Editar Aspecto Clave"});
+	        this.Window.setWidth(600);
+	        this.Window.setHeight(200);
+	        var idAspecto=id;
+	        var url=Routing.generate('_admin_aspectoclave_edit');
+	        this.Window.LoadWithFnSuccess(url,function(){
+	        	parent.InitFormAspectosClaves(idAspecto);
+	        });
+	        this.Window.Show();
+	        
+	        this.Window.AddButton('btn-aspecto-cancel',{
+	            label:'Cancelar',
+	            'class':'btn-default',
+	            fn:function(){
+	               parent.Window.Hide();
+	            }
+	            
+	        })
+	       
+	        this.Window.AddButton('btn-aspecto-save',{
+	            label:'Grabar',
+	            'class':'btn-success',
+	            fn:function(){
+	                $('#btn-aspecto-save').attr('disabled',true);
+	                $('#btn-aspecto-cancel').attr('disabled',true);
+	                parent.UpdateAspectoClave(idAspecto);               
+	                
+	            }
+	        });
         },
+        InitFormAspectosClaves:function(idAspecto){
+			var collection = new Backbone.Collection(this.attributes.app.ParentNode.children);
+        	$('#cmbAspectoCLave').empty();
+        	collection.each(function(item,idx) {
+				
+				var obj=item.toJSON();
+				var model={
+					value:obj.id,
+					text:obj.descripcion
+				};
+				v = new ViewsEvalIndividual.ItemSelect({model:model});
+				$('#cmbAspectoCLave').append(v.render().el);
+			},this);
+			var parent=this; 
+			this.AspectoClaveSelected=new Models.AspectoClave({id:idAspecto});
+			this.AspectoClaveSelected.fetch({success:function(model){
+				var item=model.toJSON();
+				console.log(item);
+				$('#cmbAspectoCLave').val(item.criterio.id);
+				$("#txtDescripcionAspectoClave").val(item.descripcion);
+
+			}})
+			
+		},
+		UpdateAspectoClave:function(idAspecto){
+			var parent=this;
+			var obj=new Models.AspectoClave({
+				id:idAspecto,
+				inscripcion_id:$('#cmbProyecto').val(),
+				evaluador_id:$("#cmbEvaluador").val(),
+				criterio_id:$('#cmbAspectoCLave').val(),
+				descripcion:$('#txtDescripcionAspectoClave').val()
+			});
+			
+			obj.save({},{
+				success:function(){
+					parent.Window.Hide();
+					parent.attributes.app.SelectCriterio(parent.attributes.app.nodeSelected);
+				}
+			});
+		},
         Delete:function(id){
         	var parent=this;
 			var n=noty({
@@ -872,6 +989,28 @@ var ViewsEvalIndividual={
 		},
 		render: function() {
 			
+			this.$el.html(this.template({model:this.model}));
+			return this;
+		}
+	}),
+	ItemTabAspectoClave: Backbone.View.extend({
+        tagName:"li",
+		initialize: function() {
+			this.template = _.template($('#FactoresClaveTab_template').html());		
+		},
+		render: function() {			
+			this.$el.html(this.template({model:this.model}));
+			return this;
+		}
+	}),
+	ItemTabContentAspectoClave: Backbone.View.extend({
+        tagName:"div",
+		initialize: function() {
+			this.template = _.template($('#FactoresClaveTabContainer_template').html());		
+		},
+		render: function() {
+			this.$el.attr('id',"tab-aspectoclave-"+this.model.value);
+			this.$el.addClass("tab-pane");
 			this.$el.html(this.template({model:this.model}));
 			return this;
 		}

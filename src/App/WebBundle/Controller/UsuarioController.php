@@ -357,7 +357,7 @@ class UsuarioController extends Controller
         try {
             $message = \Swift_Message::newInstance()
                     ->setSubject('Bienvenido a PNC')
-                    ->setFrom('nmedinson@gmail.com')
+                    ->setFrom('pnc@pnc.org.pe')
                     ->setTo($entity->getEmail())
                     ->setBody(
                             $this->renderView(

@@ -55,7 +55,21 @@ class AspectoClaveController extends Controller
     public function newAction()
     {
         return array(
-            'title' => 'xx'
+            'title' => 'Nuevo Aspecto Clave'
+        );
+    }
+
+     /**
+     * Displays a form to create a new Concurso entity.
+     *
+     * @Route("/new", name="_admin_aspectoclave_edit", options={"expose"=true})
+     * @Method("GET")
+     * @Template()
+     */
+    public function editAction()
+    {
+        return array(
+            'title' => 'Editar Aspecto Clave'
         );
     }
 
@@ -88,6 +102,34 @@ class AspectoClaveController extends Controller
     /**
      * Displays a form to create a new Concurso entity.
      *
+     * @Route("/json/rest/{id}", name="_admin_aspectoclave_update", options={"expose"=true})
+     * @Method("PUT")
+     * @Template()
+     */
+    public function updateAction(Request $request,$id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $data = json_decode($request->getContent(), true);
+        $entity = $em->getRepository('AppWebBundle:AspectoClave')->find($id);
+        $criterio = $em->getRepository('AppWebBundle:ConcursoCriterio')->find($data['criterio_id']);
+        $evaluador = $em->getRepository('AppWebBundle:Evaluador')->find($data['evaluador_id']);
+        $inscripcion = $em->getRepository('AppWebBundle:Inscripcion')->find($data['inscripcion_id']);
+        if($entity)
+        {                
+            $entity->setCriterio($criterio);
+            $entity->setEvaluador($evaluador);
+            $entity->setInscripcion($inscripcion);
+            $entity->setDescripcion($data['descripcion']);
+            $em->persist($entity);
+            $em->flush();
+
+        }
+        return new JsonResponse(array('success' => true));
+    }
+
+    /**
+     * Displays a form to create a new Concurso entity.
+     *
      * @Route("/json/rest/{id}", name="_admin_aspectoclave_delete", options={"expose"=true})
      * @Method("DELETE")
      * @Template()
@@ -105,4 +147,17 @@ class AspectoClaveController extends Controller
         return new JsonResponse(array('success' => true));
     }
     
+    /**
+     * @Route("/json/rest/{id}", name="_admin_aspectoclave_show", options={"expose"=true})
+     * @Method("GET")
+     * @Template()
+     */
+    public function showAction(Request $request,$id)
+    {
+        
+        $em = $this->getDoctrine()->getManager();
+        $entity=$em->getRepository("AppWebBundle:AspectoClave")->findArray($id);
+        
+        return new JsonResponse($entity[0]);
+    }
 }
