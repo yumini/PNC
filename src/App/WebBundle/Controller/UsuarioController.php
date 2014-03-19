@@ -17,6 +17,7 @@ use FOS\UserBundle\Event\FormEvent;
 use FOS\UserBundle\Event\GetResponseUserEvent;
 use FOS\UserBundle\Event\FilterUserResponseEvent;
 use FOS\UserBundle\Model\UserInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 /**
  * Usuario controller.
  *
@@ -93,6 +94,9 @@ class UsuarioController extends Controller
         
     }
 
+
+
+    
     /**
      * Displays a form to create a new Usuario entity.
      *

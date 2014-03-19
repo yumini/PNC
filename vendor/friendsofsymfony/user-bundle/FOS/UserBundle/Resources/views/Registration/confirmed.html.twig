@@ -13,7 +13,7 @@
           <p><h3>{{ 'registration.confirmed'|trans({'%username%': user.username}) }}</h3></p>
     {% if app.session is not empty %}
         {% set targetUrl = app.session.get('_security.' ~ app.security.token.providerKey ~ '.target_path') %}
-        {% if targetUrl is not empty %}<p><a href="{{ targetUrl }}">{{ 'registration.back'|trans }}</a></p>{% endif %}
+        {% if targetUrl is not empty %}<p><a href="{{ path('_index') }}">Volver a la página principal.</a></p>{% endif %}
     {% endif %}
         Tu petición de registro ha sido enviada satisfactoriamente. Le enviaremos una notificación a su cuenta de email registrada en cuanto confirmemos sus datos registrados</div>
                

@@ -1,7 +1,7 @@
 {% extends "FOSUserBundle::layout.html.twig" %}
 {% trans_default_domain 'FOSUserBundle' %}
 {% block fos_user_content %}
-<form action="{{ path('fos_user_registration_register',{ 'perfil': perfil }) }}" {{ form_enctype(form) }} method="POST" class="form-register">
+<form id="myForm" action="{{ path('fos_user_registration_register',{ 'perfil': perfil }) }}" {{ form_enctype(form) }} method="POST" class="form-register">
 		<div class="form-group">
 			<div class="row">
 		  	<div class="col-lg-6">
@@ -33,13 +33,37 @@
 	
     {{form_widget(form._token)}}
     <div>
-        <input type="submit" value="{{ 'registration.submit'|trans }}" class="btn btn-lg btn-primary btn-block"/>
+        <input type="button" onclick="Save();" value="{{ 'registration.submit'|trans }}" class="btn btn-lg btn-primary btn-block"/>
     </div>
       
 </form>
 <script type="text/javascript">
 	$("#fos_user_registration_form_perfil").val(3);
 	$("#fos_user_registration_form_perfil").parent().hide();
+
+
+	 var Save=function(){
+	 	console.log("save");
+            var url=Routing.generate('_usuario_validateregister');
+            params = $('#myForm').serializeObject();
+            $.getJSON( url,params, function( obj ) {
+			  console.log(obj);
+			  if(obj.success){
+			  	$('#myForm').submit();
+			  }else{
+			  	var n = noty({
+                          	text: obj.message,
+                            type: 'warning',
+                            modal:false,
+                            timeout:7000,
+                            layout: 'bottomRight',
+                            theme: 'defaultTheme'                                  
+                        });
+			  	};
+			  	return false;
+			});
+    
+    };
 </script>
 {% endblock fos_user_content %}
 

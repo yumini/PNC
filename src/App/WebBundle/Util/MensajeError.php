@@ -42,7 +42,8 @@ class MensajeError {
 
         foreach ($form->all() as $child) {
             if (!$child->isValid()) {
-                 $this->msg.='<b>'.$child->getName().':</b>';
+                 $options = $child->getConfig()->getOptions();
+                 $this->msg.='<b>'.$options['label'].':</b>';
                 $errors[$child->getName()] = $this->getErrorMessages($child);
             }
         }

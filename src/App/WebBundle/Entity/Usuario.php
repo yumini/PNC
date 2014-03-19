@@ -4,11 +4,15 @@ namespace App\WebBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  * Usuario
  *
  * @ORM\Table(name="usuario")
  * @ORM\Entity(repositoryClass="App\WebBundle\Entity\UsuarioRepository")
+ * @UniqueEntity(fields="nroDocumento",message="Número de Documento ya existe")
  */
 class Usuario extends BaseUser
 {
@@ -50,7 +54,8 @@ class Usuario extends BaseUser
     /**
      * @var string
      *
-     * @ORM\Column(name="nrodocumento", type="string", length=20)
+     * @ORM\Column(name="nrodocumento", type="string", length=20, unique=true)
+     * @Assert\NotBlank()
      */
     protected $nroDocumento;
 

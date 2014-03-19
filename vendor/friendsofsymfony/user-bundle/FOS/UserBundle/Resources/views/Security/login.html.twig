@@ -4,7 +4,7 @@
 
 {% block fos_user_content %}
 
- <form class="form-signin" action="{{ path("fos_user_security_check") }}" method="post">
+ <form id="myForm" class="form-signin" action="{{ path("fos_user_security_check") }}" method="post">
         <h2 class="form-signin-heading">Inicio de Sesión</h2>
         {% if error %}
           <div class="alert alert-warning">{{ error|trans }}</div>
@@ -18,12 +18,37 @@
         <label class="checkbox">
           <input type="checkbox" id="remember_me" name="_remember_me" value="on" /> {{ 'security.login.remember_me'|trans }}
         </label>
-         <input type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" class="btn btn-lg btn-primary btn-block"/>
+         <input type="button" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" class="btn btn-lg btn-primary btn-block" onclick="Save()"/>
          <div style="text-align: center;">
              <a href="{{ path("fos_user_resetting_request") }}"><small>Olvide mi contraseña</small></a>
          </div>
          
       </form>
 
-
+<script type="text/javascript">
+ var Save=function(){
+        console.log("save");
+            var url=Routing.generate('_usuario_validatelogin');
+            params = $('#myForm').serializeObject();
+            $.getJSON( url,params, function( obj ) {
+              console.log(obj);
+              if(obj.success){
+                $('#myForm').submit();
+              }else{
+                var n = noty({
+                            text: obj.message,
+                            type: 'warning',
+                            modal:false,
+                            timeout:7000,
+                            layout: 'bottomRight',
+                            theme: 'defaultTheme'                                  
+                        });
+                };
+                return false;
+            });
+    
+    };
+</script>
 {% endblock fos_user_content %}
+
+

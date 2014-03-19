@@ -1,3 +1,4 @@
+{% trans_default_domain 'FOSUserBundle' %}
 <form id="myForm" {{ form_enctype(form) }} method="POST" class="form-register">
 		<div class="form-group">
                     {{form_row(form.perfil, { 'attr': {'class': 'form-control'} })}}
