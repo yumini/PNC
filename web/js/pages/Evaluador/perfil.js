@@ -199,6 +199,77 @@ OptionButton.Conflictos.prototype={
 };
 
 
+var viewDisponibilidad={
+    App: Backbone.View.extend({
+        events: {
+                   "click a.pull-right": "SelectDisponibilidad",
+        },
+        initialize: function(){
+            _.bindAll(this);
+            this.disponibilidadCollection=new Collections.DisponibilidadEvaluador();
+            this.disponibilidadCollection.on('reset', this.renderItems, this);
+            this.template = _.template($('#listDisponibilidad_template').html());
+            //this.LoadItems();
+        },
+        render:function(){
+            this.$el.html(this.template({}));
+            this.LoadItems();
+        },
+        renderItems:function(){
+            this.$el.find('#listDisponibilidad').empty();
+            var v = null;
+                                 
+            this.disponibilidadCollection.each(function(item,idx) {
+                var obj=item.toJSON();
+                if (obj.diasdisponiblesEvaluador.length>0){
+                    var disponibilidad={
+                        manana:obj.diasdisponiblesEvaluador[0].manana,
+                        tarde:obj.diasdisponiblesEvaluador[0].tarde,
+                        noche:obj.diasdisponiblesEvaluador[0].noche
+                    }
+                }else{
+                    var disponibilidad={
+                        manana:0,
+                        tarde:0,
+                        noche:0
+                    }
+                }
+                var model={id:obj.id,dia:obj.nombre,disponibilidad:disponibilidad}
+                console.log(model);
+                v = new viewDisponibilidad.Item({model:model});
+                this.$el.find('#listDisponibilidad').append(v.render().el);
+            },this);
+            return this;
+        },
+        LoadItems:function(){
+            var params={id:$("#hdnEntity_id").val()};
+            this.disponibilidadCollection.fetch({reset:true,data:params})
+        },
+        SelectDisponibilidad:function(evt){
+            var parent=this;
+            turno=$(evt.currentTarget).attr('data-turno');
+            dia=$(evt.currentTarget).attr('data-dia');
+            value=($(evt.currentTarget).attr('data-value')=='1')?0:1;
+            
+            var item=new Models.DisponibilidadEvaluador({dia_id:dia,turno:turno,value:value,evaluador_id:$("#hdnEntity_id").val()});
+            item.save({},{success:function(){
+                parent.LoadItems();
+            }});
+        }
+    }),
+    Item:Backbone.View.extend({
+        tagName:"a",
+        initialize: function() {
+             this.template = _.template($('#itemDisponibilidad_template').html());
+        },
+        render: function() {    
+        
+            this.$el.addClass('list-group-item')       
+            this.$el.html(this.template({model:this.model}));
+            return this;
+        }
+    })
+}
 OptionButton.Disponibilidad=function(){
      this.routeList='_admin_evaluadordisponibilidad';
      this.routeNew='_admin_evaluadordisponibilidad_new';
@@ -399,8 +470,8 @@ $(document).ready(function() {
 	        $('#fileCV').click();
     });
     new OptionButton.Conflictos().Refresh(); 
-    new OptionButton.Disponibilidad().Refresh(); 
-    
+    //new OptionButton.Disponibilidad().Refresh(); 
+    var v=new viewDisponibilidad.App({ el: $("#containerDisponibilidad") }).render();
   
 });
 

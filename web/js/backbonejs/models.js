@@ -29,4 +29,8 @@ var Models={
     CriterioAspectoClave: Backbone.Model.extend({
         urlRoot : Routing.generate("_admin_json_criterioaspectoclave")
     }),
+
+    DisponibilidadEvaluador: Backbone.Model.extend({
+        urlRoot : Routing.generate("_admin_evaluadordisponibilidad")
+    })
 };

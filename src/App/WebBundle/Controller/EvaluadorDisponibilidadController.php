@@ -9,7 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use App\WebBundle\Entity\EvaluadorDisponibilidad;
 use App\WebBundle\Form\EvaluadorDisponibilidadType;
-
+use Symfony\Component\HttpFoundation\JsonResponse;
 /**
  * EvaluadorDisponibilidad controller.
  *
@@ -21,45 +21,63 @@ class EvaluadorDisponibilidadController extends Controller
     /**
      * Lists all EvaluadorDisponibilidad entities.
      *
-     * @Route("/{id}/list", name="_admin_evaluadordisponibilidad", options={"expose"=true})
+     * @Route("/json", name="_admin_evaluadordisponibilidad", options={"expose"=true})
      * @Method("GET")
      * @Template()
      */
-    public function indexAction($id)
+    public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-
-        $entities = $em->getRepository('AppWebBundle:EvaluadorDisponibilidad')->FindByEvaluador($id);
-
-        return array(
-            'entities' => $entities,
-        );
+        $id=$request->query->get('id');
+        $entities = $em->getRepository('AppWebBundle:EvaluadorDisponibilidad')->FindByEvaluador($id,true);
+        return new JsonResponse($entities);
+        //return array('entities' => $entities);
     }
     /**
      * Creates a new EvaluadorDisponibilidad entity.
      *
-     * @Route("/{id}/save", name="_admin_evaluadordisponibilidad_save", options={"expose"=true})
+     * @Route("/json", name="_admin_evaluadordisponibilidad_save", options={"expose"=true})
      * @Method("POST")
-     * @Template("AppWebBundle:Default:result.json.twig")
+     * @Template()
      */
-    public function createAction(Request $request,$id)
+    public function createAction(Request $request)
     {
-        $entity  = new EvaluadorDisponibilidad();
-        $form = $this->createForm(new EvaluadorDisponibilidadType(), $entity);
-        $form->bind($request);
+        $data = json_decode($request->getContent(), true);
+        $evaluador_id=$data['evaluador_id'];
+        $turno=$data['turno'];
+        $value=$data['value'];
+        $dia_id=$data['dia_id'];
+
         $em = $this->getDoctrine()->getManager();
         
-        $evaluador = $em->getRepository('AppWebBundle:Evaluador')->find($id);
+        $evaluador = $em->getRepository('AppWebBundle:Evaluador')->find($evaluador_id);
+        $dia = $em->getRepository('AppWebBundle:Catalogo')->find($dia_id);
+        $entity = $em->getRepository('AppWebBundle:EvaluadorDisponibilidad')->FindByEvaluadorAndDia($evaluador_id,$dia_id);
+        if(!$entity){
+            $operacion='save';
+            $entity  = new EvaluadorDisponibilidad();
+        }else{
+            $operacion='update';
+        }
+        $entity->setEvaluador($evaluador);
+        $entity->setDia($dia);
+        switch($turno){
+            case 'manana':
+                $entity->setManana($value);   
+                break;
+            case 'tarde':
+                $entity->setTarde($value);
+                break;
+            case 'noche':
+                $entity->setNoche($value);
+                break;
+        }
         
        
-        $entity->setEvaluador($evaluador);
-        
         $em->persist($entity);
         $em->flush();
 
-        return array(
-            'result' => "{\"success\":\"true\"}"
-        );
+        return new JsonResponse(array('success'=>true,'operacion'=>$operacion,'entity'=>$entity));
         
        
     }

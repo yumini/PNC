@@ -102,8 +102,8 @@
     <div id="collapseTwo" class="panel-collapse collapse">
       <div class="panel-body">
         
-           <div id="containerDisponibildad" >
-
+        <div  id="containerDisponibilidad">
+             
         </div>
            <div class="row">
               <div class="col-md-12">
@@ -120,17 +120,7 @@
               </div>
              
           </div>
-          <div class="row">
-              <div class="col-md-9">
-                 
-              </div>
-              <div class="col-md-3">
-                 <a id="btnDisponibilidadNew" href="javascript:void(0)" class="btn btn-info" data-id="{{ entity.id }}" style="font-size:12px;" >
-                    <span class="glyphicon glyphicon-plus"></span>
-                </a>
-              </div>
-                 
-          </div>
+          
       </div>
     </div>
   </div>
@@ -155,3 +145,21 @@
 </div>
 <div id="winForm"></div>
 <input type="hidden" id="hdnEntity_id" value="{{entity.id|default('-') }}"/>
+
+<script type="text/template" id="listDisponibilidad_template">
+<div id="listDisponibilidad" class="list-group">
+</div>
+</script>
+<script type="text/template" id="itemDisponibilidad_template">
+
+<p class="list-group-item-text" data-id="<%=model.id %>">
+  <span class="pull-right">&nbsp;</span> 
+  <a style="cursor:pointer;" class="pull-right" data-turno="noche" data-dia='<%=model.id %>' data-value="<%=model.disponibilidad.noche%>"><span class="badge <% if(model.disponibilidad.noche==true){ %>badge-success<% } %>">N</span></a> 
+  <span class="pull-right">&nbsp;</span> 
+  <a style="cursor:pointer;" class="pull-right" data-turno="tarde" data-dia='<%=model.id %>' data-value="<%=model.disponibilidad.tarde%>"><span class="badge <% if(model.disponibilidad.tarde==true){ %>badge-success<% } %>">T</span></a>  
+  <span class="pull-right">&nbsp;</span> 
+  <a  style="cursor:pointer;" class="pull-right" data-turno="manana" data-dia='<%=model.id %>' data-value="<%=model.disponibilidad.manana%>"><span class="badge <% if(model.disponibilidad.manana==true){ %>badge-success<% } %>">M</span> </a> 
+  <b> <%= model.dia%></b> <br/>
+                       
+</p>
+</script>

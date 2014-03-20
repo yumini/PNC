@@ -1,6 +1,7 @@
  <div  class="list-group">
          
             {% for disponibilidad in entities %}
+
                 <a href="#" class="list-group-item" data-id="{{disponibilidad.id}}" data-type="categoria-delete">             
                     <p class="list-group-item-text" data-id="{{ disponibilidad.id }}">
                          <button class="btn btn-danger btn-xs pull-right"  onclick="new OptionButton.Disponibilidad().Delete('{{disponibilidad.id}}')">
@@ -10,15 +11,17 @@
                          <button class="btn btn-info btn-xs pull-right"  onclick="new OptionButton.Disponibilidad().Edit('{{disponibilidad.id}}')">
                             <span class="glyphicon glyphicon-edit"> </span>
                         </button>
+                        
                         <span class="pull-right">&nbsp;</span> 
-                        <span class="badge pull-right {% if disponibilidad.noche==1 %}badge-success{% endif %}">N</span> 
+                        <!--
+                        <span class="badge pull-right {% if disponibilidad.diasdisponiblesEvaluador[0].noche==1 %}badge-success{% endif %}">N</span> 
                         <span class="pull-right">&nbsp;</span> 
-                        <span class="badge pull-right {% if disponibilidad.tarde==1 %}badge-success{% endif %}">T</span> 
+                        <span class="badge pull-right {% if disponibilidad.diasdisponiblesEvaluador[0].tarde==1 %}badge-success{% endif %}">T</span> 
                         <span class="pull-right">&nbsp;</span> 
-                         <span class="badge pull-right {% if disponibilidad.manana==1 %}badge-success{% endif %}">M</span> 
-                         
+                         <span class="badge pull-right {% if disponibilidad.diasdisponiblesEvaluador[0].manana==1 %}badge-success{% endif %}">M</span> 
+                        --> 
                            
-                        <b> {{disponibilidad.dia.nombre}}</b> <br/>
+                        <b> {{disponibilidad.nombre}}</b> <br/>
                        
                     </p>
                 </a>

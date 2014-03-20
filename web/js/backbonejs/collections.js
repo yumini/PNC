@@ -104,5 +104,14 @@ var Collections={
 				
                 return response;
         }
+    }),
+    DisponibilidadEvaluador: Backbone.Collection.extend({
+		model: Models.DisponibilidadEvaluador,
+		url: Routing.generate("_admin_evaluadordisponibilidad"),
+		parse: function(response) {
+				
+                return response;
+        }
     })
+   
 };
