@@ -1,13 +1,25 @@
-<form method="get" action="{{ action }}" enctype="application/x-www-form-urlencoded">
-
-    <select name="{{ filterFieldName }}">
+<form id="formFilter" method="get" enctype="application/x-www-form-urlencoded"  class="form-inline">
+<div class="form-group">
+    <select name="{{ filterFieldName }}" class="form-control">
         {% for field, label in fields %}
             <option value="{{ field }}"{% if selectedField == field %} selected="selected"{% endif %}>{{ label }}</option>
         {% endfor %}
     </select>
-
-    <input type="text" value="{{ selectedValue }}" name="{{ filterValueName }}" />
-
-    <button>{{ options.button }}</button>
+</div>
+<div class="form-group">
+    <input type="text" value="{{ selectedValue }}" name="{{ filterValueName }}" class="form-control"/>
+</div>
+    <button onclick="LoadFilter();return false;" class="btn btn-info">Filtrar</button>
 
 </form>
+<br/>
+
+<script type="text/javascript">
+
+var LoadFilter=function(){
+	var url='{{ options[0] }}';
+	var params=$('#formFilter').serializeObject();
+	new jAjax().Load(url,'main-body','get',params,'');
+	return false;
+}
+</script>

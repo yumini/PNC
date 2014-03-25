@@ -29,8 +29,15 @@ class EvaluadorController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $page=$this->get('request')->query->get('page', 1);
+        $field=$this->get('request')->query->get('filterField', 'u.username');
+        $value=$this->get('request')->query->get('filterValue','');
+        $sort=$this->get('request')->query->get('sort', 'u.username');
+
         $paginator=$this->get('knp_paginator');
-        $pagination = $em->getRepository('AppWebBundle:Evaluador')->FindAllPaginator($paginator,$page,10);
+        $dql   = "SELECT e FROM AppWebBundle:Evaluador e join e.usuario u
+                where $field like '%$value%' order by $sort asc";
+        $query = $em->createQuery($dql);
+        $pagination = $paginator->paginate($query,$page,10);
 
         return array(
             'pagination' => $pagination,

@@ -10,20 +10,33 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">{{ title_list }}</a>
+          <a class="navbar-brand">{{ title_list }}</a>
         </div>
       
     </nav>
   </div>
   <div class="panel-body">
+    {% 
+    set filterBy= {
+        'u.username':'Usuario',
+        'e.nombres':'Nombres',
+        'e.apellidos':'Apellidos',
+        'e.numdoc':'N° Documento',
+        'e.direccion':'Dirección',
+        'e.empresa':'Empresa'
+    }
+
+
+     %}
+     {{ knp_pagination_filter(pagination,filterBy,[ path(pagination.route)]) }}
      <table class="table table-bordered table-hover table-condensed table-striped" style="width:100%">
         <thead>
             <tr >
-                <th class="grid-header" style="text-align: center;">Usuario</th>
-                <th class="grid-header" style="text-align: center;">Nombres y Apellidos</th>
-                <th class="grid-header" style="text-align: center;">Número Documento</th>
-                <th class="grid-header" style="text-align: center;">Dirección</th>
-                <th class="grid-header" style="text-align: center;">Empresa</th>
+                <th class="grid-header" style="text-align: center;">{{ knp_pagination_sortable(pagination, 'Usuario', 'u.username') }}</th>
+                <th class="grid-header" style="text-align: center;">{{ knp_pagination_sortable(pagination, 'Nombres y Apellidos', 'e.nombres') }}</th>
+                <th class="grid-header" style="text-align: center;">{{ knp_pagination_sortable(pagination, 'Número Documento', 'e.numdoc') }}</th>
+                <th class="grid-header" style="text-align: center;">{{ knp_pagination_sortable(pagination, 'Dirección', 'e.direccion') }}</th>
+                <th class="grid-header" style="text-align: center;">{{ knp_pagination_sortable(pagination, 'Empresa', 'e.empresa') }}</th>
                 <th class="grid-header" style="width: 60px;text-align: center;">Opciones</th>
             </tr>
         </thead>
@@ -38,7 +51,7 @@
                 <td>{{entity.direccion}}</td>
                 <td>{{entity.empresa}}</td>
                 <td style="text-align: center;font-size: 12px;">
-                    <a href="#" class="row-edit" data-id="{{ entity.id }}" title="Editar Postulante"><i class="glyphicon glyphicon-edit"> </i></a>
+                    <a class="row-edit btn btn-warning btn-xs" data-id="{{ entity.id }}" title="Editar Postulante"><i class="glyphicon glyphicon-edit"> </i></a>
                    
                     
                 </td>

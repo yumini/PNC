@@ -1,126 +1,133 @@
-{% extends '::base.html.twig' %}
-
-{% block body -%}
-    <h1>Concurso</h1>
-
-    <table class="record_properties">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ entity.id }}</td>
-            </tr>
-            <tr>
-                <th>Nombre</th>
-                <td>{{ entity.nombre }}</td>
-            </tr>
-            <tr>
-                <th>Fechainicio</th>
-                <td>{{ entity.fechaInicio|date('Y-m-d H:i:s') }}</td>
-            </tr>
-            <tr>
-                <th>Fechafin</th>
-                <td>{{ entity.fechaFin|date('Y-m-d H:i:s') }}</td>
-            </tr>
-            <tr>
-                <th>Presentacion</th>
-                <td>{{ entity.presentacion }}</td>
-            </tr>
-            <tr>
-                <th>Objetivos</th>
-                <td>{{ entity.objetivos }}</td>
-            </tr>
-            <tr>
-                <th>Requisitos</th>
-                <td>{{ entity.requisitos }}</td>
-            </tr>
-            <tr>
-                <th>Participantes</th>
-                <td>{{ entity.participantes }}</td>
-            </tr>
-            <tr>
-                <th>Beneficios</th>
-                <td>{{ entity.beneficios }}</td>
-            </tr>
-            <tr>
-                <th>Categorias</th>
-                <td>{{ entity.categorias }}</td>
-            </tr>
-            <tr>
-                <th>Premiootorgar</th>
-                <td>{{ entity.premiootorgar }}</td>
-            </tr>
-            <tr>
-                <th>Medallas</th>
-                <td>{{ entity.medallas }}</td>
-            </tr>
-            <tr>
-                <th>Cuota</th>
-                <td>{{ entity.cuota }}</td>
-            </tr>
-            <tr>
-                <th>Informacion</th>
-                <td>{{ entity.informacion }}</td>
-            </tr>
-            <tr>
-                <th>Anio</th>
-                <td>{{ entity.anio }}</td>
-            </tr>
-            <tr>
-                <th>Estadoemp</th>
-                <td>{{ entity.estadoemp }}</td>
-            </tr>
-            <tr>
-                <th>Estadopy</th>
-                <td>{{ entity.estadopy }}</td>
-            </tr>
-            <tr>
-                <th>Estado</th>
-                <td>{{ entity.estado }}</td>
-            </tr>
-            <tr>
-                <th>Terminoacepta</th>
-                <td>{{ entity.terminoacepta }}</td>
-            </tr>
-            <tr>
-                <th>Incpuntaje</th>
-                <td>{{ entity.incpuntaje }}</td>
-            </tr>
-            <tr>
-                <th>Evaluacriterio</th>
-                <td>{{ entity.evaluacriterio }}</td>
-            </tr>
-            <tr>
-                <th>Informeretro</th>
-                <td>{{ entity.informeretro }}</td>
-            </tr>
-            <tr>
-                <th>Calificacion</th>
-                <td>{{ entity.calificacion }}</td>
-            </tr>
-            <tr>
-                <th>Prefijo</th>
-                <td>{{ entity.prefijo }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('concurso') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>
-        <a href="{{ path('concurso_edit', { 'id': entity.id }) }}">
-            Edit
-        </a>
-    </li>
-    <li>
-        <form action="{{ path('concurso_delete', { 'id': entity.id }) }}" method="post">
-            <input type="hidden" name="_method" value="DELETE" />
-            {{ form_widget(delete_form) }}
-            <button type="submit">Delete</button>
-        </form>
-    </li>
+<form id="myform"  method="post" {{ form_enctype(form) }}>
+     {{form_widget(form._token)}}
+<ul class="nav nav-tabs" style="font-size:11px;">
+  <li class="active"><a href="#conc-tab-1" data-toggle="tab">Datos Principales</a></li>
+  <li><a href="#conc-tab-2" data-toggle="tab">Config. Formul.</a></li>
+  <li><a href="#conc-tab-3" data-toggle="tab">Config. Sistema Eval.</a></li>
+  <li><a href="#conc-tab-4" data-toggle="tab">Terminos de Acepación</a></li>
+  <li><a href="#conc-tab-5" data-toggle="tab">Presentación</a></li>
+  <li><a href="#conc-tab-6" data-toggle="tab">Proc. Gen. Inf. Retr.</a></li>
+  <li><a href="#conc-tab-7" data-toggle="tab">Proc. de Calificación</a></li>
 </ul>
+<div class="tab-content">
+  <div class="tab-pane active" id="conc-tab-1" style="padding-top:10px;">
+
+      <div class="row">
+        <div class="col-lg-6">
+          <label class="control-label">Tipo Concurso</label>
+          {{form_widget(form.tipoConcurso)}}
+        </div>
+        <div class="col-lg-6">
+          
+      </div>
+      </div>
+        <div class="row">
+            <div class="col-lg-3">
+                <label class="control-label">Año</label>
+                {{form_widget(form.anio)}}
+            </div>
+            <div class="col-lg-9">
+                <label class="control-label">Nombre:</label>
+                 {{form_widget(form.nombre)}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3">
+                <label class="control-label">Fecha Inicio:</label>
+                {{form_widget(form.fechaInicio)}}
+            </div>
+            <div class="col-lg-3">
+                <label class="control-label">Fecha Fin:</label>
+                {{form_widget(form.fechaFin)}}
+            </div>
+            <div class="col-lg-6">
+                &nbsp;
+            </div>
+        </div>
+     
+     
+  </div>
+  <div class="tab-pane" id="conc-tab-2">
+        <div class="row">
+            <div class="col-lg-3">
+                <label class="control-label">Clasificación de Empresas:</label>
+                <div class="checkbox">
+                    
+                    <label>
+                      {{form_widget(form.estadoemp)}} Activo
+                    </label>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <label class="control-label">Información de Proyecto:</label>
+                <div class="checkbox">
+                    
+                    <label>
+                      {{form_widget(form.estadopy)}} Activo
+                    </label>
+                </div>
+            </div>
+            
+        </div>
+  </div>
+  <div class="tab-pane" id="conc-tab-3">
+        <div class="row">
+            <div class="col-lg-3">
+                <label class="control-label">Inc.Porcentaje de Puntaje:</label>
+                {{form_widget(form.incpuntaje)}}
+            </div>
+            <div class="col-lg-3">
+                <label class="control-label">Evaluacion de Criterio:</label>
+                {{form_widget(form.evaluacriterio)}}
+            </div>
+            <div class="col-lg-6">
+                &nbsp;
+            </div>
+        </div>
+  </div>
+   <div class="tab-pane" id="conc-tab-4">
+
+        <div class="row">
+            <div class="col-lg-12">
+                <label class="control-label">Terminos de Aceptación:</label>
+                {{form_widget(form.terminoacepta)}}
+            </div>
+            
+        </div>
+  </div>
+  <div class="tab-pane" id="conc-tab-5">
+
+        <div class="row">
+            <div class="col-lg-12">
+                <label class="control-label">Presentación:</label>
+                {{form_widget(form.presentacion)}}
+            </div>
+            
+        </div>
+  </div>
+  <div class="tab-pane" id="conc-tab-6">
+    
+        <div class="row">
+            <div class="col-lg-12">
+                <label class="control-label">Proceso Generación Informe de Retroalimentación:</label>
+                {{form_widget(form.informeretro)}}
+            </div>
+            
+        </div>
+  </div>
+  <div class="tab-pane" id="conc-tab-7">
+    
+        <div class="row">
+            <div class="col-lg-12">
+                <label class="control-label">Proceso de Calificación:</label>
+                {{form_widget(form.calificacion)}}
+            </div>
+            
+        </div>
+  </div>
+</div>
+
+</form>
+{% block ScriptFooter %}
+<script src="{{ asset('js/pages/Concurso/new.js') }}"></script> 
 {% endblock %}

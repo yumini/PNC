@@ -16,8 +16,10 @@ class MenuBuilder {
     private $title;
     private $user;
     private $urlPerfil;
-     public function __construct($em,$title,  \App\WebBundle\Entity\Usuario $user)
+    private $thisAction;
+     public function __construct($em,$title,  \App\WebBundle\Entity\Usuario $user,$thisAction)
     {
+        $this->thisAction=$thisAction;
         $this->em=$em;
         $this->title=$title;
         $this->user=$user;
@@ -27,7 +29,7 @@ class MenuBuilder {
         switch($perfilid){
             case "1":
                 $urlHome="_admin_inicio";
-                $this->urlPerfil="#";
+                $this->urlPerfil="";
                 break;
             case "2"://evaluador
                 $urlHome="_admin_inicio_evaluador";
@@ -50,7 +52,7 @@ class MenuBuilder {
         $cadena.=" <span class=\"icon-bar\"></span>";
         $cadena.=" <span class=\"icon-bar\"></span>";
         $cadena.="</button>";
-        $cadena.="<a href=\"javascript:return false;\" onclick=\"new jAjax().Load(Routing.generate('".$urlHome."'),'main-body','get','','');return false;\"  class=\"navbar-brand\"><small>PNC</small></a>";
+        $cadena.="<a href=\"#menu/".$urlHome."\"  class=\"navbar-brand\"><small>PNC</small></a>";
         $cadena.="</div>";
         $cadena.="<div class=\"navbar-collapse collapse navbar-collapse\">";
         $cadena.="<ul class=\"nav navbar-nav\">";
@@ -80,8 +82,8 @@ class MenuBuilder {
             $cadena.="</ul>";
             $cadena.="</li>";
         }else{
-            
-            $cadena.=" <li><a href=\"#\" onclick=\"new jAjax().Load(Routing.generate('".$entity->getUrl()."'),'main-body','get','','');return false;\">".$entity->getTitulo()."</a></li>";
+
+            $cadena.=" <li><a href=\"#menu/".$entity->getUrl()."\" >".$entity->getTitulo()."</a></li>";
         }
         return $cadena;
     }
@@ -93,7 +95,7 @@ class MenuBuilder {
                       <li class=\"dropdown\">
                         <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\"><i class=\"glyphicon glyphicon-user icon-white\"> </i> ".$this->user->getUsername()." <b class=\"caret\"></b></a>
                         <ul class=\"dropdown-menu\">
-                          <li><a href=\"javascript:return false;\" onclick=\"new jAjax().Load(Routing.generate('".$this->urlPerfil."'),'main-body','get','','');return false;\">Mis Datos Personales</a></li>
+                          <li><a href=\"#/menu/".$this->urlPerfil."\">Mis Datos Personales</a></li>
                           <li><a href=\"../change-password/change-password\">Cambiar mi contraseña</a></li>
                           
                           <li class=\"divider\"></li>

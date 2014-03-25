@@ -10,25 +10,37 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">{{ title_list }}</a>
+          <a class="navbar-brand">{{ title_list }}</a>
         </div>
       
     </nav>
   </div>
   <div class="panel-body">
+    {% 
+    set filterBy= {
+        'u.username':'Usuario',
+        'p.razonsocial':'Razon  Social',
+        'p.ruc':'RUC',
+        'p.telefono':'Telefono',
+        'p.direccion':'Dirección'
+    }
+
+
+     %}
+     {{ knp_pagination_filter(pagination,filterBy,[ path(pagination.route)]) }}
      <table class="table table-bordered table-hover table-condensed table-striped" style="width:100%">
         <thead>
             <tr >
-                <th class="grid-header" style="text-align: center;">Usuario</th>
-                <th class="grid-header" style="text-align: center;">Razon Social</th>
-                <th class="grid-header" style="text-align: center;">RUC</th>
-                <th class="grid-header" style="text-align: center;">Telefono</th>
-                <th class="grid-header" style="text-align: center;">Dirección</th>
-                <th class="grid-header" style="width: 60px;text-align: center;">Opciones</th>
+                <th class="grid-header" style="text-align: center;">{{ knp_pagination_sortable(pagination, 'Usuario', 'u.username') }}</th>
+                <th class="grid-header" style="text-align: center;">{{ knp_pagination_sortable(pagination, 'Razon Social', 'p.razonsocial') }}</th>
+                <th class="grid-header" style="text-align: center;">{{ knp_pagination_sortable(pagination, 'RUC', 'p.ruc') }}</th>
+                <th class="grid-header" style="text-align: center;">{{ knp_pagination_sortable(pagination, 'Dirección', 'p.direccion') }}</th>
+                <th class="grid-header" style="text-align: center;">{{ knp_pagination_sortable(pagination, 'Teléfono', 'p.telefono') }}</th>
+                <th class="grid-header" style="width: 80px;text-align: center;">Opciones</th>
             </tr>
         </thead>
         <tbody>
-         
+          
         {% for entity in pagination %}
             <tr>
                 
@@ -38,9 +50,9 @@
                 <td>{{entity.direccion}}</td>
                 <td>{{entity.telefono}}</td>
                 <td style="text-align: center;font-size: 12px;">
-                    <a href="#" class="row-edit" data-id="{{ entity.id }}" title="Editar Postulante"><i class="glyphicon glyphicon-edit"> </i></a>
+                    <a href="#" class="row-edit btn btn-warning btn-xs" data-id="{{ entity.id }}" title="Editar Postulante"><i class="glyphicon glyphicon-edit"> </i></a>
                    
-                    <a href="#" class="row-delete" data-id="{{ entity.id }}" title="Reasignar Usuario"><i class="glyphicon glyphicon-user"> </i></a>
+                    <a href="#" class="row-delete btn btn-info btn-xs" data-id="{{ entity.id }}" title="Reasignar Usuario"><i class="glyphicon glyphicon-user"> </i></a>
                 
                 </td>
             </tr>
@@ -48,7 +60,7 @@
         </tbody>
     </table>
     <div>
-        {{ knp_pagination_render(pagination,'AppWebBundle:Default:pagination.html.twig') }}
+        {{ knp_pagination_render(pagination,'AppWebBundle:Default:pagination.html.twig',{query:'ord=asc'}) }}
     </div>
   </div>
 

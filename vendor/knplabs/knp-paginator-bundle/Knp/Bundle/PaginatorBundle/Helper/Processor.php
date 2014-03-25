@@ -111,8 +111,8 @@ class Processor
                 $pagination->getPaginatorOption('pageParameterName') => 1 // reset to 1 on sort
             )
         );
-
-        $options['href'] = $this->routerHelper->generate($pagination->getRoute(), $params, $options['absolute']);
+        $url=$this->routerHelper->generate($pagination->getRoute(), $params, $options['absolute']);
+        $options['href'] ="javascript:new jAjax().Load('$url','main-body','get','','');return false;" ;
 
         if (null !== $options['translationDomain']) {
             if (null !== $options['translationCount']) {

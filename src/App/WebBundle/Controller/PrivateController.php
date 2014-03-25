@@ -28,7 +28,7 @@ class PrivateController extends Controller {
   
         $user = $em->getRepository('AppWebBundle:Usuario')->find($user->getId());
         if($user->getValidaregistro()=="1"){
-            $menuEntity=new MenuBuilder($em,$this->title,$user);
+            $menuEntity=new MenuBuilder($em,$this->title,$user,$this);
             $menuHTML=$menuEntity->CreateMenu($user->getPerfil()->getId());
             return array(
                 'title' => $this->title,

@@ -91,7 +91,7 @@ var BootstrapWindow= Backbone.Model.extend({
     },
     AddButton:function(id,options){
         
-        this.Footer.append( "<a id=\""+id+"\" href=\"#\" class=\"btn "+options.class+"\" >"+options.label+"</a>");
+        this.Footer.append( "<a id=\""+id+"\" class=\"btn "+options.class+"\" >"+options.label+"</a>");
         $("#"+id).click(options.fn);
     },
     setWidth:function(width){

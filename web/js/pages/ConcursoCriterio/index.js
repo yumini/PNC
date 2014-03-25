@@ -76,7 +76,14 @@ OptionButton.prototype={
                     data:params,
                     dataType:"html",
                     success:function(datos){
-                            //parent.Window.AddHTML(datos);
+                            var n = noty({
+                                    text: "Registro grabado satisfactoriamente",
+                                    type: "success",
+                                    modal:false,
+                                    timeout:5000,
+                                    layout: 'bottomRight',
+                                    theme: 'defaultTheme'                                  
+                            });
                             new OptionButton().Refresh();
                     },
                     error:function(objeto, quepaso, otroobj){
@@ -124,7 +131,14 @@ OptionButton.prototype={
                     data:params,
                     dataType:"html",
                     success:function(datos){
-                            
+                             var n = noty({
+                                    text: "Registro actualizado satisfactoriamente",
+                                    type: "success",
+                                    modal:false,
+                                    timeout:5000,
+                                    layout: 'bottomRight',
+                                    theme: 'defaultTheme'                                  
+                            });
                             new OptionButton().Refresh();
                     },
                     error:function(objeto, quepaso, otroobj){
@@ -134,21 +148,47 @@ OptionButton.prototype={
     },
     Delete:function(id){
         this.IdEntity=id;
-        if(confirm("Desea eliminar el elemento seleccionado?")){
-             var url=Routing.generate(this.routeDelete,{id:this.IdEntity});
-             $.ajax({
-                    type:'DELETE',
-                    url:url,
-                    dataType:"html",
-                    success:function(datos){
-                            
-                            new OptionButton().Refresh();
-                    },
-                    error:function(objeto, quepaso, otroobj){
+        var parent=this;
+        var n=noty({
+          text: 'Desea eliminar el registro seleccionado?',
+          layout: 'center',
+          theme: 'defaultTheme',
+          modal:true,
+          buttons: [
+            {addClass: 'btn btn-success', text: 'Si', onClick: function($noty) {
 
-                    }
-            }); 
-        }
+                var url=Routing.generate(parent.routeDelete,{id:parent.IdEntity});
+                 $.ajax({
+                        type:'DELETE',
+                        url:url,
+                        dataType:"html",
+                        success:function(datos){
+                                 var n = noty({
+                                        text: "Registro eliminado satisfactoriamente",
+                                        type: "success",
+                                        modal:false,
+                                        timeout:5000,
+                                        layout: 'bottomRight',
+                                        theme: 'defaultTheme'                                  
+                                });
+                                new OptionButton().Refresh();
+                        },
+                        error:function(objeto, quepaso, otroobj){
+
+                        }
+                }); 
+                $noty.close();
+
+              }
+            },
+            {addClass: 'btn btn-danger', text: 'No', onClick: function($noty) {
+                $noty.close();
+                
+            }
+            }
+          ]
+        });
+
     },
     Refresh:function(){
     	
@@ -161,65 +201,32 @@ OptionButton.prototype={
 
 
 $(document).ready(function() {
+    $('#treeGrid').treegrid({
+                    expanderExpandedClass: 'glyphicon glyphicon-minus',
+                    expanderCollapsedClass: 'glyphicon glyphicon-plus',
+                    initialState:'collapse'
+                });
 
-	var fnOpciones=function(value){
-        var n=value.split("-");
-        var id=n[0];
-        var tipo=parseInt(n[1]);
-		var options=""
-        options+='<div style="width:100%">';
-            options+='<a href="javascript:void(0);" class="row-show black" data-id="'+id+'" data-tipo="'+tipo+'" title="Ver Detalle"><i class="glyphicon glyphicon-search"> </i></a> ';           
-            options+='<a href="javascript:void(0);" class="row-edit" data-id="'+id+'" data-tipo="'+tipo+'" title="Editar"><i class="glyphicon glyphicon-pencil"> </i></a> ';
-            options+='<a href="javascript:void(0);" class="row-delete red" data-id="'+id+'" title="Eliminar" data-tipo="'+tipo+'"><i class="glyphicon glyphicon-remove"> </i></a> ';
-		if (tipo!=4)
-	    	options+='<a href="javascript:void(0);" class="row-add green" data-id="'+id+'" data-tipo="'+tipo+'"><i class="glyphicon glyphicon-plus" title="Nuevo"> </i></a> ';
-        else
-            options+='<a href="javascript:void(0);"><i>&nbsp;</i></a> ';
-        options+='</div>';
-        return options;
-	}
-	
-	$('#gridCriterios').treegrid({
-	
-    url:Routing.generate("_admin_concurso_criterio_json",{id:$("#idConcurso").val()}),
-    idField:'id',
-    treeField:'descripcion',
-    method: 'get',
-    columns:[[
-        {title:'Código',field:'codigo',width:40},
-        {field:'descripcion',title:'Descripción',align:'left'},
-        {field:'tipoArbol',title:'Tipo',width:100},
-        {field:'puntaje',title:'Puntaje',width:80},
-        {field:'tipoOpciones',title:'Opciones',width:60,formatter:fnOpciones,align:'center'}
-    ]],
-    onLoadSuccess:function(){
-    	$("#grid").children('div').eq(0).css("width","100%");
-    	$("#grid").children('div').eq(0).children('div').eq(0).css("width","100%");
-    	$(".datagrid-btable").width("100%");
-    	$(".datagrid-header-inner").width("100%");
-    	$(".datagrid-htable").width("100%");
-        $(".row-add").click(function(){
-            var id=$(this).attr("data-id");
-            var tipo=parseInt($(this).attr("data-tipo"))+1;
-            new OptionButton().New(id,tipo);
-        });
-        $(".row-edit").click(function(){
-            var id=$(this).attr("data-id"); 
-            var tipo=parseInt($(this).attr("data-tipo"));          
-            new OptionButton().Edit(id,tipo);
-        });
-        $(".row-delete").click(function(){
-            var id=$(this).attr("data-id"); 
-            var tipo=parseInt($(this).attr("data-tipo"));          
-            new OptionButton().Delete(id);
-        });
-        
-    }
-	});
 
 	$('#btnNewCriterio').click(function(){
 		new OptionButton().New(0,1);
 	});
+
+     $(".row-add").click(function(){
+            var id=$(this).attr("data-id");
+            var type=parseInt($(this).attr("data-type"))+1;
+            new OptionButton().New(id,type);
+    });
+    $(".row-edit").click(function(){
+        var id=$(this).attr("data-id"); 
+        var type=parseInt($(this).attr("data-type"));          
+        new OptionButton().Edit(id,type);
+    });
+    $(".row-delete").click(function(){
+        var id=$(this).attr("data-id"); 
+        var type=parseInt($(this).attr("data-type"));          
+        new OptionButton().Delete(id);
+    });
 
 });
 

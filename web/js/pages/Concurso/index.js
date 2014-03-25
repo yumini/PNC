@@ -8,8 +8,7 @@ var OptionButton=function(){
     this.routeEdit='_admin_concurso_edit';
     this.routeUpdate='_admin_concurso_update';
     this.routeDelete='_admin_concurso_delete';
-    this.routeCriterios="_admin_concurso_criterio";
-    this.routeEtapas="_admin_etapaconcurso";
+
 }
 OptionButton.prototype={
     New:function(){
@@ -182,34 +181,6 @@ OptionButton.prototype={
     Refresh:function(){
         var url=Routing.generate(this.routeList);
         new jAjax().Load(url,'main-body','get','','');
-    },
-    Criterios:function(id){
-         var url=Routing.generate(this.routeCriterios,{id:id});
-         $.ajax({
-                    type:'GET',
-                    url:url,
-                    dataType:"html",
-                    success:function(datos){
-                           $("#main-body").html(datos);
-                    },
-                    error:function(objeto, quepaso, otroobj){
-
-                    }
-            }); 
-    },
-    Etapas:function(id){
-         var url=Routing.generate(this.routeEtapas,{id:id});
-         $.ajax({
-                    type:'GET',
-                    url:url,
-                    dataType:"html",
-                    success:function(datos){
-                           $("#main-body").html(datos);
-                    },
-                    error:function(objeto, quepaso, otroobj){
-
-                    }
-            }); 
     }
 }
 
@@ -231,12 +202,5 @@ $(document).ready(function() {
       var id=$(this).attr("data-id"); 
       new OptionButton().Delete(id);  
     });
-    $(".row-criterios").click(function(){
-      var id=$(this).attr("data-id"); 
-      new OptionButton().Criterios(id);  
-    });
-     $(".row-etapas").click(function(){
-      var id=$(this).attr("data-id"); 
-      new OptionButton().Etapas(id);  
-    });
+
 });
