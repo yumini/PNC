@@ -10,7 +10,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">{{ title_list }}</a>
+          <a class="navbar-brand">{{ title_list }}</a>
         </div>
         <div class="collapse navbar-collapse navbar-ex2-collapse">
           <button id="btnNew" type="button" class="btn btn-success navbar-btn pull-right"> <span class="glyphicon glyphicon-plus"> </span> Nuevo</button>
@@ -54,7 +54,7 @@
                 <td>{% if entity.enabled==1 %}{{ "Activo" }}{% endif %} {% if entity.enabled==0 %}{{ "Inactivo" }}{% endif %}</td>
                 <td>{% if entity.validaregistro==1 %}{{ "Registro Valido" }}{% endif %} {% if entity.validaregistro==0 %}{{ "Registro no Valido" }}{% endif %}</td>
                 <td style="text-align: center;font-size: 12px;">
-                    <a class="row-edit btn btn-warning btn-xs" data-id="{{ entity.id }}" title="Editar"><i class="glyphicon glyphicon-edit green"> </i></a>
+                    <a class="row-edit btn btn-warning btn-xs" data-id="{{ entity.id }}" title="Editar"><i class="glyphicon glyphicon-pencil"> </i></a>
                     <a class="row-active btn btn-info btn-xs" data-id="{{ entity.id }}" title="Habilitar Usuario"><i class="glyphicon glyphicon-check"> </i></a>
                     <a class="row-delete btn btn-danger btn-xs" data-id="{{ entity.id }}" title="Activar/Desactivar"><i class="glyphicon glyphicon-ok-sign red"> </i></a>
                 

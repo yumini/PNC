@@ -10,7 +10,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">{{ title_list }}</a>
+          <a class="navbar-brand">{{ title_list }}</a>
         </div>
         <div class="collapse navbar-collapse navbar-ex2-collapse">
           <button id="btnNew" type="button" class="btn btn-success navbar-btn pull-right"> <span class="glyphicon glyphicon-plus"> </span> Nuevo</button>
@@ -18,12 +18,22 @@
     </nav>
   </div>
   <div class="panel-body">
+    {% 
+    set filterBy= {
+        'c.nombre':'Concurso',
+        't.nombre':'Tipo de Concurso',
+        'c.anio':'Año'
+    }
+
+
+     %}
+     {{ knp_pagination_filter(pagination,filterBy,[ path(pagination.route)]) }}
      <table class="table table-bordered table-hover table-condensed table-striped" style="width:100%">
         <thead>
             <tr >
-                <th class="grid-header" style="text-align: center;">Concurso</th>
-                <th class="grid-header" style="text-align: center;">Anio</th>
-                <th class="grid-header" style="text-align: center;">Tipo</th>
+                <th class="grid-header" style="text-align: center;">{{ knp_pagination_sortable(pagination, 'Concurso', 'c.nombre') }}</th>
+                <th class="grid-header" style="text-align: center;">{{ knp_pagination_sortable(pagination, 'Año', 'c.anio') }}</th>
+                <th class="grid-header" style="text-align: center;">{{ knp_pagination_sortable(pagination, 'Tipo de Concurso', 't.nombre') }}</th>
                 <th class="grid-header" style="text-align: center;">Fecha Inicio</th>
                 <th class="grid-header" style="text-align: center;">Fecha Fin</th>
                 <th class="grid-header" style="width: 170px;text-align: center;">Opciones</th>
@@ -37,8 +47,8 @@
                 <td>{{ entity.nombre }}</td>
                 <td>{{ entity.anio }}</td>
                 <td>{{ entity.tipoConcurso.nombre }}</td>
-                <td>{% if entity.fechaInicio %}{{ entity.fechaInicio|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{% if entity.fechaFin %}{{ entity.fechaFin|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if entity.fechaInicio %}{{ entity.fechaInicio|date('d/m/Y') }}{% endif %}</td>
+                <td>{% if entity.fechaFin %}{{ entity.fechaFin|date('d/m/Y') }}{% endif %}</td>
                 <td style="text-align: center;font-size: 12px;">
                     <a class="row-show btn btn-default btn-xs" data-id="{{ entity.id }}" title="Ver Detalle"><span class="glyphicon glyphicon-search"> </span></a>
                     

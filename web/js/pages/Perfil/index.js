@@ -165,21 +165,49 @@ OptionButton.prototype={
     },
     Delete:function(id){
         this.IdEntity=id;
-        if(confirm("Desea eliminar el perfil seleccionado?")){
-             var url=Routing.generate(this.routeDelete,{id:this.IdEntity});
-             $.ajax({
+        var parent=this;
+        var n=noty({
+          text: 'Desea eliminar el registro seleccionado?',
+          layout: 'center',
+          theme: 'defaultTheme',
+          modal:true,
+          buttons: [
+            {addClass: 'btn btn-success', text: 'Si', onClick: function($noty) {
+
+                var url=Routing.generate(parent.routeDelete,{id:parent.IdEntity});
+                 $.ajax({
                     type:'DELETE',
                     url:url,
                     dataType:"html",
-                    success:function(datos){
-                            
-                            new OptionButton().Refresh();
-                    },
-                    error:function(objeto, quepaso, otroobj){
+                        success:function(request){
+                                //var obj = jQuery.parseJSON(request);
+                                var n = noty({
+                                    text: "Se realizó la operación satisfactoriamente",
+                                    type: 'success',
+                                    dismissQueue: true,
+                                    layout: 'bottomRight',
+                                    theme: 'defaultTheme',
+                                    timeout:5000
+                                });
+                                new OptionButton().Refresh();
+                        },
+                        error:function(objeto, quepaso, otroobj){
 
-                    }
-            }); 
-        }
+                        }
+                }); 
+                $noty.close();
+
+              }
+            },
+            {addClass: 'btn btn-danger', text: 'No', onClick: function($noty) {
+                $noty.close();
+                
+            }
+            }
+          ]
+        });
+
+       
     },
     Refresh:function(){
         var url=Routing.generate(this.routeList);

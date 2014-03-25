@@ -52,8 +52,15 @@ class ConcursoController extends Controller
 
         $em = $this->getDoctrine()->getManager();
         $page=$this->get('request')->query->get('page', 1);
+        $field=$this->get('request')->query->get('filterField', 'c.nombre');
+        $value=$this->get('request')->query->get('filterValue','');
+        $sort=$this->get('request')->query->get('sort', 'c.nombre');
+
         $paginator=$this->get('knp_paginator');
-        $pagination = $em->getRepository('AppWebBundle:Concurso')->FindAllPaginator($paginator,$page,10);
+        $dql   = "SELECT c FROM AppWebBundle:Concurso c JOIN c.tipoConcurso t
+                where $field like '%$value%' order by $sort asc";
+        $query = $em->createQuery($dql);
+        $pagination = $paginator->paginate($query,$page,10);
 
         return array(
             'pagination' => $pagination,
