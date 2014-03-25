@@ -38,6 +38,27 @@ class ConcursoCriterioRepository extends EntityRepository
                 return null;
         }
     }
+
+    public function FindByConcursoOrderByParent($idConcurso,$isArray=false){
+        $list=new \Doctrine\Common\Collections\ArrayCollection();
+        $criterios=$this->FindByParentId($idConcurso,0);
+        foreach ($criterios as $criterio) {
+            $list[]=$criterio;
+            $subcriterios=$this->FindByParentId($idConcurso,$criterio->getId());
+            foreach ($subcriterios as $subcriterio) {
+                $list[]=$subcriterio;
+                $areas=$this->FindByParentId($idConcurso,$subcriterio->getId());
+                foreach ($areas as $area) {
+                    $list[]=$area;
+                    $preguntas=$this->FindByParentId($idConcurso,$area->getId());
+                    foreach ($preguntas as $pregunta) {
+                        $list[]=$pregunta;
+                    }
+                }
+            }
+        }
+        return $list;
+    }
     public function FindByParentId($idConcurso,$idpadre,$isArray=false){
         $em=$this->getEntityManager();
         $dql= "SELECT cp FROM AppWebBundle:ConcursoCriterio cp 

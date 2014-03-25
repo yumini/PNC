@@ -79,7 +79,7 @@ class ConcursoCriterioController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('AppWebBundle:ConcursoCriterio')->FindByConcurso($id);
+        $entities = $em->getRepository('AppWebBundle:ConcursoCriterio')->FindByConcursoOrderByParent($id);
         $concurso= $em->getRepository('AppWebBundle:Concurso')->find($id);
         return array(
             'title_list'=> "Listado de Criterios",
