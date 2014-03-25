@@ -158,44 +158,94 @@ OptionButton.prototype={
     },
     Active:function(id){
         this.IdEntity=id;
-        if(confirm("Desea Valdiar el Registro del usuario?")){
-             var url=Routing.generate(this.routeActive,{id:this.IdEntity});
-             $.ajax({
-                    type:'PUT',
-                    url:url,
-                    dataType:"html",
-                    success:function(request){
-                            var obj = jQuery.parseJSON(request);
-                            //console.log(obj)
-                            //alert(obj.message)
-                            bootbox.alert(obj.message, function() {
-                                //console.log("Alert Callback");
-                            });
-                            new OptionButton().Refresh();
-                    },
-                    error:function(objeto, quepaso, otroobj){
+        var parent=this;
+        var n=noty({
+          text: 'Desea validar el registro del usuario?',
+          layout: 'center',
+          theme: 'defaultTheme',
+          modal:true,
+          buttons: [
+            {addClass: 'btn btn-success', text: 'Si', onClick: function($noty) {
 
-                    }
-            }); 
-        }
+                var url=Routing.generate(parent.routeActive,{id:parent.IdEntity});
+                 $.ajax({
+                        type:'PUT',
+                        url:url,
+                        dataType:"html",
+                        success:function(request){
+                                var obj = jQuery.parseJSON(request);
+                                var n = noty({
+                                    text: obj.message,
+                                    type: 'success',
+                                    dismissQueue: true,
+                                    layout: 'bottomRight',
+                                    theme: 'defaultTheme'
+                                });
+                                new OptionButton().Refresh();
+                        },
+                        error:function(objeto, quepaso, otroobj){
+
+                        }
+                }); 
+                $noty.close();
+
+              }
+            },
+            {addClass: 'btn btn-danger', text: 'No', onClick: function($noty) {
+                $noty.close();
+                
+            }
+            }
+          ]
+        });
+
+
     },
     Delete:function(id){
         this.IdEntity=id;
-        if(confirm("Desea eliminar el usuario seleccionado?")){
-             var url=Routing.generate(this.routeDelete,{id:this.IdEntity});
-             $.ajax({
-                    type:'DELETE',
-                    url:url,
-                    dataType:"html",
-                    success:function(datos){
-                            
-                            new OptionButton().Refresh();
-                    },
-                    error:function(objeto, quepaso, otroobj){
+        var parent=this;
+        var n=noty({
+          text: 'Desea habilitar/deshabilitar el registro seleccionado?',
+          layout: 'center',
+          theme: 'defaultTheme',
+          modal:true,
+          buttons: [
+            {addClass: 'btn btn-success', text: 'Si', onClick: function($noty) {
 
-                    }
-            }); 
-        }
+                var url=Routing.generate(parent.routeDelete,{id:parent.IdEntity});
+                 $.ajax({
+                        type:'DELETE',
+                        url:url,
+                        dataType:"html",
+                        success:function(request){
+                                //var obj = jQuery.parseJSON(request);
+                                var n = noty({
+                                    text: "Se realizó la operación satisfactoriamente",
+                                    type: 'success',
+                                    dismissQueue: true,
+                                    layout: 'bottomRight',
+                                    theme: 'defaultTheme',
+                                    timeout:5000
+                                });
+                                new OptionButton().Refresh();
+                        },
+                        error:function(objeto, quepaso, otroobj){
+
+                        }
+                }); 
+                $noty.close();
+
+              }
+            },
+            {addClass: 'btn btn-danger', text: 'No', onClick: function($noty) {
+                $noty.close();
+                
+            }
+            }
+          ]
+        });
+
+       
     },
     Refresh:function(){
         var url=Routing.generate(this.routeList);

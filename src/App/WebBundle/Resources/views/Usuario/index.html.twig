@@ -39,7 +39,7 @@
                 <th class="grid-header" style="text-align: center;">{{ knp_pagination_sortable(pagination, 'Perfil', 'p.nombre') }}</th>
                 <th class="grid-header" style="text-align: center;">{{ knp_pagination_sortable(pagination, 'Estado', 'u.enabled') }}</th>
                 <th class="grid-header" style="text-align: center;">{{ knp_pagination_sortable(pagination, 'Registro Valido', 'u.validaregistro') }}</th>
-                <th class="grid-header" style="width: 60px;text-align: center;">Opciones</th>
+                <th class="grid-header" style="width: 100px;text-align: center;">Opciones</th>
             </tr>
         </thead>
         <tbody>
@@ -54,9 +54,9 @@
                 <td>{% if entity.enabled==1 %}{{ "Activo" }}{% endif %} {% if entity.enabled==0 %}{{ "Inactivo" }}{% endif %}</td>
                 <td>{% if entity.validaregistro==1 %}{{ "Registro Valido" }}{% endif %} {% if entity.validaregistro==0 %}{{ "Registro no Valido" }}{% endif %}</td>
                 <td style="text-align: center;font-size: 12px;">
-                    <a href="#" class="row-edit" data-id="{{ entity.id }}" title="Editar"><i class="glyphicon glyphicon-edit green"> </i></a>
-                    <a href="#" class="row-active" data-id="{{ entity.id }}" title="Habilitar Usuario"><i class="glyphicon glyphicon-check"> </i></a>
-                    <a href="#" class="row-delete" data-id="{{ entity.id }}" title="Activar/Desactivar"><i class="glyphicon glyphicon-ok-sign red"> </i></a>
+                    <a class="row-edit btn btn-warning btn-xs" data-id="{{ entity.id }}" title="Editar"><i class="glyphicon glyphicon-edit green"> </i></a>
+                    <a class="row-active btn btn-info btn-xs" data-id="{{ entity.id }}" title="Habilitar Usuario"><i class="glyphicon glyphicon-check"> </i></a>
+                    <a class="row-delete btn btn-danger btn-xs" data-id="{{ entity.id }}" title="Activar/Desactivar"><i class="glyphicon glyphicon-ok-sign red"> </i></a>
                 
                 </td>
             </tr>
