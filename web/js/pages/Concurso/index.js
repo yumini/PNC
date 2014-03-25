@@ -6,6 +6,7 @@ var OptionButton=function(){
     this.routeNew='_admin_concurso_new';
     this.routeSave='_admin_concurso_save';
     this.routeEdit='_admin_concurso_edit';
+    this.routeShow='_admin_concurso_show';
     this.routeUpdate='_admin_concurso_update';
     this.routeDelete='_admin_concurso_delete';
 
@@ -112,6 +113,25 @@ OptionButton.prototype={
             }
         });
     },
+    show:function(id){
+        this.IdEntity=id;
+        this.Window=new BootstrapWindow({id:"winForm",title:"Detalles del Concurso"});
+        this.Window.setWidth(1000);
+        this.Window.setHeight(300);
+        var url=Routing.generate(this.routeShow,{id:id});
+        this.Window.Load(url,"");
+        this.Window.Show();
+        var parent=this;
+        this.Window.AddButton('btn-concurso-cancel',{
+            label:'Salir ',
+            'class':'btn-default',
+            fn:function(){
+                parent.Window.Hide();
+            }
+            
+        })
+
+    },
     Update:function(){
             console.log("actualizando perfil con id:"+this.IdEntity);
             var parent=this;
@@ -162,21 +182,45 @@ OptionButton.prototype={
     },
     Delete:function(id){
         this.IdEntity=id;
-        if(confirm("Desea eliminar el perfil seleccionado?")){
-             var url=Routing.generate(this.routeDelete,{id:this.IdEntity});
-             $.ajax({
-                    type:'DELETE',
-                    url:url,
-                    dataType:"html",
-                    success:function(datos){
-                            
-                            new OptionButton().Refresh();
-                    },
-                    error:function(objeto, quepaso, otroobj){
+        var parent=this;
+        var n=noty({
+          text: 'Desea eliminar el registro seleccionado?',
+          layout: 'center',
+          theme: 'defaultTheme',
+          modal:true,
+          buttons: [
+            {addClass: 'btn btn-success', text: 'Si', onClick: function($noty) {
 
-                    }
-            }); 
-        }
+                var url=Routing.generate(parent.routeDelete,{id:parent.IdEntity});
+                 $.ajax({
+                        type:'DELETE',
+                        url:url,
+                        dataType:"html",
+                        success:function(datos){
+                               var n = noty({
+                                    text: "Registro eliminado satisfactoriamente",
+                                    type: "success",
+                                    dismissQueue: true,
+                                    layout: 'bottomRight',
+                                    theme: 'defaultTheme'
+                                }); 
+                                new OptionButton().Refresh();
+                        },
+                        error:function(objeto, quepaso, otroobj){
+
+                        }
+                }); 
+                $noty.close();
+
+              }
+            },
+            {addClass: 'btn btn-danger', text: 'No', onClick: function($noty) {
+                $noty.close();
+                
+            }
+            }
+          ]
+        });
     },
     Refresh:function(){
         var url=Routing.generate(this.routeList);
@@ -194,13 +238,14 @@ $(document).ready(function() {
       new OptionButton().New();   
   });
   
-  $(".row-edit").click(function(){
-      var id=$(this).attr("data-id"); 
-      new OptionButton().Edit(id);  
-  });
-    $(".row-delete").click(function(){
+ 
+  $(".row-delete").click(function(){
       var id=$(this).attr("data-id"); 
       new OptionButton().Delete(id);  
-    });
+  });
+  $(".row-show").click(function(){
+      var id=$(this).attr("data-id"); 
+      new OptionButton().show(id);  
+  });
 
 });

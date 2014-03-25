@@ -28,9 +28,9 @@ class EtapaConcursoController extends Controller
     public function indexAction($id)
     {
         $em = $this->getDoctrine()->getManager();
-        
-        $entities = $em->getRepository('AppWebBundle:EtapaConcurso')->findAllEtapas($id);
         $concurso= $em->getRepository('AppWebBundle:Concurso')->find($id);
+        $entities = $em->getRepository('AppWebBundle:EtapaConcurso')->findAllEtapas($id,$concurso->getTipoConcurso()->getId());
+        
         return array(
             'entities' => $entities,
             'title_list'=> "Listado de Etapas",

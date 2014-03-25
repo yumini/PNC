@@ -1,5 +1,6 @@
 $('#tree').tree({
 	checkbox:true,
+    cascadeCheck:false,
     url: Routing.generate("_admin_perfil_tree"),
     onLoadSuccess:function(){
     	var id= $("#perfil_id").val();

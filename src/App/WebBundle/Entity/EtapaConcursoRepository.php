@@ -12,13 +12,15 @@ use Doctrine\ORM\EntityRepository;
  */
 class EtapaConcursoRepository extends EntityRepository
 {
-    public function findAllEtapas($idConcurso){
+    public function findAllEtapas($idConcurso,$tipo){
         $em=$this->getEntityManager();
         $dql= "SELECT ec.id,e.id as etapaId,e.nombre,ec.fechaInicio,ec.fechaFin,ec.extendido,ec.fechaExtension 
-            FROM AppWebBundle:Etapa e               
+            FROM AppWebBundle:Etapa e 
+                JOIN e.tipoConcurso tc              
                 LEFT JOIN e.etapasconcurso ec
                 LEFT JOIN ec.concurso c
-                WHERE c.id=:id or c.id is null
+                WHERE (c.id=:id or c.id is null)
+                AND tc.id=$tipo
                 ";
         $query=$em->createQuery($dql)->setParameter('id', $idConcurso);
         try {

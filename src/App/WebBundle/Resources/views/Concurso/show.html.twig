@@ -1,5 +1,5 @@
-<form id="myform"  method="post" {{ form_enctype(form) }}>
-     {{form_widget(form._token)}}
+<form id="myform" >
+
 <ul class="nav nav-tabs" style="font-size:11px;">
   <li class="active"><a href="#conc-tab-1" data-toggle="tab">Datos Principales</a></li>
   <li><a href="#conc-tab-2" data-toggle="tab">Config. Formul.</a></li>
@@ -13,32 +13,37 @@
   <div class="tab-pane active" id="conc-tab-1" style="padding-top:10px;">
 
       <div class="row">
-        <div class="col-lg-6">
-          <label class="control-label">Tipo Concurso</label>
-          {{form_widget(form.tipoConcurso)}}
-        </div>
-        <div class="col-lg-6">
+        <div class="col-lg-12">
+          <label class="control-label">Tipo Concurso</label><br/>
+          <input type="text" class="form-control" value="{{entity.tipoConcurso.nombre}}" disabled/>
           
+        </div>
+      
       </div>
-      </div>
+      <br/>
         <div class="row">
             <div class="col-lg-3">
-                <label class="control-label">Año</label>
-                {{form_widget(form.anio)}}
+                <label class="control-label">Año</label><br/>
+                <input type="text" class="form-control" value=" {{entity.anio}}" disabled/>
+               
             </div>
             <div class="col-lg-9">
-                <label class="control-label">Nombre:</label>
-                 {{form_widget(form.nombre)}}
+                <label class="control-label">Nombre:</label><br/>
+                <input type="text" class="form-control" value="{{entity.nombre}}" disabled/>
+                 
             </div>
         </div>
+        <br/>
         <div class="row">
             <div class="col-lg-3">
-                <label class="control-label">Fecha Inicio:</label>
-                {{form_widget(form.fechaInicio)}}
+                <label class="control-label">Fecha Inicio:</label><br/>
+                <input type="text" class="form-control" value="{% if entity.fechaInicio %}{{ entity.fechaInicio|date('d/m/Y') }}{% endif %}" disabled/>
+                
             </div>
             <div class="col-lg-3">
-                <label class="control-label">Fecha Fin:</label>
-                {{form_widget(form.fechaFin)}}
+                <label class="control-label">Fecha Fin:</label><br/>
+                <input type="text" class="form-control" value="{% if entity.fechaFin %}{{ entity.fechaFin|date('d/m/Y') }}{% endif %}" disabled/>
+                
             </div>
             <div class="col-lg-6">
                 &nbsp;
@@ -50,22 +55,13 @@
   <div class="tab-pane" id="conc-tab-2">
         <div class="row">
             <div class="col-lg-3">
-                <label class="control-label">Clasificación de Empresas:</label>
-                <div class="checkbox">
-                    
-                    <label>
-                      {{form_widget(form.estadoemp)}} Activo
-                    </label>
-                </div>
+                <label class="control-label">Clasificación de Empresas:</label><br/>
+                <input type="text" value="{% if(entity.estadoemp==1)%} Activo {% else %} Inactivo {% endif %}" class="form-control" readonly="readonly"/>
+               
             </div>
             <div class="col-lg-3">
-                <label class="control-label">Información de Proyecto:</label>
-                <div class="checkbox">
-                    
-                    <label>
-                      {{form_widget(form.estadopy)}} Activo
-                    </label>
-                </div>
+                <label class="control-label">Información de Proyecto:</label><br/>
+                <input type="text" value="{% if(entity.estadopy==1)%} Activo {% else %} Inactivo {% endif %}" class="form-control" readonly="readonly"/>
             </div>
             
         </div>
@@ -73,12 +69,14 @@
   <div class="tab-pane" id="conc-tab-3">
         <div class="row">
             <div class="col-lg-3">
-                <label class="control-label">Inc.Porcentaje de Puntaje:</label>
-                {{form_widget(form.incpuntaje)}}
+                <label class="control-label">Inc.Porcentaje de Puntaje:</label><br/>
+                <input type="text" class="form-control" value="{{entity.incpuntaje}}" readonly="readonly"/>
+                
             </div>
             <div class="col-lg-3">
-                <label class="control-label">Evaluacion de Criterio:</label>
-                {{form_widget(form.evaluacriterio)}}
+                <label class="control-label">Evaluacion de Criterio:</label><br/>
+                <input type="text" class="form-control" value="{{entity.evaluacriterio}}" readonly="readonly"/>
+                
             </div>
             <div class="col-lg-6">
                 &nbsp;
@@ -89,8 +87,11 @@
 
         <div class="row">
             <div class="col-lg-12">
-                <label class="control-label">Terminos de Aceptación:</label>
-                {{form_widget(form.terminoacepta)}}
+                <label class="control-label">Terminos de Aceptación:</label><br/>
+                <textarea class="form-control" rows="10" readonly="readonly">
+                {{entity.terminoacepta}}
+                </textarea>
+                
             </div>
             
         </div>
@@ -99,8 +100,11 @@
 
         <div class="row">
             <div class="col-lg-12">
-                <label class="control-label">Presentación:</label>
-                {{form_widget(form.presentacion)}}
+                <label class="control-label">Presentación:</label><br/>
+                <textarea class="form-control" rows="10" readonly="readonly">
+                {{entity.presentacion}}
+                </textarea>
+                
             </div>
             
         </div>
@@ -109,8 +113,11 @@
     
         <div class="row">
             <div class="col-lg-12">
-                <label class="control-label">Proceso Generación Informe de Retroalimentación:</label>
-                {{form_widget(form.informeretro)}}
+                <label class="control-label">Proceso Generación Informe de Retroalimentación:</label><br/>
+                <textarea class="form-control" rows="10" readonly="readonly">
+                {{entity.informeretro}}
+                </textarea>
+                
             </div>
             
         </div>
@@ -119,8 +126,11 @@
     
         <div class="row">
             <div class="col-lg-12">
-                <label class="control-label">Proceso de Calificación:</label>
-                {{form_widget(form.calificacion)}}
+                <label class="control-label">Proceso de Calificación:</label><br/>
+                <textarea class="form-control" rows="10" readonly="readonly">
+                {{entity.calificacion}}
+                </textarea>
+                
             </div>
             
         </div>

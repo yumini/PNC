@@ -150,7 +150,7 @@ class ConcursoController extends Controller
     /**
      * Finds and displays a Concurso entity.
      *
-     * @Route("/{id}", name="concurso_show", options={"expose"=true})
+     * @Route("/{id}", name="_admin_concurso_show", options={"expose"=true})
      * @Method("GET")
      * @Template()
      */
@@ -164,11 +164,8 @@ class ConcursoController extends Controller
             throw $this->createNotFoundException('Unable to find Concurso entity.');
         }
 
-        $deleteForm = $this->createDeleteForm($id);
-
         return array(
-            'entity'      => $entity,
-            'delete_form' => $deleteForm->createView(),
+            'entity'      => $entity
         );
     }
      /**

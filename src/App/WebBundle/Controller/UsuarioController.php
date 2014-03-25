@@ -35,10 +35,22 @@ class UsuarioController extends Controller
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
+        /*$em = $this->getDoctrine()->getManager();
         $page=$this->get('request')->query->get('page', 1);
         $paginator=$this->get('knp_paginator');
         $pagination = $em->getRepository('AppWebBundle:Usuario')->FindAllPaginator($paginator,$page,10);
+        */
+        $em = $this->getDoctrine()->getManager();
+        $page=$this->get('request')->query->get('page', 1);
+        $field=$this->get('request')->query->get('filterField', 'u.username');
+        $value=$this->get('request')->query->get('filterValue','');
+        $sort=$this->get('request')->query->get('sort', 'u.username');
+
+        $paginator=$this->get('knp_paginator');
+        $dql   = "SELECT u FROM AppWebBundle:Usuario u JOIN u.perfil p
+                where $field like '%$value%' order by $sort asc";
+        $query = $em->createQuery($dql);
+        $pagination = $paginator->paginate($query,$page,10);
 
         return array(
             'pagination' => $pagination,

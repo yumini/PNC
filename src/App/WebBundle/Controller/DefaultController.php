@@ -38,7 +38,7 @@ class DefaultController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $user=new \App\WebBundle\Entity\Usuario();
-        $menuEntity=new MenuBuilder($em,$this->title,$user);
+        $menuEntity=new MenuBuilder($em,$this->title,$user,$this);
         $menuHTML=$menuEntity->CreateMenuDefault();
 
         return array(

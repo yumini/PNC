@@ -18,14 +18,27 @@
     </nav>
   </div>
   <div class="panel-body">
+    {% 
+    set filterBy= {
+        'u.username':'Usuario',
+        'u.email':'Email',
+        'u.nombres':'Nombres',
+        'u.apellidos':'Apellidos',
+        'p.nombre':'Perfil'
+    }
+
+
+     %}
+     {{ knp_pagination_filter(pagination,filterBy,[ path(pagination.route)]) }}
      <table class="table table-bordered table-hover table-condensed table-striped" style="width:100%">
         <thead>
             <tr >
-                <th class="grid-header" style="text-align: center;">Nombre</th>
-                <th class="grid-header" style="text-align: center;">Nombre Usuario</th>
-                <th class="grid-header" style="text-align: center;">Perfil</th>
-                <th class="grid-header" style="text-align: center;">Estado</th>
-                <th class="grid-header" style="text-align: center;">Registro valido</th>
+                <th class="grid-header" style="text-align: center;">{{ knp_pagination_sortable(pagination, 'Nombres y Apellidos', 'u.nombres') }}</th>
+                <th class="grid-header" style="text-align: center;">{{ knp_pagination_sortable(pagination, 'Usuario', 'u.username') }}</th>
+                <th class="grid-header" style="text-align: center;">{{ knp_pagination_sortable(pagination, 'Email', 'u.email') }}</th>
+                <th class="grid-header" style="text-align: center;">{{ knp_pagination_sortable(pagination, 'Perfil', 'p.nombre') }}</th>
+                <th class="grid-header" style="text-align: center;">{{ knp_pagination_sortable(pagination, 'Estado', 'u.enabled') }}</th>
+                <th class="grid-header" style="text-align: center;">{{ knp_pagination_sortable(pagination, 'Registro Valido', 'u.validaregistro') }}</th>
                 <th class="grid-header" style="width: 60px;text-align: center;">Opciones</th>
             </tr>
         </thead>
@@ -36,6 +49,7 @@
                 
                 <td>{{entity.nombres ~ " " ~ entity.apellidos}}</td>
                 <td>{{ entity.usernameCanonical }}</td>
+                <td>{{ entity.email }}</td>
                 <td>{{ entity.perfil.nombre }}</td>
                 <td>{% if entity.enabled==1 %}{{ "Activo" }}{% endif %} {% if entity.enabled==0 %}{{ "Inactivo" }}{% endif %}</td>
                 <td>{% if entity.validaregistro==1 %}{{ "Registro Valido" }}{% endif %} {% if entity.validaregistro==0 %}{{ "Registro no Valido" }}{% endif %}</td>
