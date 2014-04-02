@@ -14,13 +14,14 @@ OptionButton.prototype={
          
     },
     
-    New:function(id){
-        this.idConcurso=id;
+    New:function(idConcurso,idEvaluador){
+        this.idEvaluador=idEvaluador
+        this.idConcurso=idConcurso;
         this.WizardIndex=0;
         this.Window=new BootstrapWindow({id:"winForm",title:"Nueva Inscripci&oacute;n"});
         this.Window.setWidth(1000);
         //this.Window.setHeight(300);
-        var url=Routing.generate(this.routeNew,{id:id});
+        var url=Routing.generate(this.routeNew,{id:this.idConcurso});
         this.Window.Load(url,"");
         this.Window.Show();
          var parent=this;
@@ -46,7 +47,7 @@ OptionButton.prototype={
     },
     Save:function(){
             var parent=this;
-            var url=Routing.generate(this.routeSave,{id:this.idConcurso});
+            var url=Routing.generate(this.routeSave,{id:this.idEvaluador,id2:this.idConcurso});
            
             
             $.ajax({
@@ -64,7 +65,7 @@ OptionButton.prototype={
         
     },
     Refresh:function(){
-        new Concurso().Detail(this.idConcurso);
+        Backbone.history.loadUrl(Backbone.history.fragment);
     }
 }
 

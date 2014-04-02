@@ -1,21 +1,22 @@
 {% block ScriptFooter %}
  <script src="{{ asset('js/pages/Security/indexEvaluador.js') }}"></script> 
 {% endblock %}
-
+<input type="hidden" id="user_id" value="{{user.id}}"/>
+<input type="hidden" id="evaluador_id" value="{{evaluador.id}}"/>
 {% if evaluador.IsValid()==0 %}
 <div class="row" >
-  <div class="col-lg-12" >
+  <div class="col-md-12" >
       <div class="alert alert-info">
         
          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-         <strong>Advertencia!</strong> Es necesario que complete su perfil para poder participar en algun concurso.<a id="btnUpdPerfil" href="#" data-id="{{evaluador.id}}"><b> Actualiza tu perfil aqui</b></a>
+         <strong>Advertencia!</strong> Es necesario que complete su perfil para poder participar en amdun concurso.<a href="#/menu/_admin_evaluador_perfil/{{evaluador.id}}"><b> Actualiza tu perfil aqui</b></a>
       </div>
           
   </div>
 </div>
 {% endif %}
 <div class="row" >
-    <div class="col-lg-3">
+    <div class="col-md-3">
      
       <div class="well" style="margin:0px;">
         
@@ -23,35 +24,28 @@
           
 
                 <div id="uploadFoto">
-                <a id="lnkFotoPerfil" href="#" class="thumbnail">
+                <a id="lnkFotoPerfil"  class="thumbnail">
                   <img id="imgPerfil" data-src="holder.js/100%x180" alt="100%x180" src="{{ asset('images/usuarios/')}}{{user.imagen}}" data-path="{{ asset('images/usuarios/')}}"/>
                 </a>
                   <input id="filePerfil" type="file" name="filePerfil" style="display:none;" multiple />
                 </div>
-              
-          <p style="text-align:center;padding:2px;">
-           <form id="formUploadPerfil" method="post"  action="{{ path('_admin_postulante_upload') }}" enctype="multipart/form-data">
-            <ul class="nav nav-pills">
-              <li>
-                <a id="btnPerfil" href="#/evaluador/{{evaluador.id}}/perfil" data-id="{{evaluador.id}}"> 
-                  <span class="glyphicon glyphicon-pencil"></span>
-                  Editar Perfil
-                </a></li>
-              <li>
-                <a  id="btnFotoPerfil" href="#">
+            <h4> <small>{{ user.nombres}} {{user.apellidos}}</small><br/><strong>{{evaluador.nombres}} {{evaluador.apellidos}}</strong></h4> 
+            <form id="formUploadPerfil" method="post"   enctype="multipart/form-data">
+          <div class="list-group">
+            <a href="#/menu/_admin_evaluador_perfil/{{evaluador.id}}" class="list-group-item">
+              <span class="glyphicon glyphicon-pencil"></span> Perfil Evaluador
+            </a>
+            <a  id="btnFotoPerfil" href="#menu/_admin_inicio_evaluador/{{evaluador.id}}" class="list-group-item">
                   <span class="glyphicon glyphicon-user"></span>
                   Cambiar Foto
-                </a>
-              </li>
-              
-            </ul>
+            </a>
+          </div>
           </form>
-          </p>
-          <h4><b>{{ user.nombres}} {{user.apellidos}}</b></h4>
-          <p>Bienvenido ,  mira nuestros concursos y participa</p>
+
+          
       </div>
   </div>
-  <div class="col-lg-9"   id="container-concursos">
+  <div class="col-md-9"   id="container-concursos">
    
        
   </div>

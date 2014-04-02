@@ -3,7 +3,7 @@
 namespace App\WebBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Validator\Constraints as Assert;
 /**
  * PostulanteContacto
  *
@@ -25,6 +25,7 @@ class PostulanteContacto
      * @var string
      *
      * @ORM\Column(name="nombre", type="string", length=250)
+     * @Assert\NotBlank()
      */
     private $nombre;
 
@@ -32,20 +33,21 @@ class PostulanteContacto
      * @var string
      *
      * @ORM\Column(name="cargo", type="string", length=250)
+     * @Assert\NotBlank()
      */
     private $cargo;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="telefono", type="string", length=20)
+     * @ORM\Column(name="telefono", type="string", length=20, nullable=true)
      */
     private $telefono;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="fax", type="string", length=20)
+     * @ORM\Column(name="fax", type="string", length=20, nullable=true)
      */
     private $fax;
 
@@ -53,6 +55,10 @@ class PostulanteContacto
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=20)
+     * @Assert\Email(
+     *     message = "El mail '{{ value }}' ingresado no tiene el formato correcto."
+     * )
+     * @Assert\NotBlank()
      */
     private $email;
 

@@ -1,33 +1,28 @@
-var OptionButton=function(){}
-OptionButton.prototype={
-	Perfil:function(){
-		var url=Routing.generate("_admin_evaluador_perfil");
-		new jAjax().Load(url,"main-body","GET","","")
-	}
-	
-}
+
 var Concurso=function(){}
 Concurso.prototype={
 	List:function(){
-		var url=Routing.generate("_admin_concursos_activos");
-		new jAjax().Load(url,"container-concursos","GET","","")
+		var id=$('#evaluador_id').val();
+        var url=Routing.generate("_admin_concursos_evaluador",{id:id});
+        new jAjax().Load(url,"container-concursos","GET","","");
 	},
-	Detail:function(id){
-		var url=Routing.generate("_admin_concurso_showInscripcionEvaluador",{id:id});
-		new jAjax().Load(url,"main-body","GET","","")
+	Detail:function(idConcurso){
+        var idevaluador=$('#evaluador_id').val();
+        appRouter.navigate('menu/_admin_concurso_inscripcion_evaluador/'+idevaluador+'/'+idConcurso, {trigger: true});
+        return false;
 	}
 }
 new Concurso().List();
  $('#filePerfil').fileupload({
 
-        url:Routing.generate("_admin_postulante_upload"),
+        url:Routing.generate("_admin_upload_foto",{id:$('#user_id').val()}),
         singleFileUploads: true,
         // This function is called when a file is added to the queue;
         // either via the browse button, or via drag/drop:
         add: function (e, data) {
             // Automatically upload the file once it is added to the queue
             var jqXHR = data.submit();
-            var path=$("#imgPerfil").attr('data-path')+'../iconos/loadin1.png';
+            var path=$("#imgPerfil").attr('data-path')+'../iconos/loading.gif';
             $("#imgPerfil").attr("src",path);
         },
 
@@ -60,18 +55,6 @@ $(document).ready(function() {
 	});
 	$('#lnkFotoPerfil').click(function(){
 	        $('#filePerfil').click();
-	});
-	$('#btnPerfil').click(function(){
-            var id=$(this).attr("data-id");
-            var url=Routing.generate("_admin_evaluador_perfil",{id:id});
-	    new jAjax().Load(url,"main-body","GET","","");
-	});
-        $('#btnUpdPerfil').click(function(){
-            var id=$(this).attr("data-id");
-            var url=Routing.generate("_admin_evaluador_perfil",{id:id});
-	    new jAjax().Load(url,"main-body","GET","","");
-	});
-
-	
+	});	
 
 });

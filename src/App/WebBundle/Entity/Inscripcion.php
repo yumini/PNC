@@ -24,7 +24,7 @@ class Inscripcion
     /**
      * @var string
      *
-     * @ORM\Column(name="nombreproyecto", type="string", length=100)
+     * @ORM\Column(name="nombreproyecto", type="string", length=100, nullable=true)
      */
     private $nombreproyecto;
 

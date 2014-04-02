@@ -3,17 +3,21 @@ var Workspace = Backbone.Router.extend({
     "/":'initial',
     "home/:user":"home",
     "evaluador/:id/perfil": "perfilevaluador",    // #help
-    "menu/:urlRoute(/:id)": "menu",    // #help
+    "menu/:urlRoute(/:id)(/:id2)": "menu",    // #help
   },
   initial:function(){
 
   },
-  menu:function(urlRoute,id){
+  menu:function(urlRoute,id,id2){
     var id=0||id;
+    var id2=0||id2;
     try{
       if(urlRoute!='#'){
         if(id!=0)
-          var url=Routing.generate(urlRoute,{id:id});
+          if(id2!=0)
+            var url=Routing.generate(urlRoute,{id:id,id2:id2});
+          else
+            var url=Routing.generate(urlRoute,{id:id});
         else
           var url=Routing.generate(urlRoute);
         new jAjax().Load(url,"main-body","GET","","");

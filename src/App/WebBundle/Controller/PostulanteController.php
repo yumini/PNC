@@ -223,38 +223,7 @@ class PostulanteController extends Controller
         return $this->redirect($this->generateUrl('postulante'));
     }
 
-    /**
-     *
-     * @Route("/upload/postulante/new", name="_admin_postulante_upload", options={"expose"=true})
-     * @Method("POST")
-     * @Template("AppWebBundle:Default:result.json.twig")
-     */
-    public function uploadAction(Request $request)
-    {
-        
-       $user = $this->container->get("security.context")->getToken()->getUser();
-       $allowed = array('jpg', 'jpeg', 'png','bmp');
-       if(isset($_FILES['filePerfil']) && $_FILES['filePerfil']['error'] == 0){
-
-            $extension = pathinfo($_FILES['filePerfil']['name'], PATHINFO_EXTENSION);
-
-            if(!in_array(strtolower($extension), $allowed)){
-               $result="error";
-            }
-            $fileName=$user->getId().".".$extension;
-            if(move_uploaded_file($_FILES['filePerfil']['tmp_name'], 'images/usuarios/'.$fileName)){
-                $em = $this->getDoctrine()->getManager();
-                $user->setImagen($fileName);
-                $em->persist($user);
-                $em->flush();
-               $result="success";
-            }
-        }
-
-        return array(
-            'result' => "{\"status\":\"$result\",\"name\":\"$fileName\"}"
-        );
-    }
+    
 
 
     /**

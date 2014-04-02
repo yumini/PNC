@@ -57,24 +57,37 @@ class PrivateController extends Controller {
         }
     }
      /**
-     * @Route("/inicioPostulante", name="_admin_inicio_postulante", options={"expose"=true})
+     * @Route("/home/postulante/{id}", name="_admin_inicio_postulante", options={"expose"=true})
      * @Template()
      */
-    public function inicioPostulanteAction()
+    public function inicioPostulanteAction($id)
     {
-      
+        $access=false;
+        $em = $this->getDoctrine()->getManager();
         $user = $this->container->get("security.context")->getToken()->getUser();
-        if($user->getPerfil()->getId()==3){
-            $em = $this->getDoctrine()->getManager();
-            $postulante = $em->getRepository('AppWebBundle:Postulante')->findByUser($user->getId());
+        switch($user->getPerfil()->getId())
+        {
+            case 3://postulante
+                $em = $this->getDoctrine()->getManager();
+                $postulante = $em->getRepository('AppWebBundle:Postulante')->findByUser($id);
+                if($postulante->getId()==$id)
+                $access=true; 
+                break;
+            case 1://administrador
+                $postulante = $em->getRepository('AppWebBundle:Postulante')->find($id);
+                $access=true;
+                break;
+        }
+
+       
+        if($access)
             return array(
                 'title' => $this->title,
-                'user' => $user,
+                'user' => $postulante->getUsuario(),
                 'postulante' => $postulante
                 );
-        }else{
+        else
             return new RedirectResponse($this->generateUrl('accessdenegate'));
-        }
     }
     
     /**
@@ -89,24 +102,40 @@ class PrivateController extends Controller {
             );
     }
     /**
-     * @Route("/inicioEvaluador", name="_admin_inicio_evaluador", options={"expose"=true})
+     * @Route("/home/evaluador/{id}", name="_admin_inicio_evaluador", options={"expose"=true})
      * @Template()
      */
-    public function inicioEvaluadorAction()
+    public function inicioEvaluadorAction($id)
     {
       
+        $access=false;
+        $em = $this->getDoctrine()->getManager();
         $user = $this->container->get("security.context")->getToken()->getUser();
-        if($user->getPerfil()->getId()==2){
-            $em = $this->getDoctrine()->getManager();
-            $evaluador = $em->getRepository('AppWebBundle:Evaluador')->findByUser($user->getId());
+        switch($user->getPerfil()->getId())
+        {
+            case 2://evaluador
+                $em = $this->getDoctrine()->getManager();
+                $evaluador = $em->getRepository('AppWebBundle:Evaluador')->findByUser($id);
+                if($evaluador->getId()==$id)
+                $access=true; 
+                break;
+            case 1://administrador
+                $evaluador = $em->getRepository('AppWebBundle:Evaluador')->find($id);
+                $access=true;
+                break;
+        }
+
+       
+        if($access)
             return array(
                 'title' => $this->title,
-                'user' => $user,
+                'user' => $evaluador->getUsuario(),
                 'evaluador' => $evaluador
                 );
-        }else{
+        else
             return new RedirectResponse($this->generateUrl('accessdenegate'));
-        }
+
+       
     }
 
     

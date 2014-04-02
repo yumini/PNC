@@ -388,4 +388,38 @@ class UsuarioController extends Controller
         
         
     }
+
+    /**
+     *
+     * @Route("/upload/foto/{id}", name="_admin_upload_foto", options={"expose"=true})
+     * @Method("POST")
+     * @Template("AppWebBundle:Default:result.json.twig")
+     */
+    public function uploadAction(Request $request,$id)
+    {
+       $em = $this->getDoctrine()->getManager();
+       $user = $em->getRepository('AppWebBundle:Usuario')->find($id);
+
+       $allowed = array('jpg', 'jpeg', 'png','bmp');
+       if(isset($_FILES['filePerfil']) && $_FILES['filePerfil']['error'] == 0){
+
+            $extension = pathinfo($_FILES['filePerfil']['name'], PATHINFO_EXTENSION);
+
+            if(!in_array(strtolower($extension), $allowed)){
+               $result="error";
+            }
+            $fileName=$user->getId().".".$extension;
+            if(move_uploaded_file($_FILES['filePerfil']['tmp_name'], 'images/usuarios/'.$fileName)){
+                
+                $user->setImagen($fileName);
+                $em->persist($user);
+                $em->flush();
+               $result="success";
+            }
+        }
+
+        return array(
+            'result' => "{\"status\":\"$result\",\"name\":\"$fileName\"}"
+        );
+    }
 }

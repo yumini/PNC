@@ -31,12 +31,34 @@ class ConcursoRepository extends EntityRepository
     }
     public function FindAllToArray(){
         $em=$this->getEntityManager();
-        $dql   = "SELECT p FROM AppWebBundle:Concurso p";
+        $dql   = "SELECT p FROM AppWebBundle:Concurso";
         $query = $em->createQuery($dql);
         try {
                 return $query->getArrayResult();
         } catch (\Doctrine\ORM\NoResultException $e) {
                 return null;
         }
+    }
+    public function FindAllPaginatorForPostulante($postulante_id,$paginator,$page,$limit){
+        $em=$this->getEntityManager();
+        $dql   = "SELECT c,i FROM AppWebBundle:Concurso c
+                LEFT JOIN c.inscripciones i 
+                WITH i.id IN (SELECT x.id FROM AppWebBundle:Inscripcion x 
+                    JOIN x.postulante p WHERE p.id=$postulante_id)
+                group by c";
+        $query = $em->createQuery($dql);
+        $pagination = $paginator->paginate($query,$page,$limit);
+        return $pagination;
+    }
+    public function FindAllPaginatorForEvaluador($evaluador_id,$paginator,$page,$limit){
+        $em=$this->getEntityManager();
+        $dql   = "SELECT c,i FROM AppWebBundle:Concurso c
+                LEFT JOIN c.inscripcionesConcurso i 
+                WITH i.id IN (SELECT x.id FROM AppWebBundle:InscripcionEvaluador x 
+                    JOIN x.evaluador e WHERE e.id=$evaluador_id)
+                group by c";
+        $query = $em->createQuery($dql);
+        $pagination = $paginator->paginate($query,$page,$limit);
+        return $pagination;
     }
 }

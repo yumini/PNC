@@ -9,7 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use App\WebBundle\Entity\InscripcionEvaluador;
 use App\WebBundle\Form\InscripcionEvaluadorType;
-
+use Symfony\Component\HttpFoundation\JsonResponse;
 /**
  * InscripcionEvaluador controller.
  *
@@ -38,36 +38,33 @@ class InscripcionEvaluadorController extends Controller
     /**
      * Creates a new InscripcionEvaluador entity.
      *
-     * @Route("/{id}/save", name="_admin_inscripcionevaluador_save", options={"expose"=true})
+     * @Route("/{id}/save/{id2}", name="_admin_inscripcionevaluador_save", options={"expose"=true})
      * @Method("POST")
      * @Template("AppWebBundle:Default:result.json.twig")
      */
-    public function createAction($id)
+    public function createAction(Request $request,$id,$id2)
     {
         $msg="";
-        $result="false";
+        $result=false;
         $entity  = new InscripcionEvaluador();
         $em = $this->getDoctrine()->getManager();
-        $user = $this->container->get("security.context")->getToken()->getUser();
-        $evaluador = $em->getRepository('AppWebBundle:Evaluador')->findByUser($user->getId());
-        $register=$em->getRepository('AppWebBundle:InscripcionEvaluador')->IsRegister($evaluador->getId(),$id);
+
+        $evaluador = $em->getRepository('AppWebBundle:Evaluador')->find($id);
+        $register=$em->getRepository('AppWebBundle:InscripcionEvaluador')->IsRegister($id,$id2);
         
         if(!$register){
-            $concurso=$em->getRepository('AppWebBundle:Concurso')->find($id);
+            $concurso=$em->getRepository('AppWebBundle:Concurso')->find($id2);
             $entity->setConcurso($concurso);
             $entity->setEvaluador($evaluador);
             $em->persist($entity);
             $em->flush();
-            $result="true";
+            $result=true;
             $msg="Inscripción realizada satisfactoriamente";
         }else{
             $msg="Evaluador ya se encuentra inscrito en el concurso";
         }
-        
-         return array(
-            'result' => "{success:'$result',message:'$msg'}"
-
-        );
+        return new JsonResponse(array('success' =>$result ,'message'=>$msg ));
+         
     }
 
     /**

@@ -105,13 +105,15 @@ OptionButton.Contactos.prototype={
             'class':'btn-success',
             fn:function(){
                 parent.Save();               
-                parent.Window.Hide();
+                //parent.Window.Hide();
             }
         });
     },
     Save:function(){
+            $('#btn-contactonew-save').attr('disabled',true);
+            $('#btn-contactonew-cancel').attr('disabled',true);
             var parent=this;
-            var url=Routing.generate(this.routeSave);
+            var url=Routing.generate(this.routeSave,{id:$("#hdnEntity_id").val()});
             params = $('#myform').serializeObject();
             console.log(params);
             
@@ -119,10 +121,27 @@ OptionButton.Contactos.prototype={
                     type:'POST',
                     url:url,
                     data:params,
-                    dataType:"html",
-                    success:function(datos){
-                            //parent.Window.AddHTML(datos);
-                           new OptionButton.Contactos().Refresh(); 
+                    dataType:"json",
+                    success:function(obj){
+                            $('#btn-contactonew-save').attr('disabled',false);
+                            $('#btn-contactonew-cancel').attr('disabled',false);
+                            console.log(obj)
+                            if(obj.success)
+                                tipo='success';
+                            else
+                                tipo='warning';
+                            var n = noty({
+                                    text: obj.message,
+                                    type: tipo,
+                                    dismissQueue: true,
+                                    layout: 'bottomRight',
+                                    theme: 'defaultTheme',
+                                    timeout:5000
+                            });
+                            if(obj.success){
+                                parent.Window.Hide();
+                                parent.Refresh(); 
+                            }
                     },
                     error:function(objeto, quepaso, otroobj){
 

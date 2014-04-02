@@ -92,7 +92,7 @@ OptionButton.Conflictos.prototype={
         this.Window.Load(url,"");
         this.Window.Show();
         var parent=this;
-        this.Window.AddButton('btn-contactonew-cancel',{
+        this.Window.AddButton('btn-conflicto-cancel',{
             label:'Cancelar',
             'class':'btn-default',
             fn:function(){
@@ -101,16 +101,18 @@ OptionButton.Conflictos.prototype={
             
         })
        
-        this.Window.AddButton('btn-contactonew-save',{
+        this.Window.AddButton('btn-conflicto-save',{
             label:'Grabar',
             'class':'btn-success',
             fn:function(){
                 parent.Save();               
-                parent.Window.Hide();
+                
             }
         });
     },
     Save:function(){
+            $('#btn-conflicto-save').attr('disabled',true);
+            $('#btn-conflicto-cancel').attr('disabled',true);
             var parent=this;
             var id=$("#hdnEntity_id").val();
             var url=Routing.generate(this.routeSave,{id:id});
@@ -121,10 +123,27 @@ OptionButton.Conflictos.prototype={
                     type:'POST',
                     url:url,
                     data:params,
-                    dataType:"html",
-                    success:function(datos){
-                            //parent.Window.AddHTML(datos);
-                           new OptionButton.Conflictos().Refresh(); 
+                    dataType:"json",
+                    success:function(obj){
+                            $('#btn-conflicto-save').attr('disabled',false);
+                            $('#btn-conflicto-cancel').attr('disabled',false);
+                            console.log(obj)
+                            if(obj.success)
+                                tipo='success';
+                            else
+                                tipo='warning';
+                            var n = noty({
+                                    text: obj.message,
+                                    type: tipo,
+                                    dismissQueue: true,
+                                    layout: 'bottomRight',
+                                    theme: 'defaultTheme',
+                                    timeout:5000
+                            });
+                            if(obj.success){
+                                parent.Window.Hide();
+                                parent.Refresh(); 
+                            }
                     },
                     error:function(objeto, quepaso, otroobj){
 
@@ -249,7 +268,7 @@ var viewDisponibilidad={
             var parent=this;
             turno=$(evt.currentTarget).attr('data-turno');
             dia=$(evt.currentTarget).attr('data-dia');
-            value=($(evt.currentTarget).attr('data-value')=='1')?0:1;
+            value=($(evt.currentTarget).attr('data-value')=='true')?0:1;
             
             var item=new Models.DisponibilidadEvaluador({dia_id:dia,turno:turno,value:value,evaluador_id:$("#hdnEntity_id").val()});
             item.save({},{success:function(){

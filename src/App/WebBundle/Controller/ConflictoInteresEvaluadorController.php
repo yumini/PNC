@@ -9,7 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use App\WebBundle\Entity\ConflictoInteresEvaluador;
 use App\WebBundle\Form\ConflictoInteresEvaluadorType;
-
+use Symfony\Component\HttpFoundation\JsonResponse;
 /**
  * ConflictoInteresEvaluador controller.
  *
@@ -43,25 +43,34 @@ class ConflictoInteresEvaluadorController extends Controller
      *
      * @Route("/{id}/save", name="_admin_conflictodeinteres_save", options={"expose"=true})
      * @Method("POST")
-     * @Template("AppWebBundle:Default:result.json.twig")
+     * @Template()
      */
     public function createAction(Request $request,$id)
     {
         $entity  = new ConflictoInteresEvaluador();
         $form = $this->createForm(new ConflictoInteresEvaluadorType(), $entity);
         $form->bind($request);
-        $em = $this->getDoctrine()->getManager();
+        $errors = $this->get('validator')->validate($form);
+        if (count($errors)==0) {
+             $em = $this->getDoctrine()->getManager();
+             $evaluador = $em->getRepository('AppWebBundle:Evaluador')->find($id);
+             $entity->setEvaluador($evaluador);
+             $em->persist($entity);
+             $em->flush();
+             $success=true;
+             $msg="Registro agregado satisfactoriamente";
+        }else{
+            $msgError=new \App\WebBundle\Util\MensajeError();
+            $msgError->AddErrors($form);
+            $msg=$msgError->getErrorsHTML();       
+            $success=false;
+        }
        
-        $evaluador = $em->getRepository('AppWebBundle:Evaluador')->find($id);
-       
-        $entity->setEvaluador($evaluador);
-        
-        $em->persist($entity);
-        $em->flush();
 
-        return array(
-            'result' => "{\"success\":\"true\"}"
-        );
+        return new JsonResponse(array(
+            'success' => $success, 
+            'message' => $msg
+        ));
     }
 
     /**

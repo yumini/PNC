@@ -60,20 +60,20 @@ class InscripcionController extends Controller
     /**
      * Creates a new Inscripcion entity.
      *
-     * @Route("/{id}/save", name="_admin_inscripcion_save", options={"expose"=true})
+     * @Route("/{id}/save/{id2}", name="_admin_inscripcion_save", options={"expose"=true})
      * @Method("POST")
      * @Template("AppWebBundle:Default:result.json.twig")
      */
-    public function createAction(Request $request,$id)
+    public function createAction(Request $request,$id,$id2)
     {
         
         $entity  = new Inscripcion();
         $form = $this->createForm(new InscripcionType(), $entity);
         $form->bind($request);
         $em = $this->getDoctrine()->getManager();
-        $concurso=$em->getRepository('AppWebBundle:Concurso')->find($id);
-        $user = $this->container->get("security.context")->getToken()->getUser();
-        $postulante = $em->getRepository('AppWebBundle:Postulante')->findByUser($user->getId());
+        $postulante = $em->getRepository('AppWebBundle:Postulante')->find($id);
+        $concurso=$em->getRepository('AppWebBundle:Concurso')->find($id2);
+        
         $entity->setConcurso($concurso);
         $entity->setPostulante($postulante);
         $em->persist($entity);
@@ -117,17 +117,23 @@ class InscripcionController extends Controller
     /**
      * Displays a form to create a new Inscripcion entity.
      *
-     * @Route("/{id}/new", name="_admin_inscripcion_new", options={"expose"=true})
+     * @Route("/{id}/new/{id2}", name="_admin_inscripcion_new", options={"expose"=true})
      * @Method("GET")
      * @Template()
      */
-    public function newAction($id)
+    public function newAction($id,$id2)
     {
+        $showProyect=true;
         $em = $this->getDoctrine()->getManager();
         $entity = new Inscripcion();
         $form   = $this->createForm(new InscripcionType(), $entity);
-        $concurso=$em->getRepository('AppWebBundle:Concurso')->find($id);
+        $concurso=$em->getRepository('AppWebBundle:Concurso')->find($id2);
+        $tipoConcurso=$concurso->getTipoConcurso();
+        if($tipoConcurso->getCodigo()==1)
+                $showProyect=false;
+        
         return array(
+            'showProyect'=>$showProyect,
             'entity' => $entity,
             'form'   => $form->createView(),
             'concurso'=>$concurso
@@ -162,36 +168,34 @@ class InscripcionController extends Controller
     /**
      * Displays a form to edit an existing Inscripcion entity.
      *
-     * @Route("/{id}/edit", name="inscripcion_edit")
+     * @Route("/{id}/edit", name="_admin_inscripcion_edit", options={"expose"=true})
      * @Method("GET")
      * @Template()
      */
     public function editAction($id)
     {
         $em = $this->getDoctrine()->getManager();
-
+        $showProyect=true;
         $entity = $em->getRepository('AppWebBundle:Inscripcion')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Inscripcion entity.');
-        }
+        $tipoConcurso=$entity->getConcurso()->getTipoConcurso();
+        if($tipoConcurso->getCodigo()==1)
+                $showProyect=false;
 
         $editForm = $this->createForm(new InscripcionType(), $entity);
-        $deleteForm = $this->createDeleteForm($id);
-
         return array(
+            'showProyect'=>$showProyect,
             'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+            'concurso'=>$entity->getConcurso(),
+            'form'   => $editForm->createView()
         );
     }
 
     /**
      * Edits an existing Inscripcion entity.
      *
-     * @Route("/{id}", name="inscripcion_update")
+     * @Route("/{id}", name="_admin_inscripcion_update", options={"expose"=true})
      * @Method("PUT")
-     * @Template("AppWebBundle:Inscripcion:edit.html.twig")
+     * @Template("AppWebBundle:Default:result.json.twig")
      */
     public function updateAction(Request $request, $id)
     {
@@ -203,21 +207,17 @@ class InscripcionController extends Controller
             throw $this->createNotFoundException('Unable to find Inscripcion entity.');
         }
 
-        $deleteForm = $this->createDeleteForm($id);
+
         $editForm = $this->createForm(new InscripcionType(), $entity);
         $editForm->bind($request);
 
-        if ($editForm->isValid()) {
+        //if ($editForm->isValid()) {
             $em->persist($entity);
             $em->flush();
-
-            return $this->redirect($this->generateUrl('inscripcion_edit', array('id' => $id)));
-        }
+        //}
 
         return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+            'result' => "{success:true}"
         );
     }
     /**

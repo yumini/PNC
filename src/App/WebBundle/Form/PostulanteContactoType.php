@@ -11,11 +11,11 @@ class PostulanteContactoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nombre','text',array('required' => true,'attr' => array('class'=>'form-control input-small')))
-            ->add('cargo','text',array('required' => true,'attr' => array('class'=>'form-control input-small')))
-            ->add('telefono','text',array('required' => true,'attr' => array('class'=>'form-control input-small')))
-            ->add('fax','text',array('required' => true,'attr' => array('class'=>'form-control input-small')))
-            ->add('email','text',array('required' => true,'attr' => array('class'=>'form-control input-small')))
+            ->add('nombre','text',array('label'=>'Nombre','required' => true,'attr' => array('class'=>'form-control input-small')))
+            ->add('cargo','text',array('label'=>'Cargo','required' => true,'attr' => array('class'=>'form-control input-small')))
+            ->add('telefono','text',array('label'=>'Teléfono','required' => true,'attr' => array('class'=>'form-control input-small')))
+            ->add('fax','text',array('label'=>'Fax','required' => true,'attr' => array('class'=>'form-control input-small')))
+            ->add('email','text',array('label'=>'Email','required' => true,'attr' => array('class'=>'form-control input-small')))
             //->add('postulantecontacto')
             ->add('postulantecontacto','entity', array('attr' => array('class'=>'form-control input-small'),'class'=>'App\WebBundle\Entity\Catalogo','property'=>'nombre',  
                     'query_builder' => function(CatalogoRepository $er) {

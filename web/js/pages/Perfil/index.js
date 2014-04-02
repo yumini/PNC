@@ -1,6 +1,5 @@
+
 var myWindow=null;
-
-
 var OptionButton=function(){
     this.routeList='_admin_perfil';
     this.routeNew='_admin_perfil_new';
@@ -12,8 +11,9 @@ var OptionButton=function(){
 }
 OptionButton.prototype={
     New:function(){
+        
         this.Window=new BootstrapWindow({id:"winForm",title:"Nuevo Perfil"});
-        var url=Routing.generate(this.routeNew);
+        var url=Routing.generate(this.routeNew,{});
         this.Window.Load(url,"");
         this.Window.Show();
          var parent=this;
@@ -36,6 +36,7 @@ OptionButton.prototype={
                 //parent.Window.Hide();
             }
         });
+      
     },
     Save:function(){
        

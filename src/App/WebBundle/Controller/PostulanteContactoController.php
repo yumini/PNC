@@ -9,7 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use App\WebBundle\Entity\PostulanteContacto;
 use App\WebBundle\Form\PostulanteContactoType;
-
+use Symfony\Component\HttpFoundation\JsonResponse;
 /**
  * PostulanteContacto controller.
  *
@@ -48,28 +48,36 @@ class PostulanteContactoController extends Controller
     /**
      * Creates a new PostulanteContacto entity.
      *
-     * @Route("/save", name="_admin_postulantecontacto_save", options={"expose"=true})
+     * @Route("/{id}/save", name="_admin_postulantecontacto_save", options={"expose"=true})
      * @Method("POST")
-     * @Template("AppWebBundle:Default:result.json.twig")
+     * @Template()
      */
-    public function createAction(Request $request)
+    public function createAction(Request $request,$id)
     {
+        $msg='';
         $entity  = new PostulanteContacto();
         $form = $this->createForm(new PostulanteContactoType(), $entity);
         $form->bind($request);
-        $em = $this->getDoctrine()->getManager();
-        $user = $this->container->get("security.context")->getToken()->getUser();
-        $postulante = $em->getRepository('AppWebBundle:Postulante')->findByUser($user->getId());
-       
-        $entity->setPostulante($postulante);
-        
-        $em->persist($entity);
-        $em->flush();
-
-        return array(
-            'result' => "{\"success\":\"true\"}"
-        );
-
+        $errors = $this->get('validator')->validate($form);
+        if (count($errors)==0) {
+            $em = $this->getDoctrine()->getManager();
+            //$user = $this->container->get("security.context")->getToken()->getUser();
+            $postulante = $em->getRepository('AppWebBundle:Postulante')->find($id);
+            $entity->setPostulante($postulante);
+            $em->persist($entity);
+            $em->flush();
+            $success=true;
+            $msg="Registro agregado satisfactoriamente";
+        }else{
+            $msgError=new \App\WebBundle\Util\MensajeError();
+            $msgError->AddErrors($form);
+            $msg=$msgError->getErrorsHTML();       
+            $success=false;
+        }
+        return new JsonResponse(array(
+            'success' => $success, 
+            'message' => $msg
+        ));
        
     }
 

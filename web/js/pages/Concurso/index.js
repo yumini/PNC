@@ -239,6 +239,10 @@ $(document).ready(function() {
   });
   
  
+ $(".row-edit").click(function(){
+      var id=$(this).attr("data-id"); 
+      new OptionButton().Edit(id);  
+  });
   $(".row-delete").click(function(){
       var id=$(this).attr("data-id"); 
       new OptionButton().Delete(id);  

@@ -3,16 +3,11 @@ var myWindow=null;
 
 var OptionButton=function(){
     this.routeList='_admin_postulante';
-    this.routeEdit='_admin_postulante_perfil';
     this.routeDelete='_admin_concurso_delete';
 
     
 }
 OptionButton.prototype={
-    Edit:function(id){
-        var url=Routing.generate(this.routeEdit,{id:id});
-        new jAjax().Load(url,'main-body','get','','');
-    },
     Delete:function(id){
         this.IdEntity=id;
         if(confirm("Desea eliminar el perfil seleccionado?")){
@@ -55,10 +50,5 @@ OptionButton.prototype={
 //al leer el documento
 $(document).ready(function() {
   
-  
-  $(".row-edit").click(function(){
-      var id=$(this).attr("data-id"); 
-      new OptionButton().Edit(id);  
-  });
    
 });

@@ -1,28 +1,118 @@
-{% extends '::base.html.twig' %}
+<form id="myform"  method="post" {{ form_enctype(form) }} action="{{ path('_admin_inscripcion_upload') }}" enctype="multipart/form-data">
 
-{% block body -%}
-    <h1>Inscripcion edit</h1>
 
-    <form action="{{ path('inscripcion_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(edit_form) }}>
-        <input type="hidden" name="_method" value="PUT" />
-        {{ form_widget(edit_form) }}
-        <p>
-            <button type="submit">Edit</button>
-        </p>
-    </form>
-
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('inscripcion') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>
-        <form action="{{ path('inscripcion_delete', { 'id': entity.id }) }}" method="post">
-            <input type="hidden" name="_method" value="DELETE" />
-            {{ form_widget(delete_form) }}
-            <button type="submit">Delete</button>
-        </form>
-    </li>
+<ul id="tabWizard" class="nav nav-tabs">
+  <li class="active"><a href="#conc-tab-1" data-toggle="tab">Terminos de Aceptación</a></li>
+  <li><a href="#conc-tab-2" data-toggle="tab" {% if showProyect==false %}style="display:none;"{% endif %}>Proyecto</a></li>
+  <li><a href="#conc-tab-3" data-toggle="tab">Archivos</a></li>
 </ul>
+<div class="tab-content">
+  <div class="tab-pane active" id="conc-tab-1">
+<h3> {{concurso.nombre}}</h3>
+        <div class="form-group">
+            <div class="col-md-12" style="text-align:justify">
+                <label class="control-label">Terminos de Aceptación:</label><br/>
+                <textarea class="form-control" rows="9" readonly>
+                  {{concurso.terminoacepta|raw}}
+                </textarea>
+                
+            </div>
+            
+        </div>
+         
+  </div>
+  <div class="tab-pane" id="conc-tab-2">
+    
+        <div class="row">
+            <div class="col-md-7">
+                <label class="control-label">Nombre del Proyecto</label>
+                {{form_widget(form.nombreproyecto)}}
+            </div>
+            <div class="col-md-5">
+                <label class="control-label">Nombre Corto</label>
+                {{form_widget(form.nombrecorto)}}
+            </div>
+        </div>
+         <div class="row">
+            <div class="col-md-12">
+                <label class="control-label">Nombre del Equipo</label>
+                {{form_widget(form.nombreequipo)}}
+            </div>
+           
+        </div>   
+        <div class="row">
+            <div class="col-md-12">
+                <label class="control-label">Integrantes</label>
+                {{form_widget(form.integrantes)}}
+            </div>
+           
+        </div>   
+         <div class="row">
+            <div class="col-md-3">
+                <label class="control-label">Fecha Inicio</label>
+                {{form_widget(form.fechainiciopy)}}
+            </div>
+             <div class="col-md-3">
+                <label class="control-label">Fecha Fin</label>
+                {{form_widget(form.fechafinpy)}}
+            </div>
+             <div class="col-md-6">
+              
+            </div>
+           
+        </div>   
+     
+  </div>
+  <div class="tab-pane" id="conc-tab-3" style="height:280px;">
+
+      <div class="form-group">
+            <div class="col-md-6" style="text-align:justify">
+              <div class="well">
+                <h5><b>Informe de Postulacíon Completo</b></h5>
+                <div id="upload1" class="drop">
+                 
+                  <p>Arrastrar aqui</p>
+                  <p style="font-size:11px;">
+                  Por favor seleccione un documento o arrastrelo hasta aqui para agregarlo
+                  </p>
+                   <a class="btn btn-info">Seleccione el documento</a>
+                  <input id="file1" type="file" name="upl" multiple />
+                  <div id="info-file1" style="font-size:11px;color:#418bca;">
+                  </div>
+                </div>
+              </div>
+                
+            </div>
+             <div class="col-md-6" style="text-align:justify">
+             <div class="well">
+              <h5><b>Informe de Postulacíon sin información confidencial</b></h5>
+
+                <div id="upload2" class="drop">
+                  
+                   <p>Arrastrar aqui</p>
+                <p style="font-size:11px;">
+                  Por favor seleccione un documento o arrastrelo hasta aqui para agregarlo
+                </p>
+                   <a class="btn btn-info">Seleccione el documento</a>
+                  <input id="file2" type="file" name="upl" multiple />
+                  <div id="info-file2" style="font-size:11px;color:#418bca;">
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+ <ul id="ulFiles">
+          <!-- The file uploads will be shown here -->
+        </ul>
+  </div>
+ 
+   
+  
+  
+</div>
+
+</form>
+{% block ScriptFooter %}
+<script src="{{ asset('js/pages/Inscripcion/new.js') }}"></script> 
+<script src="{{ asset('js/script.js') }}"></script>
 {% endblock %}

@@ -1,6 +1,8 @@
 var OptionButton=function(){
     this.routeNew='_admin_inscripcion_new';
     this.routeSave='_admin_inscripcion_save';
+    this.routeEdit='_admin_inscripcion_edit';
+    this.routeUpdate='_admin_inscripcion_update';
     this.WizardIndex=0;
        
 }
@@ -23,12 +25,10 @@ OptionButton.prototype={
          $("#wizard"+(index+1)).removeClass('disabled');
         $('#tabWizard li:eq('+index+') a').tab('show');
     },
-    NextWizard:function(){
+    NextWizardTipo2:function(){
         var terminos=$("#chkTerminos").is(':checked');
-        console.log(terminos);
+        var tipoConcurso=$("#tipoConcurso").val();
         this.WizardIndex++;
-        if(terminos){
-           
             switch(this.WizardIndex){
                 case 0:
                     $("#btn-inscripcion-save").html("Continuar");
@@ -45,19 +45,42 @@ OptionButton.prototype={
                     break;
                 case 3:
                     this.Window.Hide();
-                    setTimeout(this.Refresh,2000,this.idConcurso);
+                    setTimeout(this.Refresh,2000);
                     break;
             }
-        }
-        
+
     },
-    New:function(id){
-        this.idConcurso=id;
+    NextWizardTipo1:function(){
+        var terminos=$("#chkTerminos").is(':checked');
+        var tipoConcurso=$("#tipoConcurso").val();
+        this.WizardIndex++;
+            switch(this.WizardIndex){
+                case 0:
+                    $("#btn-inscripcion-save").html("Inscribirme");
+                    this.ActiveWizard(0);
+                    break;
+                case 1:
+                    this.Save();
+                    
+                    $("#btn-inscripcion-save").html("Finalizar");
+                    this.ActiveWizard(2);
+                    break;
+                case 2:
+                    this.Window.Hide();
+                    setTimeout(this.Refresh,2000);
+                    break;
+            }
+
+    },
+    New:function(idConcurso,idPostulante){
+        var tipoConcurso=$("#tipoConcurso").val();
+        this.idConcurso=idConcurso;
+        this.idPostulante=idPostulante;
         this.WizardIndex=0;
         this.Window=new BootstrapWindow({id:"winForm",title:"Nueva Inscripci&oacute;n"});
         this.Window.setWidth(1000);
         //this.Window.setHeight(300);
-        var url=Routing.generate(this.routeNew,{id:id});
+        var url=Routing.generate(this.routeNew,{id:this.idPostulante,id2:this.idConcurso});
         this.Window.Load(url,"");
         this.Window.Show();
          var parent=this;
@@ -67,8 +90,8 @@ OptionButton.prototype={
             fn:function(){
                 
                 parent.Window.Hide();
-                if(parent.WizardIndex>0)
-                    setTimeout(parent.Refresh,2000,parent.idConcurso);
+                //if(parent.WizardIndex>2)
+                parent.Refresh();
             }
             
         })
@@ -77,16 +100,22 @@ OptionButton.prototype={
             label:'Continuar',
             'class':'btn-success',
             fn:function(){
-                parent.NextWizard();               
+                if(tipoConcurso==1)
+                     parent.NextWizardTipo1();
+                else
+                    parent.NextWizardTipo2();               
                 //parent.Window.Hide();
             }
         });
          $("#btn-inscripcion-save").addClass("disabled");
+         if(tipoConcurso==1){
+            $("#btn-inscripcion-save").html("Inscribirme");
+         }
          
     },
     Save:function(){
             var parent=this;
-            var url=Routing.generate(this.routeSave,{id:this.idConcurso});
+            var url=Routing.generate(this.routeSave,{id:this.idPostulante,id2:this.idConcurso});
             params = $('#myform').serializeObject();
             console.log(params);
             
@@ -106,8 +135,58 @@ OptionButton.prototype={
             });
         
     },
-    Refresh:function(idConcurso){
-        new Concurso().Detail(idConcurso);
+    Edit:function(idInscripcion){
+        this.idInscripcion=idInscripcion;
+        var tipoConcurso=$("#tipoConcurso").val();
+        this.WizardIndex=0;
+        this.Window=new BootstrapWindow({id:"winForm",title:"Editar Inscripci&oacute;n"});
+        this.Window.setWidth(1000);
+        var url=Routing.generate(this.routeEdit,{id:idInscripcion});
+        this.Window.Load(url,"");
+        this.Window.Show();
+         var parent=this;
+        this.Window.AddButton('btn-inscripcion-cancel',{
+            label:'Cancelar',
+            'class':'btn-default',
+            fn:function(){
+
+                parent.Window.Hide();
+
+            }
+            
+        })
+       
+        this.Window.AddButton('btn-inscripcion-save',{
+            label:'Grabar',
+            'class':'btn-success',
+            fn:function(){
+                parent.Update();
+            }
+        });
+
+    },
+    Update:function(){
+            var parent=this;
+            var url=Routing.generate(this.routeUpdate,{id:this.idInscripcion});
+            params = $('#myform').serializeObject();
+            console.log(params);
+            
+            $.ajax({
+                    type:'PUT',
+                    url:url,
+                    data:params,
+                    dataType:"html",
+                    success:function(datos){
+                        parent.Window.Hide();
+                        setTimeout(parent.Refresh,2000);
+                    },
+                    error:function(objeto, quepaso, otroobj){
+
+                    }
+            });
+    },
+    Refresh:function(){
+        Backbone.history.loadUrl(Backbone.history.fragment);
     }
 }
 

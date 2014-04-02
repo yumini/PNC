@@ -3,7 +3,7 @@
 namespace App\WebBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Validator\Constraints as Assert;
 /**
  * ConflictoInteresEvaluador
  *
@@ -25,6 +25,7 @@ class ConflictoInteresEvaluador
      * @var string
      *
      * @ORM\Column(name="razonsocial", type="string", length=250)
+     * @Assert\NotBlank()
      */
     private $razonsocial;
 
@@ -32,6 +33,8 @@ class ConflictoInteresEvaluador
      * @var string
      *
      * @ORM\Column(name="ruc", type="string", length=11)
+     * @Assert\Length(max=11,min=11)
+     * @Assert\NotBlank()
      */
     private $ruc;
 
@@ -39,6 +42,8 @@ class ConflictoInteresEvaluador
      * @var \DateTime
      *
      * @ORM\Column(name="fecini", type="date")
+     * @Assert\NotBlank()
+     * @Assert\Date()
      */
     private $fecini;
 
@@ -46,6 +51,8 @@ class ConflictoInteresEvaluador
      * @var \DateTime
      *
      * @ORM\Column(name="fecfin", type="date")
+     * @Assert\NotBlank()
+     * @Assert\Date()
      */
     private $fecfin;
 
@@ -53,6 +60,7 @@ class ConflictoInteresEvaluador
      * @var string
      *
      * @ORM\Column(name="detalle", type="text")
+     * @Assert\NotBlank()
      */
     private $detalle;
     

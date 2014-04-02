@@ -1,65 +1,91 @@
 {% block ScriptHead %}
     <script src="{{ asset('js/pages/Concurso/showInscripcion.js') }}"></script> 
 {% endblock %}
-
+<input type="hidden" id="tipoConcurso" value="{{concurso.tipoConcurso.codigo}}"/>
 <div class="row">
-	<div class="col-md-9">
+	<div class="col-md-8">
 		<div class="panel panel-default">
 		
   <div class="panel-body">
 
   	<ol class="breadcrumb" style="font-size:12px;margin-bottom:2px;">
   		<li><a href="#">Inicio</a></li>
-  		<li class="active">{{entity.nombre}}</li>
+  		<li class="active">{{concurso.nombre}}</li>
 	</ol>
-  <i>{{entity.tipoConcurso.nombre}}</i>
-	<h3 style="margin-top:2px;"><b>{{entity.nombre}}</b></h3>
+  <i>{{concurso.tipoConcurso.nombre}}</i>
+	<h3 style="margin-top:2px;"><b>{{concurso.nombre}}</b></h3>
 
   <h4>Presentacion</h4>
    <p>
-  Año: {{entity.anio}}
+  Año: {{concurso.anio}}
   </p>
   <p>
-  Del {% if entity.fechaInicio %}{{ entity.fechaInicio|date('d/m/Y') }}{% endif %}
-  al {% if entity.fechaFin %}{{ entity.fechaFin|date('d/m/Y') }}{% endif %}
+  Del {% if concurso.fechaInicio %}{{ concurso.fechaInicio|date('d/m/Y') }}{% endif %}
+  al {% if concurso.fechaFin %}{{ concurso.fechaFin|date('d/m/Y') }}{% endif %}
   </p>
   <p>
-  	{{entity.presentacion|raw}}
+  	{{concurso.presentacion|raw}}
   </p>
    <h4>Proceso de Calificación</h4>
 	<p>
-  	{{entity.calificacion|raw}}
+  	{{concurso.calificacion|raw}}
   </p>
+
   	</div>
 		</div>
 	</div>
-	<div class="col-md-3">
+	<div class="col-md-4">
 		<div class="well">
 			<h4>Inscripción</h4>
 	<p>
   	Deseas inscribirte en el concurso, presiona inscribirte, completa los datos de tu proyecto y participa en este concurso
   	<p>
-  	 <button type="button" class="btn btn-success" onclick="new OptionButton().New({{entity.id}})" {{EnabledInscripcion}}>Inscribirme</button>
+  	 <button type="button" class="btn btn-success" onclick="new OptionButton().New({{concurso.id}},{{postulante.id}})" {{EnabledInscripcion}}>Inscribirme</button>
   	</p>
   </p>
 		</div>
 
     <div class="well">
-      <h4>Mis Concursos</h4>
- 
-     <table class="table table-bordered table-hover table-condensed table-striped" style="width:100%;font-size:11px;">
-       
-        <tbody>
-        {% for inscripcion in inscripciones %}
-          <tr >
-                <td><a href="#">{{inscripcion.concurso.nombre}}</a></td>
-               
-                
-          </tr>
-        {% endfor %}
-        </tbody>
-    </p>
-  </p>
+      <h4>Detalle de Inscripción</h4>
+        <div class="list-group">
+          {% for inscripcion in inscripciones %}
+            <a  class="list-group-item">             
+                    <p class="list-group-item-text" data-id="1">
+                      <b><small>{{inscripcion.concurso.nombre}}</small></b> <br/>
+                        <small>{{inscripcion.nombreproyecto}}</small>
+                        <div>&nbsp;</div>
+                        <p>
+                            <button class="btn btn-default btn-xs" data-id="1" data-type="edit">
+                            <span class="glyphicon glyphicon-paperclip"> </span> Informe Completo
+                            </button> 
+                            <span class="pull-right">
+                            &nbsp;
+                            </span>
+                            <button class="btn btn-default btn-xs" data-id="1" data-type="edit">
+                            <span class="glyphicon glyphicon-paperclip"> </span> Informe  Básico
+                            </button>
+                        </p> 
+                        <div>&nbsp;</div>
+                      <p>
+                         <button class="btn btn-danger btn-xs pull-right" data-id="1" data-type="delete">
+                            <span class="glyphicon glyphicon-trash"> </span> Eliminar
+                        </button>
+                        <span class="pull-right">
+                           &nbsp;
+                        </span>
+                        <button class="btn btn-success btn-xs pull-right" data-id="1" data-type="edit"  onclick="new OptionButton().Edit({{inscripcion.id}})">
+                            <span class="glyphicon glyphicon-edit"> </span> Editar
+                        </button> 
+                      
+                         
+                      </p>
+                      <br/>
+                    </p>
+                </a>
+          {% endfor %}
+          </div>
+    
+
     </div>
 	</div>
 </div>

@@ -40,6 +40,53 @@ class ConcursoController extends Controller
             'action'=> "concurso"
         );
     }
+
+    /**
+     * Lists all Concurso activos.
+     *
+     * @Route("/postulante/{id}", name="_admin_concursos_postulante", options={"expose"=true})
+     * @Method("GET")
+     * @Template()
+     */
+    public function concursosPostulanteAction($id)
+    {
+
+        $em = $this->getDoctrine()->getManager();
+        $page=$this->get('request')->query->get('page', 1);
+        $postulante=$em->getRepository("AppWebBundle:Postulante")->find($id);
+        $paginator=$this->get('knp_paginator');
+        $pagination = $em->getRepository('AppWebBundle:Concurso')->FindAllPaginatorForPostulante($id,$paginator,$page,3);
+        //return new JsonResponse($entities);
+        return array(
+            'pagination' => $pagination,
+            'title_list'=> "Listado de Concursos",
+            'postulante'=>$postulante,
+            'action'=> "concurso"
+        );
+    }
+    /**
+     * Lists all Concurso activos.
+     *
+     * @Route("/evaluador/{id}", name="_admin_concursos_evaluador", options={"expose"=true})
+     * @Method("GET")
+     * @Template()
+     */
+    public function concursosEvaluadorAction($id)
+    {
+
+        $em = $this->getDoctrine()->getManager();
+        $page=$this->get('request')->query->get('page', 1);
+        $evaluador=$em->getRepository("AppWebBundle:Evaluador")->find($id);
+        $paginator=$this->get('knp_paginator');
+        $pagination = $em->getRepository('AppWebBundle:Concurso')->FindAllPaginatorForEvaluador($id,$paginator,$page,3);
+        //return new JsonResponse($entities);
+        return array(
+            'pagination' => $pagination,
+            'title_list'=> "Listado de Concursos",
+            'evaluador'=>$evaluador,
+            'action'=> "concurso"
+        );
+    }
     /**
      * Lists all Concurso entities.
      *
@@ -178,28 +225,32 @@ class ConcursoController extends Controller
      /**
      * Finds and displays a Concurso entity.
      *
-     * @Route("/{id}/inscripcion", name="_admin_concurso_showInscripcion", options={"expose"=true})
+     * @Route("/{id}/inscripcion/{id2}", name="_admin_concurso_inscripcion_postulante", options={"expose"=true})
      * @Method("GET")
      * @Template()
      */
-    public function showInscripcionAction($id)
+    public function showInscripcionAction($id,$id2)
     {
         $em = $this->getDoctrine()->getManager();
-        $entity = $em->getRepository('AppWebBundle:Concurso')->find($id);
+        $entity = $em->getRepository('AppWebBundle:Concurso')->find($id2);
         $tipoConcurso=$entity->getTipoConcurso();
         
-        $user = $this->container->get("security.context")->getToken()->getUser();
-        $postulante = $em->getRepository('AppWebBundle:Postulante')->findByUser($user->getId());
+        //$user = $this->container->get("security.context")->getToken()->getUser();
+        //$postulante = $em->getRepository('AppWebBundle:Postulante')->findByUser($user->getId());
+        $postulante=$em->getRepository('AppWebBundle:Postulante')->find($id);
 
-        $register=$em->getRepository('AppWebBundle:Inscripcion')->IsRegister($postulante->getId(),$id);
-        $inscripciones=$em->getRepository('AppWebBundle:Inscripcion')->GetConcursos($postulante->getId());
+        $register=$em->getRepository('AppWebBundle:Inscripcion')->IsRegister($postulante->getId(),$id2);
+        $inscripciones=$em->getRepository('AppWebBundle:Inscripcion')->GetInscripciones($postulante->getId(),$id2);
         $enabledInscripcion="";
-        if($register)
-            if($tipoConcurso->getCodigo()==1)
-                $enabledInscripcion="disabled";
+        if($tipoConcurso->getCodigo()==1){
+                if($register)
+                    $enabledInscripcion="disabled";
+               
+        }
         
         return array(
-            'entity'        =>$entity,
+            'concurso'        =>$entity,
+            'postulante'    =>$postulante,
             'isRegister'    =>$register,
             'inscripciones'     =>$inscripciones,
             'EnabledInscripcion'=>$enabledInscripcion
@@ -208,19 +259,19 @@ class ConcursoController extends Controller
 /**
      * Finds and displays a Concurso entity.
      *
-     * @Route("/{id}/inscripcionevaluador", name="_admin_concurso_showInscripcionEvaluador", options={"expose"=true})
+     * @Route("/{id}/inscripcionevaluador/{id2}", name="_admin_concurso_inscripcion_evaluador", options={"expose"=true})
      * @Method("GET")
      * @Template()
      */
-    public function showInscripcionEvaluadorAction($id)
+    public function showInscripcionEvaluadorAction($id,$id2)
     {
         $em = $this->getDoctrine()->getManager();
-        $entity = $em->getRepository('AppWebBundle:Concurso')->find($id);
+        $entity = $em->getRepository('AppWebBundle:Concurso')->find($id2);
         
         $user = $this->container->get("security.context")->getToken()->getUser();
-        $evaluador = $em->getRepository('AppWebBundle:Evaluador')->findByUser($user->getId());
+        $evaluador = $em->getRepository('AppWebBundle:Evaluador')->find($id);
 
-        $register=$em->getRepository('AppWebBundle:InscripcionEvaluador')->IsRegister($evaluador->getId(),$id);
+        $register=$em->getRepository('AppWebBundle:InscripcionEvaluador')->IsRegister($id,$id2);
         
         $inscripciones=$em->getRepository('AppWebBundle:InscripcionEvaluador')->GetConcursos($evaluador->getId());
         $enabledInscripcion="";
@@ -228,9 +279,10 @@ class ConcursoController extends Controller
                 $enabledInscripcion="disabled";
         
         return array(
-            'entity'        =>$entity,
-            'isRegister'    =>$register,
-            'inscripciones'     =>$inscripciones,
+            'entity'        =>$entity,               
+            'evaluador'=>   $evaluador,                         
+            'isRegister'    =>$register,             
+            'inscripciones'     =>$inscripciones,    
             'EnabledInscripcion'=>$enabledInscripcion
         );
     }

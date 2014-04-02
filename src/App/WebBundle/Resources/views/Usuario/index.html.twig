@@ -37,7 +37,7 @@
                 <th class="grid-header" style="text-align: center;">{{ knp_pagination_sortable(pagination, 'Usuario', 'u.username') }}</th>
                 <th class="grid-header" style="text-align: center;">{{ knp_pagination_sortable(pagination, 'Email', 'u.email') }}</th>
                 <th class="grid-header" style="text-align: center;">{{ knp_pagination_sortable(pagination, 'Perfil', 'p.nombre') }}</th>
-                <th class="grid-header" style="text-align: center;">{{ knp_pagination_sortable(pagination, 'Estado', 'u.enabled') }}</th>
+ 
                 <th class="grid-header" style="text-align: center;">{{ knp_pagination_sortable(pagination, 'Registro Valido', 'u.validaregistro') }}</th>
                 <th class="grid-header" style="width: 100px;text-align: center;">Opciones</th>
             </tr>
@@ -51,12 +51,12 @@
                 <td>{{ entity.usernameCanonical }}</td>
                 <td>{{ entity.email }}</td>
                 <td>{{ entity.perfil.nombre }}</td>
-                <td>{% if entity.enabled==1 %}{{ "Activo" }}{% endif %} {% if entity.enabled==0 %}{{ "Inactivo" }}{% endif %}</td>
+                
                 <td>{% if entity.validaregistro==1 %}{{ "Registro Valido" }}{% endif %} {% if entity.validaregistro==0 %}{{ "Registro no Valido" }}{% endif %}</td>
                 <td style="text-align: center;font-size: 12px;">
                     <a class="row-edit btn btn-warning btn-xs" data-id="{{ entity.id }}" title="Editar"><i class="glyphicon glyphicon-pencil"> </i></a>
                     <a class="row-active btn btn-info btn-xs" data-id="{{ entity.id }}" title="Habilitar Usuario"><i class="glyphicon glyphicon-check"> </i></a>
-                    <a class="row-delete btn btn-danger btn-xs" data-id="{{ entity.id }}" title="Activar/Desactivar"><i class="glyphicon glyphicon-ok-sign red"> </i></a>
+                   
                 
                 </td>
             </tr>
