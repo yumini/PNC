@@ -30,10 +30,22 @@ class PrivateController extends Controller {
         if($user->getValidaregistro()=="1"){
             $menuEntity=new MenuBuilder($em,$this->title,$user,$this);
             $menuHTML=$menuEntity->CreateMenu($user->getPerfil()->getId());
+            $em = $this->getDoctrine()->getManager();
+            $usercustom=null;
+            switch($user->getPerfil()->getId())
+            {
+                case 3://postulante                    
+                    $usercustom = $em->getRepository('AppWebBundle:Postulante')->findByUser($user->getId());
+                    break;
+                case 2://evaluador
+                    $usercustom = $em->getRepository('AppWebBundle:Evaluador')->findByUser($user->getId());
+                    break;
+            }
             return array(
                 'title' => $this->title,
                 'Menu' => $menuHTML,
-                'user'=>$user
+                'user'=>$user,
+                'usercustom'=>$usercustom
                 );
         }else{
             return $this->redirect($this->generateUrl('fos_user_security_login'));
@@ -57,21 +69,28 @@ class PrivateController extends Controller {
         }
     }
      /**
-     * @Route("/home/postulante/{id}", name="_admin_inicio_postulante", options={"expose"=true})
+     * @Route("/home/postulante/{id}", name="_admin_inicio_postulante",options={"expose"=true})
+     * @Route("/home/postulante/", defaults={"id" = 0})
      * @Template()
      */
-    public function inicioPostulanteAction($id)
+    public function inicioPostulanteAction($id=0)
     {
         $access=false;
         $em = $this->getDoctrine()->getManager();
         $user = $this->container->get("security.context")->getToken()->getUser();
+        //echo($id);
+        //echo($user->getPerfil()->getId());
+        //die();
         switch($user->getPerfil()->getId())
         {
             case 3://postulante
                 $em = $this->getDoctrine()->getManager();
-                $postulante = $em->getRepository('AppWebBundle:Postulante')->findByUser($id);
-                if($postulante->getId()==$id)
-                $access=true; 
+                $postulante = $em->getRepository('AppWebBundle:Postulante')->findByUser($user->getId());
+                if($id!="0"){
+                    if($postulante->getId()==$id)
+                        $access=true; 
+                }else
+                    $access=true;
                 break;
             case 1://administrador
                 $postulante = $em->getRepository('AppWebBundle:Postulante')->find($id);
@@ -103,9 +122,10 @@ class PrivateController extends Controller {
     }
     /**
      * @Route("/home/evaluador/{id}", name="_admin_inicio_evaluador", options={"expose"=true})
+     * @Route("/home/evaluador/", defaults={"id" = 0})
      * @Template()
      */
-    public function inicioEvaluadorAction($id)
+    public function inicioEvaluadorAction($id=0)
     {
       
         $access=false;
@@ -115,9 +135,13 @@ class PrivateController extends Controller {
         {
             case 2://evaluador
                 $em = $this->getDoctrine()->getManager();
-                $evaluador = $em->getRepository('AppWebBundle:Evaluador')->findByUser($id);
-                if($evaluador->getId()==$id)
-                $access=true; 
+                $evaluador = $em->getRepository('AppWebBundle:Evaluador')->findByUser($user->getId());
+                if($id!="0"){
+                    if($evaluador->getId()==$id)
+                        $access=true; 
+                }else
+                    $access=true;
+                
                 break;
             case 1://administrador
                 $evaluador = $em->getRepository('AppWebBundle:Evaluador')->find($id);
