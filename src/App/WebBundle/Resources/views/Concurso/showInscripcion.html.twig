@@ -2,6 +2,7 @@
     <script src="{{ asset('js/pages/Concurso/showInscripcion.js') }}"></script> 
 {% endblock %}
 <input type="hidden" id="tipoConcurso" value="{{concurso.tipoConcurso.codigo}}"/>
+<input type="hidden" id="pathUpload" value="{{ asset('uploads/informes')}}" />
 <div class="row">
 	<div class="col-md-8">
 		<div class="panel panel-default">
@@ -55,13 +56,13 @@
                         <small>{{inscripcion.nombreproyecto}}</small>
                         <div>&nbsp;</div>
                         <p>
-                            <button class="btn btn-default btn-xs" data-id="1" data-type="edit">
+                            <button class="btn btn-default btn-xs" data-id="1" onclick="new OptionButton().Informe({{inscripcion.id}},'{{inscripcion.informepostulacionc}}')">
                             <span class="glyphicon glyphicon-paperclip"> </span> Informe Completo
                             </button> 
                             <span class="pull-right">
                             &nbsp;
                             </span>
-                            <button class="btn btn-default btn-xs" data-id="1" data-type="edit">
+                            <button class="btn btn-default btn-xs" data-id="1" onclick="new OptionButton().Informe({{inscripcion.id}},'{{inscripcion.informepostulacionsic}}')">
                             <span class="glyphicon glyphicon-paperclip"> </span> Informe  Básico
                             </button>
                         </p> 

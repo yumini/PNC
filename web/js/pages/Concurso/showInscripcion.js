@@ -123,8 +123,10 @@ OptionButton.prototype={
                     type:'POST',
                     url:url,
                     data:params,
-                    dataType:"html",
+                    dataType:"json",
                     success:function(datos){
+                        console.log(datos.id)
+                            $('#idInscripcion').val(datos.id);
                             //parent.Refresh();
                             //parent.Window.AddHTML(datos);
                             //new OptionButton().Refresh();
@@ -187,6 +189,23 @@ OptionButton.prototype={
     },
     Refresh:function(){
         Backbone.history.loadUrl(Backbone.history.fragment);
+    },
+    Informe:function(id,doc){
+        var doc=doc||'';
+        if(doc!=''){
+            var path=$('#pathUpload').val();
+            window.open(path+'/'+id+'/'+doc, '_self');
+        }else{
+
+            var n = noty({
+                text: 'No existe informe vinculado a la inscripción',
+                type: 'warning',
+                dismissQueue: true,
+                layout: 'bottomRight',
+                theme: 'defaultTheme',
+                timeout:5000
+            });
+        }
     }
 }
 

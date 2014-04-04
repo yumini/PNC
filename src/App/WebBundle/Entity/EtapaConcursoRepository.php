@@ -17,10 +17,8 @@ class EtapaConcursoRepository extends EntityRepository
         $dql= "SELECT ec.id,e.id as etapaId,e.nombre,ec.fechaInicio,ec.fechaFin,ec.extendido,ec.fechaExtension 
             FROM AppWebBundle:Etapa e 
                 JOIN e.tipoConcurso tc              
-                LEFT JOIN e.etapasconcurso ec
-                LEFT JOIN ec.concurso c
-                WHERE (c.id=:id or c.id is null)
-                AND tc.id=$tipo
+                LEFT JOIN e.etapasconcurso ec WITH ec.id IN (SELECT x.id FROM AppWebBundle:EtapaConcurso x JOIN x.concurso c WHERE c.id=:id)
+                WHERE tc.id=$tipo
                 ";
         $query=$em->createQuery($dql)->setParameter('id', $idConcurso);
         try {

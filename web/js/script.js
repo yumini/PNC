@@ -12,7 +12,7 @@ $(function(){
         // This function is called when a file is added to the queue;
         // either via the browse button, or via drag/drop:
         add: function (e, data) {
-            
+            $("#typeFile").val($(e.currentTarget).attr('data-type'));
             var info=$('#info-'+e.currentTarget.id);
             info.html(data.files[0].name+ ' - '+(data.files[0].size/1024)+' kb')
             console.log(data);

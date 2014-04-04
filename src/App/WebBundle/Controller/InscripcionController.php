@@ -62,7 +62,7 @@ class InscripcionController extends Controller
      *
      * @Route("/{id}/save/{id2}", name="_admin_inscripcion_save", options={"expose"=true})
      * @Method("POST")
-     * @Template("AppWebBundle:Default:result.json.twig")
+     * @Template()
      */
     public function createAction(Request $request,$id,$id2)
     {
@@ -78,10 +78,8 @@ class InscripcionController extends Controller
         $entity->setPostulante($postulante);
         $em->persist($entity);
         $em->flush();
+        return new JsonResponse(array('result' =>true ,'id'=>$entity->getId() ));
 
-        return array(
-            'result' => "{success:true}"
-        );
     }
 
     /**
@@ -93,7 +91,11 @@ class InscripcionController extends Controller
      */
     public function uploadAction(Request $request)
     {
+        $type=$request->request->get('typeFile');
+        $id=$request->request->get('idInscripcion');
         
+       $em = $this->getDoctrine()->getManager();
+       $entity = $em->getRepository('AppWebBundle:Inscripcion')->find($id);
        $allowed = array('doc', 'docx', 'pdf','zip');
        if(isset($_FILES['upl']) && $_FILES['upl']['error'] == 0){
 
@@ -102,8 +104,23 @@ class InscripcionController extends Controller
             if(!in_array(strtolower($extension), $allowed)){
                $result="error";
             }
-
-            if(move_uploaded_file($_FILES['upl']['tmp_name'], 'uploads/'.$_FILES['upl']['name'])){
+            $pathDir=$id;
+            $filename="informe-$type.$extension";
+            switch ($type) {
+                case 'completo':
+                    $entity->setInformepostulacionc($filename);
+                    break;
+                
+                case 'sinnformacionconfidencial':
+                    $entity->setInformepostulacionsic($filename);
+                    break;
+            }
+            $em->persist($entity);
+            $em->flush();
+            if (!is_dir('uploads/informes/'.$pathDir)) {
+                @mkdir('uploads/informes/'.$pathDir);
+            }
+            if(move_uploaded_file($_FILES['upl']['tmp_name'], "uploads/informes/$pathDir/".$filename)){
                $result="success";
             }
         }

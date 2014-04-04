@@ -1,5 +1,6 @@
 <form id="myform"  method="post" {{ form_enctype(form) }} action="{{ path('_admin_inscripcion_upload') }}" enctype="multipart/form-data">
-
+<input type="hidden" id="idInscripcion" name="idInscripcion" value="{{entity.id}}"/>
+<input type="hidden" id="typeFile" name="typeFile"/>
 <ul class="nav nav-pills">
   <li id="wizard1" class="active"><a href="#">1. Terminos de Aceptación</a></li>
   <li id="wizard2" class="disabled" {% if showProyect==false %}style="display:none;"{% endif %}><a href="#">2. Datos de Inscripción</a></li>
@@ -88,7 +89,7 @@
                   Por favor seleccione un documento o arrastrelo hasta aqui para agregarlo
                   </p>
                    <a class="btn btn-info">Seleccione el documento</a>
-                  <input id="file1" type="file" name="upl" multiple />
+                  <input id="file1" type="file" name="upl" data-type="completo" multiple />
                   <div id="info-file1" style="font-size:11px;color:#418bca;">
                   </div>
                 </div>
@@ -106,7 +107,7 @@
                   Por favor seleccione un documento o arrastrelo hasta aqui para agregarlo
                 </p>
                    <a class="btn btn-info">Seleccione el documento</a>
-                  <input id="file2" type="file" name="upl" multiple />
+                  <input id="file2" type="file" name="upl" data-type="sinnformacionconfidencial" multiple />
                   <div id="info-file2" style="font-size:11px;color:#418bca;">
                   </div>
                 </div>

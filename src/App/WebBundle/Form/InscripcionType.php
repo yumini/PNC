@@ -18,8 +18,7 @@ class InscripcionType extends AbstractType
             ->add('objetivoproyecto','textarea',array('required' => true,'attr' => array('class'=>'form-control','rows'=>'9')))
             ->add('fechainiciopy', 'date', array('widget' => 'single_text','format' => 'yyyy-MM-dd','attr' => array('class'=>'form-control input-small')))
             ->add('fechafinpy', 'date', array('widget' => 'single_text','format' => 'yyyy-MM-dd','attr' => array('class'=>'form-control input-small')))
-            ->add('informepostulacionc','textarea',array('required' => true,'attr' => array('class'=>'form-control','rows'=>'9')))
-            ->add('informepostulacionsic','textarea',array('required' => true,'attr' => array('class'=>'form-control','rows'=>'9')))
+            
             ->add('terminoaceptacion')
            
         ;
