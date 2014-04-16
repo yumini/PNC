@@ -12,14 +12,14 @@ class ConcursoSubcriterioType extends AbstractType
     {
         $builder
            
-            ->add('codigo','text',array('required' => true,'attr' => array('class'=>'form-control input-small')))
-            ->add('descripcion','text',array('required' => true,'attr' => array('class'=>'form-control input-small')))
-            ->add('detalle','text',array('required' => true,'attr' => array('class'=>'form-control input-small')))
-            ->add('puntaje','text',array('required' => true,'attr' => array('class'=>'form-control input-small')))
-            ->add('glosa','textarea',array('required' => true,'attr' => array('class'=>'form-control','rows'=>'5')))
-            ->add('comentario','textarea',array('required' => true,'attr' => array('class'=>'form-control','rows'=>'5')))
-            ->add('proposito','textarea',array('required' => true,'attr' => array('class'=>'form-control','rows'=>'5')))
-            ->add('nota','textarea',array('required' => true,'attr' => array('class'=>'form-control','rows'=>'5')))
+            ->add('codigo','text',array('label'=>'Código','required' => true,'attr' => array('class'=>'form-control input-small')))
+            ->add('descripcion','text',array('label'=>'Descripción','required' => true,'attr' => array('class'=>'form-control input-small')))
+            ->add('detalle','text',array('label'=>'Detalle','required' => true,'attr' => array('class'=>'form-control input-small')))
+            ->add('puntaje','text',array('label'=>'Puntaje','required' => true,'attr' => array('class'=>'form-control input-small')))
+            ->add('glosa','textarea',array('label'=>'Glosa','required' => true,'attr' => array('class'=>'form-control','rows'=>'5')))
+            ->add('comentario','textarea',array('label'=>'Comentario','required' => true,'attr' => array('class'=>'form-control','rows'=>'5')))
+            ->add('proposito','textarea',array('label'=>'Proposito','required' => true,'attr' => array('class'=>'form-control','rows'=>'5')))
+            ->add('nota','textarea',array('label'=>'Nota','required' => true,'attr' => array('class'=>'form-control','rows'=>'5')))
             
            
         ;

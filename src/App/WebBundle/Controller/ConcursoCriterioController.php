@@ -92,7 +92,7 @@ class ConcursoCriterioController extends Controller
      *
      * @Route("/{id}/save", name="_admin_concursocriterio_save", options={"expose"=true})
      * @Method("POST")
-     * @Template("AppWebBundle:Default:result.json.twig")
+     * @Template()
      */
     public function createAction(Request $request,$id)
     {
@@ -127,17 +127,27 @@ class ConcursoCriterioController extends Controller
         }
 
         $form->bind($request);
-        
-        $entity->setConcurso($concurso);
-        $entity->setidpadre($idPadre);
-        $entity->setTipoArbolCriterio($tipoArbol);
-        $em->persist($entity);
-        $em->flush();
+        $msg='';
+        $errors = $this->get('validator')->validate($form);
+        if (count($errors)==0 && $form->isValid()) {
+            $entity->setConcurso($concurso);
+            $entity->setidpadre($idPadre);
+            $entity->setTipoArbolCriterio($tipoArbol);
+            $em->persist($entity);
+            $em->flush();
+            $msg="registro realizado satisfactoriamente";
+            $success=true;  
+        }else{
+             $msgError=new \App\WebBundle\Util\MensajeError();
+             $msgError->AddErrors($form);
+             $msg=$msgError->getErrorsHTML();
+             $success=false;
+        }
 
-        return array(
-            'result' => "{\"success\":\"true\"}"
-        );
-
+        return new JsonResponse(array(
+            'success' =>$success ,
+            'message'=> $msg
+        ));
        
     }
 
@@ -296,22 +306,33 @@ class ConcursoCriterioController extends Controller
                 $form= $this->createForm(new ConcursoPreguntaType(), $entity);
                 break;
         }
-
+        $success=false;
         $form->bind($request);
-        
-        if ($entity) {
-           
-            $em->persist($entity);
-            $em->flush();
+        $msg='';
+        $errors = $this->get('validator')->validate($form);
+        if (count($errors)==0 && $form->isValid()) {
+            if ($entity) {
+               
+                $em->persist($entity);
+                $em->flush();
+                $success=true;
+                $msg="Registro actualizado satisfactoriamente";
+            }else{
+                $success=false;
+                $msg="elemento no encontrado";
+
+            }
         }else{
-            $result=false;
-            $msg="elemento no encontrado";
-
+             $msgError=new \App\WebBundle\Util\MensajeError();
+             $msgError->AddErrors($form);
+             $msg=$msgError->getErrorsHTML();
+             $success=false;
         }
-        return array(
-            'result' => "{\"success\":\"$result\",\"message\":\"$msg\"}"
 
-        );
+        return new JsonResponse(array(
+            'success' =>$success ,
+            'message'=> $msg
+        ));
 
        
     }

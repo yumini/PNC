@@ -15,8 +15,8 @@
       			<span class="glyphicon glyphicon-user"></span>
       		{{ entity.razonSocial|default('Nombre o Razon Social')  }}
       	<span style="float:right;">
-          <a id="btnEdit" href="javascript:void(0)" class="btn btn-info" data-id="{{ entity.id }}" style="font-size:12px;" >
-            <span class="glyphicon glyphicon-edit"></span>
+          <a id="btnEdit" href="javascript:void(0)" class="btn btn-info btn-xs" data-id="{{ entity.id }}" style="font-size:12px;" >
+            <span class="glyphicon glyphicon-edit"></span> Editar
           </a>
         </span>
       	
@@ -45,7 +45,7 @@
       </div>
       <h3 >Categorias del Postulante
        <button id="btnCategoriaNew" class="btn btn-info btn-xs pull-right"  data-id="{{ entity.id }}" data-type="delete">
-                            <span class="glyphicon glyphicon-plus"> </span>
+                            <span class="glyphicon glyphicon-plus"> </span> Agregar
       </button>
       </h3> 
      
@@ -75,7 +75,7 @@
   </div>
   <div class="col-md-8"  >
   	<h3 style="margin-top:4px;">Datos de Contacto
-  		<span style="float:right;"><a id="btnContactoNew" class="btn btn-info" style="font-size:12px;"><span class="glyphicon glyphicon-plus"></span></a></span>
+  		<span style="float:right;"><a id="btnContactoNew" class="btn btn-info btn-xs" style="font-size:12px;"><span class="glyphicon glyphicon-plus"></span> Agregar</a></span>
   	</h3>
 <div id="containerContactos">
 </div>

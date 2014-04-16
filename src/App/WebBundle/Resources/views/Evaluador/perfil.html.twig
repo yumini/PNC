@@ -27,61 +27,71 @@
         
          
           <div class="row">
-          	<div class="col-md-5"><label>DNI:</label></div>
-          	<div class="col-md-7">{{ entity.numdoc|default('-') }}</div>
+          	<div class="col-md-4"><label>DNI:</label></div>
+          	<div class="col-md-8">{{ entity.numdoc|default('-') }}</div>
                
                  
           </div>
           <div class="row">
-          	<div class="col-md-5"><label>Profesión:</label></div>
-          	<div class="col-md-7">{{ entity.profesion|default('-') }}</div>
+          	<div class="col-md-4"><label>Profesión:</label></div>
+          	<div class="col-md-8">{{ entity.profesion|default('-') }}</div>
           </div>
           <div class="row">
-          	<div class="col-md-5"><label>Dirección:</label></div>
-          	<div class="col-md-7">{{ entity.direccion|default('-') }}</div>
+          	<div class="col-md-4"><label>Dirección:</label></div>
+          	<div class="col-md-8">{{ entity.direccion|default('-') }}</div>
           </div>
           <div class="row">
-          	<div class="col-md-5"><label>Telefono:</label></div>
-          	<div class="col-md-7">{{ entity.telefono|default('-') }}</div>
+          	<div class="col-md-4"><label>Telefono:</label></div>
+          	<div class="col-md-8">{{ entity.telefono|default('-') }}</div>
           </div>
           <div class="row">
-          	<div class="col-md-5"><label>Celular:</label></div>
-          	<div class="col-md-7">{{ entity.celular|default('-') }}</div>
+          	<div class="col-md-4"><label>Celular:</label></div>
+          	<div class="col-md-8">{{ entity.celular|default('-') }}</div>
           </div>
           <div class="row">
-          	<div class="col-md-5"><label>Email 1:</label></div>
-          	<div class="col-md-7">{{ entity.email1|default('-') }}</a></div>
+          	<div class="col-md-4"><label>Email 1:</label></div>
+          	<div class="col-md-8">{{ entity.email1|default('-') }}</a></div>
           </div>
           <div class="row">
-          	<div class="col-md-5"><label>Email 2:</label></div>
-          	<div class="col-md-7">{{ entity.email2|default('-') }}</a></div>
+          	<div class="col-md-4"><label>Email 2:</label></div>
+          	<div class="col-md-8">{{ entity.email2|default('-') }}</a></div>
           </div>
           <div class="row">
-          	<div class="col-md-5"><label>Empresa:</label></div>
-          	<div class="col-md-7">{{ entity.empresa|default('-') }}</a></div>
+          	<div class="col-md-4"><label>Empresa:</label></div>
+          	<div class="col-md-8">{{ entity.empresa|default('-') }}</a></div>
           </div>
           <div class="row">
-          	<div class="col-md-5"><label>Cargo:</label></div>
-          	<div class="col-md-7">{{ entity.cargo|default('-') }}</a></div>
+          	<div class="col-md-4"><label>Cargo:</label></div>
+          	<div class="col-md-8">{{ entity.cargo|default('-') }}</a></div>
           </div>
            <div class="row">
-          	<div class="col-md-5">
+          	<div class="col-md-4">
                     <label>Curriculum:</label>
-                    <a href="javascript:return false;" id="lnkCV"><span class="glyphicon glyphicon-paperclip"></span></a>
-                    <input id="fileCV" type="file" name="fileCV" style="display:none;" multiple />
+                    
                     
                 </div>
-          	<div class="col-md-7">
-                    <a id="lnkCVDownload" target="_blank" href="{{ asset('docs/evaluador/cv/')}}{{entity.curriculum|default('#')}}" data-path="{{ asset('docs/evaluador/cv/')}}">Ver Curriculum</a>
+          	<div class="col-md-8">
+                    <a class="btn btn-default btn-xs" id="lnkCVDownload" target="_blank" 
+                    {% if entity.curriculum %}
+                    href="{{ asset('docs/evaluador/cv/')}}{{entity.curriculum|default('')}}"
+                    {% endif %}
+                    data-path="{{ asset('docs/evaluador/cv/')}}">Ver Curriculum</a>
+                    <a class="btn btn-default btn-xs" id="lnkCV">
+                      <span class="glyphicon glyphicon-paperclip"></span> Adjuntar
+                    </a>
                     
-                </div>
+                    <input id="fileCV" type="file" name="fileCV" style="display:none;" />
+                    <input id="evaluador_id" type="hidden" name="evaluador_id" value="{{entity.id}}" />
+                   
+            </div>
           </div>
+          <br/>
            <div class="row">
               <div class="col-md-9">
               </div>
               <div class="col-md-3">
-                 <a id="btnEdit" href="javascript:void(0)" class="btn btn-info" data-id="{{ entity.id }}" style="font-size:12px;" >
-                    <span class="glyphicon glyphicon-edit"></span>
+                 <a id="btnEdit" href="javascript:void(0)" class="btn btn-info btn-xs" data-id="{{ entity.id }}" style="font-size:12px;" >
+                    <span class="glyphicon glyphicon-edit"></span> Editar
                 </a>
               </div>
                  
@@ -134,7 +144,7 @@
   </div>
   <div class="col-lg-8"  >
   	<h3 style="margin-top:4px;">Conflictos de Interes
-  		<span style="float:right;"><a id="btnConflictoNew" href="javascript:return false;" class="btn btn-info" style="font-size:12px;"><span class="glyphicon glyphicon-plus"></span></a></span>
+  		<span style="float:right;"><a id="btnConflictoNew" href="javascript:return false;" class="btn btn-info btn-xs" style="font-size:12px;"><span class="glyphicon glyphicon-plus"></span> Agregar</a></span>
   	</h3>
 <div id="containerConflicto">
 </div>

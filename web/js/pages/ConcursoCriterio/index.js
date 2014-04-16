@@ -57,8 +57,10 @@ OptionButton.prototype={
             label:'Grabar',
             'class':'btn-success',
             fn:function(){
+                $('#btn-concurso-save').attr('disabled',true);
+                $('#btn-concurso-cancel').attr('disabled',true);
                 parent.Save();               
-                parent.Window.Hide();
+               
             }
         });
     },
@@ -75,16 +77,28 @@ OptionButton.prototype={
                     url:url,
                     data:params,
                     dataType:"html",
-                    success:function(datos){
+                    success:function(request){
+                            $('#btn-concurso-save').attr('disabled',false);
+                            $('#btn-concurso-cancel').attr('disabled',false); 
+                            var obj = jQuery.parseJSON(request);
+                            tipo=(obj.success)?'success':'warning';
+                            
                             var n = noty({
-                                    text: "Registro grabado satisfactoriamente",
-                                    type: "success",
-                                    modal:false,
-                                    timeout:5000,
+                                    text: obj.message,
+                                    type: tipo,
+                                    dismissQueue: true,
                                     layout: 'bottomRight',
-                                    theme: 'defaultTheme'                                  
+                                    theme: 'defaultTheme',
+                                    timeout:5000
                             });
-                            new OptionButton().Refresh();
+                            
+                            if(obj.success){
+                                parent.Window.Hide();
+                                setTimeout(function(){
+                                    new OptionButton().Refresh();
+                                },1000)
+                                
+                            }
                     },
                     error:function(objeto, quepaso, otroobj){
 
@@ -114,8 +128,10 @@ OptionButton.prototype={
             label:'Grabar',
             'class':'btn-success',
             fn:function(){
+                $('#btn-concurso-save').attr('disabled',true);
+                $('#btn-concurso-cancel').attr('disabled',true);
                 parent.Update();               
-                parent.Window.Hide();
+               
             }
         });
 
@@ -130,16 +146,28 @@ OptionButton.prototype={
                     url:url,
                     data:params,
                     dataType:"html",
-                    success:function(datos){
-                             var n = noty({
-                                    text: "Registro actualizado satisfactoriamente",
-                                    type: "success",
-                                    modal:false,
-                                    timeout:5000,
+                    success:function(request){
+                            $('#btn-concurso-save').attr('disabled',false);
+                            $('#btn-concurso-cancel').attr('disabled',false); 
+                            var obj = jQuery.parseJSON(request);
+                            tipo=(obj.success)?'success':'warning';
+                            
+                            var n = noty({
+                                    text: obj.message,
+                                    type: tipo,
+                                    dismissQueue: true,
                                     layout: 'bottomRight',
-                                    theme: 'defaultTheme'                                  
+                                    theme: 'defaultTheme',
+                                    timeout:5000
                             });
-                            new OptionButton().Refresh();
+                            
+                            if(obj.success){
+                                parent.Window.Hide();
+                                setTimeout(function(){
+                                    new OptionButton().Refresh();
+                                },1000)
+                                
+                            }
                     },
                     error:function(objeto, quepaso, otroobj){
 

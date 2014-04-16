@@ -151,7 +151,7 @@ class ConcursoController extends Controller
      *
      * @Route("/create", name="_admin_concurso_save", options={"expose"=true})
      * @Method("POST")
-     * @Template("AppWebBundle:Default:result.json.twig")
+     * @Template()
      */
     public function createAction(Request $request)
     {
@@ -169,17 +169,18 @@ class ConcursoController extends Controller
             $em->persist($entity);
             $em->flush();
             $msg="registro realizado satisfactoriamente";
-            $success='true';        
+            $success=true;        
             
         }else{
              $msgError=new \App\WebBundle\Util\MensajeError();
              $msgError->AddErrors($form);
              $msg=$msgError->getErrorsHTML();
-             $success='false';
+             $success=false;
         }
-        return array(
-            'result' => "{\"success\":\"$success\",\"message\":\"$msg\"}"
-        );
+        return new JsonResponse(array(
+            'success' =>$success ,
+            'message'=> $msg
+        ));
       
     }
 
@@ -316,7 +317,7 @@ class ConcursoController extends Controller
      *
      * @Route("/{id}/update", name="_admin_concurso_update", options={"expose"=true})
      * @Method("POST")
-     * @Template("AppWebBundle:Perfil:result.json.twig")
+     * @Template()
      */
     public function updateAction(Request $request, $id)
     {
@@ -339,17 +340,18 @@ class ConcursoController extends Controller
                 $result='false';
                 $msg="perfil no encontrado";
                 
-                $success='false';
+                $success=true;
             }
         }else{
              $msgError=new \App\WebBundle\Util\MensajeError();
              $msgError->AddErrors($editForm);
              $msg=$msgError->getErrorsHTML();
-             $success='false';
+             $success=false;
         }
-         return array(
-            'result' => "{\"success\":\"$success\",\"message\":\"$msg\"}"
-        );
+        return new JsonResponse(array(
+            'success' =>$success ,
+            'message'=> $msg
+        ));
     }
     /**
      * Deletes a Concurso entity.

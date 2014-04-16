@@ -52,7 +52,7 @@ class MenuBuilder {
         $cadena.=" <span class=\"icon-bar\"></span>";
         $cadena.=" <span class=\"icon-bar\"></span>";
         $cadena.="</button>";
-        $cadena.="<a href=\"#menu/".$urlHome."\"  class=\"navbar-brand\"><small>PNC</small></a>";
+        $cadena.="<a href=\"#menu/".$urlHome."\"  class=\"navbar-brand\"><small><span class=\"glyphicon glyphicon-home\"></span> Inicio</small></a>";
         $cadena.="</div>";
         $cadena.="<div class=\"navbar-collapse collapse navbar-collapse\">";
         $cadena.="<ul class=\"nav navbar-nav\">";

@@ -9,7 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use App\WebBundle\Entity\Evaluador;
 use App\WebBundle\Form\EvaluadorType;
-
+use Symfony\Component\HttpFoundation\JsonResponse;
 /**
  * Evaluador controller.
  *
@@ -231,42 +231,47 @@ class EvaluadorController extends Controller
     
     /**
      *
-     * @Route("/upload/evaluador/cv", name="_admin_evaluador_cvupload", options={"expose"=true})
+     * @Route("/upload/evaluador/cv/{id}", name="_admin_evaluador_cvupload", options={"expose"=true})
      * @Method("POST")
      * @Template("AppWebBundle:Default:result.json.twig")
      */
-    public function uploadCVAction(Request $request)
+    public function uploadCVAction(Request $request,$id)
     {
+      
+       //$id=$request->request->get('evaluador_id');
        $msg='Curriculum se actualizó satisfactoriamente';
        $fileName='';
-       $result='';
+       $success=false;
        $em = $this->getDoctrine()->getManager(); 
-       $user = $this->container->get("security.context")->getToken()->getUser();
-       $entity = $em->getRepository('AppWebBundle:Evaluador')->findByUser($user->getId()); 
+       $entity = $em->getRepository('AppWebBundle:Evaluador')->find($id); 
        $allowed = array('pdf', 'doc', 'docx');
+       
+       
        if(isset($_FILES['fileCV']) && $_FILES['fileCV']['error'] == 0){
+       
             $extension = pathinfo($_FILES['fileCV']['name'], PATHINFO_EXTENSION);
 
             if(!in_array(strtolower($extension), $allowed)){
-               $result="error";
+               $success=false;
                $msg="Formato de archivo no valido";
             }else{
-                $fileName=$user->getId().".".$extension;
+                $fileName='cv-'.$id.'.'.$extension;
                 if(move_uploaded_file($_FILES['fileCV']['tmp_name'], 'docs/evaluador/cv/'.$fileName)){
                     $em = $this->getDoctrine()->getManager();
                     $entity->setCurriculum($fileName);
                     $em->persist($entity);
                     $em->flush();
-                    $result="success";
+                    $success=true;
+                    //$msg="Archivo se cargo satisfactoriamente";
                 }
             }
+       
         }else{
-            $result="error";
-            $msg="No se pudo cargar el archivo";
+            $success=false;
+            $msg="Ocurrio un error. No se pudo cargar el archivo".$_FILES['fileCV']['error'];
         }
-
-        return array(
-            'result' => "{\"status\":\"$result\",\"name\":\"$fileName\", \"message\":\"$msg\"}"
-        );
+       
+        return new JsonResponse(array('success'=>$success,'message'=>$msg,'name'=>$fileName));
+        
     }
 }

@@ -349,7 +349,8 @@ OptionButton.Disponibilidad.prototype={
                                     type: 'success',
                                     dismissQueue: true,
                                     layout: 'bottomRight',
-                                    theme: 'defaultTheme'
+                                    theme: 'defaultTheme',
+                                    timeout:5000
                                 });
                            new OptionButton.Disponibilidad().Refresh(); 
                     },
@@ -496,10 +497,25 @@ $(document).ready(function() {
 
 $('#fileCV').fileupload({
 
-        url:Routing.generate("_admin_evaluador_cvupload"),
+        url:Routing.generate("_admin_evaluador_cvupload",{id:$('#evaluador_id').val()}),
         singleFileUploads: true,
         add: function (e, data) {
-            var jqXHR = data.submit();
+            console.log(data)
+            console.log(data.files[0].size);
+            var sizeMB=Math.round((data.files[0].size/1024)/1024);
+            if(sizeMB<=2){
+                var jqXHR = data.submit();
+            }else{
+                var n = noty({
+                    text: "Archivo no debe exceder los 2 mb.",
+                    type: 'warning',
+                    dismissQueue: true,
+                    layout: 'bottomRight',
+                    theme: 'defaultTheme',
+                    timeout:5000
+                });
+            }
+            
         },
         progress: function(e, data){
             var progress = parseInt(data.loaded / data.total * 100, 10);
@@ -508,13 +524,20 @@ $('#fileCV').fileupload({
             //data.context.addClass('error');
         },
         done:function (e, data) {
-        	var obj = jQuery.parseJSON(data.result);
-                if(obj.status=="success"){
+            obj=data.result;
+            console.log(data.result)
+                if(obj.success){
                     var path=$("#lnkCVDownload").attr('data-path');
                     $("#lnkCVDownload").attr("href",path+obj.name+"?r="+Math.random()); 
                 }
-                 bootbox.alert(obj.message, function() {
-                                //console.log("Alert Callback");
-                            });
+            var type=(obj.success)?'success':'warning';
+           var n = noty({
+                text: obj.message,
+                type: type,
+                dismissQueue: true,
+                layout: 'bottomRight',
+                theme: 'defaultTheme',
+                timeout:5000
+            });
         }
     });

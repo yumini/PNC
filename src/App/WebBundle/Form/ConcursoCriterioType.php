@@ -17,8 +17,8 @@ class ConcursoCriterioType extends AbstractType
                         
                     }
             ))
-            ->add('codigo','text',array('required' => true,'attr' => array('class'=>'form-control input-small')))
-            ->add('descripcion','text',array('required' => true,'attr' => array('class'=>'form-control input-small')))
+            ->add('codigo','text',array('label'=>'Código','required' => true,'attr' => array('class'=>'form-control input-small')))
+            ->add('descripcion','text',array('label'=>'Descripción','required' => true,'attr' => array('class'=>'form-control input-small')))
             ->add('puntaje','text',array('required' => true,'attr' => array('class'=>'form-control input-small')))
             ->add('glosa','textarea',array('required' => true,'attr' => array('class'=>'form-control','rows'=>'5')))
             ->add('comentario','textarea',array('required' => true,'attr' => array('class'=>'form-control','rows'=>'5')))

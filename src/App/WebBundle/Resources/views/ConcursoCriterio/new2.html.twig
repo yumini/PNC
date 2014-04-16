@@ -1,7 +1,7 @@
 
     <form  id="myform" method="post" {{ form_enctype(form) }}>
        
-       
+       {{form_widget(form._token)}}
         <div class="row">
            <div class="col-lg-6">
               <label class="control-label">Criterio:</label><br/>

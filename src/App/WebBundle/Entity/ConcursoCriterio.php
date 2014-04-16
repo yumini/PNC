@@ -3,7 +3,7 @@
 namespace App\WebBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Validator\Constraints as Assert;
 /**
  * ConcursoCriterio
  *
@@ -30,14 +30,14 @@ class ConcursoCriterio
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank
      * @ORM\Column(name="codigo", type="string", length=50)
      */
     private $codigo;
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank
      * @ORM\Column(name="descripcion", type="string", length=250, nullable=true)
      */
     private $descripcion;

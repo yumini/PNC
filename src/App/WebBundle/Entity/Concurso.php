@@ -114,7 +114,7 @@ class Concurso
 
     /**
      * @var float
-     *
+     * @Assert\NotBlank
      * @ORM\Column(name="anio", type="decimal")
      */
     private $anio;

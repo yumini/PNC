@@ -55,28 +55,22 @@ OptionButton.prototype={
                     success:function(request){
                             $('#btn-concurso-save').attr('disabled',false);
                             $('#btn-concurso-cancel').attr('disabled',false);
-                            time=5000;        
                             var obj = jQuery.parseJSON(request);
-                            if(obj.success=='false'){
-                                tipo='warning';
-                            }else{
-                                tipo='success';
-                                parent.Window.Hide();
-                                time=3000;
-                                
-                            }
+                            tipo=(obj.success)?'success':'warning';
                             var n = noty({
                                     text: obj.message,
                                     type: tipo,
                                     dismissQueue: true,
                                     layout: 'bottomRight',
-                                    theme: 'defaultTheme'
+                                    theme: 'defaultTheme',
+                                    timeout:5000
                             });
-                            setTimeout(function() {
-                                $.noty.close(n.options.id);
-                                if(obj.success=='true')
+                            if(obj.success){
+                                parent.Window.Hide();
+                                setTimeout(function() {
                                     new OptionButton().Refresh();
-                            }, time);
+                                }, 1000);
+                            }
                     },
                     error:function(objeto, quepaso, otroobj){
 
@@ -152,28 +146,22 @@ OptionButton.prototype={
                     success:function(request){
                             $('#btn-concurso-save').attr('disabled',false);
                             $('#btn-concurso-cancel').attr('disabled',false);
-                            time=5000;        
                             var obj = jQuery.parseJSON(request);
-                            if(obj.success=='false'){
-                                tipo='warning';
-                            }else{
-                                tipo='success';
-                                parent.Window.Hide();
-                                time=3000;
-                                
-                            }
+                            tipo=(obj.success)?'success':'warning';
                             var n = noty({
                                     text: obj.message,
                                     type: tipo,
                                     dismissQueue: true,
                                     layout: 'bottomRight',
-                                    theme: 'defaultTheme'
+                                    theme: 'defaultTheme',
+                                    timeout:5000
                             });
-                            setTimeout(function() {
-                                $.noty.close(n.options.id);
-                                if(obj.success=='true')
+                            if(obj.success){
+                                parent.Window.Hide();
+                                setTimeout(function() {
                                     new OptionButton().Refresh();
-                            }, time);
+                                }, 1000);
+                            }
                     },
                     error:function(objeto, quepaso, otroobj){
 
