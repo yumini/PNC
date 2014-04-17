@@ -13,7 +13,12 @@
           <a class="navbar-brand">{{ title_list }}</a>
         </div>
         <div class="collapse navbar-collapse navbar-ex2-collapse">
-          <button id="btnNew" type="button" class="btn btn-success navbar-btn pull-right"> <span class="glyphicon glyphicon-plus"> </span> Nuevo</button>
+         
+          <form class="navbar-form navbar-right">
+            
+            <button id="btnNew" type="button" class="btn btn-success navbar-btn pull-right"> <span class="glyphicon glyphicon-plus"> </span> Nuevo</button>
+            <a href="{{ path('_admin_concurso_report') }}" type="button" class="btn btn-default navbar-btn pull-right" style="margin-right:5px;"> <span class="glyphicon glyphicon-print"> </span> Imprimir</a>
+          </form>
         </div>
     </nav>
   </div>

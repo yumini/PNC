@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title></title>
+ </head>
+<body>
+  <input id="idConcurso" type="hidden" value="{{concurso.id}}" />
+
+<div class="panel panel-default">
+  <div class="panel-heading panel-primary ">
+    <h2>
+    {{concurso.nombre}}
+        <small>
+        [{% if concurso.fechaInicio %}{{ concurso.fechaInicio|date('d/m/Y') }}{% endif %} - {% if concurso.fechaFin %}{{ concurso.fechaFin|date('d/m/Y') }}{% endif %}]
+        </small>   
+    </h2> 
+  </div>
+  <div class="panel-body">
+      <h4>{{ title_list }}</h4>
+  
+    <div id="grid" style="width:100%">
+      <table id="treeGrid" class="table tree-2 table-bordered table-striped table-condensed table-striped" style="width:100%;border-color:#000;" border='1'>
+        <thead>
+            <tr >
+
+                <th class="grid-header" style="text-align: left;width:70px;">Código</th>
+                <th class="grid-header" style="text-align: center;">Descripción</th>
+                <th class="grid-header" style="text-align: center;">Tipo</th>
+                <th class="grid-header text-center" style="text-align: center;width:80px;">Puntaje</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+         
+        {% for entity in entities %}
+            <tr class="treegrid-{{ entity.id}} {% if entity.idpadre!=0 %}treegrid-parent-{{ entity.idpadre }}{% endif %}">
+                <td>{{ entity.codigo }}&nbsp;</td>
+                <td>
+                  {% if entity.tipoArbolCriterio.codigo=='1' %}
+                  <b>{{ entity.descripcion }}</b>
+                  {% else %}
+                    {% if entity.tipoArbolCriterio.codigo=='2' %}
+                      &nbsp;&nbsp;{{ entity.descripcion }}
+                    {% else %}
+                      {% if entity.tipoArbolCriterio.codigo=='3' %}
+                        &nbsp; &nbsp;&nbsp;&nbsp;{{ entity.descripcion }}
+                      {% else %}
+                        {% if entity.tipoArbolCriterio.codigo=='4' %}
+                          &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ entity.descripcion }}
+                        {% endif %}  
+                      {% endif %}
+                    {% endif %}
+                  
+                  {% endif %}
+                </td>
+                <td>{{ entity.tipoArbolCriterio.nombre }}</td>
+                <td style="text-align: center;">{{ entity.puntaje }}</td>
+                
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+   </div>
+  </div>
+
+
+
+</div>
+  
+
+</body>
+</html>
+

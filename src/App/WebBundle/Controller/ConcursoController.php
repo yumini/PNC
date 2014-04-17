@@ -382,5 +382,31 @@ class ConcursoController extends Controller
             );
     }
 
-  
+    /**
+     *
+     * @Route("/report/concurso", name="_admin_concurso_report", options={"expose"=true})
+     * @Method("GET")
+     * @Template()
+     */
+    public function reportAction(Request $request)
+    {
+         $em = $this->getDoctrine()->getManager();
+
+        $entities = $em->getRepository('AppWebBundle:Concurso')->findAll();
+
+        $content = $this->renderView('AppWebBundle:Concurso:report.html.twig',array(
+            'title_list'=> "Listado de Concursos",
+            'entities'=>$entities
+        ));
+        return new Response(
+            ($content),
+            200,
+            array(
+                'Content-Type' => 'application/vnd.ms-excel; charset=utf-8',
+                'Content-Disposition' => 'attachment; filename="concursos.xls"',
+                'Content-Length' => strlen($content)
+            )
+        );
+     
+    }
 }

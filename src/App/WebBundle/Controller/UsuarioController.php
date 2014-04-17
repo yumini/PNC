@@ -17,6 +17,7 @@ use FOS\UserBundle\Event\FormEvent;
 use FOS\UserBundle\Event\GetResponseUserEvent;
 use FOS\UserBundle\Event\FilterUserResponseEvent;
 use FOS\UserBundle\Model\UserInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 /**
  * Usuario controller.
@@ -421,5 +422,33 @@ class UsuarioController extends Controller
         return array(
             'result' => "{\"status\":\"$result\",\"name\":\"$fileName\"}"
         );
+    }
+
+    /**
+     *
+     * @Route("/report/usuario", name="_admin_usuario_report", options={"expose"=true})
+     * @Method("GET")
+     * @Template()
+     */
+    public function reportAction(Request $request)
+    {
+         $em = $this->getDoctrine()->getManager();
+
+        $entities = $em->getRepository('AppWebBundle:Usuario')->findAll();
+
+        $content = $this->renderView('AppWebBundle:Usuario:report.html.twig',array(
+            'title_list'=> "Listado de Usuarios",
+            'entities'=>$entities
+        ));
+        return new Response(
+            ($content),
+            200,
+            array(
+                'Content-Type' => 'application/vnd.ms-excel; charset=utf-8',
+                'Content-Disposition' => 'attachment; filename="usuarios.xls"',
+                'Content-Length' => strlen($content)
+            )
+        );
+     
     }
 }

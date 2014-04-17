@@ -13,6 +13,7 @@ use App\WebBundle\Form\ConcursoSubcriterioType;
 use App\WebBundle\Form\ConcursoAreaAnalisisType;
 use App\WebBundle\Form\ConcursoPreguntaType;
 use App\WebBundle\Services\ConcursoCriterioService;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 /**
  * ConcursoCriterio controller.
@@ -360,6 +361,36 @@ class ConcursoCriterioController extends Controller
 
             );
            
+    }
+
+    /**
+     *
+     * @Route("/report/{id}", name="_admin_concursocriterio_report", options={"expose"=true})
+     * @Method("GET")
+     * @Template()
+     */
+    public function reportAction(Request $request, $id)
+    {
+         $em = $this->getDoctrine()->getManager();
+
+        $entities = $em->getRepository('AppWebBundle:ConcursoCriterio')->FindByConcursoOrderByParent($id);
+        $concurso= $em->getRepository('AppWebBundle:Concurso')->find($id);
+
+        $content = $this->renderView('AppWebBundle:ConcursoCriterio:report.html.twig',array(
+            'title_list'=> "Listado de Criterios",
+            'concurso'=>$concurso,
+            'entities' => $entities,
+        ));
+        return new Response(
+            ($content),
+            200,
+            array(
+                'Content-Type' => 'application/vnd.ms-excel; charset=utf-8',
+                'Content-Disposition' => 'attachment; filename="criterios.xls"',
+                'Content-Length' => strlen($content)
+            )
+        );
+     
     }
 
    
