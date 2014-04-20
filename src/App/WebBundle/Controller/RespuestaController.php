@@ -132,4 +132,46 @@ class RespuestaController extends Controller
         }
         return new JsonResponse(array('success' => true));
     }
+
+    /**
+     * Displays a form to create a edit Concurso entity.
+     *
+     * @Route("/edit", name="_admin_respuesta_edit", options={"expose"=true})
+     * @Method("GET")
+     * @Template()
+     */
+    public function editAction()
+    {
+        return array(
+            'title' => 'xx'
+        );
+    }
+
+    /**
+     * Displays a form to create a edit Concurso entity.
+     *
+     * @Route("/edit2", name="_admin_respuesta_edit2", options={"expose"=true})
+     * @Method("GET")
+     * @Template()
+     */
+    public function edit2Action()
+    {
+        return array(
+            'title' => 'xx'
+        );
+    }
+
+    /**
+     * @Route("/json/rest/{id}", name="_admin_respuesta_show", options={"expose"=true})
+     * @Method("GET")
+     * @Template()
+     */
+    public function showAction(Request $request,$id)
+    {
+        
+        $em = $this->getDoctrine()->getManager();
+        $entity=$em->getRepository("AppWebBundle:Respuesta")->findArray($id);
+        
+        return new JsonResponse($entity[0]);
+    }
 }

@@ -71,4 +71,18 @@ class RespuestaRepository extends EntityRepository
 
          
 	}
+
+	public function findArray($id){
+        $em=$this->getEntityManager();
+        $dql= "SELECT r,cr FROM AppWebBundle:Respuesta r 
+        		join r.criterio cr
+             WHERE r.id=:id";
+        $query=$em->createQuery($dql)->setParameter('id', $id);
+        try {
+                return $query->getArrayResult();
+
+        } catch (\Doctrine\ORM\NoResultException $e) {
+                return null;
+        }
+    }
 }

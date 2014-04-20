@@ -64,7 +64,7 @@ class ConcursoCriterioRepository extends EntityRepository
         $dql= "SELECT cp FROM AppWebBundle:ConcursoCriterio cp 
                 JOIN cp.concurso c 
                 WHERE c.id=:idconcurso
-                AND cp.idpadre=:idpadre";
+                AND cp.idpadre=:idpadre order by cp.codigo+0";
         $query=$em->createQuery($dql)
                 ->setParameter('idconcurso', $idConcurso)
                 ->setParameter('idpadre', $idpadre);

@@ -12,7 +12,12 @@
           </button>
           <a class="navbar-brand">{{ title_list }}</a>
         </div>
-      
+        <div class="collapse navbar-collapse navbar-ex2-collapse">
+          
+          <form class="navbar-form navbar-right">
+            <a href="{{ path('_admin_evaluador_report') }}" type="button" class="btn btn-default navbar-btn pull-right"> <span class="glyphicon glyphicon-print"> </span> Imprimir</a>
+          </form>
+        </div>
     </nav>
   </div>
   <div class="panel-body">
@@ -37,6 +42,11 @@
                 <th class="grid-header" style="text-align: center;">{{ knp_pagination_sortable(pagination, 'Número Documento', 'e.numdoc') }}</th>
                 <th class="grid-header" style="text-align: center;">{{ knp_pagination_sortable(pagination, 'Dirección', 'e.direccion') }}</th>
                 <th class="grid-header" style="text-align: center;">{{ knp_pagination_sortable(pagination, 'Empresa', 'e.empresa') }}</th>
+                <th class="grid-header" style="text-align: center;">{{ knp_pagination_sortable(pagination, 'Cargo', 'e.cargo') }}</th>    
+                <th class="grid-header" style="text-align: center;">{{ knp_pagination_sortable(pagination, 'Profesión', 'e.profesion') }}</th>
+                <th class="grid-header" style="text-align: center;">{{ knp_pagination_sortable(pagination, 'Teléfono', 'e.telefono') }}</th>
+                <th class="grid-header" style="text-align: center;">{{ knp_pagination_sortable(pagination, 'Celular', 'e.celular') }}</th>
+                <th class="grid-header" style="text-align: center;">{{ knp_pagination_sortable(pagination, 'Email', 'e.email1') }}</th>
                 <th class="grid-header" style="width: 60px;text-align: center;">Opciones</th>
             </tr>
         </thead>
@@ -50,6 +60,11 @@
                 <td>{{ entity.numdoc }}</td>
                 <td>{{entity.direccion}}</td>
                 <td>{{entity.empresa}}</td>
+                <td>{{entity.cargo}}</td>
+                <td>{{entity.profesion}}</td>
+                <td>{{entity.telefono}}</td>
+                <td>{{entity.celular}}</td>
+                <td>{{entity.email1}}</td>
                 <td style="text-align: center;font-size: 12px;">
                     <a href="#menu/_admin_inicio_evaluador/{{entity.id}}" class="btn btn-warning btn-xs" data-id="{{ entity.id }}" title="Editar Postulante"><i class="glyphicon glyphicon-edit"> </i></a>
                    

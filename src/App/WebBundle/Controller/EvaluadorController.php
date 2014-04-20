@@ -274,4 +274,32 @@ class EvaluadorController extends Controller
         return new JsonResponse(array('success'=>$success,'message'=>$msg,'name'=>$fileName));
         
     }
+
+    /**
+     *
+     * @Route("/report/evaluador", name="_admin_evaluador_report", options={"expose"=true})
+     * @Method("GET")
+     * @Template()
+     */
+    public function reportAction(Request $request)
+    {
+         $em = $this->getDoctrine()->getManager();
+
+        $entities = $em->getRepository('AppWebBundle:Evaluador')->findAll();
+
+        $content = $this->renderView('AppWebBundle:Evaluador:report.html.twig',array(
+            'title_list'=> "Listado de Evaluadores",
+            'entities'=>$entities
+        ));
+        return new Response(
+            ($content),
+            200,
+            array(
+                'Content-Type' => 'application/vnd.ms-excel; charset=utf-8',
+                'Content-Disposition' => 'attachment; filename="usuarios.xls"',
+                'Content-Length' => strlen($content)
+            )
+        );
+     
+    }
 }

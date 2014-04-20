@@ -88,9 +88,11 @@ var ViewsEvalIndividual={
 			                     
 			this.ProyectosCollection.each(function(item,idx) {
 				var obj=item.toJSON();
+				var text=obj.nombreproyecto||'';
+				text+=' - '+obj.concurso.nombre;
 				var model={
 					value:obj.id,
-					text:obj.nombreproyecto+' - '+obj.concurso.nombre
+					text:text
 				};
 				v = new ViewsEvalIndividual.ItemSelect({model:model});
 				this.$el.find('#cmbProyecto').append(v.render().el);
@@ -659,8 +661,54 @@ var ViewsEvalIndividual={
         	}
         },
         EditRespuesta:function(id){
-			alert("edit..:D: "+id);
+
+			var template='';
+			if(this.attributes.isParent)
+				template="_admin_respuesta_edit2";
+			else
+				template="_admin_respuesta_edit";
+			var parent=this;
+			this.Window=new BootstrapWindow({id:"winForm",title:"Editar Respuesta"});
+	        this.Window.setWidth(600);
+	        //this.Window.setHeight(200);
+	        var idRespuesta=id;
+	        var url=Routing.generate(template);
+	        this.Window.LoadWithFnSuccess(url,function(){
+	        	parent.InitFormRespuesta(idRespuesta);
+	        });
+	        this.Window.Show();
+	        
+	        this.Window.AddButton('btn-respuesta-cancel',{
+	            label:'Cancelar',
+	            'class':'btn-default',
+	            fn:function(){
+	               parent.Window.Hide();
+	            }
+	            
+	        })
+	       
+	        this.Window.AddButton('btn-respuesta-save',{
+	            label:'Grabar',
+	            'class':'btn-success',
+	            fn:function(){
+	                $('#btn-respuesta-save').attr('disabled',true);
+	                $('#btn-respuesta-cancel').attr('disabled',true);
+	                parent.UpdateAspectoClave(idRespuesta);               
+	                
+	            }
+	        });
         },
+        InitFormRespuesta:function(idRespuesta){
+			
+			var parent=this; 
+			this.RespuestaSelected=new Models.RespuestaCriterio({id:idRespuesta});
+			this.RespuestaSelected.fetch({success:function(model){
+				var item=model.toJSON();
+				$("#txtRespuesta").val(item.respuesta);
+				$("#cmbPuntaje").val(item.puntaje);
+			}})
+			
+		},
         DeleteRespuesta:function(id){
         	var parent=this;
 			var n=noty({
