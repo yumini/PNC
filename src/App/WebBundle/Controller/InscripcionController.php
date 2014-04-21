@@ -240,7 +240,7 @@ class InscripcionController extends Controller
     /**
      * Deletes a Inscripcion entity.
      *
-     * @Route("/{id}", name="inscripcion_delete")
+     * @Route("/{id}", name="_admin_inscripcion_delete", options={"expose"=true})
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id)
@@ -248,7 +248,7 @@ class InscripcionController extends Controller
         $form = $this->createDeleteForm($id);
         $form->bind($request);
 
-        if ($form->isValid()) {
+      
             $em = $this->getDoctrine()->getManager();
             $entity = $em->getRepository('AppWebBundle:Inscripcion')->find($id);
 
@@ -258,9 +258,9 @@ class InscripcionController extends Controller
 
             $em->remove($entity);
             $em->flush();
-        }
+      
 
-        return $this->redirect($this->generateUrl('inscripcion'));
+        return new JsonResponse(array('success'=>true));
     }
 
     /**

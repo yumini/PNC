@@ -50,7 +50,11 @@
             <tr class="treegrid-{{ entity.id}} {% if entity.idpadre!=0 %}treegrid-parent-{{ entity.idpadre }}{% endif %}">
                 
 
-                <td>{{ entity.codigo }}. {{ entity.descripcion }}</td>
+                <td>
+                  <a class="row-edit" data-id="{{ entity.id }}" data-type="{{ entity.tipoArbolCriterio.codigo }}" style="cursor:pointer">
+                    {{ entity.codigo }}. {{ entity.descripcion }}
+                  </a>
+                </td>
                 <td>{{ entity.tipoArbolCriterio.nombre }}</td>
                 <td>{{ entity.puntaje }}</td>
                 <td style="text-align: center;font-size: 12px;">

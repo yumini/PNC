@@ -6,13 +6,15 @@ use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
-
+use Symfony\Component\Validator\ExecutionContextInterface;
+use App\WebBundle\Entity\Catalogo;
 /**
  * Usuario
  *
  * @ORM\Table(name="usuario")
  * @ORM\Entity(repositoryClass="App\WebBundle\Entity\UsuarioRepository")
  * @UniqueEntity(fields="nroDocumento",message="Número de Documento ya existe")
+ * @Assert\Callback(methods={"isDocumentValid"})
  */
 class Usuario extends BaseUser
 {
@@ -448,5 +450,18 @@ class Usuario extends BaseUser
     public function getPostulantes()
     {
         return $this->postulantes;
+    }
+
+    
+    public function isDocumentValid(ExecutionContextInterface $context)
+    {
+
+        if ($this->tipoDocumento->getCodigo()==1 && strlen($this->nroDocumento)!=8) {
+            $context->addViolationAt('nroDocumento', 'N° Documeno debe contener 8 digitos.', array(), null);
+        }
+        if ($this->tipoDocumento->getCodigo()==2 && strlen($this->nroDocumento)!=11) {
+            $context->addViolationAt('nroDocumento', 'N° Documeno debe contener 11 digitos.', array(), null);
+        }
+        
     }
 }

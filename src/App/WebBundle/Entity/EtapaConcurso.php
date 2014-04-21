@@ -7,7 +7,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * EtapaConcurso
  *
- * @ORM\Table()
+ * @ORM\Table(name="etapaconcurso")
  * @ORM\Entity(repositoryClass="App\WebBundle\Entity\EtapaConcursoRepository")
  */
 class EtapaConcurso

@@ -35,6 +35,7 @@ OptionButton.prototype={
             fn:function(){
                $('#btn-usuario-save').attr('disabled',true);
                $('#btn-usuario-cancel').attr('disabled',true);
+               
                parent.Save();               
                 
             }

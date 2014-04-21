@@ -50,8 +50,7 @@ class ConflictoInteresEvaluador
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fecfin", type="date")
-     * @Assert\NotBlank()
+     * @ORM\Column(name="fecfin", type="date", nullable=true)
      * @Assert\Date()
      */
     private $fecfin;
@@ -59,8 +58,7 @@ class ConflictoInteresEvaluador
     /**
      * @var string
      *
-     * @ORM\Column(name="detalle", type="text")
-     * @Assert\NotBlank()
+     * @ORM\Column(name="detalle", type="text", nullable=true)
      */
     private $detalle;
     

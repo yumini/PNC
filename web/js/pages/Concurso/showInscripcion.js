@@ -3,6 +3,7 @@ var OptionButton=function(){
     this.routeSave='_admin_inscripcion_save';
     this.routeEdit='_admin_inscripcion_edit';
     this.routeUpdate='_admin_inscripcion_update';
+    this.routeDelete='_admin_inscripcion_delete';
     this.WizardIndex=0;
        
 }
@@ -186,6 +187,49 @@ OptionButton.prototype={
 
                     }
             });
+    },
+    Delete:function(id){
+        this.IdEntity=id;
+        var parent=this;
+        var n=noty({
+          text: 'Desea eliminar el registro seleccionado?',
+          layout: 'center',
+          theme: 'defaultTheme',
+          modal:true,
+          buttons: [
+            {addClass: 'btn btn-success', text: 'Si', onClick: function($noty) {
+
+                var url=Routing.generate(parent.routeDelete,{id:parent.IdEntity});
+                 $.ajax({
+                        type:'DELETE',
+                        url:url,
+                        dataType:"html",
+                        success:function(datos){
+                               var n = noty({
+                                    text: "Registro eliminado satisfactoriamente",
+                                    type: "success",
+                                    dismissQueue: true,
+                                    layout: 'bottomRight',
+                                    theme: 'defaultTheme',
+                                    timeout:5000
+                                }); 
+                                new OptionButton().Refresh();
+                        },
+                        error:function(objeto, quepaso, otroobj){
+
+                        }
+                }); 
+                $noty.close();
+
+              }
+            },
+            {addClass: 'btn btn-danger', text: 'No', onClick: function($noty) {
+                $noty.close();
+                
+            }
+            }
+          ]
+        });
     },
     Refresh:function(){
         Backbone.history.loadUrl(Backbone.history.fragment);

@@ -34,10 +34,10 @@ class MensajeError {
     }
    public function getErrorMessages(\Symfony\Component\Form\Form $form) {
         $errors = array();
-
+        $this->msg.='<br/>';
         foreach ($form->getErrors() as $key => $error) {
                 $errors[] = $error->getMessage();
-                $this->msg.='<br/>'.$error->getMessage().'<br/>';
+                $this->msg.=$error->getMessage().'<br/>';
         }
 
         foreach ($form->all() as $child) {
