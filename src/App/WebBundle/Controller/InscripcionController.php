@@ -70,16 +70,32 @@ class InscripcionController extends Controller
         $entity  = new Inscripcion();
         $form = $this->createForm(new InscripcionType(), $entity);
         $form->bind($request);
-        $em = $this->getDoctrine()->getManager();
-        $postulante = $em->getRepository('AppWebBundle:Postulante')->find($id);
-        $concurso=$em->getRepository('AppWebBundle:Concurso')->find($id2);
-        
-        $entity->setConcurso($concurso);
-        $entity->setPostulante($postulante);
-        $em->persist($entity);
-        $em->flush();
-        return new JsonResponse(array('result' =>true ,'id'=>$entity->getId() ));
-
+        $msg="Inscripción realizada satisfactoriamente";
+        $errors = $this->get('validator')->validate($form);
+        if (count($errors)==0 && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $postulante = $em->getRepository('AppWebBundle:Postulante')->find($id);
+            $concurso=$em->getRepository('AppWebBundle:Concurso')->find($id2);
+            
+            $entity->setConcurso($concurso);
+            $entity->setPostulante($postulante);
+            $em->persist($entity);
+            $em->flush();
+            $success=true;
+            $id=$entity->getId();
+        }else{
+             $msgError=new \App\WebBundle\Util\MensajeError();
+             $msgError->AddErrors($form);
+             $msg=$msgError->getErrorsHTML();
+             $success=false;
+             $id=0;
+        }
+        return new JsonResponse(array(
+            'result' =>true ,
+            'id'=> $id,
+            'success' =>$success ,
+            'message'=> $msg
+        ));
     }
 
     /**

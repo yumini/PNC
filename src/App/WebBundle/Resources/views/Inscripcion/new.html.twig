@@ -1,10 +1,11 @@
 <form id="myform"  method="post" {{ form_enctype(form) }} action="{{ path('_admin_inscripcion_upload') }}" enctype="multipart/form-data">
+   {{form_widget(form._token)}}
 <input type="hidden" id="idInscripcion" name="idInscripcion" value="{{entity.id}}"/>
 <input type="hidden" id="typeFile" name="typeFile"/>
 <ul class="nav nav-pills">
-  <li id="wizard1" class="active"><a href="#">1. Terminos de Aceptación</a></li>
-  <li id="wizard2" class="disabled" {% if showProyect==false %}style="display:none;"{% endif %}><a href="#">2. Datos de Inscripción</a></li>
-  <li id="wizard3" class="disabled"><a href="#">3. Documentos</a></li>
+  <li id="wizard1" class="active"><a style="cursor:pointer" onclick="new OptionButton().ActiveWizard(0)">1. Terminos de Aceptación</a></li>
+  <li id="wizard2" class="disabled" {% if showProyect==false %}style="display:none;"{% endif %}><a style="cursor:pointer" onclick="new OptionButton().ActiveWizard(1)">2. Datos de Inscripción</a></li>
+  <li id="wizard3" class="disabled"><a style="cursor:pointer" onclick="new OptionButton().ActiveWizard(2)">3. Documentos</a></li>
 </ul>
 <ul id="tabWizard" class="nav nav-tabs" style="font-size:11px;display:none;">
   <li class="active"><a href="#conc-tab-1" data-toggle="tab">Terminos de Aceptación</a></li>

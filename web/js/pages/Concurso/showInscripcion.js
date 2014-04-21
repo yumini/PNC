@@ -20,10 +20,13 @@ OptionButton.prototype={
     ActiveWizard:function(index){
         for (var i = 1; i <= 3; i++) {
              $("#wizard"+i).removeClass('active');
-             $("#wizard"+i).addClass('disabled');
+             if(i<=index)
+                $("#wizard"+i).removeClass('disabled');
+             else
+                $("#wizard"+i).addClass('disabled');
         };
         $("#wizard"+(index+1)).addClass('active');
-         $("#wizard"+(index+1)).removeClass('disabled');
+        $("#wizard"+(index+1)).removeClass('disabled');
         $('#tabWizard li:eq('+index+') a').tab('show');
     },
     NextWizardTipo2:function(){
@@ -41,8 +44,8 @@ OptionButton.prototype={
                     break;
                 case 2:
                     this.Save();
-                    $("#btn-inscripcion-save").html("Finalizar");
-                    this.ActiveWizard(2);
+                    //$("#btn-inscripcion-save").html("Finalizar");
+                    //this.ActiveWizard(2);
                     break;
                 case 3:
                     this.Window.Hide();
@@ -63,8 +66,8 @@ OptionButton.prototype={
                 case 1:
                     this.Save();
                     
-                    $("#btn-inscripcion-save").html("Finalizar");
-                    this.ActiveWizard(2);
+                    
+                    //this.ActiveWizard(2);
                     break;
                 case 2:
                     this.Window.Hide();
@@ -91,8 +94,7 @@ OptionButton.prototype={
             fn:function(){
                 
                 parent.Window.Hide();
-                //if(parent.WizardIndex>2)
-                parent.Refresh();
+               setTimeout(parent.Refresh,1000);
             }
             
         })
@@ -125,12 +127,25 @@ OptionButton.prototype={
                     url:url,
                     data:params,
                     dataType:"json",
-                    success:function(datos){
-                        console.log(datos.id)
-                            $('#idInscripcion').val(datos.id);
-                            //parent.Refresh();
-                            //parent.Window.AddHTML(datos);
-                            //new OptionButton().Refresh();
+                    success:function(request){
+                        console.log(request.id)
+                            $('#idInscripcion').val(request.id);
+                            var obj =request;
+                            tipo=(obj.success)?'success':'warning';
+                            console.log(obj.success);
+                            if(obj.success){
+                                parent.ActiveWizard(2);
+                                $("#btn-inscripcion-save").html("Finalizar");
+                            }else
+                                parent.WizardIndex--;
+                            var n = noty({
+                                    text: obj.message,
+                                    type: tipo,
+                                    dismissQueue: true,
+                                    layout: 'bottomRight',
+                                    theme: 'defaultTheme',
+                                    timeout:5000
+                            });
                     },
                     error:function(objeto, quepaso, otroobj){
 

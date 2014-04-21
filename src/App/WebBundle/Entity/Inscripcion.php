@@ -4,11 +4,14 @@ namespace App\WebBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo; 
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * Inscripcion
  *
  * @ORM\Table(name="inscripcion")
  * @ORM\Entity(repositoryClass="App\WebBundle\Entity\InscripcionRepository")
+ * @UniqueEntity(fields="nombreproyecto",message="Nombre de Proyecto ya existe")
  */
 class Inscripcion
 {

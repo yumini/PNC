@@ -11,7 +11,7 @@ class InscripcionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nombreproyecto','text',array('required' => true,'attr' => array('class'=>'form-control input-small')))
+            ->add('nombreproyecto','text',array('label'=>'Nombre del Proyecto','required' => true,'attr' => array('class'=>'form-control input-small')))
             ->add('nombrecorto','text',array('required' => true,'attr' => array('class'=>'form-control input-small')))
             ->add('nombreequipo','text',array('required' => true,'attr' => array('class'=>'form-control input-small')))
             ->add('integrantes','textarea',array('required' => true,'attr' => array('class'=>'form-control','rows'=>'5')))
