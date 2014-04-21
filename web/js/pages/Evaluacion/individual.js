@@ -5,7 +5,9 @@ var ViewsEvalIndividual={
                     "change #cmbGrupo": "LoadConcursantes",
                     "change #cmbPostulante": "LoadProyectos",
                     "change #cmbProyecto": "SelectProyecto",
-                    "click #btnNew":"Nuevo"
+                    "click #btnNew":"Nuevo",
+                    "click #btnInformeCompleto":"InformeCompleto",
+                    "click #btnInformeBasico":"InformeBasico"
         },
 		initialize: function(){
 				_.bindAll(this);
@@ -27,6 +29,44 @@ var ViewsEvalIndividual={
 				this.proyecto=-1;
 				this.$el.find('#btnNew').attr('disabled',true);
 		},
+		InformeCompleto:function(evt){
+			var doc=this.proyecto.informepostulacionc||'';
+			var id=this.proyecto.id||'';
+	        
+	        if(doc!=''){
+	            var path=$('#pathUpload').val();
+	            window.open(path+'/'+id+'/'+doc, '_blank');
+	        }else{
+
+	            var n = noty({
+	                text: 'No existe informe vinculado a la inscripción',
+	                type: 'warning',
+	                dismissQueue: true,
+	                layout: 'bottomRight',
+	                theme: 'defaultTheme',
+	                timeout:5000
+	            });
+	        }
+	    },
+	    InformeBasico:function(evt){
+			var doc=this.proyecto.informepostulacionsic||'';
+			var id=this.proyecto.id||'';
+	        
+	        if(doc!=''){
+	            var path=$('#pathUpload').val();
+	            window.open(path+'/'+id+'/'+doc, '_blank');
+	        }else{
+
+	            var n = noty({
+	                text: 'No existe informe vinculado a la inscripción',
+	                type: 'warning',
+	                dismissQueue: true,
+	                layout: 'bottomRight',
+	                theme: 'defaultTheme',
+	                timeout:5000
+	            });
+	        }
+	    },
 		LoadGrupos: function(evt){
 			this.evaluador=$("#cmbEvaluador").val();
 			var params={ evaluador_id:this.evaluador};
@@ -104,7 +144,9 @@ var ViewsEvalIndividual={
 			var value=$("#cmbProyecto").val();
 			var item=this.ProyectosCollection.get(value);
 			this.proyecto=item.toJSON();
-			
+			console.log(item.toJSON())
+			$("#btnInformeCompleto").removeClass("disabled");
+			$("#btnInformeBasico").removeClass("disabled");
 		},
 		LoadCriterios:function(){
 			var parent=this;
@@ -1068,5 +1110,7 @@ var ViewsEvalIndividual={
 
 $(document).ready(function() {
 	var v=new ViewsEvalIndividual.App({ el: $("#containerEtapaIndividual") });
+
+
 });
 

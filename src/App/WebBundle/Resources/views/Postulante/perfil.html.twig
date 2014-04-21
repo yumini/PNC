@@ -15,7 +15,7 @@
       			<span class="glyphicon glyphicon-user"></span>
       		{{ entity.razonSocial|default('Nombre o Razon Social')  }}
       	<span style="float:right;">
-          <a id="btnEdit" href="javascript:void(0)" class="btn btn-info btn-xs" data-id="{{ entity.id }}" style="font-size:12px;" >
+          <a title="Editar Perfil" id="btnEdit" href="javascript:void(0)" class="btn btn-info btn-xs" data-id="{{ entity.id }}" style="font-size:12px;" >
             <span class="glyphicon glyphicon-edit"></span> Editar
           </a>
         </span>
@@ -44,7 +44,7 @@
           </div>
       </div>
       <h3 >Categorias del Postulante
-       <button id="btnCategoriaNew" class="btn btn-info btn-xs pull-right"  data-id="{{ entity.id }}" data-type="delete">
+       <button title="Agregar Categoria" id="btnCategoriaNew" class="btn btn-info btn-xs pull-right"  data-id="{{ entity.id }}" data-type="delete">
                             <span class="glyphicon glyphicon-plus"> </span> Agregar
       </button>
       </h3> 
@@ -57,7 +57,7 @@
                <div id="list-categorias" class="list-group">
          
             {% for categoria in entity.categorias %}
-                <a href="#" class="list-group-item" data-id="{{categoria.id}}" data-type="categoria-delete">             
+                <a style="cursor:pointer;" title="Eliminar" class="list-group-item" data-id="{{categoria.id}}" data-type="categoria-delete">             
                     <p class="list-group-item-text" data-id="{{ categoria.id }}">
                          <button class="btn btn-danger btn-xs pull-right"  data-id="{{ entity.id }}" data-type="delete">
                             <span class="glyphicon glyphicon-trash"> </span>
@@ -75,7 +75,7 @@
   </div>
   <div class="col-md-8"  >
   	<h3 style="margin-top:4px;">Datos de Contacto
-  		<span style="float:right;"><a id="btnContactoNew" class="btn btn-info btn-xs" style="font-size:12px;"><span class="glyphicon glyphicon-plus"></span> Agregar</a></span>
+  		<span style="float:right;"><a title="Agregar Contacto" id="btnContactoNew" class="btn btn-info btn-xs" style="font-size:12px;"><span class="glyphicon glyphicon-plus"></span> Agregar</a></span>
   	</h3>
 <div id="containerContactos">
 </div>
