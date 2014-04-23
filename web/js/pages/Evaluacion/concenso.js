@@ -5,7 +5,9 @@ var ViewsEvalIndividual={
                     "change #cmbGrupo": "LoadConcursantes",
                     "change #cmbPostulante": "LoadProyectos",
                     "change #cmbProyecto": "SelectProyecto",
-                    "click #btnNew":"Nuevo"
+                    "click #btnNew":"Nuevo",
+                    "click #btnInformeCompleto":"InformeCompleto",
+                    "click #btnInformeBasico":"InformeBasico"
         },
 		initialize: function(){
 				_.bindAll(this);
@@ -27,12 +29,56 @@ var ViewsEvalIndividual={
 				this.proyecto=-1;
 				this.$el.find('#btnNew').attr('disabled',true);
 		},
+		InformeCompleto:function(evt){
+			var doc=this.proyecto.informepostulacionc||'';
+			var id=this.proyecto.id||'';
+	        
+	        if(doc!=''){
+	            var path=$('#pathUpload').val();
+	            window.open(path+'/'+id+'/'+doc, '_blank');
+	        }else{
+
+	            var n = noty({
+	                text: 'No existe informe vinculado a la inscripción',
+	                type: 'warning',
+	                dismissQueue: true,
+	                layout: 'bottomRight',
+	                theme: 'defaultTheme',
+	                timeout:5000
+	            });
+	        }
+	    },
+	    InformeBasico:function(evt){
+			var doc=this.proyecto.informepostulacionsic||'';
+			var id=this.proyecto.id||'';
+	        
+	        if(doc!=''){
+	            var path=$('#pathUpload').val();
+	            window.open(path+'/'+id+'/'+doc, '_blank');
+	        }else{
+
+	            var n = noty({
+	                text: 'No existe informe vinculado a la inscripción',
+	                type: 'warning',
+	                dismissQueue: true,
+	                layout: 'bottomRight',
+	                theme: 'defaultTheme',
+	                timeout:5000
+	            });
+	        }
+	    },
 		LoadGrupos: function(evt){
 			this.evaluador=$("#cmbEvaluador").val();
 			var params={ evaluador_id:this.evaluador};
 			this.GrupoEvaluadorCollection.fetch({reset:true,data:params});
 		},
+		ResetApp:function(){
+			this.$el.find('#body-etapa').empty();
+			this.$el.find('#btnNew').attr('disabled',true);
+		},
 		RenderGrupos:function(){
+			this.ResetApp();
+			
 			this.$el.find('#cmbGrupo').empty();
 			var v = null;
 			                     
@@ -82,9 +128,11 @@ var ViewsEvalIndividual={
 			                     
 			this.ProyectosCollection.each(function(item,idx) {
 				var obj=item.toJSON();
+				var text=obj.nombreproyecto||'';
+				text+=' - '+obj.concurso.nombre;
 				var model={
 					value:obj.id,
-					text:obj.nombreproyecto+' - '+obj.concurso.nombre
+					text:text
 				};
 				v = new ViewsEvalIndividual.ItemSelect({model:model});
 				this.$el.find('#cmbProyecto').append(v.render().el);
@@ -96,7 +144,9 @@ var ViewsEvalIndividual={
 			var value=$("#cmbProyecto").val();
 			var item=this.ProyectosCollection.get(value);
 			this.proyecto=item.toJSON();
-			
+			console.log(item.toJSON())
+			$("#btnInformeCompleto").removeClass("disabled");
+			$("#btnInformeBasico").removeClass("disabled");
 		},
 		LoadCriterios:function(){
 			var parent=this;
@@ -220,6 +270,8 @@ var ViewsEvalIndividual={
 		SaveAspectoClave:function(){
 			var parent=this;
 			var obj=new Models.AspectoClave({
+				inscripcion_id:$('#cmbProyecto').val(),
+				evaluador_id:$("#cmbEvaluador").val(),
 				criterio_id:$('#cmbAspectoCLave').val(),
 				descripcion:$('#txtDescripcionAspectoClave').val()
 			});
@@ -246,6 +298,7 @@ var ViewsEvalIndividual={
 			},this); 
 			$('#cmbAspectoCLave option[value='+this.nodeSelected.id+']').attr('selected','selected');
 		},
+
 		NuevaRespuesta:function(){
 			var parent=this;
 			this.Window=new BootstrapWindow({id:"winForm",title:"Nueva Respuesta"});
@@ -288,16 +341,23 @@ var ViewsEvalIndividual={
 			switch(this.nodeSelected.tipoArbol_id){
 	        	case "1":
 	        		var obj=new Models.RespuestaCriterio({
+	        			inscripcion_id:$('#cmbProyecto').val(),
+	        			evaluador_id:$("#cmbEvaluador").val(),
 						criterio_id:this.nodeSelected.id,
 						puntaje:$('#cmbPuntaje').val(),
-						respuesta:$('#txtRespuesta').val()
+						respuesta:$('#txtRespuesta').val(),
+						aspectoclave_id:0
 					});
 	        		break;
 	        	case "2":
 	        		var obj=new Models.RespuestaCriterio({
+	        			inscripcion_id:$('#cmbProyecto').val(),
+	        			evaluador_id:$("#cmbEvaluador").val(),
 						criterio_id:$("#cmbPregunta").val(),
+						criterio_padreid:this.nodeSelected.id,
 						puntaje:$('#cmbPuntaje').val(),
-						respuesta:$('#txtRespuesta').val()
+						respuesta:$('#txtRespuesta').val(),
+						aspectoclave_id:$('#cmbRespuestaAspectoClave').val()
 					});
 	        		break;
 	        }
@@ -316,12 +376,38 @@ var ViewsEvalIndividual={
 		InitFormRespuestaSubcriterio:function(){
 			$('#cmbAreaAnalisis').change(this.LoadPreguntas);
 			this.LoadAreaAnalisis();
+			this.comboAspectoClave=new Collections.AspectoClave();
+			this.comboAspectoClave.on('reset',this.renderComboAspectosClave,true);
+			this.loadComboAspectosClave();
 		},
 		LoadAreaAnalisis:function(){
 			this.Subcriterio=new Models.Criterio({id:this.nodeSelected.id});
 			this.Subcriterio.bind("sync", this.renderAreaAnalisis)
 			this.Subcriterio.fetch();
 			
+		},
+		loadComboAspectosClave:function(){
+			var params={
+				inscripcion_id:$('#cmbProyecto').val(),
+				evaluador_id: $("#cmbEvaluador").val(),
+				idconcurso:this.concurso.id
+			};
+			this.comboAspectoClave.fetch({reset:true,data:params})
+		},
+		renderComboAspectosClave:function(){
+			$('#cmbRespuestaAspectoClave').empty();
+			this.comboAspectoClave.each(function(item,idx) {
+				
+				var obj=item.toJSON();
+				var model={
+					value:obj.id,
+					text:obj.descripcion
+				};
+				v = new ViewsEvalIndividual.ItemSelect({model:model});
+				$('#cmbRespuestaAspectoClave').append(v.render().el);
+			},this); 
+
+
 		},
 		renderAreaAnalisis:function(){
 			
@@ -410,13 +496,21 @@ var ViewsEvalIndividual={
 		},
 		LoadVisita:function(){
 			
-			var params={concursocriterio_id:this.attributes.idCriterio};
+			var params={
+				inscripcion_id:$('#cmbProyecto').val(),
+				evaluador_id: $("#cmbEvaluador").val(),
+				concursocriterio_id:this.attributes.idCriterio
+			};
 			this.VisitasCollection.fetch({reset:true,data:params});
 		},
 		LoadAspectosClaves:function(){
 
 			
-			var params={idcriterio:this.attributes.idCriterio};
+			var params={
+				inscripcion_id:$('#cmbProyecto').val(),
+				evaluador_id:$("#cmbEvaluador").val(),
+				idcriterio:this.attributes.idCriterio
+			};
 			this.AspectosClavesCollection.fetch({reset:true,data:params});
 		},
 		renderAspectosClave:function(){
@@ -450,7 +544,12 @@ var ViewsEvalIndividual={
 			return this;
 		},
 		load:function(){
-			var params={ isparent:this.attributes.isParent,idcriterio:this.attributes.idCriterio};
+			var params={ 
+				inscripcion_id:$('#cmbProyecto').val(),
+				evaluador_id:0,
+				isparent:this.attributes.isParent,
+				idcriterio:this.attributes.idCriterio
+			};
 			this.RespuestasCollection.fetch({reset:true,data:params});
 			return this;
 		},
@@ -496,11 +595,15 @@ var ViewsEvalIndividual={
 			
 			if(this.Visita.id==0){
 				var item=new Models.CriterioVisita({
+					inscripcion_id:$('#cmbProyecto').val(),
+					evaluador_id:$("#cmbEvaluador").val(),
 					concursocriterio_id:this.attributes.idCriterio,
 					descripcion:$("#txtVisita").val()
 				});
 			}else{
 				var item=new Models.CriterioVisita({
+					inscripcion_id:$('#cmbProyecto').val(),
+					evaluador_id:$("#cmbEvaluador").val(),
 					id:this.Visita.id,
 					concursocriterio_id:this.attributes.idCriterio,
 					descripcion:$("#txtVisita").val()
@@ -553,7 +656,11 @@ var ViewsEvalIndividual={
 			this.loadAddAspectosClave();
 		},
 		loadAddAspectosClave:function(){
-			var params={idconcurso:this.attributes.idConcurso};
+			var params={
+				inscripcion_id:$('#cmbProyecto').val(),
+				evaluador_id: $("#cmbEvaluador").val(),
+				idconcurso:this.attributes.idConcurso
+			};
 			this.AddAspectosClavesCollection.fetch({reset:true,data:params})
 		},
 		renderAddAspectosClave:function(){
@@ -571,6 +678,8 @@ var ViewsEvalIndividual={
 			var parent=this;
 			$('#gridAddAspectosClave tbody input:checked').each(function() {
 				var model=new Models.CriterioAspectoClave({
+					inscripcion_id:$('#cmbProyecto').val(),
+					evaluador_id: $("#cmbEvaluador").val(),
 					criterio_id:parent.attributes.idCriterio,
 					aspectoclave_id:$(this).attr('data-id')
 				})
@@ -594,8 +703,70 @@ var ViewsEvalIndividual={
         	}
         },
         EditRespuesta:function(id){
-			alert("edit..:D: "+id);
+
+			var template='';
+			if(this.attributes.isParent)
+				template="_admin_respuesta_edit2";
+			else
+				template="_admin_respuesta_edit";
+			var parent=this;
+			this.Window=new BootstrapWindow({id:"winForm",title:"Editar Respuesta"});
+	        this.Window.setWidth(600);
+	        //this.Window.setHeight(200);
+	        var idRespuesta=id;
+	        var url=Routing.generate(template);
+	        this.Window.LoadWithFnSuccess(url,function(){
+	        	parent.InitFormRespuesta(idRespuesta);
+	        });
+	        this.Window.Show();
+	        
+	        this.Window.AddButton('btn-respuesta-cancel',{
+	            label:'Cancelar',
+	            'class':'btn-default',
+	            fn:function(){
+	               parent.Window.Hide();
+	            }
+	            
+	        })
+	       
+	        this.Window.AddButton('btn-respuesta-save',{
+	            label:'Grabar',
+	            'class':'btn-success',
+	            fn:function(){
+	                $('#btn-respuesta-save').attr('disabled',true);
+	                $('#btn-respuesta-cancel').attr('disabled',true);
+	                parent.UpdateRespuesta(idRespuesta);               
+	                
+	            }
+	        });
         },
+        InitFormRespuesta:function(idRespuesta){
+			
+			var parent=this; 
+			this.RespuestaSelected=new Models.RespuestaCriterio({id:idRespuesta});
+			this.RespuestaSelected.fetch({success:function(model){
+				var item=model.toJSON();
+				$("#txtRespuesta").val(item.respuesta);
+				$("#cmbPuntaje").val(item.puntaje);
+				$("#txtPregunta").html(item.criterio.descripcion);
+			}})
+			
+		},
+		UpdateRespuesta:function(id){
+			var parent=this;
+			var obj=new Models.RespuestaCriterio({
+				id:id,
+				respuesta:$('#txtRespuesta').val(),
+				puntaje:$("#cmbPuntaje").val()
+			});
+			
+			obj.save({},{
+				success:function(){
+					parent.Window.Hide();
+					parent.attributes.app.SelectCriterio(parent.attributes.app.nodeSelected);
+				}
+			});
+		},
         DeleteRespuesta:function(id){
         	var parent=this;
 			var n=noty({
@@ -716,11 +887,63 @@ var ViewsEvalIndividual={
 		},
 		loadAspectosClave:function(){
 			
-			var params={ isparent:this.attributes.isParent,idcriterio:this.attributes.idCriterio};
+			var params={ 
+				inscripcion_id:$('#cmbProyecto').val(),
+				evaluador_id: 0,
+				isparent:this.attributes.isParent,
+				idcriterio:this.attributes.idCriterio
+			};
 			this.AspectosClaveCollection.fetch({reset:true,data:params});
 		},
 		renderAspectosClave:function(){
+			if(this.attributes.isParent)
+				this.renderAspectosClavesParent();
+			else
+				this.renderAspectosClavesNode();
+			return this;
 			
+		},
+		renderAspectosClavesParent:function(){
+			$('#AspectosClaveParent').show();
+			$('#gridFactoresClave').hide();
+
+			var collection = new Backbone.Collection(this.attributes.app.ParentNode.children);
+        	$('#tabAspectos').empty();
+        	$('#tabAspectosContent').empty();
+        	collection.each(function(item,idx) {
+				
+				var obj=item.toJSON();
+				var model={
+					value:obj.id,
+					text:obj.descripcion
+				};
+				v = new ViewsEvalIndividual.ItemTabAspectoClave({model:model});
+				$('#tabAspectos').append(v.render().el);
+
+				v = new ViewsEvalIndividual.ItemTabContentAspectoClave({model:model});
+				$('#tabAspectosContent').append(v.render().el);
+			},this); 
+
+			this.AspectosClaveCollection.each(function(item,idx) {
+				var obj=item.toJSON();
+				v = new ViewsEvalIndividual.ItemAspectoClave({
+					model:item.toJSON(),
+					attributes:{type:1}
+				});
+				var content='#gridFactoresClave-'+obj.criterio.id+' tbody';
+				this.$el.find(content).append(v.render().el);
+			},this);
+
+			collection.each(function(item,idx) {
+				var obj=item.toJSON();
+				var content='#gridFactoresClave-'+obj.id+' tbody a';
+				$(content).click(this.EventAspectos);
+			},this); 
+			$('#tabAspectos a:first').tab('show')
+		},
+		renderAspectosClavesNode:function(){
+			$('#gridFactoresClave').show();
+			$('#AspectosClaveParent').hide();
 			this.$el.find('#gridFactoresClave tbody').empty();
 			var v = null;
 			                     
@@ -748,8 +971,78 @@ var ViewsEvalIndividual={
         	}
         },
         Edit:function(id){
-			alert("edit..:D: "+id);
+			var parent=this;
+			this.Window=new BootstrapWindow({id:"winForm",title:"Editar Aspecto Clave"});
+	        this.Window.setWidth(600);
+	        this.Window.setHeight(200);
+	        var idAspecto=id;
+	        var url=Routing.generate('_admin_aspectoclave_edit');
+	        this.Window.LoadWithFnSuccess(url,function(){
+	        	parent.InitFormAspectosClaves(idAspecto);
+	        });
+	        this.Window.Show();
+	        
+	        this.Window.AddButton('btn-aspecto-cancel',{
+	            label:'Cancelar',
+	            'class':'btn-default',
+	            fn:function(){
+	               parent.Window.Hide();
+	            }
+	            
+	        })
+	       
+	        this.Window.AddButton('btn-aspecto-save',{
+	            label:'Grabar',
+	            'class':'btn-success',
+	            fn:function(){
+	                $('#btn-aspecto-save').attr('disabled',true);
+	                $('#btn-aspecto-cancel').attr('disabled',true);
+	                parent.UpdateAspectoClave(idAspecto);               
+	                
+	            }
+	        });
         },
+        InitFormAspectosClaves:function(idAspecto){
+			var collection = new Backbone.Collection(this.attributes.app.ParentNode.children);
+        	$('#cmbAspectoCLave').empty();
+        	collection.each(function(item,idx) {
+				
+				var obj=item.toJSON();
+				var model={
+					value:obj.id,
+					text:obj.descripcion
+				};
+				v = new ViewsEvalIndividual.ItemSelect({model:model});
+				$('#cmbAspectoCLave').append(v.render().el);
+			},this);
+			var parent=this; 
+			this.AspectoClaveSelected=new Models.AspectoClave({id:idAspecto});
+			this.AspectoClaveSelected.fetch({success:function(model){
+				var item=model.toJSON();
+				console.log(item);
+				$('#cmbAspectoCLave').val(item.criterio.id);
+				$("#txtDescripcionAspectoClave").val(item.descripcion);
+
+			}})
+			
+		},
+		UpdateAspectoClave:function(idAspecto){
+			var parent=this;
+			var obj=new Models.AspectoClave({
+				id:idAspecto,
+				inscripcion_id:$('#cmbProyecto').val(),
+				evaluador_id:$("#cmbEvaluador").val(),
+				criterio_id:$('#cmbAspectoCLave').val(),
+				descripcion:$('#txtDescripcionAspectoClave').val()
+			});
+			
+			obj.save({},{
+				success:function(){
+					parent.Window.Hide();
+					parent.attributes.app.SelectCriterio(parent.attributes.app.nodeSelected);
+				}
+			});
+		},
         Delete:function(id){
         	var parent=this;
 			var n=noty({
@@ -805,11 +1098,35 @@ var ViewsEvalIndividual={
 			this.$el.html(this.template({model:this.model}));
 			return this;
 		}
+	}),
+	ItemTabAspectoClave: Backbone.View.extend({
+        tagName:"li",
+		initialize: function() {
+			this.template = _.template($('#FactoresClaveTab_template').html());		
+		},
+		render: function() {			
+			this.$el.html(this.template({model:this.model}));
+			return this;
+		}
+	}),
+	ItemTabContentAspectoClave: Backbone.View.extend({
+        tagName:"div",
+		initialize: function() {
+			this.template = _.template($('#FactoresClaveTabContainer_template').html());		
+		},
+		render: function() {
+			this.$el.attr('id',"tab-aspectoclave-"+this.model.value);
+			this.$el.addClass("tab-pane");
+			this.$el.html(this.template({model:this.model}));
+			return this;
+		}
 	})
 
 };
 
 $(document).ready(function() {
 	var v=new ViewsEvalIndividual.App({ el: $("#containerEtapaIndividual") });
+
+
 });
 

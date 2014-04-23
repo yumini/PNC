@@ -1,4 +1,6 @@
+
 <div id="containerEtapaIndividual" class="container-fluid">
+	<input type="hidden" id="pathUpload" value="{{ asset('uploads/informes')}}" />
 	<nav class="navbar navbar-default" role="navigation" style="z-index:0">
 			        <div class="navbar-header">
 			          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex2-collapse">
@@ -6,7 +8,7 @@
 			            <span class="icon-bar"></span>
 			            <span class="icon-bar"></span>
 			          </button>
-			          <a class="navbar-brand" href="#">
+			          <a class="navbar-brand" >
 			             {{title}}
 			         
 			         </a>
@@ -43,19 +45,19 @@
 		<div class="col-md-1">
 			<label class="control-label" style="padding-top:5px;">Postulante:</label>
 		</div>
-		<div class="col-md-4">
+		<div class="col-md-3">
 			<select id="cmbPostulante" class="form-control"></select>
 		</div>
 		<div class="col-md-1">
 			<label class="control-label" style="padding-top:5px;">Proyecto:</label>
 		</div>
-		<div class="col-md-6">
+		<div class="col-md-7">
 			<select id="cmbProyecto" class="form-control"></select>
 		</div>
 	</div>
 	<br/>
 	<div class="row">
-		<div class="col-md-5">
+		<div class="col-md-4">
 			<div class="panel panel-default">
 				 
 			    <nav class="navbar navbar-default" role="navigation" style="z-index:0">
@@ -65,7 +67,7 @@
 			            <span class="icon-bar"></span>
 			            <span class="icon-bar"></span>
 			          </button>
-			          <a class="navbar-brand" href="#">
+			          <a class="navbar-brand">
 			             Listado de Criterios
 			         
 			         </a>
@@ -81,7 +83,7 @@
 		     
 			</div>
 		</div>
-		<div class="col-md-7">
+		<div class="col-md-8">
 			<div class="panel panel-default">
 				 
 			    <nav class="navbar navbar-default" role="navigation" style="z-index:0">
@@ -97,6 +99,8 @@
 			        </div>
 			        <div class="collapse navbar-collapse navbar-ex2-collapse">
 			          <button id="btnNew" type="button" class="btn btn-success navbar-btn pull-right"> <span class="glyphicon glyphicon-plus"> </span> Nuevo</button>
+			           <a id="btnInformeCompleto" type="button" class="btn btn-default navbar-btn pull-right disabled" style="margin-right:5px;"> <span class="glyphicon glyphicon-print"> </span> Informe Completo</a>
+			            <a id="btnInformeBasico" type="button" class="btn btn-default navbar-btn pull-right disabled" style="margin-right:5px;"> <span class="glyphicon glyphicon-print"> </span> Informe Básico</a>
 			        </div>
 			    </nav>
 			  
@@ -112,11 +116,38 @@
 <script type="text/template" id="itemOption_template">
 				  
 </script>
+
+<script type="text/template" id="FactoresClaveTab_template">
+	<a href="#tab-aspectoclave-<%=model.value%>" data-toggle="tab" title="<%=model.text %>"><%=model.text.substr(0,20) %>...</a>
+</script>	
+<script type="text/template" id="FactoresClaveTabContainer_template">
+	<br/>
+	<h4><%=model.text%></h4>
+	<table id="gridFactoresClave-<%=model.value%>" class="table table-bordered table-condensed table-hover">
+		<thead>
+		<tr>
+			<th style="width:150px">Evaluador</th>
+			<th>Descripcion</th>
+			<th style="width:80px">Opciones</th>
+		</tr>
+		</thead>
+		<tbody>
+		
+		</tbody>
+	</table>
+</script>	
+
+
 <script type="text/template" id="FactoresClave_template">
-<table id="gridFactoresClave" class="table table-bordered table-condensed table-hover">
+<div id="AspectosClaveParent" style="display:none;">
+		<ul id="tabAspectos" class="nav nav-tabs"></ul>
+		<div id="tabAspectosContent" class="tab-content">
+		</div>
+</div>
+<table id="gridFactoresClave" class="table table-bordered table-condensed table-hover" style="display:none;">
 	<thead>
 		<tr>
-		<th>Criterio</th>
+		<th style="width:150px">Evaluador</th>
 		<th>Descripcion</th>
 		<th style="width:80px">Opciones</th>
 		</tr>
@@ -127,13 +158,14 @@
 </table> 
 </script>
 <script type="text/template" id="itemFactoresClave1_template">
-		<td><%= model.criterio.descripcion %></td>
+
+		<td><%= model.evaluador.nombres+' '+model.evaluador.apellidos %></td>
 		<td><%= model.descripcion %></td>
 		<td>
-			<a href="#" class="btn btn-warning btn-xs" data-id="<%= model.id %>" data-type="edit">
+			<a  class="btn btn-warning btn-xs" data-id="<%= model.id %>" data-type="edit">
 				<span class="glyphicon glyphicon-pencil"></span>
 			</a>
-			<a href="#" class="btn btn-danger btn-xs" data-id="<%= model.id %>" data-type="delete">
+			<a  class="btn btn-danger btn-xs" data-id="<%= model.id %>" data-type="delete">
 				<span class="glyphicon glyphicon-remove"></span>
 			</a>
 		</td>
@@ -150,7 +182,7 @@
 		<td><%= model.criterio.descripcion %></td>
 		<td><%= model.aspectoclave.descripcion %></td>
 		<td>
-			<a href="#" class="btn btn-danger btn-xs" data-id="<%= model.id %>" data-type="delete">
+			<a  class="btn btn-danger btn-xs" data-id="<%= model.id %>" data-type="delete">
 				<span class="glyphicon glyphicon-remove"></span>
 			</a>
 		</td>
@@ -186,6 +218,7 @@
 			<table id="gridFortalezas" class="table table-bordered table-condensed table-hover">
 				<thead>
 					<tr>
+					<th style="width:150px;">Evaluador</th>
 					<th style="width:50px">(+/++)</th>
 					<th style="width:50px;<% if(!isParent){ %>display:none;<% } %>">Area de Analisis</th>
 					<th>Respuesta</th>
@@ -204,6 +237,7 @@
 			<table id="gridAreasMejora" class="table table-bordered table-condensed table-hover">
 				<thead>
 					<tr>
+					<th style="width:150px;">Evaluador</th>
 					<th style="width:50px;">(-/--)</th>
 					<th style="width:50px;<% if(!isParent){ %>display:none;<% } %>">Area de Analisis</th>
 					<th>Respuesta</th>
@@ -229,14 +263,15 @@
 </script>
 
 <script type="text/template" id="itemRespuesta_template">
+		<td><%= model.evaluador.nombres+' '+model.evaluador.apellidos %></td>
 		<td><%= model.puntaje %></td>
 		<td style="<% if(!model.isParent){ %>display:none;<% } %>"><%= model.criterio.codigo %></td>
 		<td><%= model.respuesta %></td>
 		<td>
-			<a href="#" class="btn btn-warning btn-xs"  data-id="<%= model.id %>" data-type="edit">
+			<a class="btn btn-warning btn-xs"  data-id="<%= model.id %>" data-type="edit">
 				<span class="glyphicon glyphicon-pencil"></span>
 			</a>
-			<a href="#" class="btn btn-danger btn-xs"  data-id="<%= model.id %>" data-type="delete">
+			<a class="btn btn-danger btn-xs"  data-id="<%= model.id %>" data-type="delete">
 				<span class="glyphicon glyphicon-remove"></span>
 			</a>
 		</td>
@@ -246,7 +281,7 @@
 
 
 {% block ScriptHead %}
-    <script src="{{ asset('js/pages/Evaluacion/individual.js') }}"></script> 
+    <script src="{{ asset('js/pages/Evaluacion/concenso.js') }}"></script> 
 {% endblock %}
 <input id="idConcurso" type="hidden" value="10" />
 

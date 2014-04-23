@@ -174,4 +174,29 @@ class RespuestaController extends Controller
         
         return new JsonResponse($entity[0]);
     }
+
+    /**
+     * Displays a form to create a new Concurso entity.
+     *
+     * @Route("/json/rest/{id}", name="_admin_respuesta_update", options={"expose"=true})
+     * @Method("PUT")
+     * @Template()
+     */
+    public function updateAction(Request $request,$id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $data = json_decode($request->getContent(), true);
+        $entity = $em->getRepository('AppWebBundle:Respuesta')->find($id);
+       
+        if($entity)
+        {                
+            $entity->setRespuesta($data['respuesta']);
+            $entity->setPuntaje($data['puntaje']);
+            $em->persist($entity);
+            $em->flush();
+
+        }
+        return new JsonResponse(array('success' => true));
+    }
+
 }

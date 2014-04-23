@@ -735,7 +735,7 @@ var ViewsEvalIndividual={
 	            fn:function(){
 	                $('#btn-respuesta-save').attr('disabled',true);
 	                $('#btn-respuesta-cancel').attr('disabled',true);
-	                parent.UpdateAspectoClave(idRespuesta);               
+	                parent.UpdateRespuesta(idRespuesta);               
 	                
 	            }
 	        });
@@ -748,8 +748,24 @@ var ViewsEvalIndividual={
 				var item=model.toJSON();
 				$("#txtRespuesta").val(item.respuesta);
 				$("#cmbPuntaje").val(item.puntaje);
+				$("#txtPregunta").html(item.criterio.descripcion);
 			}})
 			
+		},
+		UpdateRespuesta:function(id){
+			var parent=this;
+			var obj=new Models.RespuestaCriterio({
+				id:id,
+				respuesta:$('#txtRespuesta').val(),
+				puntaje:$("#cmbPuntaje").val()
+			});
+			
+			obj.save({},{
+				success:function(){
+					parent.Window.Hide();
+					parent.attributes.app.SelectCriterio(parent.attributes.app.nodeSelected);
+				}
+			});
 		},
         DeleteRespuesta:function(id){
         	var parent=this;
