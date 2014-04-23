@@ -17,7 +17,8 @@ jAjax.prototype={
                     $("#"+contentId).append(datos);
                     if(js!='')
                             $.getScript(js);
-                    $.getScript('../js/pages/apply-modernizer.js?r='+Math.random());
+                    var url=Routing.generate('_index');
+                    $.getScript(url+'/js/pages/apply-modernizer.js?r='+Math.random());
             },
             error:function(objeto, quepaso, otroobj){
                     $("#"+contentId).html("Ocurrio un error intentelo nuevamente.");

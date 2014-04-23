@@ -144,7 +144,11 @@
   </div>
   <div class="col-lg-8"  >
   	<h3 style="margin-top:4px;">Conflictos de Interes
-  		<span style="float:right;"><a id="btnConflictoNew" href="javascript:return false;" class="btn btn-info btn-xs" style="font-size:12px;"><span class="glyphicon glyphicon-plus"></span> Agregar</a></span>
+  		<span style="float:right;">
+        <a id="btnConflictoNew" class="btn btn-info btn-xs" style="font-size:12px;" data-id="{{ entity.id }}">
+          <span class="glyphicon glyphicon-plus"></span> Agregar
+        </a>
+      </span>
   	</h3>
 <div id="containerConflicto">
 </div>
@@ -164,11 +168,11 @@
 
 <p class="list-group-item-text" data-id="<%=model.id %>">
   <span class="pull-right">&nbsp;</span> 
-  <a style="cursor:pointer;" class="pull-right" data-turno="noche" data-dia='<%=model.id %>' data-value="<%=model.disponibilidad.noche%>"><span class="badge <% if(model.disponibilidad.noche==true){ %>badge-success<% } %>">N</span></a> 
+  <a style="cursor:pointer;" title="Noche" class="pull-right" data-turno="noche" data-dia='<%=model.id %>' data-value="<%=model.disponibilidad.noche%>"><span class="badge <% if(model.disponibilidad.noche==true){ %>badge-success<% } %>">N</span></a> 
   <span class="pull-right">&nbsp;</span> 
-  <a style="cursor:pointer;" class="pull-right" data-turno="tarde" data-dia='<%=model.id %>' data-value="<%=model.disponibilidad.tarde%>"><span class="badge <% if(model.disponibilidad.tarde==true){ %>badge-success<% } %>">T</span></a>  
+  <a style="cursor:pointer;" title="Tarde" class="pull-right" data-turno="tarde" data-dia='<%=model.id %>' data-value="<%=model.disponibilidad.tarde%>"><span class="badge <% if(model.disponibilidad.tarde==true){ %>badge-success<% } %>">T</span></a>  
   <span class="pull-right">&nbsp;</span> 
-  <a  style="cursor:pointer;" class="pull-right" data-turno="manana" data-dia='<%=model.id %>' data-value="<%=model.disponibilidad.manana%>"><span class="badge <% if(model.disponibilidad.manana==true){ %>badge-success<% } %>">M</span> </a> 
+  <a  style="cursor:pointer;" title="Mañana" class="pull-right" data-turno="manana" data-dia='<%=model.id %>' data-value="<%=model.disponibilidad.manana%>"><span class="badge <% if(model.disponibilidad.manana==true){ %>badge-success<% } %>">M</span> </a> 
   <b> <%= model.dia%></b> <br/>
                        
 </p>

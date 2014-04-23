@@ -9,4 +9,5 @@ $(function () {
     
  	});
  }
+ $("input[required='required']").addClass("input-required");
 });
