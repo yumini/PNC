@@ -9,7 +9,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use App\WebBundle\Entity\Postulante;
 use App\WebBundle\Form\PostulanteType;
-
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 /**
  * Postulante controller.
  *
@@ -305,5 +306,34 @@ class PostulanteController extends Controller
         return array(
             'result' => "{\"success\":\"$success\",\"msg\":\"$msg\"}"
         );
+    }
+
+
+    /**
+     *
+     * @Route("/report/postulante", name="_admin_postulante_report", options={"expose"=true})
+     * @Method("GET")
+     * @Template()
+     */
+    public function reportAction(Request $request)
+    {
+         $em = $this->getDoctrine()->getManager();
+
+        $entities = $em->getRepository('AppWebBundle:Postulante')->findAll();
+
+        $content = $this->renderView('AppWebBundle:Postulante:report.html.twig',array(
+            'title_list'=> "Listado de Postulantes",
+            'entities'=>$entities
+        ));
+        return new Response(
+            ($content),
+            200,
+            array(
+                'Content-Type' => 'application/vnd.ms-excel; charset=utf-8',
+                'Content-Disposition' => 'attachment; filename="postulantes.xls"',
+                'Content-Length' => strlen($content)
+            )
+        );
+     
     }
 }

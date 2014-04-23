@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use App\WebBundle\Entity\Evaluador;
 use App\WebBundle\Form\EvaluadorType;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 /**
  * Evaluador controller.
@@ -296,7 +297,7 @@ class EvaluadorController extends Controller
             200,
             array(
                 'Content-Type' => 'application/vnd.ms-excel; charset=utf-8',
-                'Content-Disposition' => 'attachment; filename="usuarios.xls"',
+                'Content-Disposition' => 'attachment; filename="evaluadores.xls"',
                 'Content-Length' => strlen($content)
             )
         );

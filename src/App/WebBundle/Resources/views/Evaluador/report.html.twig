@@ -20,11 +20,18 @@
         <thead>
             <tr >
 
-                <th class="grid-header" style="text-align: left;">Apellidos y Nombres</th>
+                
                 <th class="grid-header" style="text-align: center;">Usuario</th>
-                <th class="grid-header" style="text-align: center;">Email</th>
-                <th class="grid-header text-center" style="text-align: center;width:120px;">Tipo</th>
-                <th class="grid-header text-center" style="text-align: center;width:120px;">Estado</th>
+                <th class="grid-header" style="text-align: left;">Apellidos y Nombres</th>
+                <th class="grid-header" style="text-align: center;">N° Documento</th>
+                <th class="grid-header text-center" style="text-align: center;width:120px;">Dirección</th>
+                <th class="grid-header text-center" style="text-align: center;width:120px;">Empresa</th>
+                <th class="grid-header text-center" style="text-align: center;width:120px;">Cargo</th>
+                <th class="grid-header text-center" style="text-align: center;width:120px;">Profesión</th>
+                <th class="grid-header text-center" style="text-align: center;width:120px;">Teléfono</th>
+                <th class="grid-header text-center" style="text-align: center;width:120px;">Celudar</th>
+                <th class="grid-header text-center" style="text-align: center;width:120px;">Email</th>
+                <th class="grid-header text-center" style="text-align: center;">Concurso</th>
                 
             </tr>
         </thead>
@@ -32,12 +39,21 @@
          
         {% for entity in entities %}
             <tr>
-                <td>{{ entity.apellidos }} {{ entity.nombres }}</td>
-                <td>{{ entity.username }}</td>
-                <td>{{ entity.email }}</td>
-                <td>{{ entity.perfil.nombre }}</td>
-                <td>{% if entity.validaregistro==1 %}{{ "Activo" }}{% endif %} {% if entity.validaregistro==0 %}{{ "Inactivo" }}{% endif %}</td>
-                
+                <td valign="top">{{entity.usuario.username}}</td>
+                <td valign="top">{{ entity.apellidos~' '~entity.nombres }}</td>
+                <td valign="top">{{ entity.numdoc }}&nbsp;</td>
+                <td valign="top">{{entity.direccion}}</td>
+                <td valign="top">{{entity.empresa}}</td>
+                <td valign="top">{{entity.cargo}}</td>
+                <td valign="top">{{entity.profesion}}</td>
+                <td valign="top">{{entity.telefono}}</td>
+                <td valign="top">{{entity.celular}}</td>
+                <td valign="top">{{entity.email1}}</td>
+                <td valign="top">
+                  {% for inscripcion in entity.inscripciones %}
+                    {{inscripcion.concurso.nombre}}<br/>
+                  {% endfor %}
+                </td> 
             </tr>
         {% endfor %}
         </tbody>

@@ -69,7 +69,7 @@ class PostulanteContacto
     private $postulantecontacto;
     
      /**
-    * @ORM\ManyToOne(targetEntity="Postulante", inversedBy="postulantes")
+    * @ORM\ManyToOne(targetEntity="Postulante", inversedBy="contactos")
     * @ORM\JoinColumn(name="postulante_id", referencedColumnName="id")
     */
     private $postulante;

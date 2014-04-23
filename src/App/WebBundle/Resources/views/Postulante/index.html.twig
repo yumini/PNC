@@ -12,7 +12,12 @@
           </button>
           <a class="navbar-brand">{{ title_list }}</a>
         </div>
-      
+       <div class="collapse navbar-collapse navbar-ex2-collapse">
+          
+          <form class="navbar-form navbar-right">
+            <a href="{{ path('_admin_postulante_report') }}" type="button" class="btn btn-default navbar-btn pull-right"> <span class="glyphicon glyphicon-print"> </span> Imprimir</a>
+          </form>
+        </div>
     </nav>
   </div>
   <div class="panel-body">

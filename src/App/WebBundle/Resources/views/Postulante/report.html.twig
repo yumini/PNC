@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title></title>
+
+
+ </head>
+<body>
+
+<div class="panel panel-default">
+  <div class="panel-heading panel-primary ">
+    <h2>
+    {{ title_list }}
+    </h2> 
+  </div>
+  <div class="panel-body">
+  
+    <div id="grid" style="width:100%">
+      <table id="treeGrid" class="table tree-2 table-bordered table-striped table-condensed table-striped" style="width:100%;border-color:#000;" border='1'>
+        <thead>
+            <tr >
+
+                <th rowspan="2" class="grid-header" style="text-align: center;">RUC</th>
+                <th rowspan="2" class="grid-header" style="text-align: center;">Razón Social</th>
+                <th rowspan="2" class="grid-header text-center" style="text-align: center;width:120px;">Teléfono</th>
+                <th rowspan="2" class="grid-header text-center" style="text-align: center;width:120px;">Usuario</th>
+                <th rowspan="2" class="grid-header text-center" style="text-align: center;width:120px;">Dirección</th>
+                <th colspan="3" class="grid-header text-center" style="text-align: center;">Contactos</th>
+                <th colspan="2" class="grid-header text-center" style="text-align: center;">Concurso</th>
+                
+                
+            </tr>
+             <tr >
+
+                <th class="grid-header" style="text-align: center;">Nombres</th>
+                <th class="grid-header" style="text-align: center;">Cargo</th>
+                <th class="grid-header text-center" style="text-align: center;">Email</th>
+                <th class="grid-header" style="text-align: center;">Tipo</th>
+                <th class="grid-header text-center" style="text-align: center;">Proyecto</th>
+                
+                
+            </tr>
+        </thead>
+        <tbody>
+         
+        {% for entity in entities %}
+            <tr>
+                <td valign="top">{{ entity.ruc }}</td>
+                <td valign="top">{{ entity.razonsocial }}</td>
+                <td valign="top">{{entity.telefono}}</td>
+                <td valign="top">{{entity.usuario.username}}</td>
+                <td valign="top">{{entity.direccion}}</td>
+                <td valign="top">
+                  {% for contacto in entity.contactos %}
+                  {{contacto.nombre}}<br/>
+                  {% endfor %}
+                </td>
+                <td valign="top">
+                  {% for contacto in entity.contactos %}
+                  {{contacto.postulantecontacto.nombre}} - {{contacto.cargo}} <br/>
+                  {% endfor %}
+                </td>
+                 <td valign="top">
+                  {% for contacto in entity.contactos %}
+                  {{contacto.email}} <br/>
+                  {% endfor %}
+                </td>
+                <td>
+                  {% for inscripcion in entity.inscripciones %}
+                  {{inscripcion.concurso.nombre}}<br/>
+                  {% endfor %}
+                </td>
+                <td>
+                    {% for inscripcion in entity.inscripciones %}
+                      {{inscripcion.nombreproyecto}}<br/>
+                    {% endfor %}
+                </td>
+                
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+   </div>
+  </div>
+
+
+
+</div>
+  
+
+</body>
+</html>
+

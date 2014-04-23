@@ -87,7 +87,7 @@ class Postulante
     /**
     * @ORM\OneToMany(targetEntity="PostulanteContacto", mappedBy="postulante")
     */
-    protected $postulantes;
+    protected $contactos;
     
     /**
     * @ORM\OneToMany(targetEntity="Inscripcion", mappedBy="postulante")
@@ -105,14 +105,17 @@ class Postulante
     */
     private $grupos;
     
-    public function __construct() {
-        $this->grupos = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->postulantes = new \Doctrine\Common\Collections\ArrayCollection();
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->contactos = new \Doctrine\Common\Collections\ArrayCollection();
         $this->inscripciones = new \Doctrine\Common\Collections\ArrayCollection();
         $this->categorias = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->grupos = new \Doctrine\Common\Collections\ArrayCollection();
     }
-  
-
+    
     /**
      * Get id
      *
@@ -331,69 +334,36 @@ class Postulante
     }
 
     /**
-     * Add grupos
+     * Add contactos
      *
-     * @param \App\WebBundle\Entity\GrupoEvaluacion $grupos
+     * @param \App\WebBundle\Entity\PostulanteContacto $contactos
      * @return Postulante
      */
-    public function addGrupo(\App\WebBundle\Entity\GrupoEvaluacion $grupos)
+    public function addContacto(\App\WebBundle\Entity\PostulanteContacto $contactos)
     {
-        $this->grupos[] = $grupos;
+        $this->contactos[] = $contactos;
     
         return $this;
     }
 
     /**
-     * Remove grupos
+     * Remove contactos
      *
-     * @param \App\WebBundle\Entity\GrupoEvaluacion $grupos
+     * @param \App\WebBundle\Entity\PostulanteContacto $contactos
      */
-    public function removeGrupo(\App\WebBundle\Entity\GrupoEvaluacion $grupos)
+    public function removeContacto(\App\WebBundle\Entity\PostulanteContacto $contactos)
     {
-        $this->grupos->removeElement($grupos);
+        $this->contactos->removeElement($contactos);
     }
 
     /**
-     * Get grupos
+     * Get contactos
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getGrupos()
+    public function getContactos()
     {
-        return $this->grupos;
-    }
-
-    /**
-     * Add postulantes
-     *
-     * @param \App\WebBundle\Entity\Postulante $postulantes
-     * @return Postulante
-     */
-    public function addPostulante(\App\WebBundle\Entity\Postulante $postulantes)
-    {
-        $this->postulantes[] = $postulantes;
-    
-        return $this;
-    }
-
-    /**
-     * Remove postulantes
-     *
-     * @param \App\WebBundle\Entity\Postulante $postulantes
-     */
-    public function removePostulante(\App\WebBundle\Entity\Postulante $postulantes)
-    {
-        $this->postulantes->removeElement($postulantes);
-    }
-
-    /**
-     * Get postulantes
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getPostulantes()
-    {
-        return $this->postulantes;
+        return $this->contactos;
     }
 
     /**
@@ -428,13 +398,6 @@ class Postulante
     {
         return $this->inscripciones;
     }
-   
-    public function IsValid(){
-        if($this->ruc!="" && $this->razonsocial!="" && $this->direccion!="")
-            return 1;
-                
-        return 0;
-    }
 
     /**
      * Add categorias
@@ -467,5 +430,45 @@ class Postulante
     public function getCategorias()
     {
         return $this->categorias;
+    }
+
+    /**
+     * Add grupos
+     *
+     * @param \App\WebBundle\Entity\GrupoEvaluacionEvaluador $grupos
+     * @return Postulante
+     */
+    public function addGrupo(\App\WebBundle\Entity\GrupoEvaluacionEvaluador $grupos)
+    {
+        $this->grupos[] = $grupos;
+    
+        return $this;
+    }
+
+    /**
+     * Remove grupos
+     *
+     * @param \App\WebBundle\Entity\GrupoEvaluacionEvaluador $grupos
+     */
+    public function removeGrupo(\App\WebBundle\Entity\GrupoEvaluacionEvaluador $grupos)
+    {
+        $this->grupos->removeElement($grupos);
+    }
+
+    /**
+     * Get grupos
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getGrupos()
+    {
+        return $this->grupos;
+    }
+
+    public function IsValid(){
+        if($this->ruc!="" && $this->razonsocial!="" && $this->direccion!="")
+            return 1;
+                
+        return 0;
     }
 }
