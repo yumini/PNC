@@ -1,6 +1,7 @@
 
 <div id="containerEtapaIndividual" class="container-fluid">
 	<input type="hidden" id="pathUpload" value="{{ asset('uploads/informes')}}" />
+	<input type="hidden" id="tipoetapa_id" value="{{tipoEtapa.id}}">
 	<nav class="navbar navbar-default" role="navigation" style="z-index:0">
 			        <div class="navbar-header">
 			          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex2-collapse">
@@ -99,12 +100,15 @@
 			        </div>
 			        <div class="collapse navbar-collapse navbar-ex2-collapse">
 			          <button id="btnNew" type="button" class="btn btn-success navbar-btn pull-right"> <span class="glyphicon glyphicon-plus"> </span> Nuevo</button>
-			           <a id="btnInformeCompleto" type="button" class="btn btn-default navbar-btn pull-right disabled" style="margin-right:5px;"> <span class="glyphicon glyphicon-print"> </span> Informe Completo</a>
-			            <a id="btnInformeBasico" type="button" class="btn btn-default navbar-btn pull-right disabled" style="margin-right:5px;"> <span class="glyphicon glyphicon-print"> </span> Informe Básico</a>
+			           
 			        </div>
 			    </nav>
 			  
 				<div class="panel-body">
+					
+					<a id="btnInformeCompleto" type="button" class="btn btn-default btn-xs pull-right disabled" style="margin-right:5px;"> <span class="glyphicon glyphicon-print"> </span> Informe Completo</a>
+			        <a id="btnInformeBasico" type="button" class="btn btn-default btn-xs pull-right disabled" style="margin-right:5px;"> <span class="glyphicon glyphicon-print"> </span> Informe Básico</a>
+			            
 					<div id="body-etapa">
 						Seleccione un criterio...
 					</div>

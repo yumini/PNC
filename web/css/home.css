@@ -327,3 +327,48 @@ box-shadow: 1px 0px 22px -3px rgba(140,140,140,1);
 .cursor-pointer{
   cursor: pointer;
 }
+.TextoAnulado{
+  text-decoration: line-through;
+}
+
+.home-loading2{
+  background-image: url(../images/iconos/loading.gif);
+  background-repeat: no-repeat;
+  background-position: left;
+  
+  margin-top: 10px;
+  margin-right: auto;
+  margin-bottom: 5px;
+  margin-left: auto;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  padding-top: 7px;
+  padding-right: 5px;
+  padding-bottom: 7px;
+  padding-left: 35px;
+  color: #666;
+}
+
+
+
+.table-scroll table {
+    border-collapse: collapse;
+    width: 100%;
+}
+.table-scroll thead {
+    text-align:left;
+    display: table;
+    float: left;
+    width: 100%;
+}
+.table-scroll thead tr {
+    display: table-row;
+    width: 100%;
+}
+.table-scroll tbody {
+    display: block;
+    height: 250px;
+    overflow: auto;
+    float: left;
+    width: 100%;
+}

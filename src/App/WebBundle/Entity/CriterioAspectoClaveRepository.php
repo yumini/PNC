@@ -12,18 +12,23 @@ use Doctrine\ORM\EntityRepository;
  */
 class CriterioAspectoClaveRepository extends EntityRepository
 {
-	public function findAllByCriterio($idCriterio,$idevaluador,$idinscripcion,$isArray=false){
+	public function findAllByCriterio($idCriterio,$idevaluador,$idinscripcion,$idTipoEtapa,$isArray=false){
 		$em=$this->getEntityManager();
-        $dql   = "SELECT ac,c,a,i FROM AppWebBundle:CriterioAspectoClave ac
+        $dql   = "SELECT ac,c,a,i,te FROM AppWebBundle:CriterioAspectoClave ac
 	        		JOIN ac.criterio c
                                 JOIN ac.evaluador e
                                 JOIN ac.aspectoclave a
                                 JOIN ac.inscripcion i
-	        		where c.id=:idcriterio AND e.id=:idevaluador AND i.id=:idinscripcion";
+                                JOIN ac.tipoEtapa te
+	        		where c.id=:idcriterio 
+                                AND (e.id=:idevaluador or :idevaluador=0)
+                                AND i.id=:idinscripcion
+                                AND te.id=:idtipoetapa";
         $query = $em->createQuery($dql)
                 ->setParameter('idcriterio', $idCriterio)
                 ->setParameter('idevaluador', $idevaluador)
-                ->setParameter('idinscripcion', $idinscripcion);
+                ->setParameter('idinscripcion', $idinscripcion)
+                ->setParameter('idtipoetapa', $idTipoEtapa);
         try {
                 if($isArray)
                 	return $query->getArrayResult();
@@ -34,19 +39,44 @@ class CriterioAspectoClaveRepository extends EntityRepository
         }
 	}
 
-        public function findByCriterioAndAspectoClave($idCriterio,$idaspectoclave,$idinscripcion,$isArray=false){
+        public function findAllByEtapa($idinscripcion,$idTipoEtapa,$estado,$isArray=false){
                 $em=$this->getEntityManager();
-                $dql   = "SELECT ac,c,a,i FROM AppWebBundle:CriterioAspectoClave ac
+                $dql   = "SELECT ac FROM AppWebBundle:CriterioAspectoClave ac
+                                        JOIN ac.inscripcion i
+                                        JOIN ac.tipoEtapa te
+                                        WHERE i.id=:idinscripcion
+                                        AND te.id=:idtipoetapa
+                                        AND ac.estado=:estado";
+                $query = $em->createQuery($dql)
+                        ->setParameter('idinscripcion', $idinscripcion)
+                        ->setParameter('idtipoetapa', $idTipoEtapa)
+                        ->setParameter('estado', $estado);
+                try {
+                        if($isArray)
+                                return $query->getArrayResult();
+                        else
+                                return $query->getResult();
+                } catch (\Doctrine\ORM\NoResultException $e) {
+                        return null;
+                }
+        }
+
+        public function findByCriterioAndAspectoClave($idCriterio,$idaspectoclave,$idinscripcion,$idTipoEtapa,$isArray=false){
+                $em=$this->getEntityManager();
+                $dql   = "SELECT ac,c,a,i,te FROM AppWebBundle:CriterioAspectoClave ac
                                         JOIN ac.criterio c
                                         JOIN ac.aspectoclave a
                                         JOIN ac.inscripcion i
+                                        JOIN ac.tipoEtapa te
                                         where c.id=:criterioid 
                                         AND a.id=:aspectoclaveid
-                                        AND i.id=:idinscripcion";
+                                        AND i.id=:idinscripcion
+                                        AND te.id=:idtipoetapa";
                 $query = $em->createQuery($dql)
                         ->setParameter('criterioid', $idCriterio)
                         ->setParameter('aspectoclaveid', $idaspectoclave)
-                        ->setParameter('idinscripcion', $idinscripcion);
+                        ->setParameter('idinscripcion', $idinscripcion)
+                        ->setParameter('idtipoetapa', $idTipoEtapa);
                 try {
                         if($isArray)
                                 return $query->getArrayResult();

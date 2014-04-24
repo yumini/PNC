@@ -1,5 +1,6 @@
 
 <div id="containerEtapaIndividual" class="container-fluid">
+	<input type="hidden" id="tipoetapa_id" value="{{tipoEtapa.id}}">
 	<input type="hidden" id="pathUpload" value="{{ asset('uploads/informes')}}" />
 	<nav class="navbar navbar-default" role="navigation" style="z-index:0">
 			        <div class="navbar-header">
@@ -93,18 +94,25 @@
 			            <span class="icon-bar"></span>
 			            <span class="icon-bar"></span>
 			          </button>
-			          <a id="titleCriterio" class="navbar-brand" href="#">
+			          <a id="titleCriterio" class="navbar-brand">
 			             Seleccione un criterio...			         
 			          </a>
 			        </div>
 			        <div class="collapse navbar-collapse navbar-ex2-collapse">
 			          <button id="btnNew" type="button" class="btn btn-success navbar-btn pull-right"> <span class="glyphicon glyphicon-plus"> </span> Nuevo</button>
-			           <a id="btnInformeCompleto" type="button" class="btn btn-default navbar-btn pull-right disabled" style="margin-right:5px;"> <span class="glyphicon glyphicon-print"> </span> Informe Completo</a>
-			            <a id="btnInformeBasico" type="button" class="btn btn-default navbar-btn pull-right disabled" style="margin-right:5px;"> <span class="glyphicon glyphicon-print"> </span> Informe Básico</a>
+			           
+
+			            <a id="btnImportar" type="button" class="btn btn-default navbar-btn pull-right" style="margin-right:5px;"> <span class="glyphicon glyphicon-print"> </span> Importar</a>
 			        </div>
 			    </nav>
 			  
 				<div class="panel-body">
+					
+						
+					
+					<a id="btnInformeCompleto" type="button" class="btn btn-default btn-xs pull-right disabled" style="margin-right:5px;"> <span class="glyphicon glyphicon-print"> </span> Informe Completo</a>
+			        <a id="btnInformeBasico" type="button" class="btn btn-default btn-xs pull-right disabled" style="margin-right:5px;"> <span class="glyphicon glyphicon-print"> </span> Informe Básico</a>
+			            
 					<div id="body-etapa">
 						Seleccione un criterio...
 					</div>
@@ -128,7 +136,7 @@
 		<tr>
 			<th style="width:150px">Evaluador</th>
 			<th>Descripcion</th>
-			<th style="width:80px">Opciones</th>
+			<th style="width:70px">Opciones</th>
 		</tr>
 		</thead>
 		<tbody>
@@ -149,7 +157,7 @@
 		<tr>
 		<th style="width:150px">Evaluador</th>
 		<th>Descripcion</th>
-		<th style="width:80px">Opciones</th>
+		<th style="width:70px">Opciones</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -160,14 +168,22 @@
 <script type="text/template" id="itemFactoresClave1_template">
 
 		<td><%= model.evaluador.nombres+' '+model.evaluador.apellidos %></td>
-		<td><%= model.descripcion %></td>
+		<td <% if(!model.estado){ %>class="TextoAnulado"<% } %>><%= model.descripcion %></td>
 		<td>
 			<a  class="btn btn-warning btn-xs" data-id="<%= model.id %>" data-type="edit">
 				<span class="glyphicon glyphicon-pencil"></span>
 			</a>
-			<a  class="btn btn-danger btn-xs" data-id="<%= model.id %>" data-type="delete">
-				<span class="glyphicon glyphicon-remove"></span>
-			</a>
+			
+			<% if(model.estado){ %>
+				<a title="Anular"  class="btn btn-danger btn-xs" data-id="<%= model.id %>" data-value="0">
+				<span class="glyphicon glyphicon-minus"></span>
+				</a>
+			<% }else{ %>
+				<a title="Activar"  class="btn btn-success btn-xs" data-id="<%= model.id %>" data-value="1">
+				<span class="glyphicon glyphicon-refresh"></span>
+				</a>
+			<% } %>
+			
 		</td>
 </script>
 
@@ -179,32 +195,40 @@
 
 <script type="text/template" id="itemFactoresClave3_template">
 		
-		<td><%= model.criterio.descripcion %></td>
-		<td><%= model.aspectoclave.descripcion %></td>
-		<td>
-			<a  class="btn btn-danger btn-xs" data-id="<%= model.id %>" data-type="delete">
-				<span class="glyphicon glyphicon-remove"></span>
-			</a>
+		<td style="width:200px;"><%= model.criterio.descripcion %></td>
+		<td <% if(!model.estado){ %>class="TextoAnulado"<% } %>><%= model.aspectoclave.descripcion %></td>
+		<td style="width:40px;">
+			
+			<% if(model.estado){ %>
+				<a title="Anular"  class="btn btn-danger btn-xs" data-id="<%= model.id %>" data-value="0">
+				<span class="glyphicon glyphicon-minus"></span>
+				</a>
+			<% }else{ %>
+				<a title="Activar"  class="btn btn-success btn-xs" data-id="<%= model.id %>" data-value="1">
+				<span class="glyphicon glyphicon-refresh"></span>
+				</a>
+			<% } %>
 		</td>
 </script>
 
 <script type="text/template" id="respuestas_template">
 <div id="RespuestaAspectosClave">
 
-<a id="btnNewAspectoClave" class="btn btn-success btn-xs pull-right">Agregar Aspectos Claves</a>
+<a id="btnNewAspectoClave" class="btn btn-success btn-xs pull-right" style="margin-right:5px;">Agregar Aspectos Claves</a>
 <br/>
 <br/>
-<table id="gridCriterioAspectosClaves" class="table table-bordered table-condensed table-hover">
+<table id="gridCriterioAspectosClaves" class="table table-bordered table-condensed table-hover table-scroll">
 	<thead>
 		<tr>
-		<th>Criterio</th>
+		<th style="width:200px;">Criterio</th>
 		<th>Descripcion</th>
-		<th></th>
+		<th style="width:60px;"></th>
 		</tr>
 	</thead>
 	<tbody>
 		
 	</tbody>
+	
 </table> 
 </div>
 <ul id="myTab" class="nav nav-tabs">
@@ -222,7 +246,7 @@
 					<th style="width:50px">(+/++)</th>
 					<th style="width:50px;<% if(!isParent){ %>display:none;<% } %>">Area de Analisis</th>
 					<th>Respuesta</th>
-					<th style="width:80px">Opciones</th>
+					<th style="width:70px">Opciones</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -241,7 +265,7 @@
 					<th style="width:50px;">(-/--)</th>
 					<th style="width:50px;<% if(!isParent){ %>display:none;<% } %>">Area de Analisis</th>
 					<th>Respuesta</th>
-					<th style="width:80px">Opciones</th>
+					<th style="width:70px">Opciones</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -266,14 +290,20 @@
 		<td><%= model.evaluador.nombres+' '+model.evaluador.apellidos %></td>
 		<td><%= model.puntaje %></td>
 		<td style="<% if(!model.isParent){ %>display:none;<% } %>"><%= model.criterio.codigo %></td>
-		<td><%= model.respuesta %></td>
+		<td <% if(!model.estado){ %>class="TextoAnulado"<% } %>><%= model.respuesta %></td>
 		<td>
 			<a class="btn btn-warning btn-xs"  data-id="<%= model.id %>" data-type="edit">
 				<span class="glyphicon glyphicon-pencil"></span>
 			</a>
-			<a class="btn btn-danger btn-xs"  data-id="<%= model.id %>" data-type="delete">
-				<span class="glyphicon glyphicon-remove"></span>
-			</a>
+			<% if(model.estado){ %>
+				<a title="Anular"  class="btn btn-danger btn-xs" data-id="<%= model.id %>" data-value="0">
+				<span class="glyphicon glyphicon-minus"></span>
+				</a>
+			<% }else{ %>
+				<a title="Activar"  class="btn btn-success btn-xs" data-id="<%= model.id %>" data-value="1">
+				<span class="glyphicon glyphicon-refresh"></span>
+				</a>
+			<% } %>
 		</td>
 </script>
 </div>

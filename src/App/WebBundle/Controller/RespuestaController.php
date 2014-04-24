@@ -35,8 +35,9 @@ class RespuestaController extends Controller
         $idcriterio=$request->query->get('idcriterio');
         $idevaluador=$request->query->get('evaluador_id');
         $idinscripcion=$request->query->get('inscripcion_id');
+        $tipoetapa_id=$request->query->get('tipoetapa_id');
         $em = $this->getDoctrine()->getManager();
-        $entities = $em->getRepository('AppWebBundle:Respuesta')->findAllById($idcriterio,$idevaluador,$idinscripcion,$isparent,true);
+        $entities = $em->getRepository('AppWebBundle:Respuesta')->findAllById($idcriterio,$idevaluador,$idinscripcion,$isparent,$tipoetapa_id,true);
         return new JsonResponse($entities);
     }
 
@@ -85,10 +86,11 @@ class RespuestaController extends Controller
         $evaluador = $em->getRepository('AppWebBundle:Evaluador')->find($data['evaluador_id']);
         $aspectoclave = $em->getRepository('AppWebBundle:AspectoClave')->find($data['aspectoclave_id']);
         $inscripcion = $em->getRepository('AppWebBundle:Inscripcion')->find($data['inscripcion_id']);
+        $tipoEtapa=$em->getRepository('AppWebBundle:Catalogo')->find($data['tipoetapa_id']);
         if($data['aspectoclave_id']!='0'){
 
             $criterioaspectoclave = $em->getRepository('AppWebBundle:CriterioAspectoClave')
-                ->findByCriterioAndAspectoClave($data['criterio_padreid'],$data['aspectoclave_id'],true);
+                ->findByCriterioAndAspectoClave($data['criterio_padreid'],$data['aspectoclave_id'],$data['inscripcion_id'],$data['tipoetapa_id'],true);
             if(!count($criterioaspectoclave)>0){
                 $criterioaspecto = $em->getRepository('AppWebBundle:ConcursoCriterio')->find($data['criterio_padreid']);
                 $criterioaspectoclave=new CriterioAspectoClave();
@@ -96,6 +98,7 @@ class RespuestaController extends Controller
                 $criterioaspectoclave->setAspectoclave($aspectoclave);
                 $criterioaspectoclave->setEvaluador($evaluador);
                 $criterioaspectoclave->setInscripcion($inscripcion);
+                $criterioaspectoclave->setTipoEtapa($tipoEtapa);
                 $em->persist($criterioaspectoclave);
             }
         }
@@ -103,6 +106,7 @@ class RespuestaController extends Controller
         $entity->setInscripcion($inscripcion);
         $entity->setEvaluador($evaluador);
         $entity->setCriterio($criterio);
+        $entity->setTipoEtapa($tipoEtapa);
         if($data['aspectoclave_id']!='0')
             $entity->setAspectoclave($aspectoclave);
         $entity->setRespuesta($data['respuesta']);
@@ -192,6 +196,29 @@ class RespuestaController extends Controller
         {                
             $entity->setRespuesta($data['respuesta']);
             $entity->setPuntaje($data['puntaje']);
+            $em->persist($entity);
+            $em->flush();
+
+        }
+        return new JsonResponse(array('success' => true));
+    }
+
+    /**
+     * Displays a form to create a new Concurso entity.
+     *
+     * @Route("/changestate/{id}", name="_admin_respuesta_update_state", options={"expose"=true})
+     * @Method("POST")
+     * @Template()
+     */
+    public function updatestateAction(Request $request,$id)
+    {
+        
+       $estado=($request->query->get('estado')=='true')?true:false;
+        $em = $this->getDoctrine()->getManager();
+        $entity = $em->getRepository('AppWebBundle:Respuesta')->find($id);
+        if($entity)
+        {                
+            $entity->setEstado($estado);
             $em->persist($entity);
             $em->flush();
 

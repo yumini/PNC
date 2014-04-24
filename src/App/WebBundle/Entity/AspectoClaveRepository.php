@@ -25,29 +25,34 @@ class AspectoClaveRepository extends EntityRepository
                 return null;
         }
     }
-	public function findAllById($idCriterio,$idevaluador,$idinscripcion,$isParent,$isArray){
+	public function findAllById($idCriterio,$idevaluador,$idinscripcion,$isParent,$idTipoEtapa,$isArray){
 		$em=$this->getEntityManager();
 		if($isParent){
-	        $dql   = "SELECT ac,c,e,i FROM AppWebBundle:AspectoClave ac
+	        $dql   = "SELECT ac,c,e,i,te FROM AppWebBundle:AspectoClave ac
 	        		JOIN ac.criterio c
 	        		JOIN ac.evaluador e
 	        		JOIN ac.inscripcion i
+                    JOIN ac.tipoEtapa te
 	        		where c.idpadre=:id
 	        		AND (e.id=:idevaluador or :idevaluador=0)
-	        		AND i.id=:idinscripcion";
+	        		AND i.id=:idinscripcion
+                    AND te.id=:idtipoetapa";
 	    }else{
-	    	$dql   = "SELECT ac,c,e,i FROM AppWebBundle:AspectoClave ac
+	    	$dql   = "SELECT ac,c,e,i,te FROM AppWebBundle:AspectoClave ac
 	        		JOIN ac.criterio c
 	        		JOIN ac.evaluador e
 	        		JOIN ac.inscripcion i
+                    JOIN ac.tipoEtapa te
 	        		where c.id=:id
 	        		AND (e.id=:idevaluador or :idevaluador=0)
-	        		AND i.id=:idinscripcion";
+	        		AND i.id=:idinscripcion
+                    AND te.id=:idtipoetapa";
 	    }
         $query = $em->createQuery($dql)
         	->setParameter('id', $idCriterio)
         	->setParameter('idevaluador', $idevaluador)
-        	->setParameter('idinscripcion', $idinscripcion);
+        	->setParameter('idinscripcion', $idinscripcion)
+            ->setParameter('idtipoetapa', $idTipoEtapa);
         try {
                 if($isArray)
                 	return $query->getArrayResult();
@@ -57,6 +62,28 @@ class AspectoClaveRepository extends EntityRepository
                 return null;
         }
 	}
+    public function findAllByEtapa($idinscripcion,$idTipoEtapa,$estado,$isArray){
+        $em=$this->getEntityManager();
+        $dql   = "SELECT ac FROM AppWebBundle:AspectoClave ac
+                    JOIN ac.inscripcion i
+                    JOIN ac.tipoEtapa te
+                    WHERE   i.id=:idinscripcion
+                    AND     te.id=:idtipoetapa
+                    AND ac.estado=:estado";
+       
+        $query = $em->createQuery($dql)
+            ->setParameter('idinscripcion', $idinscripcion)
+            ->setParameter('idtipoetapa', $idTipoEtapa)
+            ->setParameter('estado', $estado);
+        try {
+                if($isArray)
+                    return $query->getArrayResult();
+                else
+                    return $query->getResult();
+        } catch (\Doctrine\ORM\NoResultException $e) {
+                return null;
+        }
+    }
 	public function findAllByConcursoId($idconcurso,$idevaluador,$idinscripcion,$isArray=false){
 		$em=$this->getEntityManager();
 	    $dql   = "SELECT ac,cr,e,i FROM AppWebBundle:AspectoClave ac

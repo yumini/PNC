@@ -61,6 +61,12 @@ class CriterioVisita
     protected $inscripcion;
     
     /**
+    * @ORM\ManyToOne(targetEntity="Catalogo", inversedBy="visitas")
+    * @ORM\JoinColumn(name="tipoetapa_id", referencedColumnName="id")
+    */
+    protected $tipoEtapa;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -183,5 +189,28 @@ class CriterioVisita
     public function getFechaActualizacion()
     {
         return $this->fechaActualizacion;
+    }
+
+    /**
+     * Set inscripcion
+     *
+     * @param \App\WebBundle\Entity\Inscripcion $inscripcion
+     * @return CriterioVisita
+     */
+    public function setInscripcion(\App\WebBundle\Entity\Inscripcion $inscripcion = null)
+    {
+        $this->inscripcion = $inscripcion;
+    
+        return $this;
+    }
+
+    /**
+     * Get inscripcion
+     *
+     * @return \App\WebBundle\Entity\Inscripcion 
+     */
+    public function getInscripcion()
+    {
+        return $this->inscripcion;
     }
 }

@@ -61,6 +61,12 @@ class CriterioVisita
     protected $inscripcion;
     
     /**
+    * @ORM\ManyToOne(targetEntity="Catalogo", inversedBy="visitas")
+    * @ORM\JoinColumn(name="tipoetapa_id", referencedColumnName="id")
+    */
+    protected $tipoEtapa;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -206,5 +212,28 @@ class CriterioVisita
     public function getInscripcion()
     {
         return $this->inscripcion;
+    }
+
+    /**
+     * Set tipoEtapa
+     *
+     * @param \App\WebBundle\Entity\Catalogo $tipoEtapa
+     * @return CriterioVisita
+     */
+    public function setTipoEtapa(\App\WebBundle\Entity\Catalogo $tipoEtapa = null)
+    {
+        $this->tipoEtapa = $tipoEtapa;
+    
+        return $this;
+    }
+
+    /**
+     * Get tipoEtapa
+     *
+     * @return \App\WebBundle\Entity\Catalogo 
+     */
+    public function getTipoEtapa()
+    {
+        return $this->tipoEtapa;
     }
 }

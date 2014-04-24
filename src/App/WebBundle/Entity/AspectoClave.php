@@ -70,7 +70,20 @@ class AspectoClave
      * @ORM\Column(name="fechaActualizacion", type="datetime", nullable=true)
      */
     private $fechaActualizacion;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="estado", type="boolean")
+     */
+    private $estado=true;
 
+    /**
+    * @ORM\ManyToOne(targetEntity="Catalogo", inversedBy="aspectosclaves")
+    * @ORM\JoinColumn(name="tipoetapa_id", referencedColumnName="id")
+    */
+    protected $tipoEtapa;
+    
     /**
      * Get id
      *
@@ -290,5 +303,51 @@ class AspectoClave
     public function getInscripcion()
     {
         return $this->inscripcion;
+    }
+
+    /**
+     * Set estado
+     *
+     * @param boolean $estado
+     * @return AspectoClave
+     */
+    public function setEstado($estado)
+    {
+        $this->estado = $estado;
+    
+        return $this;
+    }
+
+    /**
+     * Get estado
+     *
+     * @return boolean 
+     */
+    public function getEstado()
+    {
+        return $this->estado;
+    }
+
+    /**
+     * Set tipoEtapa
+     *
+     * @param \App\WebBundle\Entity\Catalogo $tipoEtapa
+     * @return AspectoClave
+     */
+    public function setTipoEtapa(\App\WebBundle\Entity\Catalogo $tipoEtapa = null)
+    {
+        $this->tipoEtapa = $tipoEtapa;
+    
+        return $this;
+    }
+
+    /**
+     * Get tipoEtapa
+     *
+     * @return \App\WebBundle\Entity\Catalogo 
+     */
+    public function getTipoEtapa()
+    {
+        return $this->tipoEtapa;
     }
 }

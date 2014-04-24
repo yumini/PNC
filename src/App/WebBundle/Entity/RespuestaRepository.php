@@ -12,36 +12,66 @@ use Doctrine\ORM\EntityRepository;
  */
 class RespuestaRepository extends EntityRepository
 {
-	public function findAllById($idCriterio,$idEvaluador,$idinscripcion,$isParent,$isArray){
+	public function findAllById($idCriterio,$idEvaluador,$idinscripcion,$isParent,$idTipoEtapa,$isArray){
 		$em=$this->getEntityManager();
 		if($isParent){
 			$ids=$this->getAllRespuestasSubcriterios($idCriterio);
 			if($ids==null)
 				$ids='0';
-	        $dql   = "SELECT r,c,e,i FROM AppWebBundle:Respuesta r
+	        $dql   = "SELECT r,c,e,i,te FROM AppWebBundle:Respuesta r
 	        		JOIN r.criterio c
 	        		JOIN r.evaluador e
 	        		JOIN r.inscripcion i
+	        		JOIN r.tipoEtapa te
 	        		where c.id in($ids)
 	        		AND (e.id=:idevaluador or :idevaluador=0)
-	        		AND i.id=:idinscripcion";
+	        		AND i.id=:idinscripcion
+	        		AND te.id=:idtipoetapa";
 	        $query = $em->createQuery($dql)
 	        	->setParameter('idevaluador', $idEvaluador)
-	        	->setParameter('idinscripcion', $idinscripcion);
+	        	->setParameter('idinscripcion', $idinscripcion)
+	        	->setParameter('idtipoetapa', $idTipoEtapa);
 	    }else{
 
-	    	$dql   = "SELECT r,c,e,i FROM AppWebBundle:Respuesta r
+	    	$dql   = "SELECT r,c,e,i,te FROM AppWebBundle:Respuesta r
 	        		JOIN r.criterio c
 	        		JOIN r.evaluador e
 	        		JOIN r.inscripcion i
+	        		JOIN r.tipoEtapa te
 	        		where c.id=:id
 	        		AND (e.id=:idevaluador or :idevaluador=0)
-	        		AND i.id=:idinscripcion";
+	        		AND i.id=:idinscripcion
+	        		AND te.id=:idtipoetapa";
 	        $query = $em->createQuery($dql)
 	        	->setParameter('id', $idCriterio)
 	        	->setParameter('idevaluador', $idEvaluador)
-	        	->setParameter('idinscripcion', $idinscripcion);
+	        	->setParameter('idinscripcion', $idinscripcion)
+	        	->setParameter('idtipoetapa', $idTipoEtapa);
 	    }
+        
+        try {
+                if($isArray)
+                	return $query->getArrayResult();
+                else
+                	return $query->getResult();
+        } catch (\Doctrine\ORM\NoResultException $e) {
+                return null;
+        }
+	}
+
+	public function findAllByEtapa($idinscripcion,$idtipoetapa,$estado,$isArray){
+		$em=$this->getEntityManager();
+        $dql   = "SELECT r FROM AppWebBundle:Respuesta r
+	        		JOIN r.inscripcion i
+	        		JOIN r.tipoEtapa te
+	        		WHERE i.id=:idinscripcion
+	        		AND te.id=:idtipoetapa
+	        		AND r.estado=:estado";
+        $query = $em->createQuery($dql)
+        	->setParameter('idinscripcion', $idinscripcion)
+        	->setParameter('idtipoetapa', $idtipoetapa)
+        	->setParameter('estado', $estado);
+	    
         
         try {
                 if($isArray)

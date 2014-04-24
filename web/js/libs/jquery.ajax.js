@@ -43,6 +43,17 @@ jAjax.prototype={
                     $("#"+contentId).html("Ocurrio un error intentelo nuevamente.");
             }
         });
+    },
+    Execute:function(url,method,params,fnSuccess){
+        $.ajax({
+            type:method,
+            url:url,
+            data:params,
+            dataType:"html",
+            success:function(datos){
+                    fnSuccess();
+            }
+        });
     }
 		
 }

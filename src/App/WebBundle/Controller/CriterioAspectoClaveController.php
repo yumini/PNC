@@ -46,7 +46,8 @@ class CriterioAspectoClaveController extends Controller
         $idcriterio=$request->query->get('idcriterio');
         $idevaluador=$request->query->get('evaluador_id');
         $idinscripcion=$request->query->get('inscripcion_id');
-        $entities = $em->getRepository('AppWebBundle:CriterioAspectoClave')->findAllByCriterio($idcriterio,$idevaluador,$idinscripcion,true);
+        $tipoetapa_id=$request->query->get('tipoetapa_id');
+        $entities = $em->getRepository('AppWebBundle:CriterioAspectoClave')->findAllByCriterio($idcriterio,$idevaluador,$idinscripcion,$tipoetapa_id,true);
         
         return new JsonResponse($entities);
     }
@@ -67,10 +68,12 @@ class CriterioAspectoClaveController extends Controller
         $aspectoclave = $em->getRepository('AppWebBundle:AspectoClave')->find($data['aspectoclave_id']);
         $evaluador = $em->getRepository('AppWebBundle:Evaluador')->find($data['evaluador_id']);
         $inscripcion=$em->getRepository('AppWebBundle:Inscripcion')->find($data['inscripcion_id']);
+        $tipoEtapa=$em->getRepository('AppWebBundle:Catalogo')->find($data['tipoetapa_id']);
         $entity->setEvaluador($evaluador);
         $entity->setCriterio($criterio);
         $entity->setAspectoclave($aspectoclave);
         $entity->setInscripcion($inscripcion);
+        $entity->setTipoEtapa($tipoEtapa);
         $em->persist($entity);
         $em->flush();
         
@@ -96,5 +99,26 @@ class CriterioAspectoClaveController extends Controller
         }
         return new JsonResponse(array('success' => true));
     }
-    
+   
+   /**
+     * Displays a form to create a new Concurso entity.
+     *
+     * @Route("/changestate/{id}", name="_admin_criterioaspectoclave_update_state", options={"expose"=true})
+     * @Method("POST")
+     * @Template()
+     */
+    public function updatestateAction(Request $request,$id)
+    {
+        $estado=($request->query->get('estado')=='true')?true:false;
+        $em = $this->getDoctrine()->getManager();
+        $entity = $em->getRepository('AppWebBundle:CriterioAspectoClave')->find($id);
+        if($entity)
+        {                
+            $entity->setEstado($estado);
+            $em->persist($entity);
+            $em->flush();
+
+        }
+        return new JsonResponse(array('success' => true));
+    } 
 }

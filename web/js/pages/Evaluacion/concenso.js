@@ -7,7 +7,8 @@ var ViewsEvalIndividual={
                     "change #cmbProyecto": "SelectProyecto",
                     "click #btnNew":"Nuevo",
                     "click #btnInformeCompleto":"InformeCompleto",
-                    "click #btnInformeBasico":"InformeBasico"
+                    "click #btnInformeBasico":"InformeBasico",
+                    "click #btnImportar":"Importar"
         },
 		initialize: function(){
 				_.bindAll(this);
@@ -66,6 +67,22 @@ var ViewsEvalIndividual={
 	                timeout:5000
 	            });
 	        }
+	    },
+	    Importar:function(){
+			var n = noty({
+				text: "<div class='home-loading2'><b>Importando Información</b>.<br/> Espere un momento por favor..</div>",
+				layout:"center",
+				modal: true,
+				theme: 'defaultTheme',
+				buttons: [
+            		
+            	]
+
+			});
+			var url=Routing.generate('_admin_evaluacionconcenso_importar',{inscripcion_id:$('#cmbProyecto').val()});
+			new jAjax().Execute(url,'GET','',function(){
+				n.close();
+			});
 	    },
 		LoadGrupos: function(evt){
 			this.evaluador=$("#cmbEvaluador").val();
@@ -271,6 +288,7 @@ var ViewsEvalIndividual={
 			var parent=this;
 			var obj=new Models.AspectoClave({
 				inscripcion_id:$('#cmbProyecto').val(),
+				tipoetapa_id: $("#tipoetapa_id").val(),
 				evaluador_id:$("#cmbEvaluador").val(),
 				criterio_id:$('#cmbAspectoCLave').val(),
 				descripcion:$('#txtDescripcionAspectoClave').val()
@@ -342,6 +360,7 @@ var ViewsEvalIndividual={
 	        	case "1":
 	        		var obj=new Models.RespuestaCriterio({
 	        			inscripcion_id:$('#cmbProyecto').val(),
+	        			tipoetapa_id: $("#tipoetapa_id").val(),
 	        			evaluador_id:$("#cmbEvaluador").val(),
 						criterio_id:this.nodeSelected.id,
 						puntaje:$('#cmbPuntaje').val(),
@@ -352,6 +371,7 @@ var ViewsEvalIndividual={
 	        	case "2":
 	        		var obj=new Models.RespuestaCriterio({
 	        			inscripcion_id:$('#cmbProyecto').val(),
+	        			tipoetapa_id: $("#tipoetapa_id").val(),
 	        			evaluador_id:$("#cmbEvaluador").val(),
 						criterio_id:$("#cmbPregunta").val(),
 						criterio_padreid:this.nodeSelected.id,
@@ -389,6 +409,7 @@ var ViewsEvalIndividual={
 		loadComboAspectosClave:function(){
 			var params={
 				inscripcion_id:$('#cmbProyecto').val(),
+				tipoetapa_id: $("#tipoetapa_id").val(),
 				evaluador_id: $("#cmbEvaluador").val(),
 				idconcurso:this.concurso.id
 			};
@@ -498,6 +519,7 @@ var ViewsEvalIndividual={
 			
 			var params={
 				inscripcion_id:$('#cmbProyecto').val(),
+				tipoetapa_id: $("#tipoetapa_id").val(),
 				evaluador_id: $("#cmbEvaluador").val(),
 				concursocriterio_id:this.attributes.idCriterio
 			};
@@ -508,6 +530,7 @@ var ViewsEvalIndividual={
 			
 			var params={
 				inscripcion_id:$('#cmbProyecto').val(),
+				tipoetapa_id: $("#tipoetapa_id").val(),
 				evaluador_id:$("#cmbEvaluador").val(),
 				idcriterio:this.attributes.idCriterio
 			};
@@ -546,6 +569,7 @@ var ViewsEvalIndividual={
 		load:function(){
 			var params={ 
 				inscripcion_id:$('#cmbProyecto').val(),
+				tipoetapa_id: $("#tipoetapa_id").val(),
 				evaluador_id:0,
 				isparent:this.attributes.isParent,
 				idcriterio:this.attributes.idCriterio
@@ -596,6 +620,7 @@ var ViewsEvalIndividual={
 			if(this.Visita.id==0){
 				var item=new Models.CriterioVisita({
 					inscripcion_id:$('#cmbProyecto').val(),
+					tipoetapa_id: $("#tipoetapa_id").val(),
 					evaluador_id:$("#cmbEvaluador").val(),
 					concursocriterio_id:this.attributes.idCriterio,
 					descripcion:$("#txtVisita").val()
@@ -603,6 +628,7 @@ var ViewsEvalIndividual={
 			}else{
 				var item=new Models.CriterioVisita({
 					inscripcion_id:$('#cmbProyecto').val(),
+					tipoetapa_id: $("#tipoetapa_id").val(),
 					evaluador_id:$("#cmbEvaluador").val(),
 					id:this.Visita.id,
 					concursocriterio_id:this.attributes.idCriterio,
@@ -658,6 +684,7 @@ var ViewsEvalIndividual={
 		loadAddAspectosClave:function(){
 			var params={
 				inscripcion_id:$('#cmbProyecto').val(),
+				tipoetapa_id: $("#tipoetapa_id").val(),
 				evaluador_id: $("#cmbEvaluador").val(),
 				idconcurso:this.attributes.idConcurso
 			};
@@ -679,6 +706,7 @@ var ViewsEvalIndividual={
 			$('#gridAddAspectosClave tbody input:checked').each(function() {
 				var model=new Models.CriterioAspectoClave({
 					inscripcion_id:$('#cmbProyecto').val(),
+					tipoetapa_id: $("#tipoetapa_id").val(),
 					evaluador_id: $("#cmbEvaluador").val(),
 					criterio_id:parent.attributes.idCriterio,
 					aspectoclave_id:$(this).attr('data-id')
@@ -849,6 +877,10 @@ var ViewsEvalIndividual={
         }
 	}),
 	ItemRespuesta: Backbone.View.extend({
+		events:{
+			"click .btn.btn-danger.btn-xs":"CambiarEstado",
+			"click .btn.btn-success.btn-xs":"CambiarEstado"	
+		},
         tagName:"tr",
 		initialize: function() {
 			this.template = _.template($('#itemRespuesta_template').html());
@@ -858,6 +890,18 @@ var ViewsEvalIndividual={
 			
 			this.$el.html(this.template({model:this.model}));
 			return this;
+		},
+		CambiarEstado:function(evt){
+			var self=this;
+			//console.log($(evt.currentTarget));
+			var id=$(evt.currentTarget).attr('data-id');
+			var estado=($(evt.currentTarget).attr('data-value')=='1')?true:false;
+			this.model.estado=estado;
+			var url=Routing.generate('_admin_respuesta_update_state',{id:id,estado:estado});
+			new jAjax().Execute(url,'POST','',function(){
+				self.render();
+			})
+	
 		}
 	}),
 
@@ -889,6 +933,7 @@ var ViewsEvalIndividual={
 			
 			var params={ 
 				inscripcion_id:$('#cmbProyecto').val(),
+				tipoetapa_id: $("#tipoetapa_id").val(),
 				evaluador_id: 0,
 				isparent:this.attributes.isParent,
 				idcriterio:this.attributes.idCriterio
@@ -1031,6 +1076,7 @@ var ViewsEvalIndividual={
 			var obj=new Models.AspectoClave({
 				id:idAspecto,
 				inscripcion_id:$('#cmbProyecto').val(),
+				tipoetapa_id: $("#tipoetapa_id").val(),
 				evaluador_id:$("#cmbEvaluador").val(),
 				criterio_id:$('#cmbAspectoCLave').val(),
 				descripcion:$('#txtDescripcionAspectoClave').val()
@@ -1077,16 +1123,22 @@ var ViewsEvalIndividual={
         }
 	}),
 	ItemAspectoClave: Backbone.View.extend({
+		events:{
+			"click .btn.btn-danger.btn-xs":"CambiarEstado",
+			"click .btn.btn-success.btn-xs":"CambiarEstado"	
+		},
         tagName:"tr",
 		initialize: function() {
 			switch(this.attributes.type){
 				case 1:
 				this.template = _.template($('#itemFactoresClave1_template').html());
+				this.urlChange='_admin_aspectoclave_update_state';
 				break;
 				case 2:
 				this.template = _.template($('#itemFactoresClave2_template').html());
 				break;
 				case 3:
+				this.urlChange='_admin_criterioaspectoclave_update_state';
 				this.template = _.template($('#itemFactoresClave3_template').html());
 				break;
 			}
@@ -1094,9 +1146,22 @@ var ViewsEvalIndividual={
 			
 		},
 		render: function() {
-			
+			console.log(this.model)
 			this.$el.html(this.template({model:this.model}));
 			return this;
+		},
+		CambiarEstado:function(evt){
+			var self=this;
+			//console.log($(evt.currentTarget));
+			var id=$(evt.currentTarget).attr('data-id');
+			var estado=($(evt.currentTarget).attr('data-value')=='1')?true:false;
+			this.model.estado=estado;
+			console.log(this.model)
+			var url=Routing.generate(this.urlChange,{id:id,estado:estado});
+			new jAjax().Execute(url,'POST','',function(){
+				self.render();
+			})
+	
 		}
 	}),
 	ItemTabAspectoClave: Backbone.View.extend({

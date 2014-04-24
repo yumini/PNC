@@ -271,6 +271,7 @@ var ViewsEvalIndividual={
 			var parent=this;
 			var obj=new Models.AspectoClave({
 				inscripcion_id:$('#cmbProyecto').val(),
+				tipoetapa_id: $("#tipoetapa_id").val(),
 				evaluador_id:$("#cmbEvaluador").val(),
 				criterio_id:$('#cmbAspectoCLave').val(),
 				descripcion:$('#txtDescripcionAspectoClave').val()
@@ -342,6 +343,7 @@ var ViewsEvalIndividual={
 	        	case "1":
 	        		var obj=new Models.RespuestaCriterio({
 	        			inscripcion_id:$('#cmbProyecto').val(),
+	        			tipoetapa_id: $("#tipoetapa_id").val(),
 	        			evaluador_id:$("#cmbEvaluador").val(),
 						criterio_id:this.nodeSelected.id,
 						puntaje:$('#cmbPuntaje').val(),
@@ -352,6 +354,7 @@ var ViewsEvalIndividual={
 	        	case "2":
 	        		var obj=new Models.RespuestaCriterio({
 	        			inscripcion_id:$('#cmbProyecto').val(),
+	        			tipoetapa_id: $("#tipoetapa_id").val(),
 	        			evaluador_id:$("#cmbEvaluador").val(),
 						criterio_id:$("#cmbPregunta").val(),
 						criterio_padreid:this.nodeSelected.id,
@@ -389,6 +392,7 @@ var ViewsEvalIndividual={
 		loadComboAspectosClave:function(){
 			var params={
 				inscripcion_id:$('#cmbProyecto').val(),
+				tipoetapa_id: $("#tipoetapa_id").val(),
 				evaluador_id: $("#cmbEvaluador").val(),
 				idconcurso:this.concurso.id
 			};
@@ -498,6 +502,7 @@ var ViewsEvalIndividual={
 			
 			var params={
 				inscripcion_id:$('#cmbProyecto').val(),
+				tipoetapa_id: $("#tipoetapa_id").val(),
 				evaluador_id: $("#cmbEvaluador").val(),
 				concursocriterio_id:this.attributes.idCriterio
 			};
@@ -508,6 +513,7 @@ var ViewsEvalIndividual={
 			
 			var params={
 				inscripcion_id:$('#cmbProyecto').val(),
+				tipoetapa_id: $("#tipoetapa_id").val(),
 				evaluador_id:$("#cmbEvaluador").val(),
 				idcriterio:this.attributes.idCriterio
 			};
@@ -546,6 +552,7 @@ var ViewsEvalIndividual={
 		load:function(){
 			var params={ 
 				inscripcion_id:$('#cmbProyecto').val(),
+				tipoetapa_id: $("#tipoetapa_id").val(),
 				evaluador_id:$("#cmbEvaluador").val(),
 				isparent:this.attributes.isParent,
 				idcriterio:this.attributes.idCriterio
@@ -596,6 +603,7 @@ var ViewsEvalIndividual={
 			if(this.Visita.id==0){
 				var item=new Models.CriterioVisita({
 					inscripcion_id:$('#cmbProyecto').val(),
+					tipoetapa_id: $("#tipoetapa_id").val(),
 					evaluador_id:$("#cmbEvaluador").val(),
 					concursocriterio_id:this.attributes.idCriterio,
 					descripcion:$("#txtVisita").val()
@@ -603,6 +611,7 @@ var ViewsEvalIndividual={
 			}else{
 				var item=new Models.CriterioVisita({
 					inscripcion_id:$('#cmbProyecto').val(),
+					tipoetapa_id: $("#tipoetapa_id").val(),
 					evaluador_id:$("#cmbEvaluador").val(),
 					id:this.Visita.id,
 					concursocriterio_id:this.attributes.idCriterio,
@@ -658,6 +667,7 @@ var ViewsEvalIndividual={
 		loadAddAspectosClave:function(){
 			var params={
 				inscripcion_id:$('#cmbProyecto').val(),
+				tipoetapa_id: $("#tipoetapa_id").val(),
 				evaluador_id: $("#cmbEvaluador").val(),
 				idconcurso:this.attributes.idConcurso
 			};
@@ -679,6 +689,7 @@ var ViewsEvalIndividual={
 			$('#gridAddAspectosClave tbody input:checked').each(function() {
 				var model=new Models.CriterioAspectoClave({
 					inscripcion_id:$('#cmbProyecto').val(),
+					tipoetapa_id: $("#tipoetapa_id").val(),
 					evaluador_id: $("#cmbEvaluador").val(),
 					criterio_id:parent.attributes.idCriterio,
 					aspectoclave_id:$(this).attr('data-id')
@@ -889,6 +900,7 @@ var ViewsEvalIndividual={
 			
 			var params={ 
 				inscripcion_id:$('#cmbProyecto').val(),
+				tipoetapa_id: $("#tipoetapa_id").val(),
 				evaluador_id: $("#cmbEvaluador").val(),
 				isparent:this.attributes.isParent,
 				idcriterio:this.attributes.idCriterio
@@ -1031,6 +1043,7 @@ var ViewsEvalIndividual={
 			var obj=new Models.AspectoClave({
 				id:idAspecto,
 				inscripcion_id:$('#cmbProyecto').val(),
+				tipoetapa_id: $("#tipoetapa_id").val(),
 				evaluador_id:$("#cmbEvaluador").val(),
 				criterio_id:$('#cmbAspectoCLave').val(),
 				descripcion:$('#txtDescripcionAspectoClave').val()

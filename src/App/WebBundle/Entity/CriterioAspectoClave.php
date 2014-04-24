@@ -61,6 +61,18 @@ class CriterioAspectoClave
     protected $inscripcion;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="estado", type="boolean")
+     */
+    private $estado=true;
+
+    /**
+    * @ORM\ManyToOne(targetEntity="Catalogo", inversedBy="criteriosaspectosclaves")
+    * @ORM\JoinColumn(name="tipoetapa_id", referencedColumnName="id")
+    */
+    protected $tipoEtapa;
+    /**
      * Get id
      *
      * @return integer 
@@ -206,5 +218,51 @@ class CriterioAspectoClave
     public function getInscripcion()
     {
         return $this->inscripcion;
+    }
+
+    /**
+     * Set estado
+     *
+     * @param boolean $estado
+     * @return CriterioAspectoClave
+     */
+    public function setEstado($estado)
+    {
+        $this->estado = $estado;
+    
+        return $this;
+    }
+
+    /**
+     * Get estado
+     *
+     * @return boolean 
+     */
+    public function getEstado()
+    {
+        return $this->estado;
+    }
+
+    /**
+     * Set tipoEtapa
+     *
+     * @param \App\WebBundle\Entity\Catalogo $tipoEtapa
+     * @return CriterioAspectoClave
+     */
+    public function setTipoEtapa(\App\WebBundle\Entity\Catalogo $tipoEtapa = null)
+    {
+        $this->tipoEtapa = $tipoEtapa;
+    
+        return $this;
+    }
+
+    /**
+     * Get tipoEtapa
+     *
+     * @return \App\WebBundle\Entity\Catalogo 
+     */
+    public function getTipoEtapa()
+    {
+        return $this->tipoEtapa;
     }
 }
