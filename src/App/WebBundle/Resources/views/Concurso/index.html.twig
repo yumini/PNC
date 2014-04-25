@@ -16,8 +16,8 @@
          
           <form class="navbar-form navbar-right">
             
-            <button id="btnNew" type="button" class="btn btn-success navbar-btn pull-right"> <span class="glyphicon glyphicon-plus"> </span> Nuevo</button>
-            <a href="{{ path('_admin_concurso_report') }}" type="button" class="btn btn-default navbar-btn pull-right" style="margin-right:5px;"> <span class="glyphicon glyphicon-print"> </span> Imprimir</a>
+            <button id="btnNew" type="button" class="btn btn-success navbar-btn pull-right" title="Nuevo Concurso"> <span class="glyphicon glyphicon-plus"> </span> Nuevo</button>
+            <a href="{{ path('_admin_concurso_report') }}" type="button" class="btn btn-default navbar-btn pull-right" title="Imprimir Lista de Concursos" style="margin-right:5px;"> <span class="glyphicon glyphicon-print"> </span> Imprimir</a>
           </form>
         </div>
     </nav>
@@ -58,11 +58,11 @@
                     <a class="row-show btn btn-default btn-xs" data-id="{{ entity.id }}" title="Ver Detalle"><span class="glyphicon glyphicon-search"> </span></a>
                     
                     <a href="#menu/_admin_etapaconcurso/{{ entity.id }}" class="btn btn-info btn-xs">
-                        <span class="glyphicon glyphicon-calendar red" title="Etapas"> </span></a>
+                        <span class="glyphicon glyphicon-calendar red" title="Ver Cronograma"> </span></a>
                     <a href="#menu/_admin_concurso_criterio/{{ entity.id }}" class="btn btn-info btn-xs">
-                        <span class="glyphicon glyphicon-list-alt" title="Criterios"> </span></a>
-                    <a class="row-edit btn btn-warning btn-xs" data-id="{{ entity.id }}" title="Editar"><span class="glyphicon glyphicon-pencil "> </span></a>
-                    <a class="row-delete  btn btn-danger btn-xs" data-id="{{ entity.id }}" title="Eliminar"><span class="glyphicon glyphicon-trash"> </span></a>
+                        <span class="glyphicon glyphicon-list-alt" title="Ver Criterios Concurso"> </span></a>
+                    <a class="row-edit btn btn-warning btn-xs" data-id="{{ entity.id }}" title="Editar Concurso"><span class="glyphicon glyphicon-pencil "> </span></a>
+                    <a class="row-delete  btn btn-danger btn-xs" data-id="{{ entity.id }}" title="Eliminar Concurso"><span class="glyphicon glyphicon-trash"> </span></a>
                 
                 </td>
             </tr>

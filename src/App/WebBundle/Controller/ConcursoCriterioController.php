@@ -136,7 +136,7 @@ class ConcursoCriterioController extends Controller
             $entity->setTipoArbolCriterio($tipoArbol);
             $em->persist($entity);
             $em->flush();
-            $msg="registro realizado satisfactoriamente";
+            $msg="registro guardado satisfactoriamente";
             $success=true;  
         }else{
              $msgError=new \App\WebBundle\Util\MensajeError();

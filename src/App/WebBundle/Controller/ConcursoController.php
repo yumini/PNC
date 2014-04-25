@@ -168,7 +168,7 @@ class ConcursoController extends Controller
             $entity->setEstado(1);
             $em->persist($entity);
             $em->flush();
-            $msg="registro realizado satisfactoriamente";
+            $msg="registro guardado satisfactoriamente";
             $success=true;        
             
         }else{
