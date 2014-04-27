@@ -19,6 +19,8 @@ framework:
     trusted_proxies: ~
     session:         ~
     fragments:       ~
+    profiler:
+        enabled: false
 
 # Twig Configuration
 twig:

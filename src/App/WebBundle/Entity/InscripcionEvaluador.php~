@@ -85,7 +85,7 @@ class InscripcionEvaluador
      * @param \Date $fechaActualizacion
      * @return InscripcionEvaluador
      */
-    public function setFechaActualizacion(\Date $fechaActualizacion)
+    public function setFechaActualizacion($fechaActualizacion)
     {
         $this->fechaActualizacion = $fechaActualizacion;
     

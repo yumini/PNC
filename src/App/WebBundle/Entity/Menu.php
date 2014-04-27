@@ -77,7 +77,7 @@ class Menu
      *
      * @param App\WebBundle\Entity\Perfil $perfiles
      */
-    public function addPerfiles(App\WebBundle\Entity\Perfil $perfiles)
+    public function addPerfiles(Perfil $perfiles)
     {
         $this->perfiles[] = $perfiles;
     }
@@ -247,7 +247,7 @@ class Menu
      * @param \App\WebBundle\Entity\Perfil $perfiles
      * @return Menu
      */
-    public function addPerfile(\App\WebBundle\Entity\Perfil $perfiles)
+    public function addPerfile(Perfil $perfiles)
     {
         $this->perfiles[] = $perfiles;
     
@@ -259,7 +259,7 @@ class Menu
      *
      * @param \App\WebBundle\Entity\Perfil $perfiles
      */
-    public function removePerfile(\App\WebBundle\Entity\Perfil $perfiles)
+    public function removePerfile(Perfil $perfiles)
     {
         $this->perfiles->removeElement($perfiles);
     }

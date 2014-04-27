@@ -1,0 +1,79 @@
+{% block ScriptHead %}
+    <script src="{{ asset('js/pages/Concurso/index.js') }}"></script> 
+{% endblock %}
+<div class="panel panel-default">
+  <div class="panel-heading panel-primary ">
+    <nav class="navbar navbar-default" role="navigation" style="z-index:0">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex2-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand">{{ title_list }}</a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex2-collapse">
+         
+          <form class="navbar-form navbar-right">
+            
+            <button id="btnNew" type="button" class="btn btn-success navbar-btn pull-right"> <span class="glyphicon glyphicon-plus"> </span> Nuevo</button>
+            <a href="{{ path('_admin_concurso_report') }}" type="button" class="btn btn-default navbar-btn pull-right" style="margin-right:5px;"> <span class="glyphicon glyphicon-print"> </span> Imprimir</a>
+          </form>
+        </div>
+    </nav>
+  </div>
+  <div class="panel-body">
+    {% 
+    set filterBy= {
+        'e.titulo':'Titulo',
+        'e.estado':'Estado'
+    }
+
+
+     %}
+     {{ knp_pagination_filter(pagination,filterBy,[ path(pagination.route)]) }}
+     <table class="table table-bordered table-hover table-condensed table-striped" style="width:100%">
+        <thead>
+            <tr >
+                <th class="grid-header" style="text-align: center;">{{ knp_pagination_sortable(pagination, 'Titulo', 'e.titulo') }}</th>
+                <th class="grid-header" style="text-align: center;">{{ knp_pagination_sortable(pagination, 'Descripción', 'e.descripcion') }}</th>
+                <th class="grid-header" style="text-align: center;">{{ knp_pagination_sortable(pagination, 'Fecha Inicio', 'e.inicio') }}</th>
+                <th class="grid-header" style="text-align: center;">{{ knp_pagination_sortable(pagination, 'Fecha Fin', 'e.fin') }}</th>
+                <th class="grid-header" style="text-align: center;">{{ knp_pagination_sortable(pagination, 'Estado', 'e.estado') }}</th>
+                <th class="grid-header" style="width: 170px;text-align: center;">Opciones</th>
+            </tr>
+        </thead>
+        <tbody>
+         
+        {% for entity in pagination %}
+            <tr>
+                
+                <td>{{ entity.titulo }}</td>
+                <td>{{ entity.descripcion }}</td>
+                <td>{% if entity.inicio %}{{ entity.inicio|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if entity.fin %}{{ entity.fin|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ entity.estado }}</td>
+                <td style="text-align: center;font-size: 12px;">
+                    <a class="row-show btn btn-default btn-xs" data-id="{{ entity.id }}" title="Ver Detalle"><span class="glyphicon glyphicon-search"> </span></a>
+
+                    <a class="row-edit btn btn-warning btn-xs" data-id="{{ entity.id }}" title="Editar"><span class="glyphicon glyphicon-pencil "> </span></a>
+                    <a class="row-delete  btn btn-danger btn-xs" data-id="{{ entity.id }}" title="Eliminar"><span class="glyphicon glyphicon-trash"> </span></a>
+                
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <div>
+        {{ knp_pagination_render(pagination,'AppWebBundle:Default:pagination.html.twig') }}
+    </div>
+  </div>
+
+
+
+</div>
+  
+
+{% block windows %}
+    <div id="winForm"></div>
+{% endblock %}

@@ -29,14 +29,12 @@ class Concurso
     private $nombre;
 
     /**
-     * @var \Date
      * @Assert\NotBlank
      * @ORM\Column(name="fechainicio", type="date")
      */
     private $fechaInicio;
 
     /**
-     * @var \Date
      * @Assert\NotBlank
      * @ORM\Column(name="fechafin", type="date")
      */
