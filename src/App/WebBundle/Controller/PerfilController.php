@@ -73,10 +73,9 @@ class PerfilController extends Controller
         $strIds=$request->request->get('perfil');
         $ids=  explode(",", $strIds);
        
-        $logger = $this->get('logger');
-        $logger->info('grabando perfil');
+
         $errors = $this->get('validator')->validate($form);
-        if (count($errors)==0) {
+        if (count($errors)==0 && $form->isValid()) {
             $logger->info('perfil valido');
             $em = $this->getDoctrine()->getManager();
             

@@ -1,6 +1,6 @@
 
     <form id="myform" method="post" {{ form_enctype(form) }}>
-       
+       {{form_widget(form._token)}}
         <div class="row">
             <div class="col-lg-12">
                 <label class="control-label">Tipo Conflicto:</label><br/>
@@ -22,17 +22,26 @@
                 {{form_widget(form.ruc)}}
             </div>    
         </div>
+        <br/>
         <div class="row">
-           <div class="col-lg-6">
+           <div class="col-md-4">
                 <label class="control-label">Fecha Inicio:</label><br/>
                 {{form_widget(form.fecini)}}
             </div>
-            <div class="col-lg-6">
+            <div class="col-md-4">
                 <label class="control-label">Fecha Fin:</label>
                 {{form_widget(form.fecfin)}}
-            </div>    
+            </div>  
+            <div class="col-md-4">
+                <label class="control-label">Hasta la Fecha:</label>
+                <div class="checkbox text-center">
+                    
+                    <label>
+                      {{form_widget(form.hastalafecha)}}
+                    </label>
+                </div>
+            </div>  
         </div>
-        
         
         <div class="row">
             <div class="col-lg-12">
@@ -42,3 +51,16 @@
         </div>
         
     </form>
+     <script type="text/javascript">
+        var disabledFechaFin=function(){
+            var checked=$("#app_webbundle_conflictointeresevaluadortype_hastalafecha").is(":checked");
+            var fechaFin=$("#app_webbundle_conflictointeresevaluadortype_fecfin")
+            if(checked)
+                fechaFin.val("");
+            fechaFin.attr("disabled",checked)
+        }
+        $("input:checkbox").change(function(){
+            disabledFechaFin();
+        })
+        disabledFechaFin();
+    </script>

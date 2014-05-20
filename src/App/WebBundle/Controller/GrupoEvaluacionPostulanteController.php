@@ -62,7 +62,7 @@ class GrupoEvaluacionPostulanteController extends Controller
      *
      * @Route("/{id}/save", name="_admin_grupoevaluacionpostulante_save", options={"expose"=true})
      * @Method("POST")
-     * @Template("AppWebBundle:Default:result.json.twig")
+     * @Template()
      */
     public function createAction(Request $request,$id)
     {
@@ -70,39 +70,42 @@ class GrupoEvaluacionPostulanteController extends Controller
         $msg='';
         $evaluadorId=$request->request->get('evaluadorId');
         $em = $this->getDoctrine()->getManager();
-        $postulante=$em->getRepository('AppWebBundle:Postulante')->find($evaluadorId);
-        $grupo=$em->getRepository('AppWebBundle:GrupoEvaluacion')->find($id);
-        if($postulante){
-            if($grupo){
-                $evaluadores=$em->getRepository('AppWebBundle:Postulante')->getEvaluadoresConflictosInteres($id,$postulante->getRuc());
-                if(count($evaluadores)==0){
-                    $entity  = new GrupoEvaluacionPostulante();
-                    $entity->setPostulante($postulante);
-                    $entity->setGrupo($grupo);
-                    $em->persist($entity);
-                    $em->flush();
-                    $msg="Postulante agregado satisfactoriamente";
-                    $result='true';
-                }else{
-                    $result="false";
-                    $msg="<h4 style='margin:2px;'><b>No se pudo agregar postulante</b></h4><br/>";
-                    $msg.='Postulante presenta conflictos de interes con:<br/>';
-                    foreach ($evaluadores as $p) {
-                        $msg.='- '.$p['nombres'].' '.$p['apellidos'].'<br/>';
+        if($evaluadorId){
+            $postulante=$em->getRepository('AppWebBundle:Postulante')->find($evaluadorId);
+            $grupo=$em->getRepository('AppWebBundle:GrupoEvaluacion')->find($id);
+            if($postulante){
+                if($grupo){
+                    $evaluadores=$em->getRepository('AppWebBundle:Postulante')->getEvaluadoresConflictosInteres($id,$postulante->getRuc());
+                    if(count($evaluadores)==0){
+                        $entity  = new GrupoEvaluacionPostulante();
+                        $entity->setPostulante($postulante);
+                        $entity->setGrupo($grupo);
+                        $em->persist($entity);
+                        $em->flush();
+                        $msg="Postulante agregado satisfactoriamente";
+                        $result=true;
+                    }else{
+                        $result=false;
+                        $msg="<h4 style='margin:2px;'><b>No se pudo agregar postulante</b></h4><br/>";
+                        $msg.='Postulante presenta conflictos de interes con:<br/>';
+                        foreach ($evaluadores as $p) {
+                            $msg.='- '.$p['nombres'].' '.$p['apellidos'].'<br/>';
+                        }
                     }
+                }else{
+                    $result=false;
+                    $msg='No se encontro el grupo de evluación';
                 }
             }else{
-                $result="false";
-                $msg='No se encontro el grupo de evluación';
+                $result=false;
+                $msg='No se encontro el evaluador';
             }
         }else{
-            $result="false";
-            $msg='No se encontro el evaluador';
+            $result=false;
+            $msg='No se ha seleccionado un postulante';
         }
-         return array(
-            'result' => "{\"success\":\"$result\",\"message\":\"$msg\"}"
-
-        );
+        return new JsonResponse(array('success' => $result,'message'=>$msg ));
+         
     }
 
     /**
@@ -130,7 +133,7 @@ class GrupoEvaluacionPostulanteController extends Controller
      * Deletes a GrupoEvaluacionEvaluador entity.
      *
      * @Route("/{id}/delete", name="_admin_grupoevaluacionpostulante_delete",options={"expose"=true})
-     * @Method("POST")
+     * @Method("DELETE")
      * @Template("AppWebBundle:Default:result.json.twig")
      */
     public function deleteAction( $id)

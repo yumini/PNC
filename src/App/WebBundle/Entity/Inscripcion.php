@@ -6,12 +6,16 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo; 
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\ExecutionContextInterface;
 /**
  * Inscripcion
  *
- * @ORM\Table(name="inscripcion")
+ * @ORM\Table(name="inscripcion",
+ *                  uniqueConstraints={
+ *                          @ORM\UniqueConstraint(name="uq_postulante_nombreproyecto", columns={"postulante_id", "nombreproyecto"})
+ *                  })
  * @ORM\Entity(repositoryClass="App\WebBundle\Entity\InscripcionRepository")
- * @UniqueEntity(fields="nombreproyecto",message="Nombre de Proyecto ya existe")
+* @Assert\Callback(methods={"isInscripcionValid"})
  */
 class Inscripcion
 {
@@ -610,5 +614,21 @@ class Inscripcion
     public function getCriteriosaspectosclaves()
     {
         return $this->criteriosaspectosclaves;
+    }
+
+     public function isInscripcionValid(ExecutionContextInterface $context)
+    {
+
+        if ($this->concurso->getTipoConcurso()->getCodigo()==2 && strlen($this->nombreproyecto)==0) {
+            $context->addViolationAt('nombreproyecto', 'Este valor no deberia estar vacio.', array(), null);
+        }
+        if ($this->concurso->getTipoConcurso()->getCodigo()==2 && $this->fechainiciopy===null) {
+            $context->addViolationAt('fechainiciopy', 'Este valor no deberia estar vacio.', array(), null);
+        }
+        if ($this->concurso->getTipoConcurso()->getCodigo()==2 && $this->fechafinpy===null) {
+            $context->addViolationAt('fechafinpy', 'Este valor no deberia estar vacio.', array(), null);
+        }
+       
+        
     }
 }

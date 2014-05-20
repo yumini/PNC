@@ -1,0 +1,121 @@
+{% block ScriptHead %}
+    <script src="{{ asset('js/pages/EncuestaPregunta/index.js') }}"></script> 
+{% endblock %}
+<input id="idEncuesta" type="hidden" value="{{encuesta.id}}" />
+
+<div class="panel panel-default">
+  <div class="panel-heading panel-primary ">
+    <nav class="navbar navbar-default" role="navigation" style="z-index:0">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex2-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" >
+             
+        {{encuesta.titulo}}
+        
+         </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex2-collapse">
+           <form class="navbar-form navbar-right">
+            
+           
+            
+          </form>
+         
+        </div>
+    </nav>
+  </div>
+  <div class="panel-body">
+      
+    <div class="row">
+      
+      <div class="col-md-12">
+        <h4>{{ title_list }}
+<button id="btn-new-pregunta" type="button" class="btn btn-xs btn-success pull-right" style="margin-bottom:5px;"> <span class="glyphicon glyphicon-plus"> </span> Nuevo</button>
+        </h4>
+         
+<div>
+  
+
+      <table class="table tree-2 table-bordered table-striped table-condensed table-striped" >
+           
+            {% for entity in entities %}
+                <tr>             
+                    <td data-id="{{ entity.id }}">
+                         <button title="Eliminar Pregunta" class="row-delete-pregunta btn btn-danger btn-xs pull-right"  data-id="{{ entity.id }}" data-type="delete">
+                            <span class="glyphicon glyphicon-trash"> </span>
+                        </button>
+                        <span class="pull-right">
+                           &nbsp;
+                        </span>
+                        <button title="Editar Pregunta" class="row-edit-pregunta btn btn-warning btn-xs pull-right"  data-id="{{ entity.id }}" data-type="edit">
+                            <span class="glyphicon glyphicon-edit"> </span>
+                        </button> 
+                        
+                       <span class="pull-right">
+                           &nbsp;
+                        </span>
+                        <button title="Nueva Opción" class="btn-new-opcion btn btn-success btn-xs pull-right"  data-id="{{ entity.id }}" data-type="edit" >
+                            <span class="glyphicon glyphicon-plus"> </span>
+                        </button> 
+                        <span class="pull-right">
+                           &nbsp;
+                        </span>
+                        <button title="Orden Pregunta" class="btn btn-default btn-xs pull-right"  data-id="{{ entity.id }}" data-type="edit" disabled="disabled">
+                            Orden: {{entity.orden}}
+                        </button> 
+                        <a style="cursor:pointer;" class="row-toggle" data-id="{{entity.id}}"><span class="glyphicon glyphicon-plus"> </span></a>
+                        <b>{{entity.pregunta}}</b> <br/>
+                        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><small>{{entity.grupo.nombre}}</small>
+
+                    
+                    <table id="opciones-{{entity.id}}" class="table tree-2 table-bordered table-condensed" style="width:100%;display:none;" data-show="false">
+        <thead>
+            <tr>
+              <th>Opción</th>
+              <th>Peso</th>
+              <th>Opciones</th>
+            </tr> 
+        </thead>
+        <tbody>
+           {% for opcion in entity.opciones %}
+          <tr>
+            <td>{{opcion.opcion}}</td>
+            <td>{{opcion.peso}}</td>
+            <td style="width:70px;">
+                        <button title="Nueva Opción" class="btn-edit-opcion btn btn-warning btn-xs"  data-id="{{ opcion.id }}" data-type="edit" >
+                            <span class="glyphicon glyphicon-edit"> </span>
+                        </button> 
+                        <button title="Nueva Opción" class="btn-delete-opcion btn btn-danger btn-xs"  data-id="{{ opcion.id }}" data-type="edit" >
+                            <span class="glyphicon glyphicon-trash"> </span>
+                        </button> 
+            </td> 
+          </tr>
+           {% endfor %}
+          
+        </tbody>
+      </table>
+                </td>
+              </tr>
+            {% endfor %}
+           
+        </table>
+</div>
+
+      </div>
+      
+    </div> 
+    
+  </div>
+
+
+
+</div>
+  
+
+{% block windows %}
+    <div id="winForm"></div>
+{% endblock %}

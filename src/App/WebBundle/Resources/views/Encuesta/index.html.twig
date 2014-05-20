@@ -1,5 +1,5 @@
 {% block ScriptHead %}
-    <script src="{{ asset('js/pages/Concurso/index.js') }}"></script> 
+    <script src="{{ asset('js/pages/Encuesta/index.js') }}"></script> 
 {% endblock %}
 <div class="panel panel-default">
   <div class="panel-heading panel-primary ">
@@ -26,7 +26,8 @@
     {% 
     set filterBy= {
         'e.titulo':'Titulo',
-        'e.estado':'Estado'
+        'e.estado':'Estado',
+        't.nombre':'Tipo Encuesta'
     }
 
 
@@ -37,10 +38,11 @@
             <tr >
                 <th class="grid-header" style="text-align: center;">{{ knp_pagination_sortable(pagination, 'Titulo', 'e.titulo') }}</th>
                 <th class="grid-header" style="text-align: center;">{{ knp_pagination_sortable(pagination, 'Descripción', 'e.descripcion') }}</th>
+                <th class="grid-header" style="text-align: center;">{{ knp_pagination_sortable(pagination, 'Tipo Encuesta', 't.nombre') }}</th>
                 <th class="grid-header" style="text-align: center;">{{ knp_pagination_sortable(pagination, 'Fecha Inicio', 'e.inicio') }}</th>
                 <th class="grid-header" style="text-align: center;">{{ knp_pagination_sortable(pagination, 'Fecha Fin', 'e.fin') }}</th>
                 <th class="grid-header" style="text-align: center;">{{ knp_pagination_sortable(pagination, 'Estado', 'e.estado') }}</th>
-                <th class="grid-header" style="width: 170px;text-align: center;">Opciones</th>
+                <th class="grid-header" style="width: 100px;text-align: center;">Opciones</th>
             </tr>
         </thead>
         <tbody>
@@ -50,11 +52,12 @@
                 
                 <td>{{ entity.titulo }}</td>
                 <td>{{ entity.descripcion }}</td>
+                <td>{{ entity.tipoEncuesta.nombre }}</td>
                 <td>{% if entity.inicio %}{{ entity.inicio|date('Y-m-d H:i:s') }}{% endif %}</td>
                 <td>{% if entity.fin %}{{ entity.fin|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{{ entity.estado }}</td>
+                <td>{% if entity.estado==1 %}Activo{% else %}Inactivo{% endif %}</td>
                 <td style="text-align: center;font-size: 12px;">
-                    <a class="row-show btn btn-default btn-xs" data-id="{{ entity.id }}" title="Ver Detalle"><span class="glyphicon glyphicon-search"> </span></a>
+                    <a href="#menu/_admin_encuestapregunta/{{ entity.id }}" class="btn btn-default btn-xs" title="Listado de Preguntas"><span class="glyphicon glyphicon-list-alt"> </span></a>
 
                     <a class="row-edit btn btn-warning btn-xs" data-id="{{ entity.id }}" title="Editar"><span class="glyphicon glyphicon-pencil "> </span></a>
                     <a class="row-delete  btn btn-danger btn-xs" data-id="{{ entity.id }}" title="Eliminar"><span class="glyphicon glyphicon-trash"> </span></a>

@@ -32,13 +32,15 @@ OptionButton.Perfil.prototype={
             'class':'btn-success',
             fn:function(){
                 parent.Update();               
-                parent.Window.Hide();
+                
             }
         });
     },
     Update:function(){
             console.log("actualizando perfil con id:"+this.IdEntity);
             var parent=this;
+            parent.Window.Buttons(0).disabled();
+            parent.Window.Buttons(1).disabled();
             var url=Routing.generate(this.routeUpdate,{id:this.IdEntity});
             params = $('#myPerfilform').serializeObject();
            
@@ -47,10 +49,25 @@ OptionButton.Perfil.prototype={
                     type:'PUT',
                     url:url,
                     data:params,
-                    dataType:"html",
-                    success:function(datos){
-                            
-                            new OptionButton.Perfil().Refresh();
+                    dataType:"json",
+                    success:function(obj){
+                            parent.Window.Buttons(0).enabled();
+                            parent.Window.Buttons(1).enabled();
+                            tipo=(obj.success)?'success':'warning';
+                            var n = noty({
+                                    text: obj.message,
+                                    type: tipo,
+                                    dismissQueue: true,
+                                    layout: 'bottomRight',
+                                    theme: 'defaultTheme',
+                                    timeout:5000
+                            });
+                            if(obj.success){
+                                parent.Window.Hide();
+                                setTimeout(function() {
+                                    new OptionButton.Perfil().Refresh();
+                                }, 1000);
+                            }
                     },
                     error:function(objeto, quepaso, otroobj){
 
@@ -110,9 +127,10 @@ OptionButton.Contactos.prototype={
         });
     },
     Save:function(){
-            $('#btn-contactonew-save').attr('disabled',true);
-            $('#btn-contactonew-cancel').attr('disabled',true);
             var parent=this;
+            parent.Window.Buttons(0).disabled();
+            parent.Window.Buttons(1).disabled();
+            
             var url=Routing.generate(this.routeSave,{id:$("#hdnEntity_id").val()});
             params = $('#myform').serializeObject();
             console.log(params);
@@ -123,8 +141,8 @@ OptionButton.Contactos.prototype={
                     data:params,
                     dataType:"json",
                     success:function(obj){
-                            $('#btn-contactonew-save').attr('disabled',false);
-                            $('#btn-contactonew-cancel').attr('disabled',false);
+                            parent.Window.Buttons(0).enabled();
+                            parent.Window.Buttons(1).enabled();
                             console.log(obj)
                             if(obj.success)
                                 tipo='success';
@@ -172,29 +190,44 @@ OptionButton.Contactos.prototype={
             'class':'btn-success',
             fn:function(){
                 parent.Update();               
-                parent.Window.Hide();
+                
             }
         });
     },
     Update:function(){
             console.log("actualizando contacto con id:"+this.IdEntity);
             var parent=this;
+            parent.Window.Buttons(0).disabled();
+            parent.Window.Buttons(1).disabled();
             var url=Routing.generate(this.routeUpdate,{id:this.IdEntity});
             params = $('#myform').serializeObject();
-            var nodes = $('#tree').tree('getChecked');
-            var s = '';
-            for(var i=0; i<nodes.length; i++){
-                if (s != '') s += ',';
-                s += nodes[i].id;
-            }
-            params.perfil=s;           
+                      
             $.ajax({
                     type:'POST',
                     url:url,
                     data:params,
-                    dataType:"html",
-                    success:function(datos){
-                            new OptionButton.Contactos().Refresh(); 
+                    dataType:"json",
+                    success:function(obj){
+                            parent.Window.Buttons(0).enabled();
+                            parent.Window.Buttons(1).enabled();
+                            console.log(obj)
+                            if(obj.success)
+                                tipo='success';
+                            else
+                                tipo='warning';
+                            var n = noty({
+                                    text: obj.message,
+                                    type: tipo,
+                                    dismissQueue: true,
+                                    layout: 'bottomRight',
+                                    theme: 'defaultTheme',
+                                    timeout:5000
+                            });
+                            if(obj.success){
+                                parent.Window.Hide();
+                                new OptionButton.Contactos().Refresh(); 
+                            }
+                            
                     },
                     error:function(objeto, quepaso, otroobj){
 

@@ -271,7 +271,7 @@ class Usuario extends BaseUser
     /**
      * Set perfil
      *
-     * @param \App\WebBundle\Entity\Perfil $perfil
+     * @param \Perfil $perfil
      * @return Usuario
      */
     public function setPerfil(Perfil $perfil = null)
@@ -284,7 +284,7 @@ class Usuario extends BaseUser
     /**
      * Get perfil
      *
-     * @return \App\WebBundle\Entity\Perfil 
+     * @return \Perfil 
      */
     public function getPerfil()
     {

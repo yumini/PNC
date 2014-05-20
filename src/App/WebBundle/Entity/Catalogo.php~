@@ -60,7 +60,7 @@ class Catalogo
      *
      * @ORM\Column(name="estado", type="boolean")
      */
-    private $estado;
+    private $estado=true;
 
     /**
     * @ORM\OneToMany(targetEntity="PostulanteContacto", mappedBy="postulantecontacto")
@@ -121,6 +121,11 @@ class Catalogo
     * @ORM\OneToMany(targetEntity="EvaluadorDisponibilidad", mappedBy="dia")
     */
     private $diasdisponiblesEvaluador;
+
+    /**
+    * @ORM\OneToMany(targetEntity="EncuestaPreguntas", mappedBy="grupo")
+    */
+    private $grupospreguntas;
     
      public function __construct()
     {

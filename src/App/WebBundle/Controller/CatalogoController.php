@@ -9,7 +9,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use App\WebBundle\Entity\Catalogo;
 use App\WebBundle\Form\CatalogoType;
-
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 /**
  * Catalogo controller.
  *
@@ -155,12 +156,34 @@ class CatalogoController extends Controller
             'action'=> "catalogo"
         );
     }
+
+    /**
+     * Lists all Evaluadore bt Group.
+     *
+     * @Route("/list/catalogo/grupopreguntas/{_format}", defaults={"_format"="html"},name="_admin_grupopregunta_list", options={"expose"=true})
+     * @Method("GET")
+     * @Template()
+     */
+    public function listcatalogoGrupoPreguntaAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $page=$this->get('request')->query->get('page', 1);
+        $paginator=$this->get('knp_paginator');
+        $pagination = $em->getRepository('AppWebBundle:Catalogo')->FindAllPaginator($paginator,$page,10,"GRUPOPREGUNTA");
+
+        return array(
+            'pagination' => $pagination,
+            'title_list'=> "Listado de Catalogo - Grupo de Preguntas",
+            'action'=> "catalogo"
+        );
+    }
+
     /**
      * Creates a new Catalogo entity.
      *
      * @Route("/{codcat}/create/", name="_admin_td_save", options={"expose"=true})
      * @Method("POST")
-     * @Template("AppWebBundle:Catalogo:result.json.twig")
+     * @Template()
      */
     public function createAction(Request $request,$codcat)
     {
@@ -175,10 +198,8 @@ class CatalogoController extends Controller
             $em->persist($entity);
             $em->flush();
 
-       
-        return array(
-            'result' => "{success:true}"
-        );
+        return new jsonResponse(array('success' => true,'message'=>'Registro grabado satisfactoriamente'));
+        
     }
 
     /**

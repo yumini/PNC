@@ -1,0 +1,14 @@
+<form id="myform" method="post" {{ form_enctype(form) }}>
+    {{form_widget(form._token)}}
+    <input type="hidden" name="_method" value="POST" />
+    <div class="row">
+        <div class="col-md-10">
+            <label class="control-label">Opción:</label><br/>
+            {{form_widget(form.opcion)}}
+        </div>
+       <div class="col-md-2">
+            <label class="control-label">Peso:</label><br/>
+            {{form_widget(form.peso)}}
+        </div>
+    </div>   
+</form>

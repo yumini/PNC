@@ -9,6 +9,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use App\WebBundle\Entity\Encuesta;
 use App\WebBundle\Form\EncuestaType;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Encuesta controller.
@@ -48,34 +50,40 @@ class EncuestaController extends Controller
     /**
      * Creates a new Encuesta entity.
      *
-     * @Route("/", name="encuesta_create")
+     * @Route("/", name="_admin_encuesta_save", options={"expose"=true})
      * @Method("POST")
-     * @Template("AppWebBundle:Encuesta:new.html.twig")
+     * @Template()
      */
     public function createAction(Request $request)
     {
         $entity  = new Encuesta();
         $form = $this->createForm(new EncuestaType(), $entity);
         $form->bind($request);
-
-        if ($form->isValid()) {
+        $errors = $this->get('validator')->validate($form);
+        if (count($errors)==0 && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $entity->setEstado(1);
             $em->persist($entity);
             $em->flush();
-
-            return $this->redirect($this->generateUrl('encuesta_show', array('id' => $entity->getId())));
+            $msg="registro guardado satisfactoriamente";
+            $success=true;        
+            
+        }else{
+             $msgError=new \App\WebBundle\Util\MensajeError();
+             $msgError->AddErrors($form);
+             $msg=$msgError->getErrorsHTML();
+             $success=false;
         }
-
-        return array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
-        );
+        return new JsonResponse(array(
+            'success' =>$success ,
+            'message'=> $msg
+        ));
     }
 
     /**
      * Displays a form to create a new Encuesta entity.
      *
-     * @Route("/new", name="encuesta_new")
+     * @Route("/new", name="_admin_encuesta_new", options={"expose"=true})
      * @Method("GET")
      * @Template()
      */
@@ -93,7 +101,7 @@ class EncuestaController extends Controller
     /**
      * Finds and displays a Encuesta entity.
      *
-     * @Route("/{id}", name="encuesta_show")
+     * @Route("/{id}", name="encuesta_show", options={"expose"=true})
      * @Method("GET")
      * @Template()
      */
@@ -118,7 +126,7 @@ class EncuestaController extends Controller
     /**
      * Displays a form to edit an existing Encuesta entity.
      *
-     * @Route("/{id}/edit", name="encuesta_edit")
+     * @Route("/{id}/edit", name="_admin_encuesta_edit", options={"expose"=true})
      * @Method("GET")
      * @Template()
      */
@@ -137,69 +145,73 @@ class EncuestaController extends Controller
 
         return array(
             'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+            'form'   => $editForm->createView()
         );
     }
 
     /**
      * Edits an existing Encuesta entity.
      *
-     * @Route("/{id}", name="encuesta_update")
+     * @Route("/{id}", name="_admin_encuesta_update", options={"expose"=true})
      * @Method("PUT")
-     * @Template("AppWebBundle:Encuesta:edit.html.twig")
+     * @Template()
      */
     public function updateAction(Request $request, $id)
     {
+        $msg="";
+        $result=true;       
         $em = $this->getDoctrine()->getManager();
-
         $entity = $em->getRepository('AppWebBundle:Encuesta')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Encuesta entity.');
-        }
-
-        $deleteForm = $this->createDeleteForm($id);
         $editForm = $this->createForm(new EncuestaType(), $entity);
         $editForm->bind($request);
+        $errors = $this->get('validator')->validate($editForm);
+        
+        if (count($errors)==0) {
+            if ($entity) {
 
-        if ($editForm->isValid()) {
-            $em->persist($entity);
-            $em->flush();
-
-            return $this->redirect($this->generateUrl('encuesta_edit', array('id' => $id)));
+                $em->persist($entity);
+                $em->flush();
+                $msg='Registro actualizado satisfactoriamente';
+                $success='true';
+            }else{
+                $result='false';
+                $msg="encuesta no encontrada";
+                
+                $success=true;
+            }
+        }else{
+             $msgError=new \App\WebBundle\Util\MensajeError();
+             $msgError->AddErrors($editForm);
+             $msg=$msgError->getErrorsHTML();
+             $success=false;
         }
-
-        return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        );
+        return new JsonResponse(array(
+            'success' =>$success ,
+            'message'=> $msg
+        ));
     }
     /**
      * Deletes a Encuesta entity.
      *
-     * @Route("/{id}", name="encuesta_delete")
+     * @Route("/{id}", name="_admin_encuesta_delete", options={"expose"=true})
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id)
     {
-        $form = $this->createDeleteForm($id);
-        $form->bind($request);
-
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('AppWebBundle:Encuesta')->find($id);
-
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Encuesta entity.');
-            }
-
+        $em = $this->getDoctrine()->getManager();
+        $entity = $em->getRepository('AppWebBundle:Encuesta')->find($id);
+        if($entity){
             $em->remove($entity);
             $em->flush();
+            $form = $this->createDeleteForm($id);
+            $msg="Registro eliminado saisfactoriamente";
+            $success=true;
+        }else{
+            $msg="No se encontro el registro";
+            $success=false;
         }
-
-        return $this->redirect($this->generateUrl('encuesta'));
+        
+        return new JsonResponse(array('success' =>$success,'message'=>$msg));
     }
 
     /**

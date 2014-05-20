@@ -390,7 +390,8 @@ class ConcursoController extends Controller
      */
     public function reportAction(Request $request)
     {
-         $em = $this->getDoctrine()->getManager();
+        set_time_limit(300);
+        $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('AppWebBundle:Concurso')->findAll();
 

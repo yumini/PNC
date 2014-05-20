@@ -166,21 +166,30 @@ class PostulanteContactoController extends Controller
         $entity = $em->getRepository('AppWebBundle:PostulanteContacto')->find($id);
         $editForm = $this->createForm(new PostulanteContactoType(), $entity);
         $editForm->bind($request);
-        
-        if ($entity) {
-           
-            $em->persist($entity);
-            $em->flush();
+        $errors = $this->get('validator')->validate($editForm);
+        if (count($errors)==0) {
+            if ($entity) {
+               
+                $em->persist($entity);
+                $em->flush();
+                $success=true;
+                $msg="Registro actualizado satisfactoriamente";
+            }else{
+                $success=false;
+                $msg="No se encopntro el conta contacto seleccionado";
+
+            }
         }else{
-            $result=false;
-            $msg="contacto no encontrado para el postulante";
-
+            $msgError=new \App\WebBundle\Util\MensajeError();
+            $msgError->AddErrors($editForm);
+            $msg=$msgError->getErrorsHTML();       
+            $success=false;
         }
-        return array(
-            'result' => "{\"success\":\"$result\",message:\"$msg\"}"
-
-        );
-
+        return new JsonResponse(array(
+            'success' => $success, 
+            'message' => $msg
+        ));
+        
        
     }
     /**

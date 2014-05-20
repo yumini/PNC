@@ -176,25 +176,28 @@ class PostulanteController extends Controller
     public function updateAction(Request $request, $id)
     {
         $msg="";
-        $result=true;       
+        $success=true;       
         $em = $this->getDoctrine()->getManager();
         $entity = $em->getRepository('AppWebBundle:Postulante')->find($id);
-        $editForm = $this->createForm(new PostulanteType(), $entity);
-        $editForm->bind($request);
-        
-        if ($entity) {
-           
-            $em->persist($entity);
-            $em->flush();
+        $form = $this->createForm(new PostulanteType(), $entity);
+        $form->bind($request);
+        $errors = $this->get('validator')->validate($form);
+        if (count($errors)==0 && $form->isValid()) {
+                $em->persist($entity);
+                $em->flush();
+                $success=true;
+                $msg="información actualizada satisfactoriamente";
         }else{
-            $result=false;
-            $msg="postulante no encontrado";
-
+             $msgError=new \App\WebBundle\Util\MensajeError();
+             $msgError->AddErrors($form);
+             $msg=$msgError->getErrorsHTML();
+             $success=false;
         }
-        return array(
-            'result' => "{\"success\":\"$result\",\"message\":\"$msg\"}"
-
-        );
+        return new JsonResponse(array(
+            'success' =>$success ,
+            'message'=> $msg
+        ));
+        
 
       
     }
@@ -317,7 +320,8 @@ class PostulanteController extends Controller
      */
     public function reportAction(Request $request)
     {
-         $em = $this->getDoctrine()->getManager();
+        set_time_limit(300);
+        $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('AppWebBundle:Postulante')->findAll();
 

@@ -47,10 +47,12 @@
                 {% set estiloActive = 'active' %}
                 {% set estiloInactive = '' %}
                 {% set estado = "" %}
+                {% set checked=true %}
             {% else %}
                 {% set estiloActive = '' %}
                 {% set estiloInactive = 'active' %}
                 {% set estado = "disabled=disabled" %}
+                {% set checked=false %}
             {% endif %}
             <tr>
                 <td>
@@ -71,6 +73,10 @@
                                    data-id="{{entity.id}}"
                                    data-type='active'
                                    value='on'
+                                   {% if checked %}
+                                   checked="checked"
+                                   {% endif %}
+
                             /> Activo
                         </label>
                         <label class="btn btn-default btn-xs {{estiloInactive}}">
@@ -111,6 +117,7 @@
                      />
                 </td>
                 <td>
+
                     <input type="checkbox" 
                            id="chkExtendido-{{index}}" 
                            name="chkExtendido-{{index}}" 
@@ -118,6 +125,9 @@
                            data-etapaid="{{entity.etapaId}}" 
                            data-id="{{entity.id}}"
                            {{estado}}
+                           {% if entity.extendido %}
+                           checked="checked"
+                           {% endif %}
                      />
                 </td>
                 <td>
@@ -129,16 +139,20 @@
                            data-index="{{index}}" 
                            data-etapaid="{{entity.etapaId}}" 
                            data-id="{{entity.id}}"
-                           {{estado}}
+                           
+                          {% if entity.extendido!=true %}
+                            disabled="disabled"
+                          {% endif %}
+                          {{estado}}
                      />
                 </td>
                 <td>
-                    <a href="#" class="btn btn-info btn-xs" title="Guardar Modificación" 
+                    <a title="Guardar Etapa" class="btn btn-success btn-xs"  data-loading-text='Procesando..'
                         accesskey=""data-index="{{index}}" 
                         data-etapaid="{{entity.etapaId}}" 
                         data-id="{{entity.id}}"
                         data-type="save">
-                        <span class="glyphicon glyphicon-floppy-disk"></span>
+                        <span class="glyphicon glyphicon-floppy-disk"></span> Guardar
                     </a>
                 </td>
 

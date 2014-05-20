@@ -12,15 +12,15 @@ class EvaluadorType extends AbstractType
     {
         $builder
                 
-            ->add('nombres','text',array('required' => true,'attr' => array('class'=>'form-control input-small')))
-            ->add('apellidos','text',array('required' => true,'attr' => array('class'=>'form-control input-small')))
+            ->add('nombres','text',array('label'=>'Nombres','required' => true,'attr' => array('class'=>'form-control input-small')))
+            ->add('apellidos','text',array('label'=>'Apellidos','required' => true,'attr' => array('class'=>'form-control input-small')))
             ->add('evaluadorsexo','entity', array('class'=>'App\WebBundle\Entity\Catalogo', 'property'=>'nombre', 
                                                    'attr' => array('class'=>'form-control input-small'),
                                                    'query_builder' => function(\App\WebBundle\Entity\CatalogoRepository $er){return $er->getTipoSexoQueryBuilder();},
                                                   ))
 
-            ->add('direccion','text',array('required' => true,'attr' => array('class'=>'form-control input-small')))
-            ->add('numdoc','text',array('required' => true,'attr' => array('class'=>'form-control input-small')))
+            ->add('direccion','text',array('label'=>'Dirección','required' => true,'attr' => array('class'=>'form-control input-small')))
+            ->add('numdoc','text',array('label'=>'N° Documento','required' => true,'attr' => array('class'=>'form-control input-small')))
             ->add('curriculum','text',array('required' => false,'attr' => array('class'=>'form-control input-small')))
             ->add('empresa','text',array('required' => false,'attr' => array('class'=>'form-control input-small')))            
             ->add('cargo','text',array('required' => false,'attr' => array('class'=>'form-control input-small')))            

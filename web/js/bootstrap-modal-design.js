@@ -49,7 +49,7 @@ var BootstrapWindow= Backbone.Model.extend({
         this.AddHeader();
         this.AddBody();
         this.AddFooter();
-        
+        this.buttons=[];
     },
     AddDialog:function(){
         var idDomHTML;
@@ -91,8 +91,14 @@ var BootstrapWindow= Backbone.Model.extend({
     },
     AddButton:function(id,options){
         
-        this.Footer.append( "<a id=\""+id+"\" class=\"btn "+options.class+"\" >"+options.label+"</a>");
-        $("#"+id).click(options.fn);
+        this.Footer.append( "<a id=\""+id+"\" class=\"btn "+options.class+"\"  data-loading-text='Procesando..'>"+options.label+"</a>");
+        //$("#"+id).click(options.fn);
+        var b=new BootstrapWindowButton({id:id});
+        b.setClick(options.fn);
+        this.buttons.push(b);
+    },
+    Buttons:function(index){
+        return this.buttons[index];
     },
     setWidth:function(width){
         this.Dialog.css("width",width+"px");
@@ -100,6 +106,42 @@ var BootstrapWindow= Backbone.Model.extend({
     setHeight:function(height){
         //this.Content.css("height",height+"px");
         this.Body.css("height",height+"px");
+    },
+    EnabledButtons:function(){
+        for (var i = 0; i < this.buttons.length; i++) {
+            this.buttons[i].enabled();
+        };
+    },
+    DisabledButtons:function(){
+        for (var i = 0; i < this.buttons.length; i++) {
+            this.buttons[i].disabled();
+        };
     }
     
+});
+
+var BootstrapWindowButton= Backbone.Model.extend({
+    idAttribute: 'id',
+    defaults:{
+        disabled:false
+    },
+    initialize: function(){
+       var id=this.get('id');
+       this.button=$("#"+id);
+    },
+    setClick:function(fn){
+        var self=this;
+        this.button.click(function(){
+            self.button.button('loading');
+            fn();
+        });
+        
+    },
+    disabled:function(){
+        this.button.attr('disabled',true);
+    },
+    enabled:function(){
+        this.button.attr('disabled',false);
+        this.button.button('reset');
+    }
 });

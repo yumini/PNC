@@ -60,7 +60,7 @@ class Catalogo
      *
      * @ORM\Column(name="estado", type="boolean")
      */
-    private $estado;
+    private $estado=true;
 
     /**
     * @ORM\OneToMany(targetEntity="PostulanteContacto", mappedBy="postulantecontacto")
@@ -121,6 +121,11 @@ class Catalogo
     * @ORM\OneToMany(targetEntity="EvaluadorDisponibilidad", mappedBy="dia")
     */
     private $diasdisponiblesEvaluador;
+
+    /**
+    * @ORM\OneToMany(targetEntity="EncuestaPregunta", mappedBy="grupo")
+    */
+    private $grupospreguntas;
     
      public function __construct()
     {
@@ -682,5 +687,38 @@ class Catalogo
     public function getDiasdisponiblesEvaluador()
     {
         return $this->diasdisponiblesEvaluador;
+    }
+
+    /**
+     * Add grupospreguntas
+     *
+     * @param \App\WebBundle\Entity\EncuestaPregunta $grupospreguntas
+     * @return Catalogo
+     */
+    public function addGrupospregunta(\App\WebBundle\Entity\EncuestaPregunta $grupospreguntas)
+    {
+        $this->grupospreguntas[] = $grupospreguntas;
+    
+        return $this;
+    }
+
+    /**
+     * Remove grupospreguntas
+     *
+     * @param \App\WebBundle\Entity\EncuestaPregunta $grupospreguntas
+     */
+    public function removeGrupospregunta(\App\WebBundle\Entity\EncuestaPregunta $grupospreguntas)
+    {
+        $this->grupospreguntas->removeElement($grupospreguntas);
+    }
+
+    /**
+     * Get grupospreguntas
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getGrupospreguntas()
+    {
+        return $this->grupospreguntas;
     }
 }

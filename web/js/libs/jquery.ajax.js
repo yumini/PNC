@@ -49,9 +49,9 @@ jAjax.prototype={
             type:method,
             url:url,
             data:params,
-            dataType:"html",
+            dataType:"json",
             success:function(datos){
-                    fnSuccess();
+                    fnSuccess(datos);
             }
         });
     }

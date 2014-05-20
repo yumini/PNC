@@ -244,7 +244,7 @@ class Menu
     /**
      * Add perfiles
      *
-     * @param \App\WebBundle\Entity\Perfil $perfiles
+     * @param Perfil $perfiles
      * @return Menu
      */
     public function addPerfile(Perfil $perfiles)
@@ -257,7 +257,7 @@ class Menu
     /**
      * Remove perfiles
      *
-     * @param \App\WebBundle\Entity\Perfil $perfiles
+     * @param Perfil $perfiles
      */
     public function removePerfile(Perfil $perfiles)
     {

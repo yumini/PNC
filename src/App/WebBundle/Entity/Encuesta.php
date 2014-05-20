@@ -3,6 +3,7 @@
 namespace App\WebBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Encuesta
@@ -23,7 +24,7 @@ class Encuesta
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank
      * @ORM\Column(name="titulo", type="string", length=100)
      */
     private $titulo;
@@ -37,21 +38,21 @@ class Encuesta
 
     /**
      * @var integer
-     *
+     * @Assert\NotBlank
      * @ORM\Column(name="maxopciones", type="integer")
      */
     private $maxopciones;
 
     /**
      * @var \DateTime
-     *
+     * @Assert\NotBlank
      * @ORM\Column(name="inicio", type="date")
      */
     private $inicio;
 
     /**
      * @var \DateTime
-     *
+     * @Assert\NotBlank
      * @ORM\Column(name="fin", type="date")
      */
     private $fin;
@@ -61,13 +62,18 @@ class Encuesta
      *
      * @ORM\Column(name="estado", type="boolean")
      */
-    private $estado;
+    private $estado=true;
 
     /**
     * @ORM\ManyToOne(targetEntity="Catalogo", inversedBy="encuestas")
     * @ORM\JoinColumn(name="tipoencuesta_id", referencedColumnName="id")
     */
     protected $tipoEncuesta;
+
+    /**
+    * @ORM\OneToMany(targetEntity="EncuestaPregunta", mappedBy="encuesta")
+    */
+    private $preguntas;
     
     /**
      * Get id
@@ -128,10 +134,10 @@ class Encuesta
     /**
      * Set maxopciones
      *
-     * @param \int $maxopciones
+     * @param integer $maxopciones
      * @return Encuesta
      */
-    public function setMaxopciones(\int $maxopciones)
+    public function setMaxopciones($maxopciones)
     {
         $this->maxopciones = $maxopciones;
     
@@ -141,7 +147,7 @@ class Encuesta
     /**
      * Get maxopciones
      *
-     * @return \int 
+     * @return integer 
      */
     public function getMaxopciones()
     {
@@ -238,5 +244,45 @@ class Encuesta
     public function getTipoEncuesta()
     {
         return $this->tipoEncuesta;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->preguntas = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    /**
+     * Add preguntas
+     *
+     * @param \App\WebBundle\Entity\EncuestaPregunta $preguntas
+     * @return Encuesta
+     */
+    public function addPregunta(\App\WebBundle\Entity\EncuestaPregunta $preguntas)
+    {
+        $this->preguntas[] = $preguntas;
+    
+        return $this;
+    }
+
+    /**
+     * Remove preguntas
+     *
+     * @param \App\WebBundle\Entity\EncuestaPregunta $preguntas
+     */
+    public function removePregunta(\App\WebBundle\Entity\EncuestaPregunta $preguntas)
+    {
+        $this->preguntas->removeElement($preguntas);
+    }
+
+    /**
+     * Get preguntas
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPreguntas()
+    {
+        return $this->preguntas;
     }
 }

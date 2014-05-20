@@ -1,0 +1,36 @@
+<form id="myform" method="post" {{ form_enctype(form) }}>
+    {{form_widget(form._token)}}
+    <input type="hidden" name="_method" value="POST" />
+    <div class="row">
+        <div class="col-md-12">
+            <label class="control-label">Grupo Pregunta:</label><br/>
+            {{form_widget(form.grupo)}}
+        </div>
+       
+    </div>
+    <br/>
+    <div class="row">
+        <div class="col-md-12">
+            <label class="control-label">Pregunta:</label><br/>
+            {{form_widget(form.pregunta)}}
+        </div>
+       
+    </div>
+    <br/>
+    <div class="row">
+        <div class="col-md-12">
+            <label class="control-label">Descripcion:</label><br/>
+            {{form_widget(form.descripcion)}}
+        </div>
+       
+    </div>
+    <br/>
+    <div class="row">
+        <div class="col-md-4">
+            <label class="control-label">Orden:</label><br/>
+            {{form_widget(form.orden)}}
+        </div>
+    </div>
+  <br/>
+   
+</form>

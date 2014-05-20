@@ -43,7 +43,8 @@
                 <th class="grid-header" style="text-align: center;">{{ knp_pagination_sortable(pagination, 'Email', 'u.email') }}</th>
                 <th class="grid-header" style="text-align: center;">{{ knp_pagination_sortable(pagination, 'Perfil', 'p.nombre') }}</th>
  
-                <th class="grid-header" style="text-align: center;">{{ knp_pagination_sortable(pagination, 'Registro Valido', 'u.validaregistro') }}</th>
+                <th class="grid-header" style="text-align: center;">{{ knp_pagination_sortable(pagination, 'Aprobado por Administrador', 'u.validaregistro') }}</th>
+                <th class="grid-header" style="width: 100px;text-align: center;">Estado</th>
                 <th class="grid-header" style="width: 100px;text-align: center;">Opciones</th>
             </tr>
         </thead>
@@ -57,11 +58,19 @@
                 <td>{{ entity.email }}</td>
                 <td>{{ entity.perfil.nombre }}</td>
                 
-                <td>{% if entity.validaregistro==1 %}{{ "Registro Valido" }}{% endif %} {% if entity.validaregistro==0 %}{{ "Registro no Valido" }}{% endif %}</td>
+                <td>{% if entity.validaregistro==1 %}{{ "Aprobado" }}{% endif %} {% if entity.validaregistro==0 %}{{ "No Aprobado" }}{% endif %}</td>
+                <td>{% if entity.enabled==1 %}Activo{% else %}Inactivo{% endif %} </td>
                 <td style="text-align: center;font-size: 12px;">
                     <a class="row-edit btn btn-warning btn-xs" data-id="{{ entity.id }}" title="Editar Usuario"><i class="glyphicon glyphicon-pencil"> </i></a>
-                    <a class="row-active btn btn-info btn-xs" data-id="{{ entity.id }}" title="Habilitar Usuario"><i class="glyphicon glyphicon-check"> </i></a>
-                   
+                    {% if entity.validaregistro!=1 %}
+                    <a class="row-active btn btn-info btn-xs" data-id="{{ entity.id }}" title="Aprobar Registro de Usuario"><i class="glyphicon glyphicon-check"> </i></a>
+                    {% else %}
+                      {% if entity.enabled==1 %}
+                      <a class="row-changestate btn btn-danger btn-xs" data-id="{{ entity.id }}" title="Desactivar Usuario"><i class="glyphicon glyphicon-ban-circle"> </i></a>
+                      {% else %}
+                      <a class="row-changestate btn btn-success btn-xs" data-id="{{ entity.id }}" title="Activar Usuario"><i class="glyphicon glyphicon-check"> </i></a>
+                      {% endif %}
+                    {% endif %}
                 
                 </td>
             </tr>

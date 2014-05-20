@@ -55,6 +55,11 @@ class ConflictoInteresEvaluadorController extends Controller
              $em = $this->getDoctrine()->getManager();
              $evaluador = $em->getRepository('AppWebBundle:Evaluador')->find($id);
              $entity->setEvaluador($evaluador);
+             
+             if($entity->getHastalafecha()=='1'){
+                $entity->setFecfin(null);
+                
+            }
              $em->persist($entity);
              $em->flush();
              $success=true;
@@ -147,7 +152,7 @@ class ConflictoInteresEvaluadorController extends Controller
      *
      * @Route("/{id}/update", name="_admin_conflictodeinteres_update", options={"expose"=true})
      * @Method("POST")
-     * @Template("AppWebBundle:Default:result.json.twig")
+     * @Template()
      */
     public function updateAction(Request $request, $id)
     {
@@ -157,20 +162,32 @@ class ConflictoInteresEvaluadorController extends Controller
         $entity = $em->getRepository('AppWebBundle:ConflictoInteresEvaluador')->find($id);
         $editForm = $this->createForm(new ConflictoInteresEvaluadorType(), $entity);
         $editForm->bind($request);
-        
-        if ($entity) {
-           
-            $em->persist($entity);
-            $em->flush();
+        $errors = $this->get('validator')->validate($editForm);
+        if (count($errors)==0) {
+            if ($entity) {
+               
+                $em->persist($entity);
+                $em->flush();
+                $msg="Registro actualizado satisfactoriamente";
+                $success=true;
+            }else{
+                $success=false;
+                $msg="conflicto de Interes no encontrado para el evaluador";
+
+            }
         }else{
-            $result=false;
-            $msg="conflicto no encontrado para el evaluador";
-
+            $msgError=new \App\WebBundle\Util\MensajeError();
+            $msgError->AddErrors($editForm);
+            $msg=$msgError->getErrorsHTML();       
+            $success=false;
         }
-        return array(
-            'result' => "{\"success\":\"$result\",message:\"$msg\"}"
+       
 
-        );
+        return new JsonResponse(array(
+            'success' => $success, 
+            'message' => $msg
+        ));
+       
     }
     /**
      * Deletes a PostulanteContacto entity.

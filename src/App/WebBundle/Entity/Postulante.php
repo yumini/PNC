@@ -4,6 +4,7 @@ namespace App\WebBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo; 
+use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Postulante
  *
@@ -23,28 +24,28 @@ class Postulante
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank
      * @ORM\Column(name="razonsocial", type="string", length=100)
      */
     private $razonsocial;
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank
      * @ORM\Column(name="direccion", type="string", length=150, nullable=true)
      */
     private $direccion;
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank
      * @ORM\Column(name="ruc", type="string", length=11, nullable=true)
      */
     private $ruc;
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank
      * @ORM\Column(name="telefono", type="string", length=20, nullable=true)
      */
     private $telefono;
@@ -90,7 +91,7 @@ class Postulante
     protected $contactos;
     
     /**
-    * @ORM\OneToMany(targetEntity="Inscripcion", mappedBy="postulante")
+    * @ORM\OneToMany(targetEntity="Inscripcion", mappedBy="postulante", cascade={"persist"})
     */
     protected $inscripciones;
     

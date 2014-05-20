@@ -34,8 +34,7 @@ OptionButton.prototype={
             label:'Grabar',
             'class':'btn-success',
             fn:function(){
-                $('#btn-concurso-save').attr('disabled',true);
-                $('#btn-concurso-cancel').attr('disabled',true);
+               
                 parent.Save();               
                 
             }
@@ -43,6 +42,8 @@ OptionButton.prototype={
     },
     Save:function(){
             var parent=this;
+            parent.Window.Buttons(0).disabled();
+            parent.Window.Buttons(1).disabled();
             var url=Routing.generate(this.routeSave);
             params = $('#myform').serializeObject();
             console.log(params);
@@ -53,8 +54,9 @@ OptionButton.prototype={
                     data:params,
                     dataType:"html",
                     success:function(request){
-                            $('#btn-concurso-save').attr('disabled',false);
-                            $('#btn-concurso-cancel').attr('disabled',false);
+                            parent.Window.Buttons(0).enabled();
+                            parent.Window.Buttons(1).enabled();
+                            
                             var obj = jQuery.parseJSON(request);
                             tipo=(obj.success)?'success':'warning';
                             var n = noty({
@@ -100,8 +102,6 @@ OptionButton.prototype={
             label:'Grabar',
             'class':'btn-success',
             fn:function(){
-                $('#btn-concurso-save').attr('disabled',true);
-                $('#btn-concurso-cancel').attr('disabled',true);
                 parent.Update();               
                
             }
@@ -129,23 +129,19 @@ OptionButton.prototype={
     Update:function(){
             console.log("actualizando perfil con id:"+this.IdEntity);
             var parent=this;
+            parent.Window.Buttons(0).disabled();
+            parent.Window.Buttons(1).disabled();
             var url=Routing.generate(this.routeUpdate,{id:this.IdEntity});
             params = $('#myform').serializeObject();
-            var nodes = $('#tree').tree('getChecked');
-            var s = '';
-            for(var i=0; i<nodes.length; i++){
-                if (s != '') s += ',';
-                s += nodes[i].id;
-            }
-            params.perfil=s;           
+                    
             $.ajax({
                     type:'POST',
                     url:url,
                     data:params,
                     dataType:"html",
                     success:function(request){
-                            $('#btn-concurso-save').attr('disabled',false);
-                            $('#btn-concurso-cancel').attr('disabled',false);
+                            parent.Window.Buttons(0).enabled();
+                            parent.Window.Buttons(1).enabled();
                             var obj = jQuery.parseJSON(request);
                             tipo=(obj.success)?'success':'warning';
                             var n = noty({

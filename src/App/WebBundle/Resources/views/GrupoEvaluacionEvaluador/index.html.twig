@@ -7,8 +7,8 @@
                 <th class="grid-header">Nombres</th>
                 <th class="grid-header">Apellidos</th>
                 <th class="grid-header">Profesion</th>
-                <th class="grid-header">Lider</th>
-                <th class="grid-header" style="width: 100px;text-align: center;">Opciones</th>
+                <th class="grid-header" style="width: 80px;">Lider</th>
+                <th class="grid-header" style="width: 80px;text-align: center;">Opciones</th>
             </tr>
         </thead>
         <tbody>
@@ -17,11 +17,11 @@
                 <td>{{ entity.evaluador.nombres }}</td>
                 <td>{{ entity.evaluador.apellidos }}</td>
                 <td>{{ entity.evaluador.profesion }}</td>
-                <td>{% if entity.lider %}SI{%else%}NO{%endif%}</td>
+                <td>
+                <a title="Marcar como Lider" class="btn {% if entity.lider %}btn-info{%else%}btn-default{%endif%} btn-xs" onclick="new OptionButton.Evaluador().ActiveLider('{{ entity.id }}')"><i class="glyphicon glyphicon-user" title="Asignar lider"> </i> {% if entity.lider %} Es Lider{%else%}No Lider{%endif%}</a>
+                </td>
                  <td style="text-align: center;font-size: 12px;">
-                    <a href="#" onclick="new OptionButton.Evaluador().ActiveLider('{{ entity.id }}')"><i class="glyphicon glyphicon-user" title="Asignar lider"> </i></a>
-                    &nbsp;
-                    <a href="#" onclick="new OptionButton.Evaluador().Delete('{{ entity.id }}')" title="Eliminar"><i class="glyphicon glyphicon-trash"> </i></a>
+                    <a class="btn btn-danger btn-xs" onclick="new OptionButton.Evaluador().Delete('{{ entity.id }}')" title="Eliminar"><i class="glyphicon glyphicon-trash"> </i></a>
                 
                 </td>
             </tr>

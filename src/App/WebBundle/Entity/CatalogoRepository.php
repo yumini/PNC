@@ -72,6 +72,12 @@ class CatalogoRepository extends EntityRepository
     public function getDisponibilidadEvaluadorQueryBuilder(){
         return $this->getCatalogosQueryBuilder("DIA");
     }
+    public function getTiposEncuestaQueryBuilder(){
+        return $this->getCatalogosQueryBuilder("TIPOENCUESTA");
+    }
+    public function getGrupoPreguntaQueryBuilder(){
+        return $this->getCatalogosQueryBuilder("GRUPOPREGUNTA");
+    }
     public function getCategoriasPostulante(){
         $q=$this->getCategoriasPostulanteQueryBuilder();
         return $q->getQuery()->getResult();

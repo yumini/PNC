@@ -44,7 +44,7 @@ class EtapaConcurso
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fechaExtension", type="date")
+     * @ORM\Column(name="fechaExtension", type="date",nullable=true)
      */
     private $fechaExtension;
     

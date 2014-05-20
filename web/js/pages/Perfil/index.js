@@ -30,10 +30,7 @@ OptionButton.prototype={
             label:'Grabar',
             'class':'btn-success',
             fn:function(){
-                $('#btn-perfil-save').attr('disabled',true);
-                $('#btn-perfil-cancel').attr('disabled',true);
                 parent.Save();               
-                //parent.Window.Hide();
             }
         });
       
@@ -41,6 +38,8 @@ OptionButton.prototype={
     Save:function(){
        
             var parent=this;
+            parent.Window.Buttons(0).disabled();
+            parent.Window.Buttons(1).disabled();
             var url=Routing.generate(this.routeSave);
             params = $('#myform').serializeObject();
             var nodes = $('#tree').tree('getChecked');
@@ -59,8 +58,8 @@ OptionButton.prototype={
                     data:params,
                     dataType:"html",
                     success:function(request){
-                            $('#btn-perfil-save').attr('disabled',false);
-                            $('#btn-perfil-cancel').attr('disabled',false);
+                            parent.Window.Buttons(0).enabled();
+                            parent.Window.Buttons(1).enabled();
 
                             var obj = jQuery.parseJSON(request);
                             if(obj.success=='false'){
@@ -109,16 +108,15 @@ OptionButton.prototype={
             label:'Grabar',
             'class':'btn-success',
             fn:function(){
-                $('#btn-perfil-save').attr('disabled',true);
-                $('#btn-perfil-cancel').attr('disabled',true);
-                parent.Update();               
-               
+                parent.Update();                              
             }
         });
     },
     Update:function(){
             console.log("actualizando perfil con id:"+this.IdEntity);
             var parent=this;
+            parent.Window.Buttons(0).disabled();
+            parent.Window.Buttons(1).disabled();
             var url=Routing.generate(this.routeUpdate,{id:this.IdEntity});
             params = $('#myform').serializeObject();
             var nodes = $('#tree').tree('getChecked');
@@ -134,8 +132,8 @@ OptionButton.prototype={
                     data:params,
                     dataType:"html",
                     success:function(request){
-                            $('#btn-perfil-save').attr('disabled',false);
-                            $('#btn-perfil-cancel').attr('disabled',false);
+                            parent.Window.Buttons(0).enabled();
+                            parent.Window.Buttons(1).enabled();
                             time=5000;        
                             var obj = jQuery.parseJSON(request);
                             if(obj.success=='false'){

@@ -82,7 +82,7 @@ class InscripcionEvaluador
     /**
      * Set fechaActualizacion
      *
-     * @param \Date $fechaActualizacion
+     * @param Date $fechaActualizacion
      * @return InscripcionEvaluador
      */
     public function setFechaActualizacion($fechaActualizacion)
@@ -95,7 +95,7 @@ class InscripcionEvaluador
     /**
      * Get fechaActualizacion
      *
-     * @return \Date 
+     * @return Date 
      */
     public function getFechaActualizacion()
     {

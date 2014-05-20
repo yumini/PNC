@@ -32,13 +32,14 @@ OptionButton.Perfil.prototype={
             'class':'btn-success',
             fn:function(){
                 parent.Update();               
-                parent.Window.Hide();
             }
         });
     },
     Update:function(){
             console.log("actualizando perfil con id:"+this.IdEntity);
             var parent=this;
+            parent.Window.Buttons(0).disabled();
+            parent.Window.Buttons(1).disabled();
             var url=Routing.generate(this.routeUpdate,{id:this.IdEntity});
             params = $('#myPerfilform').serializeObject();
             var nodes = $('#tree').tree('getChecked');
@@ -48,10 +49,28 @@ OptionButton.Perfil.prototype={
                     type:'PUT',
                     url:url,
                     data:params,
-                    dataType:"html",
-                    success:function(datos){
+                    dataType:"json",
+                    success:function(obj){
+                            parent.Window.Buttons(0).enabled();
+                            parent.Window.Buttons(1).enabled();
                             
-                            new OptionButton.Perfil().Refresh();
+                            tipo=(obj.success)?'success':'warning';
+                            var n = noty({
+                                    text: obj.message,
+                                    type: tipo,
+                                    dismissQueue: true,
+                                    layout: 'bottomRight',
+                                    theme: 'defaultTheme',
+                                    timeout:5000
+                            });
+                            if(obj.success){
+                                parent.Window.Hide();
+
+                                setTimeout(function() {
+                                     new OptionButton.Perfil().Refresh();
+                                }, 1000);
+                            }
+                           
                     },
                     error:function(objeto, quepaso, otroobj){
 
@@ -111,9 +130,10 @@ OptionButton.Conflictos.prototype={
         });
     },
     Save:function(){
-            $('#btn-conflicto-save').attr('disabled',true);
-            $('#btn-conflicto-cancel').attr('disabled',true);
+            
             var parent=this;
+            parent.Window.Buttons(0).disabled();
+            parent.Window.Buttons(1).disabled();
             var id=$("#hdnEntity_id").val();
             var url=Routing.generate(this.routeSave,{id:id});
             params = $('#myform').serializeObject();
@@ -125,8 +145,8 @@ OptionButton.Conflictos.prototype={
                     data:params,
                     dataType:"json",
                     success:function(obj){
-                            $('#btn-conflicto-save').attr('disabled',false);
-                            $('#btn-conflicto-cancel').attr('disabled',false);
+                            parent.Window.Buttons(0).enabled();
+                            parent.Window.Buttons(1).enabled();
                             console.log(obj)
                             if(obj.success)
                                 tipo='success';
@@ -174,13 +194,14 @@ OptionButton.Conflictos.prototype={
             'class':'btn-success',
             fn:function(){
                 parent.Update();               
-                parent.Window.Hide();
             }
         });
     },
     Update:function(){
-            console.log("actualizando conflicto de interes con id:"+this.IdEntity);
+            
             var parent=this;
+            parent.Window.Buttons(0).disabled();
+            parent.Window.Buttons(1).disabled();
             var url=Routing.generate(this.routeUpdate,{id:this.IdEntity});
             params = $('#myform').serializeObject();
                    
@@ -188,9 +209,28 @@ OptionButton.Conflictos.prototype={
                     type:'POST',
                     url:url,
                     data:params,
-                    dataType:"html",
-                    success:function(datos){
-                            new OptionButton.Conflictos().Refresh(); 
+                    dataType:"json",
+                    success:function(obj){
+                            parent.Window.Buttons(0).enabled();
+                            parent.Window.Buttons(1).enabled();
+                            console.log(obj)
+                            if(obj.success)
+                                tipo='success';
+                            else
+                                tipo='warning';
+                            var n = noty({
+                                    text: obj.message,
+                                    type: tipo,
+                                    dismissQueue: true,
+                                    layout: 'bottomRight',
+                                    theme: 'defaultTheme',
+                                    timeout:5000
+                            });
+                            if(obj.success){
+                                parent.Window.Hide();
+                                parent.Refresh(); 
+                            }
+                            
                     },
                     error:function(objeto, quepaso, otroobj){
 

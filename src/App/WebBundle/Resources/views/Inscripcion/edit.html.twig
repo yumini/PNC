@@ -1,5 +1,5 @@
 <form id="myform"  method="post" {{ form_enctype(form) }} action="{{ path('_admin_inscripcion_upload') }}" enctype="multipart/form-data">
-
+{{form_widget(form._token)}}
 <input type="hidden" id="idInscripcion" name="idInscripcion" value="{{entity.id}}"/>
 <input type="hidden" id="typeFile" name="typeFile"/>
 <ul id="tabWizard" class="nav nav-tabs">
@@ -72,7 +72,7 @@
                 <h5><b>Informe de Postulacíon Completo</b></h5>
                 <div id="upload1" class="drop">
                  
-                  <p>Arrastrar aqui</p>
+                  
                   <p style="font-size:11px;">
                   Por favor seleccione un documento o arrastrelo hasta aqui para agregarlo
                   </p>
@@ -90,7 +90,7 @@
 
                 <div id="upload2" class="drop">
                   
-                   <p>Arrastrar aqui</p>
+                   
                 <p style="font-size:11px;">
                   Por favor seleccione un documento o arrastrelo hasta aqui para agregarlo
                 </p>
@@ -115,5 +115,5 @@
 </form>
 {% block ScriptFooter %}
 <script src="{{ asset('js/pages/Inscripcion/new.js') }}"></script> 
-<script src="{{ asset('js/script.js') }}"></script>
+
 {% endblock %}

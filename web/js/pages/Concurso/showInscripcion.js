@@ -37,10 +37,14 @@ OptionButton.prototype={
                 case 0:
                     $("#btn-inscripcion-save").html("Continuar");
                     this.ActiveWizard(0);
+                    this.Window.Buttons(0).enabled();
+                    this.Window.Buttons(1).enabled();
                     break;
                 case 1:
                     $("#btn-inscripcion-save").html("Inscribirme");
                     this.ActiveWizard(1);
+                    this.Window.Buttons(0).enabled();
+                    this.Window.Buttons(1).enabled();
                     break;
                 case 2:
                     this.Save();
@@ -128,6 +132,8 @@ OptionButton.prototype={
                     data:params,
                     dataType:"json",
                     success:function(request){
+                        parent.Window.Buttons(0).enabled();
+                        parent.Window.Buttons(1).enabled();
                         console.log(request.id)
                             $('#idInscripcion').val(request.id);
                             var obj =request;
@@ -193,10 +199,26 @@ OptionButton.prototype={
                     type:'PUT',
                     url:url,
                     data:params,
-                    dataType:"html",
-                    success:function(datos){
-                        parent.Window.Hide();
-                        setTimeout(parent.Refresh,2000);
+                    dataType:"json",
+                    success:function(request){
+                        parent.Window.Buttons(0).enabled();
+                        parent.Window.Buttons(1).enabled();
+                        console.log(request.id)
+                            $('#idInscripcion').val(request.id);
+                            var obj =request;
+                            tipo=(obj.success)?'success':'warning';
+                            console.log(obj.success);
+                            
+                            var n = noty({
+                                    text: obj.message,
+                                    type: tipo,
+                                    dismissQueue: true,
+                                    layout: 'bottomRight',
+                                    theme: 'defaultTheme',
+                                    timeout:5000
+                            });
+                            parent.Window.Hide();
+                            setTimeout(parent.Refresh,2000);
                     },
                     error:function(objeto, quepaso, otroobj){
 
@@ -218,17 +240,19 @@ OptionButton.prototype={
                  $.ajax({
                         type:'DELETE',
                         url:url,
-                        dataType:"html",
-                        success:function(datos){
+                        dataType:"json",
+                        success:function(response){
+                                var type=(response.success)?'success':'warning';
                                var n = noty({
-                                    text: "Registro eliminado satisfactoriamente",
-                                    type: "success",
+                                    text: response.message,
+                                    type: type,
                                     dismissQueue: true,
                                     layout: 'bottomRight',
                                     theme: 'defaultTheme',
                                     timeout:5000
                                 }); 
-                                new OptionButton().Refresh();
+                               if(response.success)
+                                    new OptionButton().Refresh();
                         },
                         error:function(objeto, quepaso, otroobj){
 

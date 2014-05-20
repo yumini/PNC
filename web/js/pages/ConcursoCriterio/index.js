@@ -57,8 +57,6 @@ OptionButton.prototype={
             label:'Grabar',
             'class':'btn-success',
             fn:function(){
-                $('#btn-concurso-save').attr('disabled',true);
-                $('#btn-concurso-cancel').attr('disabled',true);
                 parent.Save();               
                
             }
@@ -67,6 +65,8 @@ OptionButton.prototype={
     Save:function(){
             var idConcurso=$("#idConcurso").val();
             var parent=this;
+            parent.Window.Buttons(0).disabled();
+            parent.Window.Buttons(1).disabled();
             var url=Routing.generate(this.routeSave,{id:idConcurso});
             params = $('#myform').serializeObject();
            
@@ -78,8 +78,8 @@ OptionButton.prototype={
                     data:params,
                     dataType:"html",
                     success:function(request){
-                            $('#btn-concurso-save').attr('disabled',false);
-                            $('#btn-concurso-cancel').attr('disabled',false); 
+                            parent.Window.Buttons(0).enabled();
+                            parent.Window.Buttons(1).enabled();
                             var obj = jQuery.parseJSON(request);
                             tipo=(obj.success)?'success':'warning';
                             
@@ -128,8 +128,6 @@ OptionButton.prototype={
             label:'Grabar',
             'class':'btn-success',
             fn:function(){
-                $('#btn-concurso-save').attr('disabled',true);
-                $('#btn-concurso-cancel').attr('disabled',true);
                 parent.Update();               
                
             }
@@ -139,6 +137,8 @@ OptionButton.prototype={
     Update:function(){
     	
             var parent=this;
+            parent.Window.Buttons(0).disabled();
+            parent.Window.Buttons(1).disabled();
             var url=Routing.generate(this.routeUpdate,{id:this.IdEntity});
             params = $('#myform').serializeObject();        
             $.ajax({
@@ -147,8 +147,8 @@ OptionButton.prototype={
                     data:params,
                     dataType:"html",
                     success:function(request){
-                            $('#btn-concurso-save').attr('disabled',false);
-                            $('#btn-concurso-cancel').attr('disabled',false); 
+                            parent.Window.Buttons(0).enabled();
+                            parent.Window.Buttons(1).enabled();
                             var obj = jQuery.parseJSON(request);
                             tipo=(obj.success)?'success':'warning';
                             

@@ -28,7 +28,7 @@ class PostulanteContactoRepository extends EntityRepository
         $dql= "SELECT pc FROM AppWebBundle:PostulanteContacto pc 
                 JOIN pc.postulante p 
                 JOIN pc.postulantecontacto ct
-                WHERE p.id=:id order by ct.codigo asc";
+                WHERE p.id=:id order by pc.nombre asc";
         $query=$em->createQuery($dql)->setParameter('id', $idusuario);
         $pagination = $paginator->paginate($query,$page,$limit);
         return $pagination;

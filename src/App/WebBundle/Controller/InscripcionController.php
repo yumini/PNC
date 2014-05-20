@@ -67,28 +67,45 @@ class InscripcionController extends Controller
     public function createAction(Request $request,$id,$id2)
     {
         
+        $em = $this->getDoctrine()->getManager();
+        $concurso=$em->getRepository('AppWebBundle:Concurso')->find($id2);
         $entity  = new Inscripcion();
+        $entity->setConcurso($concurso);
         $form = $this->createForm(new InscripcionType(), $entity);
         $form->bind($request);
         $msg="Inscripción realizada satisfactoriamente";
         $errors = $this->get('validator')->validate($form);
-        if (count($errors)==0 && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $postulante = $em->getRepository('AppWebBundle:Postulante')->find($id);
-            $concurso=$em->getRepository('AppWebBundle:Concurso')->find($id2);
-            
-            $entity->setConcurso($concurso);
-            $entity->setPostulante($postulante);
-            $em->persist($entity);
-            $em->flush();
-            $success=true;
-            $id=$entity->getId();
+        
+        $postulante = $em->getRepository('AppWebBundle:Postulante')->find($id);
+        
+        $inscripciones=$postulante->getInscripciones();
+        $existe=false;
+        if($entity->getNombreproyecto()!='')
+            foreach ($inscripciones as $i) {
+                if($i->getNombreproyecto()==$entity->getNombreproyecto())
+                    $existe=true;
+            }
+        if(!$existe){
+            if (count($errors)==0 && $form->isValid()) {
+                
+                
+                $entity->setConcurso($concurso);
+                $entity->setPostulante($postulante);
+                $em->persist($entity);
+                $em->flush();
+                $success=true;
+                $id=$entity->getId();
+            }else{
+                 $msgError=new \App\WebBundle\Util\MensajeError();
+                 $msgError->AddErrors($form);
+                 $msg=$msgError->getErrorsHTML();
+                 $success=false;
+                 $id=0;
+            }
         }else{
-             $msgError=new \App\WebBundle\Util\MensajeError();
-             $msgError->AddErrors($form);
-             $msg=$msgError->getErrorsHTML();
-             $success=false;
-             $id=0;
+            $msg="<b>Nombre del Proyecto</b>:<br/>Nombre de Proyecto ya existe";
+            $success=false;
+            $id=0;
         }
         return new JsonResponse(array(
             'result' =>true ,
@@ -109,41 +126,51 @@ class InscripcionController extends Controller
     {
         $type=$request->request->get('typeFile');
         $id=$request->request->get('idInscripcion');
-        
+       $result=true;
        $em = $this->getDoctrine()->getManager();
        $entity = $em->getRepository('AppWebBundle:Inscripcion')->find($id);
-       $allowed = array('doc', 'docx', 'pdf','zip');
+       $allowed = array('doc', 'docx', 'pdf');
        if(isset($_FILES['upl']) && $_FILES['upl']['error'] == 0){
 
             $extension = pathinfo($_FILES['upl']['name'], PATHINFO_EXTENSION);
 
-            if(!in_array(strtolower($extension), $allowed)){
-               $result="error";
+            if(in_array(strtolower($extension), $allowed)){
+              
+                $pathDir=$id;
+                $filename="informe-$type.$extension";
+                switch ($type) {
+                    case 'completo':
+                        $entity->setInformepostulacionc($filename);
+                        break;
+                    
+                    case 'sinnformacionconfidencial':
+                        $entity->setInformepostulacionsic($filename);
+                        break;
+                }
+                $em->persist($entity);
+                $em->flush();
+                if (!is_dir('uploads/informes/'.$pathDir)) {
+                    @mkdir('uploads/informes/'.$pathDir);
+                }
+                if(move_uploaded_file($_FILES['upl']['tmp_name'], "uploads/informes/$pathDir/".$filename)){
+                   $success=true;
+                   $msg="Archivo cargado satisfactoriamente";
+                }else{
+                    $success=false;
+                    $msg="No se pudo mover el archivo al directorio";
+                }
+            }else{
+                $success=false;
+                $msg="Extensión de archivo no permitida";
             }
-            $pathDir=$id;
-            $filename="informe-$type.$extension";
-            switch ($type) {
-                case 'completo':
-                    $entity->setInformepostulacionc($filename);
-                    break;
-                
-                case 'sinnformacionconfidencial':
-                    $entity->setInformepostulacionsic($filename);
-                    break;
-            }
-            $em->persist($entity);
-            $em->flush();
-            if (!is_dir('uploads/informes/'.$pathDir)) {
-                @mkdir('uploads/informes/'.$pathDir);
-            }
-            if(move_uploaded_file($_FILES['upl']['tmp_name'], "uploads/informes/$pathDir/".$filename)){
-               $result="success";
-            }
+            
+        }else{
+            $success=false;
+            $msg="Ocurrio un error no se pudo cargar el archivo";
         }
 
-        return array(
-            'result' => "{status:$result}"
-        );
+
+        return new JsonResponse(array('success' => $success,'message'=>$msg));
     }
 
 
@@ -243,15 +270,28 @@ class InscripcionController extends Controller
 
         $editForm = $this->createForm(new InscripcionType(), $entity);
         $editForm->bind($request);
+        $errors = $this->get('validator')->validate($editForm);
 
-        //if ($editForm->isValid()) {
+        if (count($errors)==0 && $editForm->isValid()) {
             $em->persist($entity);
             $em->flush();
-        //}
+            $msg="Registro actualizado satisfactoriamente";
+            $success=true;
+        }else{
+            $msgError=new \App\WebBundle\Util\MensajeError();
+                 $msgError->AddErrors($editForm);
+                 $msg=$msgError->getErrorsHTML();
+                 $success=false;
+                 $id=0;
+        }
+        return new JsonResponse(array(
+            'result' =>true ,
+            'id'=> $id,
+            'success' =>$success ,
+            'message'=> $msg
+        ));
 
-        return array(
-            'result' => "{success:true}"
-        );
+        
     }
     /**
      * Deletes a Inscripcion entity.
@@ -271,12 +311,19 @@ class InscripcionController extends Controller
             if (!$entity) {
                 throw $this->createNotFoundException('Unable to find Inscripcion entity.');
             }
-
-            $em->remove($entity);
-            $em->flush();
+            try{
+                $em->remove($entity);
+                $em->flush();
+                $msg="Registro eliminado satisfactoriamente";
+                $success=true;
+            }catch(\Exception $e){
+                $success=false;
+                $msg="No se puede eliminar la inscripción debido a que ya se encuentra vinculada al proceso de evaluación";
+            } 
+            
       
 
-        return new JsonResponse(array('success'=>true));
+        return new JsonResponse(array('success'=>$success,'message'=>$msg));
     }
 
     /**

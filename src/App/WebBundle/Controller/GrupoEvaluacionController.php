@@ -9,7 +9,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use App\WebBundle\Entity\GrupoEvaluacion;
 use App\WebBundle\Form\GrupoEvaluacionType;
-
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 /**
  * GrupoEvaluacion controller.
  *
@@ -80,16 +81,23 @@ class GrupoEvaluacionController extends Controller
      */
     public function indexAction()
     {
+
         $em = $this->getDoctrine()->getManager();
         $page=$this->get('request')->query->get('page', 1);
+        $field=$this->get('request')->query->get('filterField', 'g.nombre');
+        $value=$this->get('request')->query->get('filterValue','');
+        $sort=$this->get('request')->query->get('sort', 'c.anio desc,g.nombre asc');
+
         $paginator=$this->get('knp_paginator');
-        $pagination = $em->getRepository('AppWebBundle:GrupoEvaluacion')->FindAllPaginator($paginator,$page,5);
-        $concursos = $em->getRepository('AppWebBundle:Concurso')->FindAllActivos();
+        $dql   = "SELECT g FROM AppWebBundle:GrupoEvaluacion g JOIN g.concurso c
+                where $field like '%$value%' order by $sort";
+        $query = $em->createQuery($dql);
+        $pagination = $paginator->paginate($query,$page,10);
+
         return array(
             'pagination' => $pagination,
-            'title_list'=> "Grupos de Evaluación",
-            'action'=> "grupoevaluacion",
-            'concursos'=>$concursos
+            'title_list'=> "Listado de Concursos",
+            'action'=> "grupoevaluacion"
         );
     }
     /**
@@ -105,14 +113,22 @@ class GrupoEvaluacionController extends Controller
         $entity  = new GrupoEvaluacion();
         $form = $this->createForm(new GrupoEvaluacionType(), $entity);
         $form->bind($request);
-        $em = $this->getDoctrine()->getManager();
-        $entity->setEstado(1);
-        $em->persist($entity);
-        $em->flush();
-
-        return array(
-            'result' => "{success:true}"
-        );
+        $errors = $this->get('validator')->validate($form);
+        if (count($errors)==0 && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $entity->setEstado(1);
+            $em->persist($entity);
+            $em->flush();
+            $success=true;
+            $msg="Grupo registrado satisfactoriamente";
+        }else{
+            $msgError=new \App\WebBundle\Util\MensajeError();
+            $msgError->AddErrors($form);
+            $msg=$msgError->getErrorsHTML();       
+            $success=false;
+          
+        }
+        return new jsonResponse(array('success' => $success,'message'=>$msg));
     }
 
     /**
@@ -187,7 +203,7 @@ class GrupoEvaluacionController extends Controller
      *
      * @Route("/{id}/update", name="_admin_grupoevaluacion_update", options={"expose"=true})
      * @Method("POST")
-     * @Template("AppWebBundle:Default:result.json.twig")
+     * @Template()
      */
     public function updateAction(Request $request, $id)
     {
@@ -197,20 +213,29 @@ class GrupoEvaluacionController extends Controller
         $entity = $em->getRepository('AppWebBundle:GrupoEvaluacion')->find($id);
         $editForm = $this->createForm(new GrupoEvaluacionType(), $entity);
         $editForm->bind($request);
-        
-        if ($entity) {
-           
-            $em->persist($entity);
-            $em->flush();
+        $errors = $this->get('validator')->validate($editForm);
+        if (count($errors)==0 && $editForm->isValid()) {
+
+            if ($entity) {
+               
+                $em->persist($entity);
+                $em->flush();
+                $success=true;
+                $msg="Grupo actualizado satisfactoriamente";
+            }else{
+                $success=false;
+                $msg="grupo de Evaluación no encontrado";
+
+            }
         }else{
-            $result=false;
-            $msg="grupo de Evaluación no encontrado";
-
+            $msgError=new \App\WebBundle\Util\MensajeError();
+            $msgError->AddErrors($editForm);
+            $msg=$msgError->getErrorsHTML();       
+            $success=false;
+          
         }
-        return array(
-            'result' => "{success:'$result',message:'$msg'}"
-
-        );
+        return new jsonResponse(array('success' => $success,'message'=>$msg));
+        
 
       
     }
@@ -218,7 +243,7 @@ class GrupoEvaluacionController extends Controller
      * Deletes a GrupoEvaluacion entity.
      *
      * @Route("/{id}/delete", name="_admin_grupoevaluacion_delete", options={"expose"=true})
-     * @Method("POST")
+     * @Method("DELETE")
      * @Template("AppWebBundle:Default:result.json.twig")
      */
     public function deleteAction(Request $request, $id)

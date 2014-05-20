@@ -34,27 +34,42 @@ OptionButton.GrupoEvaluacion.prototype={
             'class':'btn-success',
             fn:function(){
                 parent.Save();               
-                parent.Window.Hide();
             }
         });
     },
 	Save:function(){
 		var parent=this;
-            var url=Routing.generate(this.routeSave);
-            params = $('#myform').serializeObject();
-            console.log(params);
+        parent.Window.Buttons(0).disabled();
+        parent.Window.Buttons(1).disabled();
+        var url=Routing.generate(this.routeSave);
+        params = $('#myform').serializeObject();
+        //console.log(params);
             
             $.ajax({
                     type:'POST',
                     url:url,
                     data:params,
-                    dataType:"html",
-                    success:function(datos){
-                            //parent.Window.AddHTML(datos);
-                            parent.Refresh();
-                    },
-                    error:function(objeto, quepaso, otroobj){
+                    dataType:"json",
+                    success:function(data){
+                            parent.Window.Buttons(0).enabled();
+                            parent.Window.Buttons(1).enabled();
 
+                            tipo=(data.success)?'success':'warning';
+                            var n = noty({
+                                    text: data.message,
+                                    type: tipo,
+                                    modal:false,
+                                    timeout:5000,
+                                    layout: 'bottomRight',
+                                    theme: 'defaultTheme',
+                                    timeout:5000                                  
+                            });
+                            if(data.success){
+                                parent.Window.Hide();
+                                setTimeout(function() {
+                                        parent.Refresh();
+                                }, 1000);
+                            }
                     }
             });
 	},
@@ -80,13 +95,15 @@ OptionButton.GrupoEvaluacion.prototype={
             'class':'btn-success',
             fn:function(){
                 parent.Update();               
-                parent.Window.Hide();
             }
         });
     },
     Update:function(){
            
             var parent=this;
+
+            parent.Window.Buttons(0).disabled();
+            parent.Window.Buttons(1).disabled();
             var url=Routing.generate(this.routeUpdate,{id:this.IdEntity});
             params = $('#myform').serializeObject();
                     
@@ -94,10 +111,27 @@ OptionButton.GrupoEvaluacion.prototype={
                     type:'POST',
                     url:url,
                     data:params,
-                    dataType:"html",
-                    success:function(datos){
-                            
-                            new OptionButton.GrupoEvaluacion().Refresh();
+                    dataType:"json",
+                    success:function(data){
+                        parent.Window.Buttons(0).enabled();
+                        parent.Window.Buttons(1).enabled();
+
+                            tipo=(data.success)?'success':'warning';
+                            var n = noty({
+                                    text: data.message,
+                                    type: tipo,
+                                    modal:false,
+                                    timeout:5000,
+                                    layout: 'bottomRight',
+                                    theme: 'defaultTheme',
+                                    timeout:5000                                  
+                            });
+                            if(data.success){
+                                parent.Window.Hide();
+                                setTimeout(function() {
+                                        parent.Refresh();
+                                }, 1000);
+                            }
                     },
                     error:function(objeto, quepaso, otroobj){
 
@@ -106,21 +140,46 @@ OptionButton.GrupoEvaluacion.prototype={
     },
     Delete:function(id){
         this.IdEntity=id;
-        if(confirm("Desea eliminar el Grupo de Evaluación seleccionado?")){
-             var url=Routing.generate(this.routeDelete,{id:this.IdEntity});
-             $.ajax({
-                    type:'POST',
-                    url:url,
-                    dataType:"html",
-                    success:function(datos){
-                            
-                            new OptionButton.GrupoEvaluacion().Refresh();
-                    },
-                    error:function(objeto, quepaso, otroobj){
+            var parent=this;
+            var n=noty({
+              text: 'Desea eliminar el registro seleccionado?',
+              layout: 'center',
+              theme: 'defaultTheme',
+              modal:true,
+              buttons: [
+                {addClass: 'btn btn-success', text: 'Si', onClick: function($noty) {
 
-                    }
-            }); 
-        }
+                    var url=Routing.generate(parent.routeDelete,{id:parent.IdEntity});
+                     $.ajax({
+                            type:'DELETE',
+                            url:url,
+                            dataType:"html",
+                            success:function(datos){
+                                   var n = noty({
+                                        text: "Registro eliminado satisfactoriamente",
+                                        type: "success",
+                                        dismissQueue: true,
+                                        layout: 'bottomRight',
+                                        theme: 'defaultTheme',
+                                        timeout:5000
+                                    }); 
+                                    parent.Refresh(grupoId);
+                            },
+                            error:function(objeto, quepaso, otroobj){
+
+                            }
+                    }); 
+                    $noty.close();
+
+                  }
+                },
+                {addClass: 'btn btn-danger', text: 'No', onClick: function($noty) {
+                    $noty.close();
+                    
+                }
+                }
+              ]
+            });
     },
     Refresh:function(){
 		 var url=Routing.generate(this.routeList);
@@ -172,12 +231,13 @@ OptionButton.Evaluador.prototype={
             'class':'btn-success',
             fn:function(){
                 parent.Save();               
-                parent.Window.Hide();
             }
         });
     },
     Save:function(){
-	var parent=this;
+	   var parent=this;
+        parent.Window.Buttons(0).disabled();
+        parent.Window.Buttons(1).disabled();   
         var url=Routing.generate(this.routeSave,{id:this.GrupoId});
         params = $('#myform').serializeObject();
                  
@@ -185,20 +245,12 @@ OptionButton.Evaluador.prototype={
                     type:'POST',
                     url:url,
                     data:params,
-                    dataType:"html",
+                    dataType:"json",
                     success:function(request){
-                            //$('#btn-concurso-save').attr('disabled',false);
-                            //$('#btn-concurso-cancel').attr('disabled',false);
-                            time=5000;        
-                            var obj = jQuery.parseJSON(request);
-                            if(obj.success=='false'){
-                                tipo='warning';
-                            }else{
-                                tipo='success';
-                                parent.Window.Hide();
-                                time=3000;
-                                
-                            }
+                            parent.Window.Buttons(0).enabled();
+                            parent.Window.Buttons(1).enabled();   
+                            var obj = request;
+                            var tipo=(obj.success)?'success':'warning';
                             var n = noty({
                                     text: obj.message,
                                     type: tipo,
@@ -207,11 +259,12 @@ OptionButton.Evaluador.prototype={
                                     theme: 'defaultTheme',
                                     timeout:5000
                             });
-                            setTimeout(function() {
-                                //$.noty.close(n.options.id);
-                                if(obj.success=='true')
+                            if(obj.success){
+                                parent.Window.Hide();
+                                setTimeout(function() {
                                     parent.Refresh(parent.GrupoId);
-                            }, time);
+                                }, 1000);
+                            }
                             
                     },
                     error:function(objeto, quepaso, otroobj){
@@ -221,21 +274,46 @@ OptionButton.Evaluador.prototype={
 	},
         Delete:function(id){
             this.IdEntity=id;
-            if(confirm("Desea eliminar el evaluador seleccionado?")){
-                var url=Routing.generate(this.routeDelete,{id:this.IdEntity});
-                $.ajax({
-                        type:'POST',
-                        url:url,
-                        dataType:"html",
-                        success:function(datos){
+            var parent=this;
+            var n=noty({
+              text: 'Desea eliminar el registro seleccionado?',
+              layout: 'center',
+              theme: 'defaultTheme',
+              modal:true,
+              buttons: [
+                {addClass: 'btn btn-success', text: 'Si', onClick: function($noty) {
 
-                                new OptionButton.Evaluador().Refresh(grupoId);
-                        },
-                        error:function(objeto, quepaso, otroobj){
+                    var url=Routing.generate(parent.routeDelete,{id:parent.IdEntity});
+                     $.ajax({
+                            type:'DELETE',
+                            url:url,
+                            dataType:"html",
+                            success:function(datos){
+                                   var n = noty({
+                                        text: "Registro eliminado satisfactoriamente",
+                                        type: "success",
+                                        dismissQueue: true,
+                                        layout: 'bottomRight',
+                                        theme: 'defaultTheme',
+                                        timeout:5000
+                                    }); 
+                                    parent.Refresh(grupoId);
+                            },
+                            error:function(objeto, quepaso, otroobj){
 
-                        }
-                }); 
-            }
+                            }
+                    }); 
+                    $noty.close();
+
+                  }
+                },
+                {addClass: 'btn btn-danger', text: 'No', onClick: function($noty) {
+                    $noty.close();
+                    
+                }
+                }
+              ]
+            });
         },
         ActiveLider:function(id){
             this.IdEntity=id;
@@ -294,12 +372,14 @@ OptionButton.Postulante.prototype={
             'class':'btn-success',
             fn:function(){
                 parent.Save();               
-                parent.Window.Hide();
+               
             }
         });
     },
     Save:function(){
 	var parent=this;
+    parent.Window.Buttons(0).disabled();
+    parent.Window.Buttons(1).disabled();
         var url=Routing.generate(this.routeSave,{id:this.GrupoId});
         params = $('#myform').serializeObject();
                  
@@ -307,30 +387,28 @@ OptionButton.Postulante.prototype={
                     type:'POST',
                     url:url,
                     data:params,
-                    dataType:"html",
+                    dataType:"json",
                     success:function(request){
-                             time=5000;        
-                            var obj = jQuery.parseJSON(request);
-                            if(obj.success=='false'){
-                                tipo='warning';
-                            }else{
-                                tipo='success';
-                                parent.Window.Hide();
-                                time=3000;
-                                
-                            }
+                            parent.Window.Buttons(0).enabled();
+                            parent.Window.Buttons(1).enabled();   
+                            var obj = request;
+                            var tipo=(obj.success)?'success':'warning';
                             var n = noty({
                                     text: obj.message,
                                     type: tipo,
                                     dismissQueue: true,
                                     layout: 'bottomRight',
-                                    theme: 'defaultTheme'
+                                    theme: 'defaultTheme',
+                                    timeout:5000
                             });
-                            setTimeout(function() {
-                                $.noty.close(n.options.id);
-                                if(obj.success=='true')
+                            if(obj.success){
+                                parent.Window.Hide();
+                                setTimeout(function() {
                                     parent.Refresh(parent.GrupoId);
-                            }, time);
+                                }, 1000);
+                            }
+
+                            
                            // parent.Refresh(parent.GrupoId);
                     },
                     error:function(objeto, quepaso, otroobj){
@@ -340,21 +418,46 @@ OptionButton.Postulante.prototype={
 	},
         Delete:function(id){
             this.IdEntity=id;
-            if(confirm("Desea eliminar el postulante seleccionado?")){
-                var url=Routing.generate(this.routeDelete,{id:this.IdEntity});
-                $.ajax({
-                        type:'POST',
-                        url:url,
-                        dataType:"html",
-                        success:function(datos){
+            var parent=this;
+            var n=noty({
+              text: 'Desea eliminar el registro seleccionado?',
+              layout: 'center',
+              theme: 'defaultTheme',
+              modal:true,
+              buttons: [
+                {addClass: 'btn btn-success', text: 'Si', onClick: function($noty) {
 
-                                new OptionButton.Postulante().Refresh(grupoId);
-                        },
-                        error:function(objeto, quepaso, otroobj){
+                    var url=Routing.generate(parent.routeDelete,{id:parent.IdEntity});
+                     $.ajax({
+                            type:'DELETE',
+                            url:url,
+                            dataType:"html",
+                            success:function(datos){
+                                   var n = noty({
+                                        text: "Registro eliminado satisfactoriamente",
+                                        type: "success",
+                                        dismissQueue: true,
+                                        layout: 'bottomRight',
+                                        theme: 'defaultTheme',
+                                        timeout:5000
+                                    }); 
+                                    parent.Refresh(grupoId);
+                            },
+                            error:function(objeto, quepaso, otroobj){
 
-                        }
-                }); 
-            }
+                            }
+                    }); 
+                    $noty.close();
+
+                  }
+                },
+                {addClass: 'btn btn-danger', text: 'No', onClick: function($noty) {
+                    $noty.close();
+                    
+                }
+                }
+              ]
+            });
         }
     
 }

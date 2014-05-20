@@ -70,21 +70,22 @@ class ProfileFormType extends AbstractType
     protected function buildUserForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('username', null, array('label' => 'form.username', 'translation_domain' => 'FOSUserBundle'))
-            ->add('email', 'email', array('label' => 'form.email', 'translation_domain' => 'FOSUserBundle'))
-            ->add('perfil','entity', array('class'=>'App\WebBundle\Entity\Perfil', 'property'=>'nombre' ))
+            ->add('username', null, array('label' => 'Nombre de Usuario'))
+            ->add('email', 'email', array('label' => 'Email'))
+            ->add('perfil','entity', array('label' => 'Perfil','class'=>'App\WebBundle\Entity\Perfil', 'property'=>'nombre' ))
             ->add('tipoDocumento','entity', array('class'=>'App\WebBundle\Entity\Catalogo', 'property'=>'nombre', 
                                                    'attr' => array('class'=>'form-control input-small'),
                                                    'query_builder' => function(\App\WebBundle\Entity\CatalogoRepository $er){return $er->getTipoDocumentoIdentidadQueryBuilder();},
                                                   ))
-            ->add('nroDocumento')
+            ->add('nroDocumento','text',array('label' => 'N° Documento'))
             ->add('nombres')
             ->add('apellidos')
             ->add('plainPassword', 'repeated', array(
                 'type' => 'password',
-                'options' => array('translation_domain' => 'FOSUserBundle','attr' => array('class'=>'form-control input-small')),
-                'first_options' => array('label' => 'form.password'),
-                'second_options' => array('label' => 'form.password_confirmation'),
+                'label' => 'Contraseña',
+                'options' => array('attr' => array('class'=>'form-control input-small')),
+                'first_options' => array('label' => 'Contraseña'),
+                'second_options' => array('label' => 'Confirmacion de Contraseña'),
                 'invalid_message' => 'fos_user.password.mismatch',
             ))
         ;

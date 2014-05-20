@@ -4,6 +4,7 @@ namespace App\WebBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo; 
+use Symfony\Component\Validator\Constraints as Assert;
 /**
  * GrupoEvaluacion
  *
@@ -23,7 +24,7 @@ class GrupoEvaluacion
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank
      * @ORM\Column(name="nombre", type="string", length=50)
      */
     private $nombre;
@@ -31,7 +32,7 @@ class GrupoEvaluacion
     /**
      * @var string
      *
-     * @ORM\Column(name="descripcion", type="string", length=300)
+     * @ORM\Column(name="descripcion", type="string", length=300, nullable=true)
      */
     private $descripcion;
 

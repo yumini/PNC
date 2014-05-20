@@ -12,6 +12,7 @@ class CatalogoType extends AbstractType
     {
         $builder
             //->add('codcatalogo','hidden', array('required'  => false))
+            ->add('codigo','text',array('required' => false,'attr' => array('class'=>'form-control input-small')))
             ->add('nombre','text',array('required' => true,'attr' => array('class'=>'form-control input-small')))
             ->add('estado','checkbox')
             ->add('descripcion','textarea',array('required' => true,'attr' => array('class'=>'form-control','rows'=>'9')))

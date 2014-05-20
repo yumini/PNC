@@ -8,6 +8,7 @@ var OptionButton=function(){
     this.routeUpdate='_admin_usuario_update';
     this.routeActive='_admin_usuario_active';
     this.routeDelete='_admin_usuario_delete';
+    this.routeChangeState='_admin_usuario_changestate';
     this.Window=null;
 }
 OptionButton.prototype={
@@ -33,11 +34,7 @@ OptionButton.prototype={
             label:'Grabar',
             'class':'btn-success',
             fn:function(){
-               $('#btn-usuario-save').attr('disabled',true);
-               $('#btn-usuario-cancel').attr('disabled',true);
-               
-               parent.Save();               
-                
+               parent.Save();                            
             }
         });
     },
@@ -46,15 +43,16 @@ OptionButton.prototype={
             var parent=this;
             var url=Routing.generate(this.routeSave);
             params = $('#myForm').serializeObject();
-            
+            parent.Window.Buttons(0).disabled();
+            parent.Window.Buttons(1).disabled();
             $.ajax({
                     type:'POST',
                     url:url,
                     data:params,
                     dataType:"html",
                     success:function(request){
-                           $('#btn-usuario-save').attr('disabled',false);
-                            $('#btn-usuario-cancel').attr('disabled',false);
+                            parent.Window.Buttons(0).enabled();
+                            parent.Window.Buttons(1).enabled();
                             var obj = jQuery.parseJSON(request);
                             tipo=(obj.success=='false')?'warning':'success';
                             if(obj.success=='true'){
@@ -104,16 +102,15 @@ OptionButton.prototype={
             label:'Grabar',
             'class':'btn-success',
             fn:function(){
-                $('#btn-usuario-save').attr('disabled',true);
-                $('#btn-usuario-cancel').attr('disabled',true);
-                parent.Update();               
-                
+                parent.Update();                               
             }
         });
     },
     Update:function(){
             //console.log("actualizando perfil con id:"+this.IdEntity);
             var parent=this;
+            parent.Window.Buttons(0).disabled();
+            parent.Window.Buttons(1).disabled();
             var url=Routing.generate(this.routeUpdate,{id:this.IdEntity});
             params = $('#myForm').serializeObject();
             var nodes = $('#tree').tree('getChecked');
@@ -130,8 +127,8 @@ OptionButton.prototype={
                     dataType:"html",
                     success:function(request){
                             time=5000;
-                            $('#btn-usuario-save').attr('disabled',false);
-                            $('#btn-usuario-cancel').attr('disabled',false);
+                            parent.Window.Buttons(0).enabled();
+                            parent.Window.Buttons(1).enabled();
                             var obj = jQuery.parseJSON(request);
                             tipo=(obj.success=='false')?'warning':'success';
                             if(obj.success=='true'){
@@ -203,6 +200,29 @@ OptionButton.prototype={
 
 
     },
+    ChangeState:function(id){
+        this.IdEntity=id;
+        var parent=this;
+        var url=Routing.generate(parent.routeChangeState,{id:parent.IdEntity});
+        $.ajax({
+                type:'PUT',
+                url:url,
+                dataType:"json",
+                success:function(request){
+                    var n = noty({
+                            text: "Se realizó la operación satisfactoriamente",
+                            type: 'success',
+                            dismissQueue: true,
+                            layout: 'bottomRight',
+                            theme: 'defaultTheme',
+                            timeout:5000
+                    });
+                    new OptionButton().Refresh();
+                },
+                error:function(objeto, quepaso, otroobj){
+                }
+        }); 
+    },
     Delete:function(id){
         this.IdEntity=id;
         var parent=this;
@@ -272,6 +292,10 @@ $(document).ready(function() {
    $(".row-delete").click(function(){
       var id=$(this).attr("data-id"); 
       new OptionButton().Delete(id);  
+  });
+   $(".row-changestate").click(function(){
+      var id=$(this).attr("data-id"); 
+      new OptionButton().ChangeState(id);  
   });
 
 });

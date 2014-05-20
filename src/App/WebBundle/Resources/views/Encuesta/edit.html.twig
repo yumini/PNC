@@ -1,28 +1,51 @@
-{% extends '::base.html.twig' %}
-
-{% block body -%}
-    <h1>Encuesta edit</h1>
-
-    <form action="{{ path('encuesta_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(edit_form) }}>
-        <input type="hidden" name="_method" value="PUT" />
-        {{ form_widget(edit_form) }}
-        <p>
-            <button type="submit">Edit</button>
-        </p>
-    </form>
-
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('encuesta') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>
-        <form action="{{ path('encuesta_delete', { 'id': entity.id }) }}" method="post">
-            <input type="hidden" name="_method" value="DELETE" />
-            {{ form_widget(delete_form) }}
-            <button type="submit">Delete</button>
-        </form>
-    </li>
-</ul>
-{% endblock %}
+<form id="myform" method="post" {{ form_enctype(form) }}>
+    {{form_widget(form._token)}}
+    <input type="hidden" name="_method" value="POST" />
+    <div class="row">
+        <div class="col-md-12">
+            <label class="control-label">Tipo Encuesta:</label><br/>
+            {{form_widget(form.tipoEncuesta)}}
+        </div>
+       
+    </div>
+    <br/>
+    <div class="row">
+        <div class="col-md-12">
+            <label class="control-label">Titulo:</label><br/>
+            {{form_widget(form.titulo)}}
+        </div>
+       
+    </div>
+    <br/>
+    <div class="row">
+        <div class="col-md-12">
+            <label class="control-label">Descripcion:</label><br/>
+            {{form_widget(form.descripcion)}}
+        </div>
+       
+    </div>
+    <br/>
+    <div class="row">
+        <div class="col-md-4">
+            <label class="control-label">Fecha Inicio:</label><br/>
+            {{form_widget(form.inicio)}}
+        </div>
+        <div class="col-md-4">
+            <label class="control-label">Fecha Fin:</label><br/>
+            {{form_widget(form.fin)}}
+        </div>
+        <div class="col-md-4">
+            <label class="control-label">Max. Opciones:</label><br/>
+            {{form_widget(form.maxopciones)}}
+        </div>
+    </div>
+  <br/>
+    <div class="row">
+        <div class="col-md-4">
+            <label class="control-label">Activo?</label>
+            {{form_widget(form.estado)}}
+        </div>
+      
+    </div>
+  
+</form>

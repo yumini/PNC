@@ -5,25 +5,29 @@
     <p class="list-group-item-text">
 		<div class="row" style="font-size:12px;">
                             
-				<div class="col-lg-3">
+				<div class="col-md-3">
 				<label>Razon Social:</label><br/>
 					{{entity.razonsocial|default('-')}} <br/>
                                 </div>
 
-                                <div class="col-lg-2">
+                                <div class="col-md-2">
 				<label>RUC:</label><br/>
 					{{entity.ruc|default('-')}}
                                 </div>
-                               <div class="col-lg-2">
+                               <div class="col-md-2">
 				<label>Fecha Inicio:</label><br/>
 					{{entity.fecini|date("d/m/Y")}}
                                 </div>
 
-                                <div class="col-lg-2">
+                                <div class="col-md-2">
 				<label>Fecha Fin:</label><br/>
+        {% if entity.hastalafecha %}
+          A la fecha
+        {% else %}
 					{{entity.fecfin|date("d/m/Y")}}
+        {% endif %}
                                 </div> 
-                                <div class="col-lg-3">
+                                <div class="col-md-3">
 				<label>Detalle:</label><br/>
 					{{entity.detalle|default('-')}} <br/>
                                 </div>

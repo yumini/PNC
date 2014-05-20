@@ -4,11 +4,13 @@ namespace App\WebBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\ExecutionContextInterface;
 /**
  * ConflictoInteresEvaluador
  *
  * @ORM\Table(name="conflictointeresevaluador")
  * @ORM\Entity(repositoryClass="App\WebBundle\Entity\ConflictoInteresEvaluadorRepository")
+  * @Assert\Callback(methods={"isFechaFinValid"})
  */
 class ConflictoInteresEvaluador
 {
@@ -74,7 +76,17 @@ class ConflictoInteresEvaluador
     */
     private $evaluador;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="hastalafecha", type="boolean")
+     */
+    private $hastalafecha=false;
 
+    public function __construct()
+    {
+        $this->fecfin=new \DateTime();
+    }
     /**
      * Get id
      *
@@ -244,5 +256,38 @@ class ConflictoInteresEvaluador
     public function getEvaluador()
     {
         return $this->evaluador;
+    }
+
+    /**
+     * Set hastalafecha
+     *
+     * @param boolean $hastalafecha
+     * @return ConflictoInteresEvaluador
+     */
+    public function setHastalafecha($hastalafecha)
+    {
+        $this->hastalafecha = $hastalafecha;
+    
+        return $this;
+    }
+
+    /**
+     * Get hastalafecha
+     *
+     * @return boolean 
+     */
+    public function getHastalafecha()
+    {
+        return $this->hastalafecha;
+    }
+
+    public function isFechaFinValid(ExecutionContextInterface $context)
+    {
+
+        if ($this->hastalafecha==false&&$this->fecfin=="") {
+            $context->addViolationAt('fecfin', 'Debe ingresar una fecha fin o marcar "hasta la fecha".', array(), null);
+        }
+       
+        
     }
 }

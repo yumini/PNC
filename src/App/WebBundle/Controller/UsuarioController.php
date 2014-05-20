@@ -199,6 +199,23 @@ class UsuarioController extends Controller
     }
 
     /**
+     *
+     * @Route("/{id}/changestate", name="_admin_usuario_changestate", options={"expose"=true})
+     * @Method("PUT")
+     * @Template()
+     */
+    public function ChangeStateAction(Request $request, $id){
+        $em = $this->getDoctrine()->getManager();
+        $entity = $em->getRepository('AppWebBundle:Usuario')->find($id);
+        if($entity)
+        {
+           $entity->setEnabled(!$entity->isEnabled());
+           $em->persist($entity);
+           $em->flush();
+        }
+        return new JsonResponse(array('success' =>true));
+    }
+    /**
      * Edits an existing Usuario entity.
      *
      * @Route("/{id}/active", name="_admin_usuario_active", options={"expose"=true})
@@ -382,9 +399,10 @@ class UsuarioController extends Controller
                                 array('user' => $entity)
                                 ) 
                      );
-            $this->get('mailer')->send($message);
-        } catch (Exception $e) {
-           
+            if($this->get('mailer')->send($message))
+                return true;
+        } catch (\Swift_TransportException $e) {
+           return false;
         } 
         
         
@@ -432,7 +450,8 @@ class UsuarioController extends Controller
      */
     public function reportAction(Request $request)
     {
-         $em = $this->getDoctrine()->getManager();
+        set_time_limit(300);
+        $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('AppWebBundle:Usuario')->findAll();
 

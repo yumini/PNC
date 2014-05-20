@@ -46,12 +46,12 @@ class EtapaConcursoController extends Controller
      */
     public function createAction(Request $request,$id)
     {
-        $active=($request->request->get('active')=='on')?'1':'0';
+        $active=($request->request->get('active')=='on')?true:false;
         $etapaid=$request->request->get('etapaId');
         $fechaInicio=$request->request->get('fechaInicio');
         $fechaFin=$request->request->get('fechaFin');
         $fechaExtension=$request->request->get('fechaExtension');
-        $extendido=($request->request->get('extendido')=='on')?'1':'0';
+        $extendido=($request->request->get('extendido')=='true')?true:false;
         
         $em = $this->getDoctrine()->getManager();
        
@@ -59,7 +59,7 @@ class EtapaConcursoController extends Controller
          $etapa = $em->getRepository('AppWebBundle:Etapa')->find($etapaid);
          $concurso = $em->getRepository('AppWebBundle:Concurso')->find($id);
         $success='false';
-        if($active=='1'){
+        if($active){
             if(!$entity){
                 $entity  = new EtapaConcurso();
                 $msg="Se habilito la etapa satisfactoriamente";
@@ -71,7 +71,10 @@ class EtapaConcursoController extends Controller
              $entity->setFechaInicio(new \DateTime($fechaInicio));
              $entity->setFechaFin(new \DateTime($fechaFin));
              $entity->setExtendido($extendido);
-             $entity->setFechaExtension(new \DateTime($fechaExtension));
+             if($extendido)
+                $entity->setFechaExtension(new \DateTime($fechaExtension));
+             else
+                $entity->setFechaExtension(null);
              $em->persist($entity);
              
              $success='true';

@@ -164,7 +164,7 @@ class EvaluadorController extends Controller
      *
      * @Route("/{id}/update", name="_admin_evaluador_update", options={"expose"=true})
      * @Method("PUT")
-     * @Template("AppWebBundle:Default:result.json.twig")
+     * @Template()
      */
     public function updateAction(Request $request, $id)
     {
@@ -174,20 +174,31 @@ class EvaluadorController extends Controller
         $entity = $em->getRepository('AppWebBundle:Evaluador')->find($id);
         $editForm = $this->createForm(new EvaluadorType(), $entity);
         $editForm->bind($request);
-        
-        if ($entity) {
-           
-            $em->persist($entity);
-            $em->flush();
+
+        $errors = $this->get('validator')->validate($editForm);
+        if (count($errors)==0 && $editForm->isValid()) {
+            if ($entity) {
+               
+                $em->persist($entity);
+                $em->flush();
+                $success=true;
+                $msg="Perfil evaluador actualizado satisfactoriamente";
+            }else{
+                $success=false;
+                $msg="No se ha encontrado el evaluador";
+
+            }
         }else{
-            $result=false;
-            $msg="postulante no encontrado";
-
+             $msgError=new \App\WebBundle\Util\MensajeError();
+             $msgError->AddErrors($editForm);
+             $msg=$msgError->getErrorsHTML();
+             $success=false;
         }
-        return array(
-            'result' => "{\"success\":\"$result\",\"message\":\"$msg\"}"
-
-        );
+        return new JsonResponse(array(
+            'success' =>$success ,
+            'message'=> $msg
+        ));
+        
     }
     /**
      * Deletes a Evaluador entity.
@@ -284,7 +295,8 @@ class EvaluadorController extends Controller
      */
     public function reportAction(Request $request)
     {
-         $em = $this->getDoctrine()->getManager();
+        set_time_limit(300);
+        $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('AppWebBundle:Evaluador')->findAll();
 

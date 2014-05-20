@@ -7,36 +7,38 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                       </button>
-                      <a class="navbar-brand" href="#">Grupos de Evaluación</a>
+                      <a class="navbar-brand" >Grupos de Evaluación</a>
                     </div>
                     <div class="collapse navbar-collapse navbar-ex2-collapse">
-                      <button id="btnNewGrupo" type="button" class="btn btn-success navbar-btn pull-right"> <span class="glyphicon glyphicon-plus"> </span></button>
+                      <button title="Nuevo Grupo" id="btnNewGrupo" type="button" class="btn btn-success navbar-btn pull-right"> <span class="glyphicon glyphicon-plus"> </span></button>
                     </div>
                 </nav>
 
 
 
         <div id="list-grupoevaluacion" class="list-group">
-            <div  class="well"  style="margin:0px;">
-   
-         <select class="form-control">
-              <option value="0">Todos los concursos</option>
-             {% for entity in concursos %}
-            <option value="{{entity.id}}">{{entity.nombre}}</option>
-             {%endfor%}
-        </select>
+            <div  class="well"  style="margin:0px 0px 0px 0px;padding:5px 0px 0px 5px;">
 
+        {% 
+        set filterBy= {
+            'g.nombre':'Nombre',
+            'c.nombre':'Concurso'
+        }
+
+
+        %}
+        {{ knp_pagination_filter(pagination,filterBy,[ path(pagination.route)]) }}
         </div>
             {% for entity in pagination %}
-                <a href="#" class="list-group-item" data-toggle="popover" data-id="{{ entity.id }}" title="" data-content="And here's some amazing content. It's very engaging. right?" data-original-title="A Title">             
+                <a style="cursor:pointer;" class="list-group-item" data-toggle="popover" data-id="{{ entity.id }}" title="" data-content="And here's some amazing content. It's very engaging. right?" data-original-title="A Title">             
                     <p class="list-group-item-text" data-id="{{ entity.id }}">
-                         <button class="btn btn-danger btn-xs pull-right"  data-id="{{ entity.id }}" data-type="delete">
+                         <button title="Eliminar Grupo" class="btn btn-danger btn-xs pull-right"  data-id="{{ entity.id }}" data-type="delete">
                             <span class="glyphicon glyphicon-trash"> </span>
                         </button>
                         <span class="pull-right">
                            &nbsp;
                         </span>
-                        <button class="btn btn-success btn-xs pull-right"  data-id="{{ entity.id }}" data-type="edit">
+                        <button title="Editar Grupo" class="btn btn-warning btn-xs pull-right"  data-id="{{ entity.id }}" data-type="edit">
                             <span class="glyphicon glyphicon-edit"> </span>
                         </button> 
                         

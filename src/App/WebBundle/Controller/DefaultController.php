@@ -24,6 +24,7 @@ use FOS\UserBundle\Event\GetResponseUserEvent;
 use FOS\UserBundle\Event\FilterUserResponseEvent;
 use FOS\UserBundle\Model\UserInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Session\Session;
 /**
 * @Route("/")
 */
@@ -124,5 +125,27 @@ class DefaultController extends Controller
 
         return new JsonResponse(array('success'=>$success,'message'=>$message));
        
+   }
+
+   /**
+     * Creates a new Usuario entity.
+     *
+     * @Route("/gettimesession", name="_usuario_gettimesession", options={"expose"=true})
+     * @Method("GET")
+     * @Template()
+    */
+   public function getTimeSessionAction(){
+    //$session = new Session();
+    $session = $this->getRequest()->getSession();
+    $inSession=false;
+    $user = $this->container->get('security.context')->getToken()->getUser();
+    if(!is_object($user)) {
+        $inSession=false;
+    }else{
+        $inSession=true;
+    }
+    return new JsonResponse(array(
+        'insession' => $inSession, 
+        ));
    }
 }

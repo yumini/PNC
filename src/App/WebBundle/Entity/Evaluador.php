@@ -4,6 +4,7 @@ namespace App\WebBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo; 
+use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Evaluador
  *
@@ -23,28 +24,28 @@ class Evaluador
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank
      * @ORM\Column(name="nombres", type="string", length=250)
      */
     private $nombres;
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank
      * @ORM\Column(name="apellidos", type="string", length=250, nullable=true)
      */
     private $apellidos;
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank
      * @ORM\Column(name="direccion", type="string", length=250, nullable=true)
      */
     private $direccion;
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank
      * @ORM\Column(name="numdoc", type="string", length=20, nullable=true)
      */
     private $numdoc;

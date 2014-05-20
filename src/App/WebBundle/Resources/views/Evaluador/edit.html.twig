@@ -1,4 +1,5 @@
     <form id="myPerfilform" method="post" {{ form_enctype(form) }}>
+        {{form_widget(form._token)}}
         <input type="hidden" name="_method" value="PUT" />
         <ul class="nav nav-tabs" style="font-size:11px;">
             <li class="active"><a href="#conc-tab-1" data-toggle="tab">Datos Generales</a></li>

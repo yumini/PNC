@@ -13,8 +13,8 @@ class PostulanteContactoType extends AbstractType
         $builder
             ->add('nombre','text',array('label'=>'Nombre','required' => true,'attr' => array('class'=>'form-control input-small')))
             ->add('cargo','text',array('label'=>'Cargo','required' => true,'attr' => array('class'=>'form-control input-small')))
-            ->add('telefono','text',array('label'=>'Teléfono','required' => true,'attr' => array('class'=>'form-control input-small')))
-            ->add('fax','text',array('label'=>'Fax','required' => true,'attr' => array('class'=>'form-control input-small')))
+            ->add('telefono','text',array('label'=>'Teléfono','required' => false,'attr' => array('class'=>'form-control input-small')))
+            ->add('fax','text',array('label'=>'Fax','required' => false,'attr' => array('class'=>'form-control input-small')))
             ->add('email','text',array('label'=>'Email','required' => true,'attr' => array('class'=>'form-control input-small')))
             //->add('postulantecontacto')
             ->add('postulantecontacto','entity', array('attr' => array('class'=>'form-control input-small'),'class'=>'App\WebBundle\Entity\Catalogo','property'=>'nombre',  
