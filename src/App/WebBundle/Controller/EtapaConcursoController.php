@@ -9,7 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use App\WebBundle\Entity\EtapaConcurso;
 use App\WebBundle\Form\EtapaConcursoType;
-
+use Symfony\Component\HttpFoundation\JsonResponse;
 /**
  * EtapaConcurso controller.
  *
@@ -18,6 +18,29 @@ use App\WebBundle\Form\EtapaConcursoType;
 class EtapaConcursoController extends Controller
 {
 
+    /**
+     * Lists all EtapaConcurso entities.
+     *
+     * @Route("/get/info", name="_admin_infoetapaconcurso", options={"expose"=true})
+     * @Method("GET")
+     * @Template()
+     */
+    public function showEtapaAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $concursoId=$request->query->get('concursoId');
+        $tipoetapaId=$request->query->get('tipoetapaId');
+        $concurso=$em->getRepository('AppWebBundle:Concurso')
+                    ->find($concursoId);
+        $entity = $em->getRepository('AppWebBundle:EtapaConcurso')
+            ->findByTipoEtapa($concursoId,$tipoetapaId,$concurso->getTipoConcurso()->getId());
+        if(count($entity)>0)
+            $result=$entity[0];
+        else
+            $result = null;
+
+        return new jsonResponse($result);
+    }
     /**
      * Lists all EtapaConcurso entities.
      *

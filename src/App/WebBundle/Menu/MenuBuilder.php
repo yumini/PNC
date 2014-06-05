@@ -44,7 +44,7 @@ class MenuBuilder {
         }
         $entities =  $this->em->getRepository('AppWebBundle:Menu')->findByParent($perfilid,0);
          
-        $cadena.="<div class=\"navbar  navbar-inverse navbar-main\">";
+        $cadena.="<div id='main-menu' class=\"navbar  navbar-inverse navbar-main\">";
         $cadena.="<div class=\"navbar-header\">";
         
         $cadena.="<button type=\"button\" class=\"navbar-toggle\" data-toggle=\"collapse\" data-target=\".navbar-collapse\">";

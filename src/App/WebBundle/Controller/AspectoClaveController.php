@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use App\WebBundle\Entity\AspectoClave;
+use App\WebBundle\Entity\Evaluacion;
 use Symfony\Component\HttpFoundation\JsonResponse;
 /**
  * AspectoClave controller.
@@ -99,9 +100,26 @@ class AspectoClaveController extends Controller
         $em->persist($entity);
         $em->flush();
         
+        $this->CrearEvaluacion($evaluador,$inscripcion,$tipoEtapa);
+
         return new JsonResponse(array('success' => true));
     }
 
+    private function CrearEvaluacion($evaluador,$inscripcion,$tipoEtapa){
+        $em = $this->getDoctrine()->getManager();
+
+        $entity=$em->getRepository('AppWebBundle:Evaluacion')
+            ->FindEvaluacion($evaluador->getId(),$inscripcion->getId(),$tipoEtapa->getId());
+        if(!$entity){
+            $entity=new Evaluacion();
+            $entity->setEvaluador($evaluador);
+            $entity->setInscripcion($inscripcion);
+            $entity->setTipoEtapa($tipoEtapa);
+            $em->persist($entity);
+            $em->flush();
+        }
+        return $entity;
+    }
     /**
      * Displays a form to create a new Concurso entity.
      *

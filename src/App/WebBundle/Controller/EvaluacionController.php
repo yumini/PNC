@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use App\WebBundle\Entity\Respuesta;
 use App\WebBundle\Entity\AspectoClave;
 use App\WebBundle\Entity\CriterioAspectoClave;
+use App\WebBundle\Entity\Evaluacion;
 /**
  * Etapa Individual controller.
  *
@@ -19,6 +20,68 @@ use App\WebBundle\Entity\CriterioAspectoClave;
 class EvaluacionController extends Controller
 {
 
+    /**
+     * Lists page index.
+     *
+     * @Route("/show", name="_admin_evaluacion_show", options={"expose"=true})
+     * @Method("GET")
+     * @Template()
+     */
+    public function showAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $evaluadorId=$request->query->get('evaluador_id');
+        $inscripcionId=$request->query->get('inscripcion_id');
+        $tipoetapaId=$request->query->get('tipoetapa_id');
+
+        $evaluador=$em->getRepository('AppWebBundle:Evaluador')->find($evaluadorId);
+        $inscripcion=$em->getRepository('AppWebBundle:Inscripcion')->find($inscripcionId);
+        $tipoEtapa=$em->getRepository('AppWebBundle:Catalogo')->find($tipoetapaId);
+        $entity=$this->CrearEvaluacion($evaluador,$inscripcion,$tipoEtapa);
+
+        
+        $array['id']=$entity->getId();
+        $array['fechaInicio']=$entity->getFechaInicio();
+        $array['fechaCierre']=$entity->getFechaCierre();
+        $array['abierta']=$entity->getAbierta();
+        return new JsonResponse($array);
+        
+    }
+
+    private function CrearEvaluacion($evaluador,$inscripcion,$tipoEtapa){
+        $em = $this->getDoctrine()->getManager();
+
+        $entity=$em->getRepository('AppWebBundle:Evaluacion')
+            ->FindEvaluacion($evaluador->getId(),$inscripcion->getId(),$tipoEtapa->getId());
+        if(!$entity){
+            $entity=new Evaluacion();
+            $entity->setEvaluador($evaluador);
+            $entity->setInscripcion($inscripcion);
+            $entity->setTipoEtapa($tipoEtapa);
+            $em->persist($entity);
+            $em->flush();
+        }
+        return $entity;
+    }
+
+    /**
+     *
+     * @Route("/cerrar/{id}", name="_admin_evaluacion_cerrar", options={"expose"=true})
+     * @Method("PUT")
+     * @Template()
+     */
+    public  function CerrarEvaluacionAction($id){
+        $em = $this->getDoctrine()->getManager();
+
+        $entity=$em->getRepository('AppWebBundle:Evaluacion')->find($id);
+        if($entity){
+            $entity->setFechaCierre(new \DateTime());
+            $entity->setAbierta(false);
+            $em->persist($entity);
+            $em->flush();
+        }
+        return new JsonResponse(array('success' => true,'message'=>'Se terminó la evaluación satisfactoriamente'));
+    }
     /**
      * Lists page index.
      *
@@ -33,7 +96,7 @@ class EvaluacionController extends Controller
         if($user->getPerfil()->getId()==2)
             $evaluador = $em->getRepository('AppWebBundle:Evaluador')->findByUser($user->getId());
         else
-            $evaluador = $em->getRepository('AppWebBundle:Evaluador')->findAll();
+            $evaluador = $em->getRepository('AppWebBundle:Evaluador')->findBy(array(), array('nombres' => 'ASC','apellidos' => 'ASC'));;
         
         //$groups=null;
         $tipoEtapa=$em->getRepository('AppWebBundle:Catalogo')->getCatalogoByCodigo('TIPOETAPA',1);

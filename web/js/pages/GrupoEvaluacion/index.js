@@ -353,6 +353,7 @@ OptionButton.Postulante.prototype={
         this.GrupoId=id;
     	 console.log(this.routeNewGrupo);
         this.Window=new BootstrapWindow({id:"winForm",title:"Nuevo Postulante"});
+        this.Window.setWidth(800);
         var url=Routing.generate(this.routeNew,{id:id});
 
         this.Window.Load(url,"");

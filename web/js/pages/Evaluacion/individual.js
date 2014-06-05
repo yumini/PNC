@@ -2,12 +2,13 @@ var ViewsEvalIndividual={
 	App: Backbone.View.extend({
 		events: {
                     "change #cmbEvaluador": "LoadGrupos",
-                    "change #cmbGrupo": "LoadConcursantes",
-                    "change #cmbPostulante": "LoadProyectos",
+                    "change #cmbGrupo": "LoadProyectos",
+                    
                     "change #cmbProyecto": "SelectProyecto",
                     "click #btnNew":"Nuevo",
                     "click #btnInformeCompleto":"InformeCompleto",
-                    "click #btnInformeBasico":"InformeBasico"
+                    "click #btnInformeBasico":"InformeBasico",
+                    "click #btnCierreEvaluacion":"CerrarEvaluacion"
         },
 		initialize: function(){
 				_.bindAll(this);
@@ -18,7 +19,7 @@ var ViewsEvalIndividual={
 				this.ConcursosCollection=new Collections.GrupoEvaluacionPostulante();
 				this.ConcursosCollection.on('reset', this.RenderConcursantes, this);
 
-				this.ProyectosCollection=new Collections.Inscripcion();
+				this.ProyectosCollection=new Collections.GrupoEvaluacionPostulante();
 				this.ProyectosCollection.on('reset', this.RenderProyectos, this);
 
 				
@@ -28,6 +29,46 @@ var ViewsEvalIndividual={
 				this.concurso=-1;
 				this.proyecto=-1;
 				this.$el.find('#btnNew').attr('disabled',true);
+		},
+		CerrarEvaluacion:function(){
+			var parent=this;
+			var n=noty({
+	          text: MSG.EVALUACION.QUESTION.CIERRE,
+	          layout: 'center',
+	          theme: 'defaultTheme',
+	          modal:true,
+	          buttons: [
+	            {addClass: 'btn btn-success', text: 'Si', onClick: function($noty) {
+	            	console.log(parent.Evaluacion);
+					var ajax=new jAjax(),
+						url=Routing.generate('_admin_evaluacion_cerrar',{id:parent.Evaluacion.id});
+					ajax.Execute(url,'PUT','',function(data){
+						var type=(data.success)?'success':'warning';
+						var n = noty({
+			                text: data.message,
+			                type: type,
+			                dismissQueue: true,
+			                layout: 'bottomRight',
+			                theme: 'defaultTheme',
+			                timeout:5000
+			            });
+			            parent.LoadEvaluacion();
+						
+					})
+	               
+	                $noty.close();
+	                
+	              }
+	            },
+	            {addClass: 'btn btn-danger', text: 'No', onClick: function($noty) {
+	                $noty.close();
+	                
+	            }
+	            }
+	          ]
+	        });
+
+			
 		},
 		InformeCompleto:function(evt){
 			var doc=this.proyecto.informepostulacionc||'';
@@ -76,6 +117,16 @@ var ViewsEvalIndividual={
 			this.$el.find('#body-etapa').empty();
 			this.$el.find('#btnNew').attr('disabled',true);
 		},
+		LoadInfoErrorEtapa:function(title,description){
+			var model={
+				title:title,
+				description:description
+			};
+			var v=new ViewsEvalIndividual.InfoErrorEtapa({
+				el:$("#body-etapa") ,
+				model:model
+			}).render();
+		},
 		RenderGrupos:function(){
 			this.ResetApp();
 			
@@ -84,72 +135,156 @@ var ViewsEvalIndividual={
 			                     
 			this.GrupoEvaluadorCollection.each(function(item,idx) {
 				var obj=item.toJSON();
-				var model={value:obj.id,text:obj.nombre}
+				var model={value:obj.id,text:obj.nombre+' - '+obj.concurso.nombre}
 				v = new ViewsEvalIndividual.ItemSelect({model:model});
 				this.$el.find('#cmbGrupo').append(v.render().el);
 			},this);
-			this.LoadConcursantes();
-			return this;
-		},
-		LoadConcursantes: function(evt){
-			this.grupo=$("#cmbGrupo").val();
-			var params={ grupo_id:this.grupo};
-			this.ConcursosCollection.fetch({reset:true,data:params});
-		},
-		RenderConcursantes:function(){
+			if(this.GrupoEvaluadorCollection.size()>0){
+				this.LoadProyectos();
 			
-			this.$el.find('#cmbPostulante').empty();
-			var v = null;
-			                     
-			this.ConcursosCollection.each(function(item,idx) {
-				var obj=item.toJSON();
-				var model={value:obj.id,text:obj.postulante.razonsocial}
-				v = new ViewsEvalIndividual.ItemSelect({model:model});
-				this.$el.find('#cmbPostulante').append(v.render().el);
-			},this);
-            this.LoadProyectos();           
+			}else{
+				this.LoadInfoErrorEtapa(MSG.EVALUACION.INFO.NO_EVALUACION,MSG.EVALUACION.INFO.NO_GRUPOS_EVALUADOR);
+				console.log("No pertenecea ningun grupo... :(");
+			}
 			return this;
 		},
+
 		LoadProyectos:function(){
-			var value=$("#cmbPostulante").val();
-			var item=this.ConcursosCollection.get(value);
-			var objJSON=item.toJSON();
-			this.concurso=objJSON.grupo.concurso;
+			var idGrupo=$("#cmbGrupo").val();
+			var self=this;
+			this.GrupoEvaluadorCollection.each(function(item,idx) {
+				var obj=item.toJSON();
+				if(obj.id==idGrupo)
+					self.grupo=obj;
+			},this);
+			this.concurso=this.grupo.concurso;
 			
-			var params={ concurso_id:objJSON.grupo.concurso.id,postulante_id:objJSON.postulante.id};
+			
+			
+			var params={ grupo_id:this.grupo.id};
+			//$("#lblconcurso").html(this.grupo.concurso.nombre);
 			this.ProyectosCollection.fetch({reset:true,data:params});
-			this.LoadCriterios();
 			
+			
+			
+		},
+		GetInfoEtapa:function(){
+			var self=this;
+			var tipoEtapaId=$("#tipoetapa_id").val();
+			var concursoId=this.concurso.id;
+			var url=Routing.generate('_admin_infoetapaconcurso',{tipoetapaId:tipoEtapaId,concursoId:concursoId});
+			ajax=new jAjax()
+			ajax.Execute(url,'GET','',function(data){
+				console.log(_.isEmpty(data));
+				if(!_.isEmpty(data)){
+					self.Etapa=data;
+					self.LoadCriterios();
+					self.ValidaEtapa();
+				}else{
+					self.LoadInfoErrorEtapa(MSG.EVALUACION.INFO.NO_EVALUACION,MSG.EVALUACION.INFO.NO_ETAPA("Etapa Individual"));
+					
+				}
+			});
+		},
+		ValidaEtapa:function(){
+
+			var inicio=moment(this.Etapa.fechaInicio.date).tz("America/Lima").format('YYYY/MM/DD'),
+				fin=moment(this.Etapa.fechaFin.date).tz("America/Lima").format('YYYY/MM/DD'),
+				myDate=moment().tz("America/Lima").format('YYYY/MM/DD'),
+				infoEtapa=$("#infoEtapa"),
+				infoFechasEtapa=$("#infoFechasEtapa"); 
+			
+			
+			
+			infoFechasEtapa.html(moment(inicio).format('DD/MM/YYYY')+' - '+moment(fin).format('DD/MM/YYYY'));
+			if(moment(myDate).isBefore(inicio)){
+				infoEtapa.html("Etapa aun no ha iniciado");
+				this.isEtapaValida=false;
+			}else{
+				if(moment(myDate).isAfter(fin)){
+					infoEtapa.html("Etapa ha culminado");
+					this.isEtapaValida=false;
+				}else{
+					infoEtapa.html("Etapa Vigente");
+					this.isEtapaValida=true;
+				}
+			}
+			this.LoadEvaluacion();
 			
 		},
 		RenderProyectos:function(){
 			this.$el.find('#cmbProyecto').empty();
 			var v = null;
 			                     
-			this.ProyectosCollection.each(function(item,idx) {
-				var obj=item.toJSON();
-				var text=obj.nombreproyecto||'';
-				text+=' - '+obj.concurso.nombre;
-				var model={
-					value:obj.id,
-					text:text
-				};
-				v = new ViewsEvalIndividual.ItemSelect({model:model});
-				this.$el.find('#cmbProyecto').append(v.render().el);
-			},this);    
-			this.SelectProyecto();   
+			if(this.ProyectosCollection.size()>0){
+				this.ProyectosCollection.each(function(item,idx) {
+					var obj=item.toJSON();
+					var proyecto=obj.inscripcion.nombreproyecto||'';
+					if(proyecto!='')
+						proyecto=' - '+proyecto;
+					var text =obj.inscripcion.postulante.razonsocial+proyecto;
+					
+					var model={
+						value:obj.inscripcion.id,
+						text:text
+					};
+					v = new ViewsEvalIndividual.ItemSelect({model:model});
+					this.$el.find('#cmbProyecto').append(v.render().el);
+				},this);    
+				this.SelectProyecto();   
+			}else{
+				this.LoadInfoErrorEtapa(MSG.EVALUACION.INFO.NO_EVALUACION,MSG.EVALUACION.INFO.NO_PROYECTOS);
+			}
+			
+			
 			return this;
 		},
 		SelectProyecto:function(){
+			var self=this;
 			var value=$("#cmbProyecto").val();
-			var item=this.ProyectosCollection.get(value);
-			this.proyecto=item.toJSON();
-			console.log(item.toJSON())
+			$("#btnCierreEvaluacion").attr('disabled',true);
+			this.ProyectosCollection.each(function(item,idx) {
+				var obj=item.toJSON();
+				if(obj.inscripcion.id==value)
+					self.proyecto=obj;
+			},this);    
 			$("#btnInformeCompleto").removeClass("disabled");
 			$("#btnInformeBasico").removeClass("disabled");
+			this.GetInfoEtapa();
+			
+		},
+		LoadEvaluacion:function(){
+			var self=this;
+			
+			if(this.isEtapaValida){
+				
+				var params={
+					inscripcion_id:$('#cmbProyecto').val(),
+					tipoetapa_id: $("#tipoetapa_id").val(),
+					evaluador_id:$("#cmbEvaluador").val()				
+				};
+
+				var ajax	= new jAjax(),
+					url 	= Routing.generate('_admin_evaluacion_show',params);
+				ajax.Execute(url,'GET','',function(data){
+					self.Evaluacion=data;
+					self.evaluacionAbierta=data.abierta;
+					$('#evaluacionId').val(data.id);
+					
+					var infoEvaluacion=$('#infoEvaluacion');
+					if(data.abierta){
+						infoEvaluacion.html("Evaluación Abierta");
+						$("#btnCierreEvaluacion").attr('disabled',false);
+					}else{	
+						infoEvaluacion.html("Evaluación Terminada");
+						$("#btnCierreEvaluacion").attr('disabled',true);
+					}
+				});
+			}
 		},
 		LoadCriterios:function(){
 			var parent=this;
+			$("#body-etapa").html('');
 			$('#treeCriterios').tree({
 				method:"GET",
 				checkbox:false,
@@ -460,8 +595,8 @@ var ViewsEvalIndividual={
 			this.template = _.template($('#itemOption_template').html());	
 		},
 		render: function() {
-			console.log(this.model.value);
-			console.log(this.model.text);
+			
+			
 			this.$el.attr('value',this.model.value);
 			this.$el.html(this.model.text);
 			return this;
@@ -472,13 +607,130 @@ var ViewsEvalIndividual={
 //////////APLICACION RESPUESTAS////////////////////////////////////////////////
 	AppRespuestas: Backbone.View.extend({
         tagName:"div",
-        
         attributes :{
         	idConcurso:0,
         	isParent:false,
         	idCriterio:0,
         	app:null
 
+        },
+        events: {
+                    "click .grid-respuesta":"SortRespuesta"
+        },
+        InitializePuntaje:function(){
+        	
+
+			var incremento=parseInt(this.attributes.app.concurso.incpuntaje),
+				puntaje=0,
+				option='',
+				combo=$('#cmbPuntaje'),
+				self=this;
+
+			combo.html('');
+			while(puntaje<=100){
+				
+				option='<option value="'+puntaje+'">'+puntaje+'</option>';
+				combo.append(option);
+				puntaje+=incremento;
+			}
+
+			this.LoadPuntaje();
+			combo.change(function(evt){
+				self.SavePuntaje(evt);
+			});
+			combo.attr('disabled',true);
+        },
+        LoadPuntaje:function(){
+			var params={
+					evaluacion_id:$('#evaluacionId').val(),
+					concursocriterio_id:this.attributes.idCriterio
+			};
+			
+			this.PuntajesCollection.fetch({reset:true,data:params});
+		},
+		renderPuntaje:function(){
+			var combo=$('#cmbPuntaje');
+			this.Puntaje=new Models.Puntaje({id:0});
+			if(this.PuntajesCollection.size()>0){
+
+				this.Puntaje=this.PuntajesCollection.at(0).toJSON();
+				
+				combo.val(this.Puntaje.valor);
+			}
+			combo.attr('disabled',false);
+		},
+		SavePuntaje:function(evt){
+			var item={
+					evaluacion_id:$('#evaluacionId').val(),
+					concursocriterio_id:this.attributes.idCriterio,
+					valor:$("#cmbPuntaje").val()
+				};
+			
+
+
+			if(this.Puntaje.id==0){
+				var item=new Models.Puntaje({
+					evaluacion_id:item.evaluacion_id,
+					concursocriterio_id:item.concursocriterio_id,
+					valor:item.valor
+				});
+			}else{
+				var item=new Models.Puntaje({
+					evaluacion_id:item.evaluacion_id,
+					concursocriterio_id:item.concursocriterio_id,
+					valor:item.valor,
+					id:this.Puntaje.id
+				});
+			}
+
+			item.save({},{success:function(){
+						
+						noty({
+		                    text: 'Se ha actualizado el registro satisfactoriamente', 
+		                    type: 'success',
+		                    layout:'bottomRight',
+		                    timeout:5000,
+		                });
+			}});
+		},
+        reverseSortBy:function (sortByFunction) {
+		  return function(left, right) {
+		    var l = sortByFunction(left);
+		    var r = sortByFunction(right);
+		 
+		    if (l === void 0) return -1;
+		    if (r === void 0) return 1;
+		 
+		    return l < r ? 1 : l > r ? -1 : 0;
+		  };
+		},
+
+        SortRespuesta:function(evt){
+        	
+        	var element=$(evt.currentTarget);
+        	var index=element.attr('data-colindex');
+        	var columnName=this.SortCol[index].name;
+        	var columnOrder=this.SortCol[index].order;
+        	
+        	
+        	this.RespuestasCollection.comparator = function(chapter) { 
+			  	return chapter.get(columnName);
+			};
+			switch(columnOrder){
+				case 'asc':
+					this.SortCol[index].order='desc';
+					break;
+				case 'desc':
+					this.RespuestasCollection.comparator = this.reverseSortBy(this.RespuestasCollection.comparator);
+					this.SortCol[index].order='asc';
+					break;
+			}
+			
+			this.RespuestasCollection.sort();
+			this.renderRespuestas();
+			
+			
+			
         },
 		initialize: function() {
 			_.bindAll(this);
@@ -497,7 +749,19 @@ var ViewsEvalIndividual={
 			this.AspectosClavesCollection.on("reset", this.renderAspectosClave,this);
 			
 			this.load();
+
+			this.SortCol=[];
+			this.SortCol.push({name:'puntaje',order:'asc'});		
+			this.SortCol.push({name:'criterio.codigo',order:'asc'});
+			this.SortCol.push({name:'respuesta',order:'asc'});
+
+			this.PuntajesCollection=new Collections.Puntaje();
+			this.PuntajesCollection.on("reset", this.renderPuntaje,this);
+			this.Puntaje=new Models.Puntaje({id:0});
+
+			
 		},
+		
 		LoadVisita:function(){
 			
 			var params={
@@ -542,10 +806,12 @@ var ViewsEvalIndividual={
 				$('#btnNewAspectoClave').click(this.NewAspectoClave);
 				this.LoadVisita();
 				this.LoadAspectosClaves();
+				this.InitializePuntaje();
 				
 			}else{
 				this.$el.find("#RespuestaAspectosClave").hide();
 				this.$el.find("#lnkVisita").hide();
+
 			}
 			return this;
 		},
@@ -629,6 +895,7 @@ var ViewsEvalIndividual={
 		                });
 			}});
 		},
+		
 		NewAspectoClave:function(){
 			var url=Routing.generate('_admin_criterioaspectoclave_new');
 			
@@ -875,21 +1142,67 @@ var ViewsEvalIndividual={
 //////////APLICACION ASPECTOS CLAVES////////////////////////////////////////////////
 	AspectosClaves: Backbone.View.extend({
         tagName:"div",
-        
+        events: {
+                    "click .aspectoclave-description":"SortAspectosClave"
+        },
         attributes :{
         	app:null,
         	isParent:false,
         	idCriterio:0
 
         },
-        
+        reverseSortBy:function (sortByFunction) {
+		  return function(left, right) {
+		    var l = sortByFunction(left);
+		    var r = sortByFunction(right);
+		 
+		    if (l === void 0) return -1;
+		    if (r === void 0) return 1;
+		 
+		    return l < r ? 1 : l > r ? -1 : 0;
+		  };
+		},
+
+        SortAspectosClave:function(evt){
+        	
+        	var element=$(evt.currentTarget);
+        	var index=element.attr('data-colindex');
+        	var columnName=this.SortCol[index].name;
+        	var columnOrder=this.SortCol[index].order;
+        	
+        	
+        	this.AspectosClaveCollection.comparator = function(chapter) { 
+			  	return chapter.get(columnName);
+			};
+			switch(columnOrder){
+				case 'asc':
+					this.SortCol[index].order='desc';
+					break;
+				case 'desc':
+					this.AspectosClaveCollection.comparator = this.reverseSortBy(this.AspectosClaveCollection.comparator);
+					this.SortCol[index].order='asc';
+					break;
+			}
+			
+			this.AspectosClaveCollection.sort();
+			this.renderAspectosClave();
+			
+
+			
+        },
 		initialize: function() {
+			var self=this;
 			_.bindAll(this);
 			this.template = _.template($('#FactoresClave_template').html());
 			
 			this.AspectosClaveCollection=new Collections.AspectoClave();
+			
+			
 			this.AspectosClaveCollection.on('reset', this.renderAspectosClave, this);
 			this.loadAspectosClave();
+			this.SortCol=[];
+			this.SortCol.push({name:'descripcion',order:'asc'});
+
 		},
 		render: function() {
 			this.$el.html(this.template());
@@ -934,6 +1247,8 @@ var ViewsEvalIndividual={
 
 				v = new ViewsEvalIndividual.ItemTabContentAspectoClave({model:model});
 				$('#tabAspectosContent').append(v.render().el);
+				
+				
 			},this); 
 
 			this.AspectosClaveCollection.each(function(item,idx) {
@@ -951,7 +1266,20 @@ var ViewsEvalIndividual={
 				var content='#gridFactoresClave-'+obj.id+' tbody a';
 				$(content).click(this.EventAspectos);
 			},this); 
-			$('#tabAspectos a:first').tab('show')
+			
+			$('[data-tab="aspecto-clave-tab"]').click(function(){
+					var href=$(this).attr('href');
+					
+					$('#tabAspectoClaveSelected').val(href);
+
+			})
+			if($('#tabAspectoClaveSelected').val()==0)
+				$('#tabAspectos a:first').tab('show')
+			else{
+				var activeTab='#tabAspectos a[href="'+$('#tabAspectoClaveSelected').val()+'"]';
+				
+				$(activeTab).tab('show') ;
+			}
 		},
 		renderAspectosClavesNode:function(){
 			$('#gridFactoresClave').show();
@@ -1031,7 +1359,7 @@ var ViewsEvalIndividual={
 			this.AspectoClaveSelected=new Models.AspectoClave({id:idAspecto});
 			this.AspectoClaveSelected.fetch({success:function(model){
 				var item=model.toJSON();
-				console.log(item);
+				
 				$('#cmbAspectoCLave').val(item.criterio.id);
 				$("#txtDescripcionAspectoClave").val(item.descripcion);
 
@@ -1133,6 +1461,17 @@ var ViewsEvalIndividual={
 			this.$el.html(this.template({model:this.model}));
 			return this;
 		}
+	}),
+	InfoErrorEtapa: Backbone.View.extend({
+        tagName:"div",
+		initialize: function() {
+			this.template = _.template($('#infoEtapa_template').html());		
+		},
+		render: function() {
+			console.log(this.model)
+			this.$el.html(this.template({model:this.model}));
+			return this;
+		}
 	})
 
 };
@@ -1140,6 +1479,13 @@ var ViewsEvalIndividual={
 $(document).ready(function() {
 	var v=new ViewsEvalIndividual.App({ el: $("#containerEtapaIndividual") });
 
+	setInterval(function(){
+		myDate=moment().tz("America/Lima").format('DD/MM/YYYY h:mm:ss');
+		$("#reloj").html(myDate);
+	},1000);
 
+	
 });
+
+
 

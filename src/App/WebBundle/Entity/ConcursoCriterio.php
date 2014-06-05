@@ -121,6 +121,10 @@ class ConcursoCriterio
     */
     protected $visitas;
     
+    /**
+     * @ORM\OneToOne(targetEntity="Puntaje", mappedBy="criterio")
+     */
+    private $puntajes;
 
     /**
      * Constructor

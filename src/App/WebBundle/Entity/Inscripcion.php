@@ -145,6 +145,18 @@ class Inscripcion
     */
     private $criteriosaspectosclaves;
     
+
+    /**
+    * @ORM\OneToMany(targetEntity="GrupoEvaluacionEvaluador", mappedBy="evaluador")
+    */
+    private $grupos;
+
+    
+    /**
+     * @ORM\OneToOne(targetEntity="GrupoEvaluacionPostulante", mappedBy="inscripcion")
+     */
+    private $grupoevaluacionpostulante;
+
     /**
      * Get id
      *
@@ -630,5 +642,61 @@ class Inscripcion
         }
        
         
+    }
+
+    /**
+     * Add grupos
+     *
+     * @param \App\WebBundle\Entity\GrupoEvaluacionEvaluador $grupos
+     * @return Inscripcion
+     */
+    public function addGrupo(\App\WebBundle\Entity\GrupoEvaluacionEvaluador $grupos)
+    {
+        $this->grupos[] = $grupos;
+    
+        return $this;
+    }
+
+    /**
+     * Remove grupos
+     *
+     * @param \App\WebBundle\Entity\GrupoEvaluacionEvaluador $grupos
+     */
+    public function removeGrupo(\App\WebBundle\Entity\GrupoEvaluacionEvaluador $grupos)
+    {
+        $this->grupos->removeElement($grupos);
+    }
+
+    /**
+     * Get grupos
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getGrupos()
+    {
+        return $this->grupos;
+    }
+
+    /**
+     * Set grupoevaluacionpostulante
+     *
+     * @param \App\WebBundle\Entity\GrupoEvaluacionPostulante $grupoevaluacionpostulante
+     * @return Inscripcion
+     */
+    public function setGrupoevaluacionpostulante(\App\WebBundle\Entity\GrupoEvaluacionPostulante $grupoevaluacionpostulante = null)
+    {
+        $this->grupoevaluacionpostulante = $grupoevaluacionpostulante;
+    
+        return $this;
+    }
+
+    /**
+     * Get grupoevaluacionpostulante
+     *
+     * @return \App\WebBundle\Entity\GrupoEvaluacionPostulante 
+     */
+    public function getGrupoevaluacionpostulante()
+    {
+        return $this->grupoevaluacionpostulante;
     }
 }

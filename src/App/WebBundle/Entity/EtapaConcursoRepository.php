@@ -28,7 +28,7 @@ class EtapaConcursoRepository extends EntityRepository
         }
     }
     
-     public function findByEtapa($idconsurso,$idetapa){
+    public function findByEtapa($idconsurso,$idetapa){
         $em=$this->getEntityManager();
         $dql= "SELECT ec FROM AppWebBundle:EtapaConcurso ec 
                 JOIN ec.concurso c
@@ -39,6 +39,27 @@ class EtapaConcursoRepository extends EntityRepository
                 ->setParameter('idetapa', $idetapa);
         try {
                 return $query->getSingleResult();
+        } catch (\Doctrine\ORM\NoResultException $e) {
+                return null;
+        }
+    }
+
+    public function findByTipoEtapa($idconsurso,$idtipoetapa,$idtipoconcurso){
+        $em=$this->getEntityManager();
+        $dql= "SELECT ec FROM AppWebBundle:EtapaConcurso ec 
+                JOIN ec.concurso c
+                JOIN ec.etapa e
+                JOIN e.tipoEtapa te
+                JOIN e.tipoConcurso t
+                WHERE c.id=:idconcurso 
+                AND te.id=:idtipoetapa
+                AND t.id=:idtipoconcurso";
+        $query=$em->createQuery($dql)
+                ->setParameter('idconcurso', $idconsurso)
+                ->setParameter('idtipoetapa', $idtipoetapa)
+                ->setParameter('idtipoconcurso', $idtipoconcurso);
+        try {
+                return $query->getArrayResult();
         } catch (\Doctrine\ORM\NoResultException $e) {
                 return null;
         }

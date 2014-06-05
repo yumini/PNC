@@ -7,16 +7,17 @@
                 <th class="grid-header">Nombres</th>
                 <th class="grid-header">Apellidos</th>
                 <th class="grid-header">Profesion</th>
-                
+                <th class="grid-header">Proyecto</th>
                 <th class="grid-header" style="width: 100px;text-align: center;">Opciones</th>
             </tr>
         </thead>
         <tbody>
         {% for entity in entities %}
             <tr>
-                <td>{{ entity.postulante.razonsocial }}</td>
-                <td>{{ entity.postulante.ruc }}</td>
-                <td>{{ entity.postulante.direccion }}</td>
+                <td>{{ entity.inscripcion.postulante.razonsocial }}</td>
+                <td>{{ entity.inscripcion.postulante.ruc }}</td>
+                <td>{{ entity.inscripcion.postulante.direccion }}</td>
+                <td>{{ entity.inscripcion.nombreproyecto }}</td>
                 
                  <td style="text-align: center;font-size: 12px;">
                     

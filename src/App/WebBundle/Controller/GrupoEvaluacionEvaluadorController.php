@@ -117,7 +117,7 @@ class GrupoEvaluacionEvaluadorController extends Controller
         $em = $this->getDoctrine()->getManager();
         $grupo = $em->getRepository('AppWebBundle:GrupoEvaluacion')->find($id);
         $concursoId=$grupo->getConcurso()->getId();
-        $evaluadores = $em->getRepository('AppWebBundle:GrupoEvaluacionEvaluador')->FindEvaluadoresDisponibles($concursoId);
+        $evaluadores = $em->getRepository('AppWebBundle:GrupoEvaluacionEvaluador')->FindEvaluadoresDisponibles($concursoId,$id);
         return array(
             'evaluadores' => $evaluadores
         );

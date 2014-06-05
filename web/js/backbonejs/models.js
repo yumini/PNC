@@ -32,5 +32,9 @@ var Models={
 
     DisponibilidadEvaluador: Backbone.Model.extend({
         urlRoot : Routing.generate("_admin_evaluadordisponibilidad")
+    }),
+
+    Puntaje: Backbone.Model.extend({
+        urlRoot : Routing.generate("_admin_json_puntaje")
     })
 };

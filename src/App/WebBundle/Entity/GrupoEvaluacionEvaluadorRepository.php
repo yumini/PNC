@@ -27,7 +27,8 @@ class GrupoEvaluacionEvaluadorRepository extends EntityRepository
 
     public function AllGroupByEvaluador($id,$isArray=false){
         $em=$this->getEntityManager();
-        $dql= "SELECT ge FROM AppWebBundle:GrupoEvaluacion ge 
+        $dql= "SELECT ge,c FROM AppWebBundle:GrupoEvaluacion ge 
+                JOIN ge.concurso c
                 JOIN ge.evaluadores gee
                 JOIN gee.evaluador e
                 WHERE e.id=:id ";
@@ -41,13 +42,13 @@ class GrupoEvaluacionEvaluadorRepository extends EntityRepository
                 return null;
         }
     }
-    public function FindEvaluadoresDisponibles($id){       
+    public function FindEvaluadoresDisponibles($id,$grupo){       
         $conn = $this->getEntityManager()->getConnection('database_connection');//create a connection with your DB
         $sql="select e.* from evaluador e inner JOIN inscripcionevaluador ie on ie.evaluador_id=e.id
 where ie.concurso_id=$id and 
 e.id not in(
 select e.id from grupoevaluacionevaluador ge INNER JOIN evaluador e on e.id=ge.evaluador_id 
-INNER JOIN grupoevaluacion g ON g.id=ge.grupoevaluacion_id where g.concurso_id=$id) ";                  
+INNER JOIN grupoevaluacion g ON g.id=ge.grupoevaluacion_id where g.concurso_id=$id and g.id=$grupo) ";               
     
         $stmt = $conn->prepare($sql);  
         $stmt->execute(); 

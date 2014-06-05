@@ -14,17 +14,15 @@
 			         
 			         </a>
 			        </div>
-
-			        <form class="navbar-form navbar-right">
-			        <select id="cmbGrupo" name="cmbGrupo" class="form-control col-sm-3">
-				
 					
-					</select>
-			        </form>
-			        <p class="navbar-text navbar-right">Grupo:</p>
+					<p  class="navbar-text">
+						
+					</p>
+
+			       
 
 			        <form class="navbar-form navbar-right">
-			        <select id="cmbEvaluador" class="form-control">
+			        <select id="cmbEvaluador" class="form-control input-sm">
 			        	{% if user.perfil.id == 1 %}
 					        {% for entity in evaluador %}
 								<option value="{{entity.id}}">{{entity.nombres ~' '~ entity.apellidos}}</option>
@@ -41,19 +39,55 @@
 
 
 	</nav>
+
+	<ol class="breadcrumb" style="margin-bottom:0">
+		
+	  	<li class="active">
+	  	<a href="#"><small>
+	  		<span class="glyphicon glyphicon-calendar"></span> 
+			<span id="infoFechasEtapa">Cargando periodo de etapa...</span>
+		</small></a>
+	  	</li>
+	  	<li>
+	  		<small>
+	  		<span id="infoEtapa">Cargando informaión de etapa...</span>
+	  		</small>
+	  	</li>
+	  	<li>
+	  		<small>
+			<span id="infoEvaluacion" >Cargando informaión de evaluación...</span>
+			</small>
+	  	</li>
+
+	  	<li style="float:right">
+		<a href="#">
+			<small>
+			<span class="glyphicon glyphicon-time"></span> 
+			<span id="reloj"></span>
+			</small>
+		</a>
+	  	</li>
+	  	
+	</ol>
 	<br/>
 	<div class="row">
-		<div class="col-md-1">
-			<label class="control-label" style="padding-top:5px;">Postulante:</label>
+
+		<div class="col-md-4">
+			<label class="control-label" >Grupo:</label>
+			<select id="cmbGrupo" name="cmbGrupo" class="form-control input-sm"></select>
 		</div>
-		<div class="col-md-3">
-			<select id="cmbPostulante" class="form-control"></select>
-		</div>
-		<div class="col-md-1">
-			<label class="control-label" style="padding-top:5px;">Proyecto:</label>
-		</div>
-		<div class="col-md-7">
-			<select id="cmbProyecto" class="form-control"></select>
+		<div class="col-md-8">
+			<label class="control-label">Postulante/Proyecto:</label>
+			
+			<a id="btnCierreEvaluacion" disabled="true" class="btn btn-danger pull-right btn-xs" >
+				<span class="glyphicon glyphicon-off"></span>
+				Cerrar Evaluacion
+			</a>
+			
+
+			<br/>
+			<select id="cmbProyecto" class="form-control input-sm"></select>
+			
 		</div>
 	</div>
 	<br/>
@@ -94,7 +128,7 @@
 			            <span class="icon-bar"></span>
 			            <span class="icon-bar"></span>
 			          </button>
-			          <a id="titleCriterio" class="navbar-brand" href="#">
+			          <a id="titleCriterio" class="navbar-brand" >
 			             Seleccione un criterio...			         
 			          </a>
 			        </div>
@@ -117,12 +151,24 @@
 			</div>
 		</div>
 	</div>
+<input type="hidden" id="tabAspectoClaveSelected" value="0" />
+<input type="hidden" id="evaluacionId" value="0" />
+
 <script type="text/template" id="itemOption_template">
 				  
 </script>
-
+<script type="text/template" id="infoEtapa_template">
+<br/>
+<div class="bs-callout bs-callout-info">
+        <h4><span class="glyphicon glyphicon-info-sign"></span> <%=model.title %></h4>
+        <p>
+         <%=model.description %>
+          
+        </p>
+</div>
+</script>
 <script type="text/template" id="FactoresClaveTab_template">
-	<a href="#tab-aspectoclave-<%=model.value%>" data-toggle="tab" title="<%=model.text %>"><%=model.text.substr(0,20) %>...</a>
+	<a href="#tab-aspectoclave-<%=model.value%>" data-toggle="tab" title="<%=model.text %>" data-tab="aspecto-clave-tab"><%=model.text.substr(0,15) %>...</a>
 </script>	
 <script type="text/template" id="FactoresClaveTabContainer_template">
 	<br/>
@@ -130,7 +176,7 @@
 	<table id="gridFactoresClave-<%=model.value%>" class="table table-bordered table-condensed table-hover">
 		<thead>
 		<tr>
-			<th>Descripcion</th>
+			<th><a style="cursor:pointer" class="aspectoclave-description" data-colindex="0">Descripción</a></th>
 			<th style="width:80px">Opciones</th>
 		</tr>
 		</thead>
@@ -150,7 +196,7 @@
 <table id="gridFactoresClave" class="table table-bordered table-condensed table-hover" style="display:none;">
 	<thead>
 		<tr>
-		<th>Descripcion</th>
+		<th><a style="cursor:pointer" class="aspectoclave-description" data-colindex="0">Descripción</a></th>
 		<th style="width:80px">Opciones</th>
 		</tr>
 	</thead>
@@ -191,15 +237,17 @@
 
 <script type="text/template" id="respuestas_template">
 <div id="RespuestaAspectosClave">
-
-<a id="btnNewAspectoClave" class="btn btn-success btn-xs pull-right">Agregar Aspectos Claves</a>
+<label>Puntaje:</label>
+<select id="cmbPuntaje" class="form-control input-sm" style="width:90px;display:inline-block">
+</select>
+<a id="btnNewAspectoClave" class="btn btn-success btn-xs pull-right"  style="margin-right:5px;">Agregar Aspectos Claves</a>
 <br/>
 <br/>
 <table id="gridCriterioAspectosClaves" class="table table-bordered table-condensed table-hover">
 	<thead>
 		<tr>
-		<th>Criterio</th>
-		<th>Descripcion</th>
+		<th>Aspecto Clave</th>
+		<th>Descripción</th>
 		<th></th>
 		</tr>
 	</thead>
@@ -219,9 +267,21 @@
 			<table id="gridFortalezas" class="table table-bordered table-condensed table-hover">
 				<thead>
 					<tr>
-					<th style="width:50px">(+/++)</th>
-					<th style="width:50px;<% if(!isParent){ %>display:none;<% } %>">Area de Analisis</th>
-					<th>Respuesta</th>
+					<th style="width:50px">
+						<a style="cursor:pointer" class="grid-respuesta" data-colindex="0">
+						(+/++)
+						</a>
+					</th>
+					<th style="width:50px;<% if(!isParent){ %>display:none;<% } %>">
+					<a style="cursor:pointer" class="grid-respuesta" data-colindex="1">
+					Area de Analisis
+					</a>
+					</th>
+					<th>
+					<a style="cursor:pointer" class="grid-respuesta" data-colindex="2">
+					Respuesta
+					</a>
+					</th>
 					<th style="width:80px">Opciones</th>
 					</tr>
 				</thead>
@@ -237,9 +297,21 @@
 			<table id="gridAreasMejora" class="table table-bordered table-condensed table-hover">
 				<thead>
 					<tr>
-					<th style="width:50px;">(-/--)</th>
-					<th style="width:50px;<% if(!isParent){ %>display:none;<% } %>">Area de Analisis</th>
-					<th>Respuesta</th>
+					<th style="width:50px;">
+					<a style="cursor:pointer" class="grid-respuesta" data-colindex="0">
+					(-/--)
+					</a>
+					</th>
+					<th style="width:50px;<% if(!isParent){ %>display:none;<% } %>">
+					<a style="cursor:pointer" class="grid-respuesta" data-colindex="1">
+					Area de Analisis
+					</a>
+					</th>
+					<th>
+					<a style="cursor:pointer" class="grid-respuesta" data-colindex="2">
+					Respuesta
+					</a>
+					</th>
 					<th style="width:80px">Opciones</th>
 					</tr>
 				</thead>

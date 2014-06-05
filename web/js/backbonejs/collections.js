@@ -112,6 +112,14 @@ var Collections={
 				
                 return response;
         }
+    }),
+    Puntaje: Backbone.Collection.extend({
+		model: Models.Puntaje,
+		url: Routing.generate("_admin_json_puntaje"),
+		parse: function(response) {
+				
+                return response;
+        }
     })
    
 };

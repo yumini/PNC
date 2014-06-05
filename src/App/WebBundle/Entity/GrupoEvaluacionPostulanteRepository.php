@@ -14,8 +14,9 @@ class GrupoEvaluacionPostulanteRepository extends EntityRepository
 {
     public function FindByGrupo($id,$isarray=false){
         $em=$this->getEntityManager();
-        $dql= "SELECT gee,g,c,p FROM AppWebBundle:GrupoEvaluacionPostulante gee 
-                JOIN gee.postulante p
+        $dql= "SELECT gee,g,c,i,p FROM AppWebBundle:GrupoEvaluacionPostulante gee 
+                JOIN gee.inscripcion i
+                JOIN i.postulante p
                 JOIN gee.grupo g
                 JOIN g.concurso c
                 WHERE g.id=:id or 0=:id ";
@@ -32,11 +33,10 @@ class GrupoEvaluacionPostulanteRepository extends EntityRepository
     
     public function FindPostulantesDisponibles($id){       
         $conn = $this->getEntityManager()->getConnection('database_connection');//create a connection with your DB
-        $sql="select p.* from postulante p inner JOIN inscripcion i on i.postulante_id=p.id
+        $sql="select p.*,i.id as inscripcion_id,i.nombreproyecto from inscripcion i inner JOIN  postulante p on p.id=i.postulante_id
 where i.concurso_id=$id and 
-p.id not in(
-select p.id from grupoevaluacionpostulante ge INNER JOIN postulante p on p.id=ge.postulante_id 
-INNER JOIN grupoevaluacion g ON g.id=ge.grupoevaluacion_id where g.concurso_id=$id) ";                  
+i.id not in(
+select ge.inscripcion_id from grupoevaluacionpostulante ge INNER JOIN grupoevaluacion g ON g.id=ge.grupoevaluacion_id where g.concurso_id=$id) ";                  
     
         $stmt = $conn->prepare($sql);  
         $stmt->execute(); 

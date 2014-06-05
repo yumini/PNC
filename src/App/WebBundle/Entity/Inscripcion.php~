@@ -4,11 +4,18 @@ namespace App\WebBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo; 
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\ExecutionContextInterface;
 /**
  * Inscripcion
  *
- * @ORM\Table(name="inscripcion")
+ * @ORM\Table(name="inscripcion",
+ *                  uniqueConstraints={
+ *                          @ORM\UniqueConstraint(name="uq_postulante_nombreproyecto", columns={"postulante_id", "nombreproyecto"})
+ *                  })
  * @ORM\Entity(repositoryClass="App\WebBundle\Entity\InscripcionRepository")
+* @Assert\Callback(methods={"isInscripcionValid"})
  */
 class Inscripcion
 {
@@ -24,7 +31,7 @@ class Inscripcion
     /**
      * @var string
      *
-     * @ORM\Column(name="nombreproyecto", type="string", length=100)
+     * @ORM\Column(name="nombreproyecto", type="string", length=100, nullable=true)
      */
     private $nombreproyecto;
 
@@ -138,6 +145,18 @@ class Inscripcion
     */
     private $criteriosaspectosclaves;
     
+
+    /**
+    * @ORM\OneToMany(targetEntity="GrupoEvaluacionEvaluador", mappedBy="evaluador")
+    */
+    private $grupos;
+
+    
+    /**
+     * @ORM\OneToOne(targetEntity="GrupoEvaluacionPostulante", mappedBy="inscripcion")
+     */
+    private $grupoevaluacionpostulante;
+
     /**
      * Get id
      *
@@ -508,5 +527,120 @@ class Inscripcion
     public function getAspectosclaves()
     {
         return $this->aspectosclaves;
+    }
+
+    /**
+     * Add respuestas
+     *
+     * @param \App\WebBundle\Entity\Respuesta $respuestas
+     * @return Inscripcion
+     */
+    public function addRespuesta(\App\WebBundle\Entity\Respuesta $respuestas)
+    {
+        $this->respuestas[] = $respuestas;
+    
+        return $this;
+    }
+
+    /**
+     * Remove respuestas
+     *
+     * @param \App\WebBundle\Entity\Respuesta $respuestas
+     */
+    public function removeRespuesta(\App\WebBundle\Entity\Respuesta $respuestas)
+    {
+        $this->respuestas->removeElement($respuestas);
+    }
+
+    /**
+     * Get respuestas
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getRespuestas()
+    {
+        return $this->respuestas;
+    }
+
+    /**
+     * Add visitas
+     *
+     * @param \App\WebBundle\Entity\CriterioVisita $visitas
+     * @return Inscripcion
+     */
+    public function addVisita(\App\WebBundle\Entity\CriterioVisita $visitas)
+    {
+        $this->visitas[] = $visitas;
+    
+        return $this;
+    }
+
+    /**
+     * Remove visitas
+     *
+     * @param \App\WebBundle\Entity\CriterioVisita $visitas
+     */
+    public function removeVisita(\App\WebBundle\Entity\CriterioVisita $visitas)
+    {
+        $this->visitas->removeElement($visitas);
+    }
+
+    /**
+     * Get visitas
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getVisitas()
+    {
+        return $this->visitas;
+    }
+
+    /**
+     * Add criteriosaspectosclaves
+     *
+     * @param \App\WebBundle\Entity\CriterioAspectoClave $criteriosaspectosclaves
+     * @return Inscripcion
+     */
+    public function addCriteriosaspectosclave(\App\WebBundle\Entity\CriterioAspectoClave $criteriosaspectosclaves)
+    {
+        $this->criteriosaspectosclaves[] = $criteriosaspectosclaves;
+    
+        return $this;
+    }
+
+    /**
+     * Remove criteriosaspectosclaves
+     *
+     * @param \App\WebBundle\Entity\CriterioAspectoClave $criteriosaspectosclaves
+     */
+    public function removeCriteriosaspectosclave(\App\WebBundle\Entity\CriterioAspectoClave $criteriosaspectosclaves)
+    {
+        $this->criteriosaspectosclaves->removeElement($criteriosaspectosclaves);
+    }
+
+    /**
+     * Get criteriosaspectosclaves
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getCriteriosaspectosclaves()
+    {
+        return $this->criteriosaspectosclaves;
+    }
+
+     public function isInscripcionValid(ExecutionContextInterface $context)
+    {
+
+        if ($this->concurso->getTipoConcurso()->getCodigo()==2 && strlen($this->nombreproyecto)==0) {
+            $context->addViolationAt('nombreproyecto', 'Este valor no deberia estar vacio.', array(), null);
+        }
+        if ($this->concurso->getTipoConcurso()->getCodigo()==2 && $this->fechainiciopy===null) {
+            $context->addViolationAt('fechainiciopy', 'Este valor no deberia estar vacio.', array(), null);
+        }
+        if ($this->concurso->getTipoConcurso()->getCodigo()==2 && $this->fechafinpy===null) {
+            $context->addViolationAt('fechafinpy', 'Este valor no deberia estar vacio.', array(), null);
+        }
+       
+        
     }
 }

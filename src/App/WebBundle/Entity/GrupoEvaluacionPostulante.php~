@@ -28,10 +28,10 @@ class GrupoEvaluacionPostulante
     private $grupo;
     
     /**
-    * @ORM\ManyToOne(targetEntity="Postulante", inversedBy="grupos")
-    * @ORM\JoinColumn(name="postulante_id", referencedColumnName="id")
+    * @ORM\ManyToOne(targetEntity="Inscripcion", inversedBy="grupoevaluacionpostulante")
+    * @ORM\JoinColumn(name="inscripcion_id", referencedColumnName="id")
     */
-    private $postulante;
+    private $inscripcion;
     
     /**
      * @var \DateTime
@@ -153,5 +153,28 @@ class GrupoEvaluacionPostulante
     public function getPostulante()
     {
         return $this->postulante;
+    }
+
+    /**
+     * Set inscripcion
+     *
+     * @param \App\WebBundle\Entity\Inscripcion $inscripcion
+     * @return GrupoEvaluacionPostulante
+     */
+    public function setInscripcion(\App\WebBundle\Entity\Inscripcion $inscripcion = null)
+    {
+        $this->inscripcion = $inscripcion;
+    
+        return $this;
+    }
+
+    /**
+     * Get inscripcion
+     *
+     * @return \App\WebBundle\Entity\Inscripcion 
+     */
+    public function getInscripcion()
+    {
+        return $this->inscripcion;
     }
 }

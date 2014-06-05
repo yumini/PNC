@@ -11,12 +11,22 @@ use JMS\SecurityExtraBundle\Annotation\Secure;
 use App\WebBundle\Menu\MenuBuilder;
 use App\WebBundle\Entity\Perfil;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
 /**
 * @Route("/admin")
 */
 class PrivateController extends Controller {
 
      private $title="Premio Nacional de la Calidad";
+     /**
+     * @Route("/getdate", name="_admin_getdate", options={"expose"=true})
+     * @Template()
+     */
+    public function getdateAction(Request $request){
+        $showtime=($request->query->get('showtime','true')=='true')?true:false;
+        $time=($showtime)?' h:i:s':'';
+        return new JsonResponse(array('date' => date("y-m-d$time")));
+    }
     /**
      * @Route("/", name="_admin_index", options={"expose"=true})
      * @Template()

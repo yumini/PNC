@@ -13,9 +13,9 @@
         <tbody>
         {% for entity in entities %}
             <tr>
-                <td>{{ entity.razonsocial }}</td>
-                <td>{{ entity.ruc }}</td>
-                <td>{{ entity.direccion }}</td>
+                <td>{{ entity.inscripcion.postulante.razonsocial }}</td>
+                <td>{{ entity.inscripcion.postulante.ruc }}</td>
+                <td>{{ entity.inscripcion.postulante.direccion }}</td>
                 
             </tr>
         {% endfor %}

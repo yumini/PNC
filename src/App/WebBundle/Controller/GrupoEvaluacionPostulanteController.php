@@ -50,11 +50,9 @@ class GrupoEvaluacionPostulanteController extends Controller
         $grupo_id=$request->query->get('grupo_id');
         //$grupo_id=2;
         $entities = $em->getRepository('AppWebBundle:GrupoEvaluacionPostulante')->FindByGrupo($grupo_id,true);
-        $response = new Response(json_encode($entities));
-        $response->headers->set('Content-Type', 'application/json');
-        return $response;
-
         
+
+        return new JsonResponse($entities);
     }
 
     /**
@@ -68,17 +66,18 @@ class GrupoEvaluacionPostulanteController extends Controller
     {
         $result='';
         $msg='';
-        $evaluadorId=$request->request->get('evaluadorId');
+        $inscripcionId=$request->request->get('inscripcionId');
         $em = $this->getDoctrine()->getManager();
-        if($evaluadorId){
-            $postulante=$em->getRepository('AppWebBundle:Postulante')->find($evaluadorId);
+        if($inscripcionId){
+            $inscripcion=$em->getRepository('AppWebBundle:Inscripcion')->find($inscripcionId);
+            $postulante=$inscripcion->getPostulante();
             $grupo=$em->getRepository('AppWebBundle:GrupoEvaluacion')->find($id);
-            if($postulante){
+            if($inscripcion){
                 if($grupo){
                     $evaluadores=$em->getRepository('AppWebBundle:Postulante')->getEvaluadoresConflictosInteres($id,$postulante->getRuc());
                     if(count($evaluadores)==0){
                         $entity  = new GrupoEvaluacionPostulante();
-                        $entity->setPostulante($postulante);
+                        $entity->setInscripcion($inscripcion);
                         $entity->setGrupo($grupo);
                         $em->persist($entity);
                         $em->flush();
